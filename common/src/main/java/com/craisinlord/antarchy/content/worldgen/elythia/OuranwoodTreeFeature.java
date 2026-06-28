@@ -553,8 +553,6 @@ public class OuranwoodTreeFeature extends Feature<OuranwoodTreeConfiguration> {
             return;
         }
 
-        // Place the marker block at the first floor position; it will spawn squirrels and
-        // convert itself to COARSE_DIRT shortly after the chunk loads.
         // The tick is scheduled here on the WorldGenLevel because onPlace() is never
         // called during world generation, so the block cannot self-schedule.
         int squirrelCount = 1 + random.nextInt(3);
@@ -824,7 +822,6 @@ public class OuranwoodTreeFeature extends Feature<OuranwoodTreeConfiguration> {
                     }
                 }
 
-                // Set correct surface type on top soil block (from refreshTerrainSurface)
                 BlockPos topSoilPos = null;
                 for (int y = maxY; y >= minY; y--) {
                     BlockPos pos = new BlockPos(worldX, y, worldZ);

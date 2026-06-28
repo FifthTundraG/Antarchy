@@ -1,5 +1,6 @@
 package com.craisinlord.antarchy.content.entity.ant;
 
+import com.craisinlord.antarchy.config.AntarchySettings;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -161,17 +163,26 @@ public final class AntTeleportHelper {
     @Nullable
     private static Vec3 tryFindSafeDismount(ServerPlayer player, ServerLevel destination, BlockPos candidate) {
         Vec3 safePos = DismountHelper.findSafeDismountLocation(player.getType(), destination, candidate, true);
-        if (safePos != null) {
+        if (safePos != null && isValidArrivalPosition(destination, safePos)) {
             return safePos;
         }
 
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             safePos = DismountHelper.findSafeDismountLocation(player.getType(), destination, candidate.relative(direction), true);
-            if (safePos != null) {
+            if (safePos != null && isValidArrivalPosition(destination, safePos)) {
                 return safePos;
             }
         }
 
         return null;
+    }
+
+    private static boolean isValidArrivalPosition(ServerLevel destination, Vec3 safePos) {
+        if (destination.dimension() != AntarchySettings.termiteDestinationDimension()) {
+            return true;
+        }
+
+        BlockPos standPos = BlockPos.containing(safePos);
+        return !destination.getBlockState(standPos.below()).is(Blocks.BEDROCK);
     }
 }

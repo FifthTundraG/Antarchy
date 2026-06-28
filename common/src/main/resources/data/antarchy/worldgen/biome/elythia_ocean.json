@@ -57,7 +57,7 @@
     ],
     []
   ],
-  "creature_spawn_probability": 0.04,
+  "creature_spawn_probability": 0.15,
   "spawners": {
     "monster": [
       { "type": "antarchy:missile_squid", "weight": 12, "minCount": 1, "maxCount": 3 },

@@ -66,7 +66,6 @@ public class FallenOuranwoodFeature extends Feature<NoneFeatureConfiguration> {
 
             float dmg = damage[step];
 
-            // Full gap sections — log has completely rotted through here
             if (dmg > 0.78f) continue;
 
             int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, bx, bz);
@@ -79,14 +78,11 @@ public class FallenOuranwoodFeature extends Feature<NoneFeatureConfiguration> {
 
                     boolean isShell = dist >= outerRadius - 0.5;
 
-                    // Hollow interior: always skip center when hollow
                     if (hollow && dist < outerRadius - 0.5) continue;
 
-                    // Heavy-damage sections: only keep fragments of the shell
                     if (dmg > 0.55f && !isShell) continue;
                     if (dmg > 0.55f && random.nextFloat() < (dmg - 0.55f) * 3.5f) continue;
 
-                    // All sections: random rot holes punched through the shell
                     if (isShell && random.nextFloat() < dmg * 0.4f) continue;
 
                     int px = axis == Direction.Axis.X ? bx : bx + dp;
@@ -95,13 +91,12 @@ public class FallenOuranwoodFeature extends Feature<NoneFeatureConfiguration> {
 
                     if (!canReplace(level.getBlockState(pos))) continue;
 
-                    // Block material mix: mostly mossy log, some fresh log patches, some moss
                     float r = random.nextFloat();
                     BlockState toPlace;
                     if (r < 0.08f) {
                         toPlace = Blocks.MOSS_BLOCK.defaultBlockState();
                     } else if (r < 0.22f) {
-                        toPlace = freshLogState; // fresher wood, less decayed patch
+                        toPlace = freshLogState;
                     } else if (r < 0.32f) {
                         toPlace = woodState;
                     } else {
@@ -114,7 +109,6 @@ public class FallenOuranwoodFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        // Moss patches scattered along the log's footprint
         int mossCount = 20 + random.nextInt(25);
         for (int i = 0; i < mossCount; i++) {
             int mx = origin.getX() + random.nextInt(length + 6) - 3;

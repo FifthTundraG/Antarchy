@@ -1,14 +1,20 @@
 package com.craisinlord.antarchy.content.entity;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import java.util.Objects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -48,15 +54,17 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.keyframe.event.builtin.AutoPlayingSoundKeyframeHandler;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BomberEntity extends Monster implements GeoEntity {
+    private static final ResourceLocation INTENTIONALLY_EMPTY_SOUND_ID = ResourceLocation.withDefaultNamespace("intentionally_empty");
     private static final EntityDataAccessor<Integer> FUSE_TICKS_DATA =
             SynchedEntityData.defineId(BomberEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DETONATING_DATA =
             SynchedEntityData.defineId(BomberEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final int DEFAULT_FUSE_TICKS = 80;
+    private static final int DEFAULT_FUSE_TICKS = 120;
     private static final int EXPLODE_ANIM_START_TICKS = 25;
     private static final int FLASH_INTERVAL_TICKS = 5;
 
@@ -117,7 +125,9 @@ public class BomberEntity extends Monster implements GeoEntity {
         Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(maxHealth);
         this.setHealth((float) maxHealth);
         Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(attackDamage);
-        return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
+        SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
+        this.primeFuse();
+        return spawnData;
     }
 
     @Override
@@ -135,16 +145,6 @@ public class BomberEntity extends Monster implements GeoEntity {
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.IS_EXPLOSION)) {
             this.primeFuse();
-            return false;
-        }
-        if (this.detonating) {
-            Entity attacker = source.getDirectEntity();
-            if (attacker != null) {
-                Vec3 knockDir = this.position().subtract(attacker.position()).normalize();
-                this.push(knockDir.x * 0.5, 0.2, knockDir.z * 0.5);
-                this.hurtMarked = true;
-            }
-            return false;
         }
 
         Entity directEntity = source.getDirectEntity();
@@ -153,6 +153,11 @@ public class BomberEntity extends Monster implements GeoEntity {
         }
 
         return super.hurt(source, amount);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return AntarchySoundEvents.BOMBER_KNOCK.get();
     }
 
     @Override
@@ -185,7 +190,10 @@ public class BomberEntity extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "main_controller", 0, this::mainAnimController));
+        controllers.add(new AnimationController<>(this, "movement_controller", 0, this::movementAnimController)
+                .setSoundKeyframeHandler(new AutoPlayingSoundKeyframeHandler<>()));
+        controllers.add(new AnimationController<>(this, "explode_controller", 0, this::explodeAnimController)
+                .setSoundKeyframeHandler(new AutoPlayingSoundKeyframeHandler<>()));
     }
 
     @Override
@@ -198,10 +206,6 @@ public class BomberEntity extends Monster implements GeoEntity {
         super.tick();
 
         if (!this.level().isClientSide && this.detonating) {
-            this.getNavigation().stop();
-            this.setDeltaMovement(0.0D, 0.0D, 0.0D);
-            this.hasImpulse = false;
-
             if (this.fuseTicks > 0) {
                 this.fuseTicks--;
                 this.entityData.set(FUSE_TICKS_DATA, this.fuseTicks);
@@ -227,12 +231,20 @@ public class BomberEntity extends Monster implements GeoEntity {
                 && (this.getFuseTicks() / FLASH_INTERVAL_TICKS) % 2 == 0;
     }
 
-    private PlayState mainAnimController(AnimationState<BomberEntity> state) {
+    private PlayState movementAnimController(AnimationState<BomberEntity> state) {
+        if (this.isDetonating() && this.getFuseTicks() <= EXPLODE_ANIM_START_TICKS) {
+            return PlayState.STOP;
+        }
+
+        return state.setAndContinue(this.isMovingForAnimation() ? WALK_ANIM : IDLE_ANIM);
+    }
+
+    private PlayState explodeAnimController(AnimationState<BomberEntity> state) {
         if (this.isDetonating() && this.getFuseTicks() <= EXPLODE_ANIM_START_TICKS) {
             return state.setAndContinue(EXPLODE_ANIM);
         }
 
-        return state.setAndContinue(state.isMoving() ? WALK_ANIM : IDLE_ANIM);
+        return PlayState.STOP;
     }
 
     private void primeFuse() {
@@ -244,10 +256,7 @@ public class BomberEntity extends Monster implements GeoEntity {
         this.fuseTicks = DEFAULT_FUSE_TICKS;
         this.entityData.set(DETONATING_DATA, true);
         this.entityData.set(FUSE_TICKS_DATA, this.fuseTicks);
-        this.getNavigation().stop();
-        this.setDeltaMovement(Vec3.ZERO);
-        this.hasImpulse = false;
-        this.playSound(SoundEvents.TNT_PRIMED, 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
+        this.playSound(AntarchySoundEvents.BOMBER_EXPLODE.get(), 1.0F, 1.0F);
     }
 
     private void detonate() {
@@ -260,7 +269,21 @@ public class BomberEntity extends Monster implements GeoEntity {
         double y = this.getY(0.0625D);
         double z = this.getZ();
         float radius = (float) AntarchySettings.bomberExplosionRadius();
-        serverLevel.explode(this, x, y, z, radius, ExplosionInteraction.TNT);
+        serverLevel.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 0.55F, 1.0F);
+        serverLevel.explode(
+                this,
+                null,
+                null,
+                x,
+                y,
+                z,
+                radius,
+                false,
+                ExplosionInteraction.TNT,
+                ParticleTypes.EXPLOSION_EMITTER,
+                ParticleTypes.EXPLOSION,
+                BuiltInRegistries.SOUND_EVENT.getHolder(INTENTIONALLY_EMPTY_SOUND_ID).orElseThrow()
+        );
 
         double extraDamage = AntarchySettings.bomberExplosionDamage();
         if (extraDamage > 0.0D) {
@@ -283,6 +306,10 @@ public class BomberEntity extends Monster implements GeoEntity {
         this.discard();
     }
 
+    private boolean isMovingForAnimation() {
+        return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4D || this.getNavigation().isInProgress();
+    }
+
     private final class BomberAttackGoal extends MeleeAttackGoal {
         private BomberAttackGoal() {
             super(BomberEntity.this, 1.1D, true);
@@ -290,12 +317,12 @@ public class BomberEntity extends Monster implements GeoEntity {
 
         @Override
         public boolean canUse() {
-            return !BomberEntity.this.detonating && super.canUse();
+            return super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return !BomberEntity.this.detonating && super.canContinueToUse();
+            return super.canContinueToUse();
         }
     }
 }

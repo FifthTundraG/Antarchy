@@ -136,7 +136,6 @@ public final class CavarynEggPatchFeature extends Feature<NoneFeatureConfigurati
                 continue;
             }
 
-            // Replace the floor block with amber moss so eggs hatch faster
             if (amberMossBlock != null) {
                 BlockPos floorPos = eggPos.below();
                 BlockState floorState = level.getBlockState(floorPos);

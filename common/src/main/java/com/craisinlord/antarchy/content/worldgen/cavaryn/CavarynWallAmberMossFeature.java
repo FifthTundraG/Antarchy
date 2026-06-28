@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public final class CavarynWallAmberMossFeature extends Feature<NoneFeatureConfiguration> {
     private static final ResourceLocation AMBER_LICHEN_ID = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "amber_lichen");
-    private static final ResourceLocation GLOW_LICHEN_ID = ResourceLocation.withDefaultNamespace("glow_lichen");
     private static final int SEARCH_RADIUS = 8;
     private static final int SEARCH_ATTEMPTS = 28;
     private static final int VERTICAL_SCAN = 10;
@@ -34,8 +33,7 @@ public final class CavarynWallAmberMossFeature extends Feature<NoneFeatureConfig
         WorldGenLevel level = context.level();
         RandomSource random = context.random();
         Block amberLichenBlock = getBlock(AMBER_LICHEN_ID);
-        Block glowLichenBlock = getBlock(GLOW_LICHEN_ID);
-        if (amberLichenBlock == null || glowLichenBlock == null) {
+        if (amberLichenBlock == null) {
             return false;
         }
 
@@ -49,7 +47,7 @@ public final class CavarynWallAmberMossFeature extends Feature<NoneFeatureConfig
             return false;
         }
 
-        placeLichenFringe(level, placedPatch, anchor.supportDirection(), amberLichenBlock, glowLichenBlock, random);
+        placeLichenFringe(level, placedPatch, anchor.supportDirection(), amberLichenBlock, random);
         return true;
     }
 
@@ -115,7 +113,6 @@ public final class CavarynWallAmberMossFeature extends Feature<NoneFeatureConfig
             List<BlockPos> patchPositions,
             Direction supportDirection,
             Block amberLichenBlock,
-            Block glowLichenBlock,
             RandomSource random
     ) {
         for (BlockPos patchPos : patchPositions) {
@@ -132,7 +129,7 @@ public final class CavarynWallAmberMossFeature extends Feature<NoneFeatureConfig
                     continue;
                 }
 
-                BlockState state = createLichenState(random.nextFloat() < 0.65F ? amberLichenBlock : glowLichenBlock, supportDirection);
+                BlockState state = createLichenState(amberLichenBlock, supportDirection);
                 if (!state.canSurvive(level, targetPos)) {
                     continue;
                 }

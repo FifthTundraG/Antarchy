@@ -134,6 +134,9 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeSounds.MOLEVORE_HURT,
                 AntarchyNeoforgeSounds.MOLEVORE_ATTACK,
                 AntarchyNeoforgeSounds.MOLEVORE_DIG,
+                AntarchyNeoforgeSounds.BOMBER_WALK,
+                AntarchyNeoforgeSounds.BOMBER_KNOCK,
+                AntarchyNeoforgeSounds.BOMBER_EXPLODE,
                 AntarchyNeoforgeSounds.DUCT_TAPE_USE
         );
         bindCommonObjects();

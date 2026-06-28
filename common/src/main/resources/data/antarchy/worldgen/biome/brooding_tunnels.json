@@ -1,0 +1,79 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.45,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 655360,
+    "water_color": 327680,
+    "water_fog_color": 0,
+    "sky_color": 262144,
+    "grass_color": 2763554,
+    "foliage_color": 2763554,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 1200000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "particle": {
+      "probability": 0.003,
+      "options": {
+        "type": "antarchy:orange_ash"
+      }
+    }
+  },
+  "spawn_costs": {},
+  "carvers": {
+    "air": [],
+    "liquid": []
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "antarchy:cavaryn_bile_veins",
+      "antarchy:brooding_tunnels_creepvine",
+      "antarchy:cavaryn_terror_egg_patch"
+    ],
+    [
+      "antarchy:cavaryn_bile_cysts"
+    ]
+  ],
+  "creature_spawn_probability": 0.06,
+  "spawners": {
+    "monster": [
+      {
+        "type": "antarchy:creeping_horror",
+        "weight": 95,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "antarchy:lurking_terror",
+        "weight": 95,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
+    "creature": [
+      {
+        "type": "antarchy:stink_bug",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  }
+}

@@ -119,6 +119,9 @@ public final class AntarchySoundEvents {
     public static Supplier<SoundEvent> MOLEVORE_HURT = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> MOLEVORE_ATTACK = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> MOLEVORE_DIG = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> BOMBER_WALK = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> BOMBER_KNOCK = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> BOMBER_EXPLODE = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> DUCT_TAPE_USE = (Supplier<SoundEvent>) UNBOUND;
 
     private AntarchySoundEvents() {
@@ -235,6 +238,9 @@ public final class AntarchySoundEvents {
             Supplier<SoundEvent> molevoreHurt,
             Supplier<SoundEvent> molevoreAttack,
             Supplier<SoundEvent> molevoreDig,
+            Supplier<SoundEvent> bomberWalk,
+            Supplier<SoundEvent> bomberKnock,
+            Supplier<SoundEvent> bomberExplode,
             Supplier<SoundEvent> ductTapeUse
     ) {
         SQUIDZOOKA_FIRE = squidzookaFire;
@@ -347,6 +353,9 @@ public final class AntarchySoundEvents {
         MOLEVORE_HURT = molevoreHurt;
         MOLEVORE_ATTACK = molevoreAttack;
         MOLEVORE_DIG = molevoreDig;
+        BOMBER_WALK = bomberWalk;
+        BOMBER_KNOCK = bomberKnock;
+        BOMBER_EXPLODE = bomberExplode;
         DUCT_TAPE_USE = ductTapeUse;
     }
 }

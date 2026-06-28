@@ -61,7 +61,6 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
         int baseRadius = 2 + random.nextInt(2);           // 2–3 wide at base
         int totalHeight = 20 + random.nextInt(15);         // 20–34 blocks tall
 
-        // Curve: lean toward a random horizontal direction, accelerating toward the tip
         double curveAngle = random.nextDouble() * Math.PI * 2;
         double curveDX = Math.cos(curveAngle);
         double curveDZ = Math.sin(curveAngle);
@@ -96,7 +95,6 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
                     level.setBlock(pos, coral.block().defaultBlockState(), 2);
                     placed = true;
 
-                    // Coral plants growing off the top of outer-surface blocks
                     if (dist >= radius - 0.6 && radius > 0) {
                         BlockPos above = pos.above();
                         if (canReplace(level.getBlockState(above))) {
@@ -110,7 +108,6 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
                         }
                     }
 
-                    // Wall fans on the outer surface
                     if (dist >= radius - 0.5) {
                         for (Direction dir : Direction.Plane.HORIZONTAL) {
                             if (random.nextFloat() >= 0.4f) continue;

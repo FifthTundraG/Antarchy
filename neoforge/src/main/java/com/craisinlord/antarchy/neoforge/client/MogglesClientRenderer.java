@@ -46,7 +46,6 @@ public final class MogglesClientRenderer {
 
         Vec3 dir = end.subtract(eye).normalize();
 
-        // Place up to 5 particles spaced evenly between 1.5 m ahead and the target.
         int steps = Math.min(5, (int) (totalDist / 1.5));
         double spacing = (totalDist - 1.5) / Math.max(steps, 1);
 

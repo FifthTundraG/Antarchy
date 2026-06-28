@@ -245,6 +245,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.MEDIUM_BLOOD_CRYSTAL_BUD_ITEM.get());
             event.accept(AntarchyNeoforgeItems.LARGE_BLOOD_CRYSTAL_BUD_ITEM.get());
             event.accept(AntarchyNeoforgeItems.MYRMITE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.BROODSTONE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.BILE_VEIN_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CHITEN_BLOCK_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CHITEN_SPIKE_ITEM.get());
@@ -380,7 +381,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             // 8 - Blood crystal blocks (not the shard ingredient)
             case "blood_crystal_block", "small_blood_crystal_bud", "medium_blood_crystal_bud",
                  "large_blood_crystal_bud", "budding_blood_crystal", "blood_crystal_cluster",
-                 "myrmite", "chiten_block", "amber_moss_block", "amber_moss_carpet" -> 8;
+                 "myrmite", "broodstone", "chiten_block", "amber_moss_block", "amber_moss_carpet" -> 8;
 
             // 9 - Ouranwood leaves
             case "ouranwood_leaves" -> 9;

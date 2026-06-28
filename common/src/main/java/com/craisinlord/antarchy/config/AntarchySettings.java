@@ -31,7 +31,7 @@ public final class AntarchySettings {
     private static double waspHealth = 16.0D;
     private static double waspAttackDamage = 4.0D;
     private static double waspMovementSpeed = 0.39D;
-    private static double bomberHealth = 10.0D;
+    private static double bomberHealth = 15.0D;
     private static double bomberAttackDamage = 4.0D;
     private static double bomberExplosionDamage = 8.0D;
     private static double bomberExplosionRadius = 4.0D;
