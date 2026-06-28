@@ -39,6 +39,11 @@ public final class AntarchyFabric implements ModInitializer {
         BloodCrystalShardItem.SYNC_BLOODGLASS = BloodglassManager::syncBloodglass;
     }
 
+    private static final TagKey<net.minecraft.world.level.biome.Biome> CAVARYN_BIOMES = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "is_cavaryn")
+    );
+
     private static void registerWorldgenFeatures() {
         BiomeModifications.addFeature(
                 BiomeSelectors.tag(SHELLSTONE_BIOMES),

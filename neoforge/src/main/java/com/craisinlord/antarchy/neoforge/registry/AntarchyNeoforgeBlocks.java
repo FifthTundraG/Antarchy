@@ -183,6 +183,8 @@ public final class AntarchyNeoforgeBlocks {
             ));
     public static final DeferredBlock<Block> MYRMITE = BLOCKS.register("myrmite",
             () -> new Block(nyxiteProperties()));
+    public static final DeferredBlock<Block> BROODSTONE = BLOCKS.register("broodstone",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<RotatedPillarBlock> CHITEN_BLOCK = BLOCKS.register("chiten_block",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BONE_BLOCK).requiresCorrectToolForDrops()));
     public static final DeferredBlock<UmbralMossBlock> UMBRAL_MOSS_BLOCK = BLOCKS.register("umbral_moss_block",
@@ -194,7 +196,7 @@ public final class AntarchyNeoforgeBlocks {
     public static final DeferredBlock<UmbralMossCarpetBlock> AMBER_MOSS_CARPET = BLOCKS.register("amber_moss_carpet",
             () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
     public static final DeferredBlock<GlowLichenBlock> AMBER_LICHEN = BLOCKS.register("amber_lichen",
-            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOW_LICHEN).lightLevel(state -> 1)));
+            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOW_LICHEN).lightLevel(state -> 4)));
     public static final DeferredBlock<Block> BILE_VEIN = BLOCKS.register("bile_vein",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK)));
     public static final DeferredBlock<VineBlock> CREEPVINE = BLOCKS.register("creepvine",

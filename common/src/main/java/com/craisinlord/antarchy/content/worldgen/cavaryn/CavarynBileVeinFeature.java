@@ -28,7 +28,7 @@ public final class CavarynBileVeinFeature extends Feature<NoneFeatureConfigurati
     private static final int SEARCH_ATTEMPTS = 24;
     private static final int VERTICAL_SCAN = 12;
     private static final float BRANCH_CHANCE = 0.12f;
-    private static final float LIQUID_POCKET_CHANCE = 0.04f;
+    private static final float LIQUID_POCKET_CHANCE = 0.008f;
 
     public CavarynBileVeinFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -53,7 +53,6 @@ public final class CavarynBileVeinFeature extends Feature<NoneFeatureConfigurati
         return growVeinNetwork(level, start, bileVeinBlock, bileBlock, random);
     }
 
-    // Find a solid block that sits at a cave boundary
     private static BlockPos findStart(WorldGenLevel level, BlockPos origin, RandomSource random) {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         for (int attempt = 0; attempt < SEARCH_ATTEMPTS; attempt++) {
@@ -116,7 +115,6 @@ public final class CavarynBileVeinFeature extends Feature<NoneFeatureConfigurati
 
             BlockState state = level.getBlockState(current);
             if (!isVeinCandidate(state)) {
-                // Try to redirect
                 BlockPos redirect = findSolidNeighbor(current, dir, visited, level, random);
                 if (redirect == null) {
                     break;
@@ -190,7 +188,7 @@ public final class CavarynBileVeinFeature extends Feature<NoneFeatureConfigurati
             if (!isVeinCandidate(candidateState)) {
                 continue;
             }
-            if (isEnclosed(level, candidate) || random.nextFloat() < 0.05f) {
+            if (isEnclosed(level, candidate) || random.nextFloat() < 0.01f) {
                 BlockState bileState = bileBlock.defaultBlockState();
                 level.setBlock(candidate, bileState, 2);
                 scheduleFluidTick(level, candidate, bileState);

@@ -30,24 +30,17 @@ public class FungalMushroomFeature extends Feature<NoneFeatureConfiguration> {
         Block capBlock = isRed ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK;
         Block smallMushroom = isRed ? Blocks.RED_MUSHROOM : Blocks.BROWN_MUSHROOM;
 
-        // 1-in-3 chance of a large mushroom (~3x the small variant)
-        boolean isLarge = random.nextInt(3) == 0;
+        int stemSize = random.nextBoolean() ? 2 : 3;
+        int stemHeight = 6 + random.nextInt(7);
 
-        int stemSize = isLarge ? (2 + random.nextInt(3)) : (random.nextBoolean() ? 2 : 3);
-        int stemHeight = isLarge ? (18 + random.nextInt(19)) : (6 + random.nextInt(7)); // large: 18–36, small: 6–12
-
-        // Lean: stem drifts in a random horizontal direction over its height
         double leanAngle = random.nextDouble() * Math.PI * 2;
         double leanDX = Math.cos(leanAngle);
         double leanDZ = Math.sin(leanAngle);
-        double maxLean = isLarge
-                ? (6.0 + random.nextDouble() * 10.0)  // large: 6–16 block lean
-                : (2.0 + random.nextDouble() * 3.5);   // small: 2–5.5 block lean
+        double maxLean = 2.0 + random.nextDouble() * 3.5;
 
         int baseY = origin.getY();
         int stemOffset = stemSize == 2 ? 0 : -1; // center 3x3 on origin
 
-        // Pore-only stem state (inner faces; sides visible from outside)
         BlockState stemPore = Blocks.MUSHROOM_STEM.defaultBlockState()
                 .setValue(HugeMushroomBlock.NORTH, false)
                 .setValue(HugeMushroomBlock.SOUTH, false)
@@ -63,7 +56,6 @@ public class FungalMushroomFeature extends Feature<NoneFeatureConfiguration> {
                 .setValue(HugeMushroomBlock.UP, false)
                 .setValue(HugeMushroomBlock.DOWN, false);
 
-        // Place leaning stem
         for (int dy = 0; dy < stemHeight; dy++) {
             double leanProgress = (double) dy / stemHeight;
             int leanX = (int) Math.round(leanDX * maxLean * leanProgress);
@@ -71,34 +63,32 @@ public class FungalMushroomFeature extends Feature<NoneFeatureConfiguration> {
 
             for (int dx = 0; dx < stemSize; dx++) {
                 for (int dz = 0; dz < stemSize; dz++) {
-                    BlockPos pos = new BlockPos(
-                            origin.getX() + stemOffset + dx + leanX,
-                            baseY + dy,
-                            origin.getZ() + stemOffset + dz + leanZ);
-                    if (canReplace(level.getBlockState(pos))) {
-                        // Outer ring shows bark, interior is pores
-                        boolean isEdge = (dx == 0 || dx == stemSize - 1 || dz == 0 || dz == stemSize - 1);
-                        level.setBlock(pos, isEdge ? stemSide : stemPore, 2);
+                    int wx = origin.getX() + stemOffset + dx + leanX;
+                    int wz = origin.getZ() + stemOffset + dz + leanZ;
+                    BlockPos pos = new BlockPos(wx, baseY + dy, wz);
+                    if (!canReplace(level.getBlockState(pos))) continue;
+                    boolean isEdge = (dx == 0 || dx == stemSize - 1 || dz == 0 || dz == stemSize - 1);
+                    BlockState stemState = isEdge ? stemSide : stemPore;
+                    level.setBlock(pos, stemState, 2);
+                    BlockPos below = pos.below();
+                    while (canReplace(level.getBlockState(below)) && below.getY() > level.getMinBuildHeight()) {
+                        level.setBlock(below, stemState, 2);
+                        below = below.below();
                     }
                 }
             }
         }
 
-        // Cap: cone-shaped, follows the lean, with irregular per-block radius noise
         double capCenterX = origin.getX() + (stemSize == 2 ? 0.5 : 0) + leanDX * maxLean;
         double capCenterZ = origin.getZ() + (stemSize == 2 ? 0.5 : 0) + leanDZ * maxLean;
         int capTopY = baseY + stemHeight;
-        int baseCapRadius = isLarge
-                ? (stemSize + 7 + random.nextInt(6))  // large: ~11–18 at base
-                : (stemSize + 2 + random.nextInt(2));  // small: 4–6 at base
+        int baseCapRadius = stemSize + 2 + random.nextInt(2);
 
-        // Per-position radius jitter table — sampled before the loop for consistency
-        // Each (dx, dz) slot gets a random ±1.5 bias baked in
         int jitterRange = baseCapRadius + 4;
         float[][] jitter = new float[jitterRange * 2 + 1][jitterRange * 2 + 1];
         for (float[] row : jitter) {
             for (int j = 0; j < row.length; j++) {
-                row[j] = random.nextFloat() * 3.0f - 1.5f; // ±1.5 blocks
+                row[j] = random.nextFloat() * 1.0f - 0.5f;
             }
         }
 
@@ -143,10 +133,9 @@ public class FungalMushroomFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        // Mycelium patches around base
-        int myceliumCount = isLarge ? (25 + random.nextInt(25)) : (12 + random.nextInt(12));
+        int myceliumCount = 12 + random.nextInt(12);
         for (int i = 0; i < myceliumCount; i++) {
-            int radius = isLarge ? (stemSize + 8 + random.nextInt(8)) : (stemSize + 3 + random.nextInt(3));
+            int radius = stemSize + 3 + random.nextInt(3);
             int mx = origin.getX() + random.nextInt(radius * 2 + 1) - radius;
             int mz = origin.getZ() + random.nextInt(radius * 2 + 1) - radius;
             int my = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mx, mz) - 1;
@@ -159,10 +148,9 @@ public class FungalMushroomFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
 
-        // Small mushrooms scattered around
-        int smallCount = isLarge ? (10 + random.nextInt(15)) : (5 + random.nextInt(8));
+        int smallCount = 5 + random.nextInt(8);
         for (int i = 0; i < smallCount; i++) {
-            int radius = isLarge ? (stemSize + 10 + random.nextInt(10)) : (stemSize + 4 + random.nextInt(4));
+            int radius = stemSize + 4 + random.nextInt(4);
             int sx = origin.getX() + random.nextInt(radius * 2 + 1) - radius;
             int sz = origin.getZ() + random.nextInt(radius * 2 + 1) - radius;
             int sy = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, sx, sz);

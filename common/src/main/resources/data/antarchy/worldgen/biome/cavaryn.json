@@ -38,13 +38,14 @@
     [],
     [
       "antarchy:cavaryn_bile_veins",
-      "antarchy:cavaryn_bile_cysts",
       "antarchy:cavaryn_wall_amber_moss",
-      "antarchy:cavaryn_creepvine",
       "antarchy:cavaryn_chiten_spikes",
-      "antarchy:cavaryn_terror_egg_patch"
+      "antarchy:cavaryn_terror_egg_patch",
+      "antarchy:cavaryn_creepvine"
     ],
-    []
+    [
+      "antarchy:cavaryn_bile_cysts"
+    ]
   ],
   "creature_spawn_probability": 0.06,
   "spawners": {

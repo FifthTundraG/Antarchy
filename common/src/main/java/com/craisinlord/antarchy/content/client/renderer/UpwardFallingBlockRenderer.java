@@ -24,7 +24,6 @@ public class UpwardFallingBlockRenderer extends EntityRenderer<UpwardFallingBloc
         if (blockState.isAir()) return;
 
         poseStack.pushPose();
-        // Center the block model on the entity origin
         poseStack.translate(-0.5, 0.0, -0.5);
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
                 blockState, poseStack, bufferSource, light, OverlayTexture.NO_OVERLAY

@@ -1,7 +1,6 @@
 {
   "required": true,
   "package": "com.craisinlord.antarchy.mixins",
-  "refmap": "antarchy.refmap.json",
   "plugin": "com.craisinlord.antarchy.mixins.AntarchyMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [

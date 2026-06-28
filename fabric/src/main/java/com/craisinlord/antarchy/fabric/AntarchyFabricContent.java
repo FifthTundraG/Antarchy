@@ -389,6 +389,9 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_HURT = registerSoundEvent("molevore_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_ATTACK = registerSoundEvent("molevore_attack");
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_DIG = registerSoundEvent("molevore_dig");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_WALK = registerSoundEvent("bomber_walk");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_KNOCK = registerSoundEvent("bomber_knock");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_EXPLODE = registerSoundEvent("bomber_explode");
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCT_TAPE_USE = registerSoundEvent("duct_tape_use");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_HYPNOTIC_GAS = registerSoundEvent("potent_nyxite_hypnotic_gas");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_GEYSER_ERUPTION_START = registerSoundEvent("potent_nyxite_geyser_eruption_start");
@@ -602,6 +605,8 @@ public final class AntarchyFabricContent {
             ));
     public static final DeferredBlock<Block> MYRMITE = BLOCKS.register("myrmite",
             () -> new Block(nyxiteProperties()));
+    public static final DeferredBlock<Block> BROODSTONE = BLOCKS.register("broodstone",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<RotatedPillarBlock> CHITEN_BLOCK = BLOCKS.register("chiten_block",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BONE_BLOCK).requiresCorrectToolForDrops()));
     public static final DeferredBlock<UmbralMossBlock> UMBRAL_MOSS_BLOCK = BLOCKS.register("umbral_moss_block",
@@ -613,7 +618,7 @@ public final class AntarchyFabricContent {
     public static final DeferredBlock<UmbralMossCarpetBlock> AMBER_MOSS_CARPET = BLOCKS.register("amber_moss_carpet",
             () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
     public static final DeferredBlock<GlowLichenBlock> AMBER_LICHEN = BLOCKS.register("amber_lichen",
-            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOW_LICHEN).lightLevel(state -> 1)));
+            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOW_LICHEN).lightLevel(state -> 4)));
     public static final DeferredBlock<Block> BILE_VEIN = BLOCKS.register("bile_vein",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK)));
     public static final DeferredBlock<VineBlock> CREEPVINE = BLOCKS.register("creepvine",
@@ -1192,6 +1197,7 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> INFESTED_COARSE_DIRT_ITEM = ITEMS.registerSimpleBlockItem(INFESTED_COARSE_DIRT);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> NYXITE_ITEM = ITEMS.registerSimpleBlockItem(NYXITE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> MYRMITE_ITEM = ITEMS.registerSimpleBlockItem(MYRMITE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BROODSTONE_ITEM = ITEMS.registerSimpleBlockItem(BROODSTONE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> POLISHED_NYXITE_ITEM = ITEMS.registerSimpleBlockItem(POLISHED_NYXITE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> CHISELED_NYXITE_ITEM = ITEMS.registerSimpleBlockItem(CHISELED_NYXITE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> NYXITE_BRICKS_ITEM = ITEMS.registerSimpleBlockItem(NYXITE_BRICKS);
@@ -1686,7 +1692,7 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> RAINBOW_ANT_SPAWN_EGG = ITEMS.register("rainbow_ant_spawn_egg",
             () -> new DeferredSpawnEggItem(RAINBOW_ANT, 0x56D4F0, 0xF66DBB, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
-            () -> new DeferredSpawnEggItem(TERMITE, 0xE8DFC0, 0x5C3C1A, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(TERMITE, 0xD4B96A, 0xFF6B1A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEWORM_SPAWN_EGG = ITEMS.register("moleworm_spawn_egg",
             () -> new DeferredSpawnEggItem(MOLEWORM, 0x7A6150, 0xD2B8A3, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MANTIS_SPAWN_EGG = ITEMS.register("mantis_spawn_egg",
@@ -1994,7 +2000,7 @@ public final class AntarchyFabricContent {
             case "blood_crystal_block", "budding_blood_crystal",
                  "small_blood_crystal_bud", "medium_blood_crystal_bud",
                  "large_blood_crystal_bud", "blood_crystal_cluster" -> 7;
-            case "myrmite", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
+            case "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
             case "uranium_ore", "deepslate_uranium_ore", "titanium_ore", "deepslate_titanium_ore",
                  "uranium_block", "titanium_block", "raw_uranium_block", "raw_titanium_block",
                  "cut_uranium", "cut_titanium", "cut_uranium_slab", "cut_titanium_slab",
@@ -2411,6 +2417,9 @@ public final class AntarchyFabricContent {
                 MOLEVORE_HURT,
                 MOLEVORE_ATTACK,
                 MOLEVORE_DIG,
+                BOMBER_WALK,
+                BOMBER_KNOCK,
+                BOMBER_EXPLODE,
                 DUCT_TAPE_USE
         );
 

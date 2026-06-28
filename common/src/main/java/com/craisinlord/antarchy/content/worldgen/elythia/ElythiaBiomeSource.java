@@ -102,7 +102,7 @@ public class ElythiaBiomeSource extends BiomeSource {
     // At continentalness < -0.80 the terrain is reliably below sea level.
     // Transition-zone columns (-0.80 to -0.85) are treated as land to avoid
     // ocean biome appearing over above-sea-level terrain.
-    private static final long OCEAN_CONTINENTALNESS_THRESHOLD = Climate.quantizeCoord(-0.80f);
+    private static final long OCEAN_CONTINENTALNESS_THRESHOLD = Climate.quantizeCoord(-0.87f);
 
     @Override
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
@@ -116,17 +116,21 @@ public class ElythiaBiomeSource extends BiomeSource {
         // Use continentalness (XZ-only noise) to classify the column.
         // Ocean columns get the ocean biome at every Y so structures, particles,
         // and ambient effects work correctly above the water surface.
+        // Cave biomes are always preserved even in ocean columns.
         Climate.TargetPoint target = sampler.sample(x, this.seaLevelQuartY, z);
         if (target.continentalness() < OCEAN_CONTINENTALNESS_THRESHOLD) {
+            if (biome.is(MOLEWORM_CAVES) || biome.is(ELYTHIA_LUSH_CAVES)) return biome;
             Holder<Biome> seaLevelBiome = this.delegate.getNoiseBiome(x, this.seaLevelQuartY, z, sampler);
             // MultiNoise can return a land biome at sea-level depth — force ocean if so
             if (isOceanBiome(seaLevelBiome)) return seaLevelBiome;
             return oceanHolder != null ? oceanHolder : seaLevelBiome;
         }
 
-        // Land column at or below sea level: force ocean for any biome not allowed there.
-        // +1 quart above seaLevelQuartY so blocks 76-83 (around the waterline) are all caught.
-        if (y <= this.seaLevelQuartY + 1 && oceanHolder != null && !allowedBelowSeaLevel(biome)) {
+        // Land column in the shallow-underwater zone: force ocean for surface biomes that
+        // ended up below sea level (e.g. meadow in a depression). Only applies within
+        // 6 quarts (~24 blocks) of sea level — deep underground is unaffected.
+        if (y >= this.seaLevelQuartY - 6 && y <= this.seaLevelQuartY
+                && oceanHolder != null && !allowedBelowSeaLevel(biome)) {
             return oceanHolder;
         }
 

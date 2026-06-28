@@ -418,6 +418,54 @@
       }
     ]
   },
+  "bomber_walk": {
+    "subtitle": "subtitles.antarchy.bomber_walk",
+    "sounds": [
+      {
+        "name": "antarchy:mob/bomber/walk1"
+      },
+      {
+        "name": "antarchy:mob/bomber/walk2"
+      },
+      {
+        "name": "antarchy:mob/bomber/walk3"
+      },
+      {
+        "name": "antarchy:mob/bomber/walk4"
+      }
+    ]
+  },
+  "bomber_knock": {
+    "subtitle": "subtitles.antarchy.bomber_knock",
+    "sounds": [
+      {
+        "name": "antarchy:mob/bomber/knock1"
+      },
+      {
+        "name": "antarchy:mob/bomber/knock2"
+      },
+      {
+        "name": "antarchy:mob/bomber/knock3"
+      },
+      {
+        "name": "antarchy:mob/bomber/knock4"
+      },
+      {
+        "name": "antarchy:mob/bomber/knock5"
+      }
+    ]
+  },
+  "bomber_explode": {
+    "subtitle": "subtitles.antarchy.bomber_explode",
+    "sounds": [
+      {
+        "name": "antarchy:mob/bomber/explode1"
+      },
+      {
+        "name": "antarchy:mob/bomber/explode2"
+      }
+    ]
+  },
   "thoraxis_nightmare_wastes_ambient": {
     "subtitle": "subtitles.antarchy.thoraxis_nightmare_wastes_ambient",
     "sounds": [

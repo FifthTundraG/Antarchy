@@ -26,19 +26,16 @@ public class OuranwoodCocoonTreeFeature extends OuranwoodTreeFeature {
     private void spawnGuaranteedCocoon(WorldGenLevel level, BlockPos origin, OuranwoodTreeConfiguration config, RandomSource random) {
         if (!(level.getLevel() instanceof ServerLevel serverLevel)) return;
 
-        // Pick a branch direction and a Y somewhere in the lower-mid trunk
         Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         int branchY = 10 + random.nextInt(8);
         int branchLength = 4 + random.nextInt(3); // 4–6 logs out from the trunk
 
-        // Place the branch logs, then re-assert the anchor tip so it's always a log
         for (int i = 1; i <= branchLength; i++) {
             BlockPos p = origin.above(branchY).relative(dir, i);
             setBlock(level, p, config.trunkProvider().getState(random, p));
         }
         BlockPos anchor = origin.above(branchY).relative(dir, branchLength);
 
-        // Clear everything below the anchor and spawn the cocooned brutalfly
         BrutalflyCocoonFeature.clearCocoonVolume(level, anchor);
         BrutalflyEntity brutalfly = AntarchyObjects.BRUTALFLY.get().create(serverLevel);
         if (brutalfly == null) return;

@@ -318,6 +318,18 @@ public final class AntarchyNeoForgeClient {
             public int getTintColor(FluidState state, BlockAndTintGetter getter, net.minecraft.core.BlockPos pos) {
                 return 0xFFFFFFFF;
             }
+
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return new Vector3f(0.38F, 0.42F, 0.10F);
+            }
+
+            @Override
+            public void modifyFogRender(Camera camera, net.minecraft.client.renderer.FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+                RenderSystem.setShaderFogStart(0.25F);
+                RenderSystem.setShaderFogEnd(Math.min(farDistance, 4.0F));
+                RenderSystem.setShaderFogShape(FogShape.CYLINDER);
+            }
         }, AntarchyNeoForgeFluidTypes.BILE_TYPE.get());
 
         event.registerFluidType(new IClientFluidTypeExtensions() {
