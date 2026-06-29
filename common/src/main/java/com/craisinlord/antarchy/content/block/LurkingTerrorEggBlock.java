@@ -36,6 +36,7 @@ public class LurkingTerrorEggBlock extends Block {
     public static final MapCodec<LurkingTerrorEggBlock> CODEC = Block.simpleCodec(LurkingTerrorEggBlock::new);
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
+    private static final float PANIC_HATCH_CHANCE = 0.50F;
     private static final int MAX_HATCH = 2;
     private static final int MAX_EGGS = 4;
     private static final VoxelShape SINGLE_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 7.0D, 13.0D);
@@ -105,8 +106,10 @@ public class LurkingTerrorEggBlock extends Block {
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (!entity.isSteppingCarefully()) {
-            this.destroyEgg(level, state, pos, entity, 100);
+        if (entity instanceof Player && !entity.isSteppingCarefully() && this.destroyEgg(level, state, pos, entity, 100)) {
+            if (level instanceof ServerLevel serverLevel) {
+                panicHatchNearby(serverLevel, pos);
+            }
         }
         super.stepOn(level, pos, state, entity);
     }
@@ -128,9 +131,6 @@ public class LurkingTerrorEggBlock extends Block {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, net.minecraft.world.item.ItemStack stack) {
         super.playerDestroy(level, player, pos, state, blockEntity, stack);
         this.decreaseEggs(level, pos, state);
-        if (level instanceof ServerLevel serverLevel) {
-            panicHatchNearby(serverLevel, pos);
-        }
     }
 
     private static void panicHatchNearby(ServerLevel level, BlockPos origin) {
@@ -141,7 +141,7 @@ public class LurkingTerrorEggBlock extends Block {
                 for (int dz = -radius; dz <= radius; dz++) {
                     if (dx == 0 && dy == 0 && dz == 0) continue;
                     mutable.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
-                    if (level.random.nextFloat() >= 0.4f) continue;
+                    if (level.random.nextFloat() >= PANIC_HATCH_CHANCE) continue;
                     BlockState nearby = level.getBlockState(mutable);
                     BlockPos immutable = mutable.immutable();
                     if (nearby.getBlock() instanceof LurkingTerrorEggBlock b) {
@@ -167,12 +167,13 @@ public class LurkingTerrorEggBlock extends Block {
         return level.getBlockState(pos).is(BlockTags.SAND) || level.getBlockState(pos).blocksMotion();
     }
 
-    private void destroyEgg(Level level, BlockState state, BlockPos pos, Entity entity, int chance) {
+    private boolean destroyEgg(Level level, BlockState state, BlockPos pos, Entity entity, int chance) {
         if (level.isClientSide || !this.canDestroyEgg(level, entity) || level.random.nextInt(chance) != 0) {
-            return;
+            return false;
         }
         level.playSound(null, pos, SoundEvents.TURTLE_EGG_BREAK, SoundSource.BLOCKS, 0.7F, 0.9F + level.random.nextFloat() * 0.2F);
         this.decreaseEggs(level, pos, state);
+        return true;
     }
 
     void hatchEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {

@@ -134,11 +134,10 @@ public class BomberEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean doHurtTarget(Entity target) {
-        if (!(target instanceof LivingEntity livingTarget)) {
+        if (!(target instanceof LivingEntity)) {
             return super.doHurtTarget(target);
         }
 
-        livingTarget.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
         this.primeFuse();
         return true;
     }
