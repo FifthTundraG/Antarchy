@@ -35,11 +35,10 @@ public class AntCarriedFoodGeoLayer extends BlockAndItemGeoLayer<BaseAntEntity> 
 
     @Override
     protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, BaseAntEntity animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-        double yOffset = animatable.isDancing() ? -0.055D : -0.04D;
-        poseStack.translate(0.0D, yOffset, -0.42D);
-        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-        poseStack.scale(0.4F, 0.4F, 0.4F);
+        double yOffset = animatable.isDancing() ? 0.58D : 0.15D;
+        poseStack.translate(0.0D, yOffset, -0.50D);
+        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+        poseStack.scale(0.5F, 0.5F, 0.5F);
         super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
     }
 }

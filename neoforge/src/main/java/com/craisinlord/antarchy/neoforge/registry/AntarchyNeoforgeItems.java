@@ -531,6 +531,8 @@ public final class AntarchyNeoforgeItems {
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.BOMBER, 0x7A7A7A, 0xB32020, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> JUMPY_BUG_SPAWN_EGG = ITEMS.register("jumpy_bug_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.JUMPY_BUG, 0x0A1636, 0x8A3E00, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> SPIT_BUG_SPAWN_EGG = ITEMS.register("spit_bug_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.SPIT_BUG, 0x6B4A2B, 0x7ED957, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> STINK_BUG_SPAWN_EGG = ITEMS.register("stink_bug_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.STINK_BUG, 0x111111, 0xFF7A00, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> CLOUD_SHARK_SPAWN_EGG = ITEMS.register("cloud_shark_spawn_egg",

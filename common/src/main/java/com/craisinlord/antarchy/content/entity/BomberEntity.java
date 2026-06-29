@@ -67,6 +67,8 @@ public class BomberEntity extends Monster implements GeoEntity {
     private static final int DEFAULT_FUSE_TICKS = 120;
     private static final int EXPLODE_ANIM_START_TICKS = 25;
     private static final int FLASH_INTERVAL_TICKS = 5;
+    private static final double KNOCKBACK_MULTIPLIER = 3.0D;
+    private static final float EXPLOSION_RADIUS_MULTIPLIER = 0.45F;
 
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
@@ -152,7 +154,13 @@ public class BomberEntity extends Monster implements GeoEntity {
             this.primeFuse();
         }
 
-        return super.hurt(source, amount);
+        this.pushAwayFrom(source);
+        return false;
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+        super.knockback(strength * KNOCKBACK_MULTIPLIER, x, z);
     }
 
     @Override
@@ -204,6 +212,11 @@ public class BomberEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+
+        if (this.detonating && this.fuseTicks <= EXPLODE_ANIM_START_TICKS) {
+            this.getNavigation().stop();
+            this.setDeltaMovement(Vec3.ZERO);
+        }
 
         if (!this.level().isClientSide && this.detonating) {
             if (this.fuseTicks > 0) {
@@ -268,7 +281,7 @@ public class BomberEntity extends Monster implements GeoEntity {
         double x = this.getX();
         double y = this.getY(0.0625D);
         double z = this.getZ();
-        float radius = (float) AntarchySettings.bomberExplosionRadius();
+        float radius = (float) (AntarchySettings.bomberExplosionRadius() * EXPLOSION_RADIUS_MULTIPLIER);
         serverLevel.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 0.55F, 1.0F);
         serverLevel.explode(
                 this,
@@ -306,6 +319,26 @@ public class BomberEntity extends Monster implements GeoEntity {
         this.discard();
     }
 
+    private void pushAwayFrom(DamageSource source) {
+        Entity sourceEntity = source.getDirectEntity();
+        if (sourceEntity == null) {
+            sourceEntity = source.getEntity();
+        }
+        if (sourceEntity == null || sourceEntity == this) {
+            return;
+        }
+
+        double dx = this.getX() - sourceEntity.getX();
+        double dz = this.getZ() - sourceEntity.getZ();
+        double distance = Math.sqrt(dx * dx + dz * dz);
+        if (distance < 1.0E-4D) {
+            return;
+        }
+
+        double strength = 0.4D * KNOCKBACK_MULTIPLIER;
+        this.push(dx / distance * strength, 0.08D, dz / distance * strength);
+    }
+
     private boolean isMovingForAnimation() {
         return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4D || this.getNavigation().isInProgress();
     }
@@ -317,12 +350,12 @@ public class BomberEntity extends Monster implements GeoEntity {
 
         @Override
         public boolean canUse() {
-            return super.canUse();
+            return !BomberEntity.this.isDetonating() || BomberEntity.this.getFuseTicks() > EXPLODE_ANIM_START_TICKS && super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return super.canContinueToUse();
+            return !BomberEntity.this.isDetonating() || BomberEntity.this.getFuseTicks() > EXPLODE_ANIM_START_TICKS && super.canContinueToUse();
         }
     }
 }

@@ -3,6 +3,7 @@ package com.craisinlord.antarchy.content.block;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
 import com.craisinlord.antarchy.content.block.AmberMossBlock;
+import com.craisinlord.antarchy.content.block.LurkingTerrorEggBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -127,6 +128,30 @@ public class CreepingHorrorEggBlock extends Block {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, net.minecraft.world.item.ItemStack stack) {
         super.playerDestroy(level, player, pos, state, blockEntity, stack);
         this.decreaseEggs(level, pos, state);
+        if (level instanceof ServerLevel serverLevel) {
+            panicHatchNearby(serverLevel, pos);
+        }
+    }
+
+    private static void panicHatchNearby(ServerLevel level, BlockPos origin) {
+        int radius = 6;
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = -radius; dy <= radius; dy++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) continue;
+                    mutable.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
+                    if (level.random.nextFloat() >= 0.4f) continue;
+                    BlockState nearby = level.getBlockState(mutable);
+                    BlockPos immutable = mutable.immutable();
+                    if (nearby.getBlock() instanceof CreepingHorrorEggBlock b) {
+                        b.hatchEggs(level, immutable, nearby, level.random);
+                    } else if (nearby.getBlock() instanceof LurkingTerrorEggBlock b) {
+                        b.hatchEggs(level, immutable, nearby, level.random);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -150,7 +175,7 @@ public class CreepingHorrorEggBlock extends Block {
         this.decreaseEggs(level, pos, state);
     }
 
-    private void hatchEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
+    void hatchEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
         level.removeBlock(pos, false);
         level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.75F, 0.95F + random.nextFloat() * 0.1F);
 

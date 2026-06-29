@@ -7,8 +7,8 @@
       "type": "antarchy:elythia_biome_source",
       "moleworm_caves_max_y": 30,
       "surface_biome_sample_y": 160,
-      "ocean_max_y": 67,
-      "sea_level": 70,
+      "ocean_max_y": 62,
+      "sea_level": 65,
       "biomes": [
         {
           "biome": "antarchy:moleworm_caves",

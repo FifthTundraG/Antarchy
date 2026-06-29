@@ -69,6 +69,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.WASP_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.BOMBER_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.JUMPY_BUG_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.SPIT_BUG_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.STINK_BUG_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.CLOUD_SHARK_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.KRAKEN_SPAWN_EGG.get());
