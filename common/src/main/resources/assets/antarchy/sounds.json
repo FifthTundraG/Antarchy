@@ -466,6 +466,103 @@
       }
     ]
   },
+  "creeping_horror_growl": {
+    "subtitle": "subtitles.antarchy.creeping_horror_growl",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_growl1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_growl2"
+      }
+    ]
+  },
+  "creeping_horror_hurt": {
+    "subtitle": "subtitles.antarchy.creeping_horror_hurt",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt2"
+      }
+    ]
+  },
+  "creeping_horror_bite": {
+    "subtitle": "subtitles.antarchy.creeping_horror_bite",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite"
+      }
+    ]
+  },
+  "lurking_terror_snarl": {
+    "subtitle": "subtitles.antarchy.lurking_terror_snarl",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl1"
+      },
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl2"
+      }
+    ]
+  },
+  "lurking_terror_hurt": {
+    "subtitle": "subtitles.antarchy.lurking_terror_hurt",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt1"
+      },
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt2"
+      }
+    ]
+  },
+  "lurking_terror_bite": {
+    "subtitle": "subtitles.antarchy.lurking_terror_bite",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_bite1"
+      }
+    ]
+  },
+  "lurking_terror_fly_loop": {
+    "subtitle": "subtitles.antarchy.lurking_terror_fly_loop",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_fly_loop"
+      }
+    ]
+  },
+  "stinky_fly": {
+    "subtitle": "subtitles.antarchy.stinky_fly",
+    "sounds": [
+      {
+        "name": "antarchy:effect/stinky/stinky_flies1"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies2"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies3"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies4"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies5"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies6"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies7"
+      },
+      {
+        "name": "antarchy:effect/stinky/stinky_flies8"
+      }
+    ]
+  },
   "thoraxis_nightmare_wastes_ambient": {
     "subtitle": "subtitles.antarchy.thoraxis_nightmare_wastes_ambient",
     "sounds": [

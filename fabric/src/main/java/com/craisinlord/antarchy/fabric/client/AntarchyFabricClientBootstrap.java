@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.CampfireRenderer;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -96,6 +97,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.WASP.get(), WaspRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.BOMBER.get(), BomberRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.JUMPY_BUG.get(), JumpyBugRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.SPIT_BUG.get(), SpitBugRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.BASILISK.get(), BasiliskRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.SHRINK_RAY_PROJECTILE.get(), SizeRayProjectileRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.GROWTH_RAY_PROJECTILE.get(), SizeRayProjectileRenderer::new);
@@ -103,6 +105,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.LUCID_PEARL_PROJECTILE.get(), ThrownItemRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.HUSH_PROJECTILE.get(), HushProjectileRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.BRUTALFLY_ORB.get(), BrutalflyOrbRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.SPIT_BUG_PROJECTILE.get(), SpitBugProjectileRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.UPWARD_FALLING_BLOCK.get(), UpwardFallingBlockRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.SCORPION.get(), ScorpionRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.EMPEROR_SCORPION.get(), EmperorScorpionRenderer::new);
@@ -296,6 +299,10 @@ public final class AntarchyFabricClientBootstrap {
                 }
                 return;
             }
+            if (entityType == EntityType.ARMOR_STAND && renderer instanceof ArmorStandRenderer armorStandRenderer) {
+                registrationHelper.register(new FallenKingCrownArmorStandLayer((net.minecraft.client.renderer.entity.RenderLayerParent) armorStandRenderer));
+                return;
+            }
             if (software.bernie.geckolib.renderer.GeoEntityRenderer.class.isAssignableFrom(renderer.getClass())) {
                 software.bernie.geckolib.renderer.GeoEntityRenderer geoRenderer =
                         (software.bernie.geckolib.renderer.GeoEntityRenderer) (Object) renderer;
@@ -325,6 +332,7 @@ public final class AntarchyFabricClientBootstrap {
         ElythiaFireflyManager.register();
         LucidSoundHandler.register();
         MogglesClientRenderer.register();
+        StinkySoundHandler.register();
         ReverieTrailHandler.register();
 
         HudRenderCallback.EVENT.register((guiGraphics, partialTick) -> {

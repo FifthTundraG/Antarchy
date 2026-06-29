@@ -122,6 +122,14 @@ public final class AntarchySoundEvents {
     public static Supplier<SoundEvent> BOMBER_WALK = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> BOMBER_KNOCK = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> BOMBER_EXPLODE = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> STINKY_FLY = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> CREEPING_HORROR_GROWL = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> CREEPING_HORROR_HURT = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> CREEPING_HORROR_BITE = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> LURKING_TERROR_SNARL = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> LURKING_TERROR_HURT = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> LURKING_TERROR_BITE = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> LURKING_TERROR_FLY_LOOP = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> DUCT_TAPE_USE = (Supplier<SoundEvent>) UNBOUND;
 
     private AntarchySoundEvents() {
@@ -241,6 +249,14 @@ public final class AntarchySoundEvents {
             Supplier<SoundEvent> bomberWalk,
             Supplier<SoundEvent> bomberKnock,
             Supplier<SoundEvent> bomberExplode,
+            Supplier<SoundEvent> stinkyFly,
+            Supplier<SoundEvent> creepingHorrorGrowl,
+            Supplier<SoundEvent> creepingHorrorHurt,
+            Supplier<SoundEvent> creepingHorrorBite,
+            Supplier<SoundEvent> lurkingTerrorSnarl,
+            Supplier<SoundEvent> lurkingTerrorHurt,
+            Supplier<SoundEvent> lurkingTerrorBite,
+            Supplier<SoundEvent> lurkingTerrorFlyLoop,
             Supplier<SoundEvent> ductTapeUse
     ) {
         SQUIDZOOKA_FIRE = squidzookaFire;
@@ -356,6 +372,14 @@ public final class AntarchySoundEvents {
         BOMBER_WALK = bomberWalk;
         BOMBER_KNOCK = bomberKnock;
         BOMBER_EXPLODE = bomberExplode;
+        STINKY_FLY = stinkyFly;
+        CREEPING_HORROR_GROWL = creepingHorrorGrowl;
+        CREEPING_HORROR_HURT = creepingHorrorHurt;
+        CREEPING_HORROR_BITE = creepingHorrorBite;
+        LURKING_TERROR_SNARL = lurkingTerrorSnarl;
+        LURKING_TERROR_HURT = lurkingTerrorHurt;
+        LURKING_TERROR_BITE = lurkingTerrorBite;
+        LURKING_TERROR_FLY_LOOP = lurkingTerrorFlyLoop;
         DUCT_TAPE_USE = ductTapeUse;
     }
 }

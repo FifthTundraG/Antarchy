@@ -84,6 +84,8 @@ import com.craisinlord.antarchy.content.entity.MolevoreEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
 import com.craisinlord.antarchy.content.entity.BomberEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugProjectileEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
 import com.craisinlord.antarchy.content.entity.WaspEntity;
 import com.craisinlord.antarchy.content.entity.ant.BaseAntEntity;
@@ -392,6 +394,14 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_WALK = registerSoundEvent("bomber_walk");
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_KNOCK = registerSoundEvent("bomber_knock");
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_EXPLODE = registerSoundEvent("bomber_explode");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STINKY_FLY_SOUND = registerSoundEvent("stinky_fly");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_GROWL = registerSoundEvent("creeping_horror_growl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_HURT = registerSoundEvent("creeping_horror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_BITE = registerSoundEvent("creeping_horror_bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_SNARL = registerSoundEvent("lurking_terror_snarl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_HURT = registerSoundEvent("lurking_terror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_BITE = registerSoundEvent("lurking_terror_bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_FLY_LOOP = registerSoundEvent("lurking_terror_fly_loop");
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCT_TAPE_USE = registerSoundEvent("duct_tape_use");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_HYPNOTIC_GAS = registerSoundEvent("potent_nyxite_hypnotic_gas");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_GEYSER_ERUPTION_START = registerSoundEvent("potent_nyxite_geyser_eruption_start");
@@ -852,6 +862,17 @@ public final class AntarchyFabricContent {
                     .sized(3.0F, 3.0F)
                     .clientTrackingRange(8)
                     .build("jumpy_bug"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpitBugEntity>> SPIT_BUG = ENTITY_TYPES.register("spit_bug",
+            () -> EntityType.Builder.of(SpitBugEntity::new, MobCategory.MONSTER)
+                    .sized(2.5F, 3.0F)
+                    .clientTrackingRange(10)
+                    .build("spit_bug"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpitBugProjectileEntity>> SPIT_BUG_PROJECTILE = ENTITY_TYPES.register("spit_bug_projectile",
+            () -> EntityType.Builder.<SpitBugProjectileEntity>of(SpitBugProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("spit_bug_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<SizeRayProjectileEntity>> SHRINK_RAY_PROJECTILE = ENTITY_TYPES.register("shrink_ray_projectile",
             () -> EntityType.Builder.<SizeRayProjectileEntity>of(SizeRayProjectileEntity::createShrink, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
@@ -1715,6 +1736,8 @@ public final class AntarchyFabricContent {
             () -> new DeferredSpawnEggItem(BOMBER, 0x7A7A7A, 0xB32020, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> JUMPY_BUG_SPAWN_EGG = ITEMS.register("jumpy_bug_spawn_egg",
             () -> new DeferredSpawnEggItem(JUMPY_BUG, 0x0A1636, 0x8A3E00, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> SPIT_BUG_SPAWN_EGG = ITEMS.register("spit_bug_spawn_egg",
+            () -> new DeferredSpawnEggItem(SPIT_BUG, 0x6B4A2B, 0x7ED957, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> STINK_BUG_SPAWN_EGG = ITEMS.register("stink_bug_spawn_egg",
             () -> new DeferredSpawnEggItem(STINK_BUG, 0x111111, 0xFF7A00, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> CLOUD_SHARK_SPAWN_EGG = ITEMS.register("cloud_shark_spawn_egg",
@@ -1861,6 +1884,7 @@ public final class AntarchyFabricContent {
         FabricDefaultAttributeRegistry.register(WASP.get(), WaspEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(BOMBER.get(), BomberEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(JUMPY_BUG.get(), JumpyBugEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(SPIT_BUG.get(), SpitBugEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(MANTIS.get(), MantisEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(TRIFFID.get(), TriffidEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(LUCID.get(), LucidEntity.createAttributes().build());
@@ -1908,6 +1932,7 @@ public final class AntarchyFabricContent {
         SpawnPlacements.register(WASP.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaspEntity::canSpawn);
         SpawnPlacements.register(BOMBER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BomberEntity::canSpawn);
         SpawnPlacements.register(JUMPY_BUG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, JumpyBugEntity::canSpawn);
+        SpawnPlacements.register(SPIT_BUG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpitBugEntity::canSpawn);
         SpawnPlacements.register(KRAKEN.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KrakenEntity::canSpawn);
         SpawnPlacements.register(MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn);
         SpawnPlacements.register(OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn);
@@ -2018,7 +2043,7 @@ public final class AntarchyFabricContent {
                  "moleworm_spawn_egg", "mantis_spawn_egg", "molevore_spawn_egg", "triffid_spawn_egg",
                  "apple_cow_spawn_egg", "golden_apple_cow_spawn_egg", "enchanted_golden_apple_cow_spawn_egg",
                  "honeyed_apple_cow_spawn_egg", "dr_trayaurus_spawn_egg", "wasp_spawn_egg",
-                 "bomber_spawn_egg", "jumpy_bug_spawn_egg", "stink_bug_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg", "octopus_bomb_spawn_egg",
+                 "bomber_spawn_egg", "jumpy_bug_spawn_egg", "spit_bug_spawn_egg", "stink_bug_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg", "octopus_bomb_spawn_egg",
                  "nightmare_spawn_egg", "bed_bug_spawn_egg", "lucid_spawn_egg", "scorpion_spawn_egg",
                  "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg",
                  "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
@@ -2420,6 +2445,14 @@ public final class AntarchyFabricContent {
                 BOMBER_WALK,
                 BOMBER_KNOCK,
                 BOMBER_EXPLODE,
+                STINKY_FLY_SOUND,
+                CREEPING_HORROR_GROWL,
+                CREEPING_HORROR_HURT,
+                CREEPING_HORROR_BITE,
+                LURKING_TERROR_SNARL,
+                LURKING_TERROR_HURT,
+                LURKING_TERROR_BITE,
+                LURKING_TERROR_FLY_LOOP,
                 DUCT_TAPE_USE
         );
 

@@ -15,6 +15,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ArmorStandModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -33,6 +34,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.CampfireRenderer;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -112,6 +114,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.WASP.get(), context -> withParalyzedGeoLayer(new WaspRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.BOMBER.get(), context -> withParalyzedGeoLayer(new BomberRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.JUMPY_BUG.get(), context -> withParalyzedGeoLayer(new JumpyBugRenderer(context)));
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.SPIT_BUG.get(), context -> withParalyzedGeoLayer(new SpitBugRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.BASILISK.get(), context -> withParalyzedGeoLayer(new BasiliskRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.SHRINK_RAY_PROJECTILE.get(), SizeRayProjectileRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.GROWTH_RAY_PROJECTILE.get(), SizeRayProjectileRenderer::new);
@@ -119,6 +122,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.LUCID_PEARL_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.HUSH_PROJECTILE.get(), HushProjectileRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.BRUTALFLY_ORB.get(), BrutalflyOrbRenderer::new);
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.SPIT_BUG_PROJECTILE.get(), SpitBugProjectileRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.UPWARD_FALLING_BLOCK.get(), com.craisinlord.antarchy.content.client.renderer.UpwardFallingBlockRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.SCORPION.get(), context -> withParalyzedGeoLayer(new ScorpionRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.EMPEROR_SCORPION.get(), context -> withParalyzedGeoLayer(new EmperorScorpionRenderer(context)));
@@ -139,6 +143,11 @@ public final class AntarchyNeoForgeClient {
                 renderer.addLayer(new BrutalflyElytraLayer(renderer));
                 renderer.addLayer(new FallenKingCrownLayer(renderer));
             }
+        }
+        LivingEntityRenderer<net.minecraft.world.entity.decoration.ArmorStand, ArmorStandModel> armorStandRenderer =
+                (LivingEntityRenderer<net.minecraft.world.entity.decoration.ArmorStand, ArmorStandModel>) event.getRenderer(EntityType.ARMOR_STAND);
+        if (armorStandRenderer != null) {
+            armorStandRenderer.addLayer(new FallenKingCrownArmorStandLayer(armorStandRenderer));
         }
         BuiltInRegistries.ENTITY_TYPE.forEach(entityType -> addParalyzedLayerToEntity(event, entityType));
     }

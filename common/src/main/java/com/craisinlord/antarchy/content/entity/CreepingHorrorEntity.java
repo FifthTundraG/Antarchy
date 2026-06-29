@@ -1,10 +1,12 @@
 package com.craisinlord.antarchy.content.entity;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -133,10 +135,26 @@ public class CreepingHorrorEntity extends Monster implements GeoEntity {
     public boolean doHurtTarget(net.minecraft.world.entity.Entity target) {
         boolean result = super.doHurtTarget(target);
         if (result) {
+            this.playSound(AntarchySoundEvents.CREEPING_HORROR_BITE.get(), 1.0F, 0.95F + this.random.nextFloat() * 0.1F);
             attackAnimTicks = 20;
             this.level().broadcastEntityEvent(this, ATTACK_ANIM_EVENT);
         }
         return result;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return AntarchySoundEvents.CREEPING_HORROR_GROWL.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource source) {
+        return AntarchySoundEvents.CREEPING_HORROR_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return AntarchySoundEvents.CREEPING_HORROR_HURT.get();
     }
 
     @Override

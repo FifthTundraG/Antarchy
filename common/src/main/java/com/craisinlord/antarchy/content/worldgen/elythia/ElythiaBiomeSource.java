@@ -126,11 +126,10 @@ public class ElythiaBiomeSource extends BiomeSource {
             return oceanHolder != null ? oceanHolder : seaLevelBiome;
         }
 
-        // Land column in the shallow-underwater zone: force ocean for surface biomes that
-        // ended up below sea level (e.g. meadow in a depression). Only applies within
-        // 6 quarts (~24 blocks) of sea level — deep underground is unaffected.
-        if (y >= this.seaLevelQuartY - 6 && y <= this.seaLevelQuartY
-                && oceanHolder != null && !allowedBelowSeaLevel(biome)) {
+        // Land column below sea level: force any non-allowed surface biome to ocean.
+        // Cave sand/decorations are prevented by above_preliminary_surface in the
+        // surface rules, so this is safe to apply unconditionally.
+        if (y <= this.seaLevelQuartY && oceanHolder != null && !allowedBelowSeaLevel(biome)) {
             return oceanHolder;
         }
 

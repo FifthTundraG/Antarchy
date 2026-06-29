@@ -1,6 +1,7 @@
 package com.craisinlord.antarchy.content.entity;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -129,10 +131,26 @@ public class LurkingTerrorEntity extends Monster implements GeoEntity {
     public boolean doHurtTarget(net.minecraft.world.entity.Entity target) {
         boolean result = super.doHurtTarget(target);
         if (result) {
+            this.playSound(AntarchySoundEvents.LURKING_TERROR_BITE.get(), 1.0F, 0.95F + this.random.nextFloat() * 0.1F);
             attackAnimTicks = 20;
             this.level().broadcastEntityEvent(this, ATTACK_ANIM_EVENT);
         }
         return result;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return AntarchySoundEvents.LURKING_TERROR_SNARL.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource source) {
+        return AntarchySoundEvents.LURKING_TERROR_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return AntarchySoundEvents.LURKING_TERROR_HURT.get();
     }
 
     @Override
@@ -147,6 +165,9 @@ public class LurkingTerrorEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        if (!this.level().isClientSide() && !this.onGround() && this.tickCount % 40 == 0) {
+            this.playSound(AntarchySoundEvents.LURKING_TERROR_FLY_LOOP.get(), 0.45F, 0.95F + this.random.nextFloat() * 0.1F);
+        }
         if (attackAnimTicks > 0) attackAnimTicks--;
     }
 

@@ -26,6 +26,8 @@ import com.craisinlord.antarchy.content.entity.OuranwoodChestBoatEntity;
 import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.content.entity.ScorpionEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugProjectileEntity;
 import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
 import com.craisinlord.antarchy.content.entity.UpwardFallingBlockEntity;
@@ -135,6 +137,17 @@ public final class AntarchyNeoforgeEntites {
                     .sized(3.0F, 3.0F)
                     .clientTrackingRange(8)
                     .build("jumpy_bug"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpitBugEntity>> SPIT_BUG = ENTITY_TYPES.register("spit_bug",
+            () -> EntityType.Builder.of(SpitBugEntity::new, MobCategory.MONSTER)
+                    .sized(2.5F, 3.0F)
+                    .clientTrackingRange(10)
+                    .build("spit_bug"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpitBugProjectileEntity>> SPIT_BUG_PROJECTILE = ENTITY_TYPES.register("spit_bug_projectile",
+            () -> EntityType.Builder.<SpitBugProjectileEntity>of(SpitBugProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("spit_bug_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<SizeRayProjectileEntity>> SHRINK_RAY_PROJECTILE = ENTITY_TYPES.register("shrink_ray_projectile",
             () -> EntityType.Builder.<SizeRayProjectileEntity>of(SizeRayProjectileEntity::createShrink, MobCategory.MISC)
                     .sized(0.5F, 0.5F)

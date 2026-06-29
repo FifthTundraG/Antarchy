@@ -34,6 +34,7 @@ public class AntarchyNeoforgeSpawnPlacements {
         event.register(AntarchyNeoforgeEntites.WASP.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaspEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.BOMBER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BomberEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.JUMPY_BUG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, JumpyBugEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(AntarchyNeoforgeEntites.SPIT_BUG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpitBugEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.KRAKEN.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KrakenEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);

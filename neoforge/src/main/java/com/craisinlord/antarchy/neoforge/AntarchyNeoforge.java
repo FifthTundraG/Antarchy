@@ -137,6 +137,14 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeSounds.BOMBER_WALK,
                 AntarchyNeoforgeSounds.BOMBER_KNOCK,
                 AntarchyNeoforgeSounds.BOMBER_EXPLODE,
+                AntarchyNeoforgeSounds.STINKY_FLY,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_GROWL,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_HURT,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_BITE,
+                AntarchyNeoforgeSounds.LURKING_TERROR_SNARL,
+                AntarchyNeoforgeSounds.LURKING_TERROR_HURT,
+                AntarchyNeoforgeSounds.LURKING_TERROR_BITE,
+                AntarchyNeoforgeSounds.LURKING_TERROR_FLY_LOOP,
                 AntarchyNeoforgeSounds.DUCT_TAPE_USE
         );
         bindCommonObjects();
