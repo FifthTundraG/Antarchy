@@ -196,7 +196,13 @@ public class ElythiaBiomeSource extends BiomeSource {
 
     @Override
     public void addDebugInfo(java.util.List<String> debug, net.minecraft.core.BlockPos pos, Climate.Sampler sampler) {
-        this.delegate.addDebugInfo(debug, pos, sampler);
+        try {
+            this.delegate.addDebugInfo(debug, pos, sampler);
+        } catch (NullPointerException ignored) {
+            // TerraBlender's MixinMultiNoiseBiomeSource.addDebugInfo reads an internal
+            // field (uniqueness) that it only injects into TerraBlender-registered sources.
+            // Our delegate is not one of those, so we swallow the NPE here.
+        }
         debug.add("Elythia mole cave cap: y<=" + this.molewormCavesMaxY);
         debug.add("Elythia sea level: " + this.seaLevel);
     }
