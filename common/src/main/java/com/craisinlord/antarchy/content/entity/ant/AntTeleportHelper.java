@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.PlayerRespawnLogic;
@@ -113,6 +114,11 @@ public final class AntTeleportHelper {
 
     @Nullable
     private static Vec3 findSafeArrivalPosition(ServerPlayer player, ServerLevel destination, BlockPos preferredPos) {
+        int[] yRange = getDimensionYRange(destination);
+        if (yRange != null) {
+            return findSafeArrivalPositionInYRange(player, destination, preferredPos, yRange[0], yRange[1]);
+        }
+
         Set<BlockPos> candidates = new LinkedHashSet<>();
         BlockPos adjustedPreferredPos = player.adjustSpawnLocation(destination, preferredPos);
         addArrivalCandidate(candidates, preferredPos);
@@ -145,6 +151,40 @@ public final class AntTeleportHelper {
             }
         }
 
+        return null;
+    }
+
+    @Nullable
+    private static int[] getDimensionYRange(ServerLevel destination) {
+        ResourceKey<Level> dim = destination.dimension();
+        if (dim == AntarchySettings.termiteDestinationDimension()) {
+            return new int[]{100, 200};
+        }
+        if (dim == AntarchySettings.brownAntDestinationDimension()) {
+            return new int[]{75, 120};
+        }
+        return null;
+    }
+
+    @Nullable
+    private static Vec3 findSafeArrivalPositionInYRange(ServerPlayer player, ServerLevel destination, BlockPos preferredPos, int minY, int maxY) {
+        for (int radius = 0; radius <= 8; radius++) {
+            for (int xOff = -radius; xOff <= radius; xOff++) {
+                for (int zOff = -radius; zOff <= radius; zOff++) {
+                    if (radius > 0 && Math.abs(xOff) != radius && Math.abs(zOff) != radius) {
+                        continue;
+                    }
+                    int x = preferredPos.getX() + xOff;
+                    int z = preferredPos.getZ() + zOff;
+                    for (int y = maxY; y >= minY + 1; y--) {
+                        Vec3 safePos = tryFindSafeDismount(player, destination, new BlockPos(x, y, z));
+                        if (safePos != null && safePos.y >= minY && safePos.y <= maxY) {
+                            return safePos;
+                        }
+                    }
+                }
+            }
+        }
         return null;
     }
 

@@ -7,6 +7,7 @@ import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
 import com.craisinlord.antarchy.content.item.*;
+import com.craisinlord.antarchy.content.item.CheepOnAStickItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalArmorItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalAppleItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
@@ -362,6 +363,14 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<Item> URANIUM_INGOT = ITEMS.registerSimpleItem("uranium_ingot", new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
     public static final DeferredItem<Item> TITANIUM_INGOT = ITEMS.registerSimpleItem("titanium_ingot", new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
     public static final DeferredItem<Item> MOLEVORE_NOSE = ITEMS.registerSimpleItem("molevore_nose", new Item.Properties().rarity(Rarity.RARE));
+    public static final DeferredItem<Item> CHEEP = ITEMS.register("cheep",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.2F)
+                            .build())));
+    public static final DeferredItem<CheepOnAStickItem> CHEEP_ON_A_STICK = ITEMS.register("cheep_on_a_stick",
+            () -> new CheepOnAStickItem(new Item.Properties().stacksTo(1).durability(25)));
     public static final DeferredItem<Item> MOLEWORM_ITEM = ITEMS.register("moleworm",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder()
@@ -578,6 +587,10 @@ public final class AntarchyNeoforgeItems {
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.CREEPING_HORROR, 0x6B3A1F, 0x6B0000, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> LURKING_TERROR_SPAWN_EGG = ITEMS.register("lurking_terror_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.LURKING_TERROR, 0x2D5A1B, 0x8B0000, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.CHEEP, 0xAA22FF, 0x22FF44, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.DORRIE, 0x1B91B3, 0xC0E8FF, new Item.Properties()));
 
     private AntarchyNeoforgeItems() {}
 

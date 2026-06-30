@@ -604,7 +604,7 @@ public class BasiliskEntity extends Monster implements GeoEntity {
                 BasiliskEntity.this.getLookControl().setLookAt(target, 30.0F, 30.0F);
             }
 
-            // super handles path recalc and cooldown timer — always run it
+            // super handles path recalc and cooldown timer
             super.tick();
 
             if (BasiliskEntity.this.hissChargeTimer > 0 || BasiliskEntity.this.attackAnimTicks > 0) {

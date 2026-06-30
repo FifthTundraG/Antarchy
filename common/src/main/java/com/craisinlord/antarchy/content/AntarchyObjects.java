@@ -92,6 +92,12 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<StinkBugEntity>> STINK_BUG = (Supplier<EntityType<StinkBugEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_LOG = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_SAPLING = (Supplier<Block>) UNBOUND;
@@ -254,6 +260,8 @@ public final class AntarchyObjects {
             Supplier<EntityType<CreepingHorrorEntity>> creepingHorror,
             Supplier<EntityType<LurkingTerrorEntity>> lurkingTerror,
             Supplier<EntityType<StinkBugEntity>> stinkBug,
+            Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> cheep,
+            Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> dorrie,
             Supplier<Block> duplicatorLog,
             Supplier<Block> duplicatorSapling,
             Supplier<Block> ductTape,
@@ -345,6 +353,8 @@ public final class AntarchyObjects {
         CREEPING_HORROR = creepingHorror;
         LURKING_TERROR = lurkingTerror;
         STINK_BUG = stinkBug;
+        CHEEP = cheep;
+        DORRIE = dorrie;
         DUPLICATOR_LOG = duplicatorLog;
         DUPLICATOR_SAPLING = duplicatorSapling;
         DUCT_TAPE = ductTape;

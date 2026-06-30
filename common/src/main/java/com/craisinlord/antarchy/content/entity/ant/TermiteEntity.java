@@ -1,5 +1,6 @@
 package com.craisinlord.antarchy.content.entity.ant;
 
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.AntarchyTags;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import net.minecraft.core.BlockPos;
@@ -92,16 +93,6 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
     }
 
     @Override
-    protected boolean canGroupWithNestmates() {
-        return false;
-    }
-
-    @Override
-    protected boolean canMarch() {
-        return false;
-    }
-
-    @Override
     protected boolean shouldUseBiteAnimation() {
         return true;
     }
@@ -149,6 +140,7 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
             this.triggerBiteAnimation(WOOD_BITE_ANIMATION_TICKS);
             this.level().destroyBlock(targetPos, false, this);
             this.level().playSound(null, targetPos, soundType.getBreakSound(), this.getSoundSource(), 0.7F, 1.1F);
+            this.playSound(AntarchySoundEvents.ANT_BITE.get(), 0.35F, 0.95F + this.random.nextFloat() * 0.1F);
             return true;
         }
 

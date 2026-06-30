@@ -46,7 +46,9 @@ import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
 import com.craisinlord.antarchy.content.entity.nightmare.NightmareEntity;
+import com.craisinlord.antarchy.content.entity.CheepEntity;
 import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
+import com.craisinlord.antarchy.content.entity.DorrieEntity;
 import com.craisinlord.antarchy.content.entity.LurkingTerrorEntity;
 import com.craisinlord.antarchy.content.entity.ToreterrorEntity;
 import com.craisinlord.antarchy.content.entity.WaterBombEntity;
@@ -299,6 +301,16 @@ public final class AntarchyNeoforgeEntites {
                     .sized(1.3F, 1.5F)
                     .clientTrackingRange(10)
                     .build("lurking_terror"));
+    public static final DeferredHolder<EntityType<?>, EntityType<CheepEntity>> CHEEP = ENTITY_TYPES.register("cheep",
+            () -> EntityType.Builder.of(CheepEntity::new, MobCategory.WATER_CREATURE)
+                    .sized(1.0F, 1.2F)
+                    .clientTrackingRange(8)
+                    .build("cheep"));
+    public static final DeferredHolder<EntityType<?>, EntityType<DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+            () -> EntityType.Builder.of(DorrieEntity::new, MobCategory.WATER_CREATURE)
+                    .sized(2.4F, 2.0F)
+                    .clientTrackingRange(10)
+                    .build("dorrie"));
     public static final DeferredHolder<EntityType<?>, EntityType<UpwardFallingBlockEntity>> UPWARD_FALLING_BLOCK = ENTITY_TYPES.register("upward_falling_block",
             () -> EntityType.Builder.<UpwardFallingBlockEntity>of(
                             UpwardFallingBlockEntity::new, MobCategory.MISC)

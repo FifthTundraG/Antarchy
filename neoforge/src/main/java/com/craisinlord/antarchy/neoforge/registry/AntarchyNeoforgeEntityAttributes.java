@@ -72,6 +72,8 @@ public class AntarchyNeoforgeEntityAttributes {
         event.put(AntarchyNeoforgeEntites.TERMITE.get(), termiteAttributes);
         event.put(AntarchyNeoforgeEntites.MOLEWORM.get(), MolewormEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.MOLEVORE.get(), MolevoreEntity.createAttributes().build());
+        event.put(AntarchyNeoforgeEntites.CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
+        event.put(AntarchyNeoforgeEntites.DORRIE.get(), com.craisinlord.antarchy.content.entity.DorrieEntity.createAttributes().build());
     }
 
     private static AttributeSupplier.Builder buildAntAttributes(double health, double speed, double attackDamage) {

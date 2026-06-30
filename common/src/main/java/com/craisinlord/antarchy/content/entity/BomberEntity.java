@@ -67,7 +67,7 @@ public class BomberEntity extends Monster implements GeoEntity {
     private static final int DEFAULT_FUSE_TICKS = 120;
     private static final int EXPLODE_ANIM_START_TICKS = 25;
     private static final int FLASH_INTERVAL_TICKS = 5;
-    private static final double KNOCKBACK_MULTIPLIER = 3.0D;
+    private static final double KNOCKBACK_MULTIPLIER = 5.5D;
     private static final float EXPLOSION_RADIUS_MULTIPLIER = 0.45F;
 
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
@@ -153,6 +153,7 @@ public class BomberEntity extends Monster implements GeoEntity {
             this.primeFuse();
         }
 
+        this.playSound(AntarchySoundEvents.BOMBER_KNOCK.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
         this.pushAwayFrom(source);
         return false;
     }
@@ -259,7 +260,7 @@ public class BomberEntity extends Monster implements GeoEntity {
         return PlayState.STOP;
     }
 
-    private void primeFuse() {
+    public void primeFuse() {
         if (this.detonating) {
             return;
         }

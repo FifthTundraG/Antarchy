@@ -101,7 +101,7 @@ public class CreepingHorrorEggBlock extends Block {
             return;
         }
 
-        this.hatchEggs(level, pos, state, random);
+        this.hatchEggs(level, pos, state, random, state.getValue(EGGS));
     }
 
     @Override
@@ -141,13 +141,12 @@ public class CreepingHorrorEggBlock extends Block {
                 for (int dz = -radius; dz <= radius; dz++) {
                     if (dx == 0 && dy == 0 && dz == 0) continue;
                     mutable.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
-                    if (level.random.nextFloat() >= PANIC_HATCH_CHANCE) continue;
                     BlockState nearby = level.getBlockState(mutable);
                     BlockPos immutable = mutable.immutable();
                     if (nearby.getBlock() instanceof CreepingHorrorEggBlock b) {
-                        b.hatchEggs(level, immutable, nearby, level.random);
+                        b.hatchPanickedEggs(level, immutable, nearby, level.random);
                     } else if (nearby.getBlock() instanceof LurkingTerrorEggBlock b) {
-                        b.hatchEggs(level, immutable, nearby, level.random);
+                        b.hatchPanickedEggs(level, immutable, nearby, level.random);
                     }
                 }
             }
@@ -176,11 +175,24 @@ public class CreepingHorrorEggBlock extends Block {
         return true;
     }
 
-    void hatchEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
-        level.removeBlock(pos, false);
+    void hatchPanickedEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
+        int hatchedEggs = rollPanickedEggs(state.getValue(EGGS), random);
+        if (hatchedEggs <= 0) {
+            return;
+        }
+
+        this.hatchEggs(level, pos, state, random, hatchedEggs);
+    }
+
+    void hatchEggs(ServerLevel level, BlockPos pos, BlockState state, RandomSource random, int eggsToHatch) {
+        if (eggsToHatch >= state.getValue(EGGS)) {
+            level.removeBlock(pos, false);
+        } else {
+            level.setBlock(pos, state.setValue(EGGS, state.getValue(EGGS) - eggsToHatch), 2);
+        }
         level.playSound(null, pos, SoundEvents.TURTLE_EGG_HATCH, SoundSource.BLOCKS, 0.75F, 0.95F + random.nextFloat() * 0.1F);
 
-        for (int i = 0; i < state.getValue(EGGS); i++) {
+        for (int i = 0; i < eggsToHatch; i++) {
             CreepingHorrorEntity entity = AntarchyObjects.CREEPING_HORROR.get().create(level);
             if (entity == null) {
                 continue;
@@ -190,6 +202,16 @@ public class CreepingHorrorEggBlock extends Block {
             entity.moveTo(spawnX, pos.getY() + 0.1D, spawnZ, random.nextFloat() * 360.0F, 0.0F);
             level.addFreshEntity(entity);
         }
+    }
+
+    private static int rollPanickedEggs(int eggs, RandomSource random) {
+        int hatchedEggs = 0;
+        for (int i = 0; i < eggs; i++) {
+            if (random.nextFloat() < PANIC_HATCH_CHANCE) {
+                hatchedEggs++;
+            }
+        }
+        return hatchedEggs;
     }
 
     private void decreaseEggs(Level level, BlockPos pos, BlockState state) {

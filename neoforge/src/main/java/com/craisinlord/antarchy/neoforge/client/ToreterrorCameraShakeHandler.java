@@ -34,7 +34,7 @@ public final class ToreterrorCameraShakeHandler {
         )) {
             double distance = Math.sqrt(cameraPos.distanceToSqr(toreterror.position().add(0, toreterror.getBbHeight() * 0.5, 0)));
             if (distance > MAX_SHAKE_RANGE) continue;
-            shakeStrength += (float) ((1.0D - distance / MAX_SHAKE_RANGE) * 2.0D);
+            shakeStrength += (float) ((1.0D - distance / MAX_SHAKE_RANGE) * 1.0D);
         }
 
         if (BigBerthaItem.clientShakeTicks > 0) {

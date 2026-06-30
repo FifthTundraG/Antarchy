@@ -117,9 +117,6 @@ public class WaterBombEntity extends ThrowableProjectile {
             for (BlockPos pos : BlockPos.betweenClosed(hitPos.offset(-1, 0, -1), hitPos.offset(1, 0, 1))) {
                 if (level.getBlockState(pos).getBlock() instanceof BaseFireBlock) {
                     level.removeBlock(pos, false);
-                } else if (level.isEmptyBlock(pos)) {
-                    level.setBlock(pos, Blocks.WATER.defaultBlockState(), 3);
-                    level.scheduleTick(pos, Fluids.WATER, 2);
                 }
             }
         } else {

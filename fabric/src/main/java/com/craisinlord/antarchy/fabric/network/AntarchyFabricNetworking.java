@@ -12,6 +12,8 @@ import com.craisinlord.antarchy.fabric.util.JumpyBootsFabricHelper;
 import com.craisinlord.antarchy.content.item.JumpyBootsItem;
 import com.craisinlord.antarchy.content.item.GravityGunItem;
 import com.craisinlord.antarchy.content.network.*;
+import com.craisinlord.antarchy.content.entity.DorrieEntity;
+import com.craisinlord.antarchy.content.network.DorrieJumpInputPayload;
 import com.craisinlord.antarchy.content.network.JumpyBootsLaunchPayload;
 import com.craisinlord.antarchy.content.weather.ThoraxisWeatherSnapshot;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -51,6 +53,8 @@ public final class AntarchyFabricNetworking {
         PayloadTypeRegistry.playC2S().register(DiamondMinecartInputPayload.TYPE, DiamondMinecartInputPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(BrutalflyElytraFlapPayload.TYPE, BrutalflyElytraFlapPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(JumpyBootsLaunchPayload.TYPE, JumpyBootsLaunchPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(DorrieJumpInputPayload.TYPE, DorrieJumpInputPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartAttackPayload.TYPE, MultipartAttackPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartInteractPayload.TYPE, MultipartInteractPayload.STREAM_CODEC);
     }
@@ -66,6 +70,10 @@ public final class AntarchyFabricNetworking {
                 context.server().execute(() -> handleBrutalflyFlap(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(JumpyBootsLaunchPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleJumpyBootsLaunch(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(DorrieJumpInputPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleDorrieJumpInput(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleDorrieChargeJumpInput(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartAttackPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleMultipartAttack(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartInteractPayload.TYPE, (payload, context) ->
@@ -305,5 +313,19 @@ public final class AntarchyFabricNetworking {
                 player.level().getGameTime() + JumpyBootsHelper.FALL_PROTECTION_TICKS);
 
         player.getCooldowns().addCooldown(boots.getItem(), JumpyBootsHelper.COOLDOWN_TICKS);
+    }
+
+    private static void handleDorrieJumpInput(ServerPlayer player, DorrieJumpInputPayload payload) {
+        if (!(player.getVehicle() instanceof DorrieEntity dorrie)) return;
+        dorrie.setPressingJump(payload.pressing());
+    }
+
+    private static void handleDorrieChargeJumpInput(ServerPlayer player, com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload payload) {
+        if (!(player.getVehicle() instanceof DorrieEntity dorrie)) return;
+        if (payload.pressing()) {
+            dorrie.startJumpCharge();
+        } else {
+            dorrie.releaseJump();
+        }
     }
 }

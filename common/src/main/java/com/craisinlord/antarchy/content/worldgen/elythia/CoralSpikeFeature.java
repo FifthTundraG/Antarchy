@@ -20,15 +20,19 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
             net.minecraft.world.level.block.Block block,
             net.minecraft.world.level.block.Block coral,
             net.minecraft.world.level.block.Block wallFan,
-            net.minecraft.world.level.block.Block floorFan
+            net.minecraft.world.level.block.Block floorFan,
+            net.minecraft.world.level.block.Block deadBlock,
+            net.minecraft.world.level.block.Block deadCoral,
+            net.minecraft.world.level.block.Block deadWallFan,
+            net.minecraft.world.level.block.Block deadFloorFan
     ) {}
 
     private static final CoralSet[] CORAL_SETS = {
-        new CoralSet(Blocks.TUBE_CORAL_BLOCK,   Blocks.TUBE_CORAL,   Blocks.TUBE_CORAL_WALL_FAN,   Blocks.TUBE_CORAL_FAN),
-        new CoralSet(Blocks.BRAIN_CORAL_BLOCK,  Blocks.BRAIN_CORAL,  Blocks.BRAIN_CORAL_WALL_FAN,  Blocks.BRAIN_CORAL_FAN),
-        new CoralSet(Blocks.BUBBLE_CORAL_BLOCK, Blocks.BUBBLE_CORAL, Blocks.BUBBLE_CORAL_WALL_FAN, Blocks.BUBBLE_CORAL_FAN),
-        new CoralSet(Blocks.FIRE_CORAL_BLOCK,   Blocks.FIRE_CORAL,   Blocks.FIRE_CORAL_WALL_FAN,   Blocks.FIRE_CORAL_FAN),
-        new CoralSet(Blocks.HORN_CORAL_BLOCK,   Blocks.HORN_CORAL,   Blocks.HORN_CORAL_WALL_FAN,   Blocks.HORN_CORAL_FAN),
+        new CoralSet(Blocks.TUBE_CORAL_BLOCK,   Blocks.TUBE_CORAL,   Blocks.TUBE_CORAL_WALL_FAN,   Blocks.TUBE_CORAL_FAN,   Blocks.DEAD_TUBE_CORAL_BLOCK,   Blocks.DEAD_TUBE_CORAL,   Blocks.DEAD_TUBE_CORAL_WALL_FAN,   Blocks.DEAD_TUBE_CORAL_FAN),
+        new CoralSet(Blocks.BRAIN_CORAL_BLOCK,  Blocks.BRAIN_CORAL,  Blocks.BRAIN_CORAL_WALL_FAN,  Blocks.BRAIN_CORAL_FAN,  Blocks.DEAD_BRAIN_CORAL_BLOCK,  Blocks.DEAD_BRAIN_CORAL,  Blocks.DEAD_BRAIN_CORAL_WALL_FAN,  Blocks.DEAD_BRAIN_CORAL_FAN),
+        new CoralSet(Blocks.BUBBLE_CORAL_BLOCK, Blocks.BUBBLE_CORAL, Blocks.BUBBLE_CORAL_WALL_FAN, Blocks.BUBBLE_CORAL_FAN, Blocks.DEAD_BUBBLE_CORAL_BLOCK, Blocks.DEAD_BUBBLE_CORAL, Blocks.DEAD_BUBBLE_CORAL_WALL_FAN, Blocks.DEAD_BUBBLE_CORAL_FAN),
+        new CoralSet(Blocks.FIRE_CORAL_BLOCK,   Blocks.FIRE_CORAL,   Blocks.FIRE_CORAL_WALL_FAN,   Blocks.FIRE_CORAL_FAN,   Blocks.DEAD_FIRE_CORAL_BLOCK,   Blocks.DEAD_FIRE_CORAL,   Blocks.DEAD_FIRE_CORAL_WALL_FAN,   Blocks.DEAD_FIRE_CORAL_FAN),
+        new CoralSet(Blocks.HORN_CORAL_BLOCK,   Blocks.HORN_CORAL,   Blocks.HORN_CORAL_WALL_FAN,   Blocks.HORN_CORAL_FAN,   Blocks.DEAD_HORN_CORAL_BLOCK,   Blocks.DEAD_HORN_CORAL,   Blocks.DEAD_HORN_CORAL_WALL_FAN,   Blocks.DEAD_HORN_CORAL_FAN),
     };
 
     public CoralSpikeFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -58,13 +62,13 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
         CoralSet coral = CORAL_SETS[random.nextInt(CORAL_SETS.length)];
 
-        int baseRadius = 2 + random.nextInt(2);           // 2–3 wide at base
-        int totalHeight = 20 + random.nextInt(15);         // 20–34 blocks tall
+        int baseRadius = 2 + random.nextInt(2);           // 2-3 wide at base
+        int totalHeight = 20 + random.nextInt(15);         // 20-34 blocks tall
 
         double curveAngle = random.nextDouble() * Math.PI * 2;
         double curveDX = Math.cos(curveAngle);
         double curveDZ = Math.sin(curveAngle);
-        double maxCurve = 4.0 + random.nextDouble() * 5.0; // 4–9 block lean at tip
+        double maxCurve = 4.0 + random.nextDouble() * 5.0; // 4-9 block lean at tip
 
         boolean placed = false;
 
@@ -72,7 +76,7 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
             int blockY = floorY + dy;
             double progress = (double) dy / totalHeight;
 
-            // Quadratic lean — slow at base, bending hard near tip
+            // Quadratic lean -- slow at base, bending hard near tip
             double curveOffset = maxCurve * progress * progress;
             double centerX = origin.getX() + curveDX * curveOffset;
             double centerZ = origin.getZ() + curveDZ * curveOffset;
@@ -92,7 +96,11 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
                     BlockPos pos = new BlockPos(origin.getX() + dx, blockY, origin.getZ() + dz);
                     if (!canReplace(level.getBlockState(pos))) continue;
 
-                    level.setBlock(pos, coral.block().defaultBlockState(), 2);
+                    boolean inWater = touchesWater(level, pos);
+                    level.setBlock(pos, inWater
+                            ? coral.block().defaultBlockState()
+                            : coral.deadBlock().defaultBlockState(),
+                            2);
                     placed = true;
 
                     if (dist >= radius - 0.6 && radius > 0) {
@@ -115,11 +123,19 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
                             BlockState existing = level.getBlockState(fanPos);
                             if (!existing.isAir() && !existing.is(Blocks.WATER)) continue;
                             boolean fanInWater = existing.is(Blocks.WATER);
-                            level.setBlock(fanPos,
-                                    coral.wallFan().defaultBlockState()
-                                            .setValue(BlockStateProperties.HORIZONTAL_FACING, dir)
-                                            .setValue(BlockStateProperties.WATERLOGGED, fanInWater),
-                                    2);
+                            if (fanInWater) {
+                                level.setBlock(fanPos,
+                                        coral.wallFan().defaultBlockState()
+                                                .setValue(BlockStateProperties.HORIZONTAL_FACING, dir)
+                                                .setValue(BlockStateProperties.WATERLOGGED, true),
+                                        2);
+                            } else {
+                                level.setBlock(fanPos,
+                                        coral.deadWallFan().defaultBlockState()
+                                                .setValue(BlockStateProperties.HORIZONTAL_FACING, dir)
+                                                .setValue(BlockStateProperties.WATERLOGGED, false),
+                                        2);
+                            }
                         }
                     }
                 }
@@ -142,22 +158,36 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
             float roll = random.nextFloat();
             CoralSet randomCoral = CORAL_SETS[random.nextInt(CORAL_SETS.length)];
 
-            if (roll < 0.35f && decorInWater) {
-                // Coral plant (frond)
-                BlockState coralState = randomCoral.coral().defaultBlockState()
-                        .setValue(BlockStateProperties.WATERLOGGED, true);
-                if (coralState.canSurvive(level, decorPos)) {
-                    level.setBlock(decorPos, coralState, 2);
+            if (roll < 0.35f) {
+                if (decorInWater) {
+                    BlockState coralState = randomCoral.coral().defaultBlockState()
+                            .setValue(BlockStateProperties.WATERLOGGED, true);
+                    if (coralState.canSurvive(level, decorPos)) {
+                        level.setBlock(decorPos, coralState, 2);
+                    }
+                } else {
+                    BlockState coralState = randomCoral.deadCoral().defaultBlockState()
+                            .setValue(BlockStateProperties.WATERLOGGED, false);
+                    if (coralState.canSurvive(level, decorPos)) {
+                        level.setBlock(decorPos, coralState, 2);
+                    }
                 }
             } else if (roll < 0.65f) {
-                // Floor fan
-                BlockState fanState = randomCoral.floorFan().defaultBlockState()
-                        .setValue(BlockStateProperties.WATERLOGGED, decorInWater);
-                if (fanState.canSurvive(level, decorPos)) {
-                    level.setBlock(decorPos, fanState, 2);
+                if (decorInWater) {
+                    BlockState fanState = randomCoral.floorFan().defaultBlockState()
+                            .setValue(BlockStateProperties.WATERLOGGED, true);
+                    if (fanState.canSurvive(level, decorPos)) {
+                        level.setBlock(decorPos, fanState, 2);
+                    }
+                } else {
+                    BlockState fanState = randomCoral.deadFloorFan().defaultBlockState()
+                            .setValue(BlockStateProperties.WATERLOGGED, false);
+                    if (fanState.canSurvive(level, decorPos)) {
+                        level.setBlock(decorPos, fanState, 2);
+                    }
                 }
-            } else {
-                // Sea pickle cluster
+            } else if (decorInWater) {
+                // Sea pickle cluster -- only underwater
                 BlockState pickle = Blocks.SEA_PICKLE.defaultBlockState()
                         .setValue(SeaPickleBlock.PICKLES, 1 + random.nextInt(4));
                 if (pickle.canSurvive(level, decorPos)) {
@@ -167,6 +197,14 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         return placed;
+    }
+
+    private static boolean touchesWater(WorldGenLevel level, BlockPos pos) {
+        if (level.getBlockState(pos).is(Blocks.WATER)) return true;
+        for (Direction dir : Direction.values()) {
+            if (level.getBlockState(pos.relative(dir)).is(Blocks.WATER)) return true;
+        }
+        return false;
     }
 
     private static boolean canReplace(BlockState state) {

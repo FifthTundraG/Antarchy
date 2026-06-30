@@ -182,6 +182,17 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue LURKING_TERROR_ATTACK_DAMAGE;
 
 
+    // Cheep
+
+    private static final ModConfigSpec.DoubleValue CHEEP_HEALTH;
+    private static final ModConfigSpec.DoubleValue CHEEP_ATTACK_DAMAGE;
+
+
+    // Dorrie
+
+    private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
+
+
     // Lucid
 
     private static final ModConfigSpec.DoubleValue LUCID_ATTACK_RANGE;
@@ -473,6 +484,15 @@ public final class AntarchyMobsConfig {
         LURKING_TERROR_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 6.0D, 0.0D, 1024.0D);
         b.pop();
 
+        b.push("cheep");
+        CHEEP_HEALTH        = b.comment("Base max health.").defineInRange("health", 8.0D, 1.0D, 32768.0D);
+        CHEEP_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 3.0D, 0.0D, 1024.0D);
+        b.pop();
+
+        b.push("dorrie");
+        DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
+        b.pop();
+
         b.push("toreterror");
         TORETERROR_HEALTH                  = b.comment("Base max health.").defineInRange("health", 300.0D, 1.0D, 32768.0D);
         TORETERROR_JUMP_ATTACK_DAMAGE      = b.comment("Damage dealt by the jump shockwave.").defineInRange("jumpAttackDamage", 14.0D, 0.0D, 1024.0D);
@@ -629,4 +649,7 @@ public final class AntarchyMobsConfig {
     static double  creepingHorrorAttackDamage()             { return CREEPING_HORROR_ATTACK_DAMAGE.get(); }
     static double  lurkingTerrorHealth()                    { return LURKING_TERROR_HEALTH.get(); }
     static double  lurkingTerrorAttackDamage()              { return LURKING_TERROR_ATTACK_DAMAGE.get(); }
+    static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
+    static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
+    static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
 }

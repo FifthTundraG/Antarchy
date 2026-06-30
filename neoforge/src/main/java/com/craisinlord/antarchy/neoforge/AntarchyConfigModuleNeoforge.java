@@ -166,6 +166,9 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setCreepingHorrorAttackDamage(AntarchyMobsConfig.creepingHorrorAttackDamage());
         AntarchySettings.setLurkingTerrorHealth(AntarchyMobsConfig.lurkingTerrorHealth());
         AntarchySettings.setLurkingTerrorAttackDamage(AntarchyMobsConfig.lurkingTerrorAttackDamage());
+        AntarchySettings.setCheepHealth(AntarchyMobsConfig.cheepHealth());
+        AntarchySettings.setCheepAttackDamage(AntarchyMobsConfig.cheepAttackDamage());
+        AntarchySettings.setDorrieHealth(AntarchyMobsConfig.dorrieHealth());
     }
 
     private static void bakeToolsConfig() {
