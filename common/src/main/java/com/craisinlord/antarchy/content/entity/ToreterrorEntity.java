@@ -70,19 +70,17 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private static final int ANIM_RAPID_SHOOT = 8;
 
     private static final int ATTACK_RAPID_FIRE = 0;
-    private static final int ATTACK_HUGE_BOMB = 1;
-    private static final int ATTACK_BOMBERS = 2;
+    private static final int ATTACK_BOMBERS = 1;
 
     private static final int DEATH_TICKS = 60;
     private static final int SHOOT_TOTAL_TICKS = 75;
-    private static final int SHOOT_FIRE_START_TICK = 12;
     private static final int RAPID_FIRE_INTERVAL = 4;
     private static final int RAPID_FIRE_END_TICK = 60;
     private static final int SHOOT_BOMBER_TICK = 12;
     private static final int SHOOT_BOMBER_SECOND_TICK = 32;
-    private static final int JUMP_TOTAL_TICKS = 40;
+    private static final int JUMP_TOTAL_TICKS = 55;
     private static final int JUMP_LAUNCH_TICK = 10;
-    private static final int JUMP_SHAKE_TICKS = 25;
+    private static final int JUMP_SHAKE_TICKS = 12;
     private static final int SPIN_START_TOTAL_TICKS = 5;
     private static final int SPIN_LOOP_MIN_TICKS = 200;
     private static final int SPIN_LOOP_MAX_TICKS = 300;
@@ -96,8 +94,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private static final double SPIN_TRIGGER_RANGE_SQR = 225.0D;
     private static final double SPIN_LEASH_RANGE_SQR = 225.0D;
     private static final double SPIN_RADIUS = 4.5D;
-    private static final double SPIN_MOVE_SPEED = 1.7D;
-    private static final double SPIN_ANIMATION_SPEED = 0.7D;
+    private static final double SPIN_MOVE_SPEED = 0.833D;
+    private static final double SPIN_ANIMATION_SPEED = 0.49D;
     private static final double JUMP_SHOCKWAVE_RADIUS = 6.0D;
 
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("Idle");
@@ -123,6 +121,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private int jumpCooldown;
     private int spinCooldown;
     private boolean jumpLaunched;
+    private boolean jumpAirborne;
     private boolean shockwaveApplied;
     private int jumpShakeTicks;
     private int shootAttackType;
@@ -274,7 +273,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         return this.entityData.get(JUMP_SHAKING);
     }
 
-    @Override
+@Override
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         this.bossEvent.addPlayer(player);
@@ -377,12 +376,6 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
                     this.fireRapidBomb();
                 }
             }
-            case ATTACK_HUGE_BOMB -> {
-                this.setAnimationState(ANIM_SHOOT);
-                if (elapsed == SHOOT_FIRE_START_TICK) {
-                    this.fireHugeBomb();
-                }
-            }
             default -> {
                 this.setAnimationState(ANIM_SHOOT);
                 if (!this.shootBomberFired && elapsed >= SHOOT_BOMBER_TICK) {
@@ -398,7 +391,12 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         this.getNavigation().stop();
         this.setDeltaMovement(this.getDeltaMovement().scale(0.85D));
         if (this.getTarget() != null) {
-            this.getLookControl().setLookAt(this.getTarget(), 30.0F, 20.0F);
+            Vec3 toTarget = this.getTarget().position().subtract(this.position());
+            float yaw = (float) (net.minecraft.util.Mth.atan2(toTarget.z, toTarget.x) * (180.0D / Math.PI)) - 90.0F;
+            this.setYRot(yaw);
+            this.yBodyRot = yaw;
+            this.yHeadRot = yaw;
+            this.setYHeadRot(yaw);
         }
         this.shootAnimTicks--;
         if (this.shootAnimTicks <= 0) {
@@ -414,15 +412,29 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             LivingEntity target = this.getTarget();
             if (target != null) {
                 Vec3 toTarget = target.position().subtract(this.position()).normalize();
-                this.setDeltaMovement(toTarget.x * 0.6D, 0.85D, toTarget.z * 0.6D);
+                this.setDeltaMovement(toTarget.x * 0.6D, 1.4D, toTarget.z * 0.6D);
                 this.hasImpulse = true;
             }
         }
-        if (this.jumpLaunched && this.onGround() && elapsed > JUMP_LAUNCH_TICK + 3 && !this.shockwaveApplied) {
-            this.shockwaveApplied = true;
-            this.applyJumpShockwave();
-            this.jumpShakeTicks = JUMP_SHAKE_TICKS;
-            this.entityData.set(JUMP_SHAKING, true);
+        if (this.jumpLaunched && !this.onGround()) {
+            this.jumpAirborne = true;
+        }
+        if (this.jumpLaunched && this.jumpAirborne && !this.shockwaveApplied) {
+            boolean forceLand = this.jumpAnimTicks <= 1;
+            if (forceLand) {
+                BlockPos pos = BlockPos.containing(this.getX(), this.getY(), this.getZ());
+                while (pos.getY() > this.level().getMinBuildHeight() && this.level().isEmptyBlock(pos)) {
+                    pos = pos.below();
+                }
+                this.teleportTo(this.getX(), pos.getY() + 1.0, this.getZ());
+                this.setDeltaMovement(Vec3.ZERO);
+            }
+            if (this.onGround() || forceLand) {
+                this.shockwaveApplied = true;
+                this.applyJumpShockwave();
+                this.jumpShakeTicks = JUMP_SHAKE_TICKS;
+                this.entityData.set(JUMP_SHAKING, true);
+            }
         }
         this.jumpAnimTicks--;
         if (this.jumpAnimTicks <= 0) {
@@ -509,8 +521,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             return;
         }
         Vec3 forward = this.spinDirection.lengthSqr() > 1.0E-4D ? this.spinDirection.normalize() : towardTarget;
-        Vec3 strafe = new Vec3(-towardTarget.z, 0.0D, towardTarget.x).scale(this.spinStrafeSign);
-        Vec3 combined = forward.scale(1.2D).add(towardTarget.scale(0.15D)).add(strafe.scale(1.35D));
+        Vec3 combined = forward.scale(0.95D).add(towardTarget.scale(0.05D));
         this.spinDirection = combined.lengthSqr() > 1.0E-4D ? combined.normalize() : towardTarget;
     }
 
@@ -677,22 +688,6 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         }
     }
 
-    private void fireHugeBomb() {
-        if (!(this.level() instanceof ServerLevel serverLevel)) return;
-        LivingEntity target = this.getTarget();
-        if (target == null) return;
-        this.getLookControl().setLookAt(target, 30.0F, 30.0F);
-        Vec3 from = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        Vec3 to = new Vec3(target.getX(), target.getY(), target.getZ());
-        Vec3 vel = calcLaunchVelocity(from, to, 0.9);
-        WaterBombEntity bomb = new WaterBombEntity(this.level(), this, true);
-        bomb.setPos(from.x, from.y, from.z);
-        bomb.setDeltaMovement(vel);
-        bomb.hasImpulse = true;
-        serverLevel.addFreshEntity(bomb);
-    }
-
-
     private void fireBomberBurst() {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
         LivingEntity target = this.getTarget();
@@ -710,6 +705,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             bomber.setDeltaMovement(vx, vy, vz);
             bomber.setTarget(target);
             serverLevel.addFreshEntity(bomber);
+            bomber.primeFuse();
         }
     }
 
@@ -778,15 +774,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             ToreterrorEntity.this.shootBomberFiredSecond = false;
             ToreterrorEntity.this.rapidFireNextTick = 0;
             float roll = ToreterrorEntity.this.random.nextFloat();
-            if (ToreterrorEntity.this.isPhase2()) {
-                if (roll < 0.5F) ToreterrorEntity.this.shootAttackType = ATTACK_RAPID_FIRE;
-                else if (roll < 0.65F) ToreterrorEntity.this.shootAttackType = ATTACK_HUGE_BOMB;
-                else ToreterrorEntity.this.shootAttackType = ATTACK_BOMBERS;
-            } else {
-                if (roll < 0.5F) ToreterrorEntity.this.shootAttackType = ATTACK_RAPID_FIRE;
-                else if (roll < 0.7F) ToreterrorEntity.this.shootAttackType = ATTACK_HUGE_BOMB;
-                else ToreterrorEntity.this.shootAttackType = ATTACK_BOMBERS;
-            }
+            if (roll < 0.5F) ToreterrorEntity.this.shootAttackType = ATTACK_RAPID_FIRE;
+            else ToreterrorEntity.this.shootAttackType = ATTACK_BOMBERS;
         }
 
         @Override
@@ -818,6 +807,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         public void start() {
             ToreterrorEntity.this.jumpAnimTicks = JUMP_TOTAL_TICKS;
             ToreterrorEntity.this.jumpLaunched = false;
+            ToreterrorEntity.this.jumpAirborne = false;
             ToreterrorEntity.this.shockwaveApplied = false;
         }
 

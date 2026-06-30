@@ -492,7 +492,16 @@
     "subtitle": "subtitles.antarchy.creeping_horror_bite",
     "sounds": [
       {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_bite"
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite2"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite3"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite4"
       }
     ]
   },

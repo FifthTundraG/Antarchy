@@ -52,7 +52,7 @@ public class SpitBugEntity extends Monster implements GeoEntity {
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation SPIT_ANIM = RawAnimation.begin().thenPlay("spit");
 
-    private static final double MAX_HEALTH = 30.0D;
+    private static final double MAX_HEALTH = 50.0D;
     private static final double MOVEMENT_SPEED = 0.23D;
     private static final double ATTACK_DAMAGE = 5.0D;
     private static final double FOLLOW_RANGE = 24.0D;

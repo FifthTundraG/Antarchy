@@ -404,6 +404,17 @@ public class KrakenEntity extends Monster implements GeoEntity {
     }
 
     @Override
+    public void startSeenByPlayer(net.minecraft.server.level.ServerPlayer player) {
+        super.startSeenByPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(net.minecraft.server.level.ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
+    }
+
+    @Override
     public void remove(Entity.RemovalReason reason) {
         this.clearKrakenStorm();
         super.remove(reason);

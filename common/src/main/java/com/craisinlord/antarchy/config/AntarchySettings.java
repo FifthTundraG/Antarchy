@@ -273,8 +273,8 @@ public final class AntarchySettings {
     private static double bedBugAttackLungeHorizontalSpeed = 0.42D;
     private static double bedBugAttackLungeVerticalSpeed = 0.1D;
     private static float bedBugHealAmount = 2.0F;
-    private static double jumpyBugHealth = 12.0D;
-    private static double jumpyBugPounceDamage = 2.0D;
+    private static double jumpyBugHealth = 100.0D;
+    private static double jumpyBugPounceDamage = 12.0D;
     private static double jumpyBugLatchDamage = 1.0D;
     private static double jumpyBugCamouflageAlpha = 0.18D;
     private static double brutalflyArmor = 10.0D;
@@ -467,6 +467,9 @@ public final class AntarchySettings {
     private static double creepingHorrorAttackDamage = 6.0D;
     private static double lurkingTerrorHealth = 15.0D;
     private static double lurkingTerrorAttackDamage = 6.0D;
+    private static double cheepHealth = 8.0D;
+    private static double cheepAttackDamage = 3.0D;
+    private static double dorrieHealth = 60.0D;
 
     private AntarchySettings() {
     }
@@ -2390,4 +2393,10 @@ public final class AntarchySettings {
     public static void setLurkingTerrorHealth(double v) { lurkingTerrorHealth = v; }
     public static double lurkingTerrorAttackDamage() { return lurkingTerrorAttackDamage; }
     public static void setLurkingTerrorAttackDamage(double v) { lurkingTerrorAttackDamage = v; }
+    public static double cheepHealth() { return cheepHealth; }
+    public static void setCheepHealth(double v) { cheepHealth = v; }
+    public static double cheepAttackDamage() { return cheepAttackDamage; }
+    public static void setCheepAttackDamage(double v) { cheepAttackDamage = v; }
+    public static double dorrieHealth() { return dorrieHealth; }
+    public static void setDorrieHealth(double v) { dorrieHealth = v; }
 }

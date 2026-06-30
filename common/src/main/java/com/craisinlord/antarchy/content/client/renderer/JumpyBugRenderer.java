@@ -17,7 +17,7 @@ import software.bernie.geckolib.util.Color;
 public class JumpyBugRenderer extends GeoEntityRenderer<JumpyBugEntity> {
     public JumpyBugRenderer(EntityRendererProvider.Context context) {
         super(context, new JumpyBugModel());
-        this.shadowRadius = 3.0F;
+        this.shadowRadius = 6.0F;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class JumpyBugRenderer extends GeoEntityRenderer<JumpyBugEntity> {
     @Override
     public void preRender(PoseStack poseStack, JumpyBugEntity animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-        this.shadowRadius = animatable.isCamouflaged() ? 1.0F : 3.0F;
+        this.shadowRadius = animatable.isCamouflaged() ? 1.0F : 6.0F;
 
         if (animatable.isClingingToCeiling()) {
             poseStack.translate(0.0F, animatable.getBbHeight() + 0.05F, 0.0F);

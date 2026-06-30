@@ -130,6 +130,8 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.WATER_BOMB.get(), WaterBombRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.CREEPING_HORROR.get(), CreepingHorrorRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.LURKING_TERROR.get(), LurkingTerrorRenderer::new);
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.CHEEP.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.CheepRenderer(context)));
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.DORRIE.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.DorrieRenderer(context)));
     }
 
     @SubscribeEvent
@@ -247,6 +249,10 @@ public final class AntarchyNeoForgeClient {
         event.registerAboveAll(
                 ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "jumpy_boots"),
                 (guiGraphics, partialTick) -> JumpyBootsHudRenderer.render(guiGraphics)
+        );
+        event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "dorrie_jump"),
+                (guiGraphics, partialTick) -> DorrieJumpHudRenderer.render(guiGraphics)
         );
     }
 

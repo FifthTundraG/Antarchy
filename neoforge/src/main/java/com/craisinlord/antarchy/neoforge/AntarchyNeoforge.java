@@ -197,6 +197,8 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeEntites.CREEPING_HORROR,
                 AntarchyNeoforgeEntites.LURKING_TERROR,
                 AntarchyNeoforgeEntites.STINK_BUG,
+                AntarchyNeoforgeEntites.CHEEP,
+                AntarchyNeoforgeEntites.DORRIE,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),

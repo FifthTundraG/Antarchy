@@ -49,6 +49,10 @@ public final class AntarchyFabricClientBootstrap {
 
     public static void register() {
         AntarchyKeyBindings.register();
+        net.minecraft.client.gui.screens.MenuScreens.register(
+                com.craisinlord.antarchy.fabric.AntarchyFabricContent.DORRIE_MENU.get(),
+                com.craisinlord.antarchy.content.client.screen.DorrieScreen::new
+        );
         registerRenderers();
         registerEntityLayers();
         registerColors();
@@ -113,6 +117,8 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.WATER_BOMB.get(), WaterBombRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.CREEPING_HORROR.get(), CreepingHorrorRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.LURKING_TERROR.get(), LurkingTerrorRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.CHEEP.get(), com.craisinlord.antarchy.content.client.renderer.CheepRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.DORRIE.get(), com.craisinlord.antarchy.content.client.renderer.DorrieRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.boatLayer(), BoatModel::createBodyModel);
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
@@ -325,6 +331,7 @@ public final class AntarchyFabricClientBootstrap {
             DreadClientHandler.tick();
             BloodCrystalKatanaTrailHandler.tick();
             ScorpionWhipTetherRenderHandler.tick();
+            DorrieJumpClientHandler.tick();
         });
 
         GravityGunClientHandler.register();
@@ -342,6 +349,7 @@ public final class AntarchyFabricClientBootstrap {
             JumpyBootsHudRenderer.render(guiGraphics);
             BloodglassHudRenderer.render(guiGraphics);
             TriffidGooHudRenderer.render(guiGraphics);
+            DorrieJumpHudRenderer.render(guiGraphics);
         });
 
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {

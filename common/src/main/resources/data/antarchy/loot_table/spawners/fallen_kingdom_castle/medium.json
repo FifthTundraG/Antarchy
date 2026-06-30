@@ -170,7 +170,7 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:fallen_king_crown",
-          "weight": 1,
+          "weight": 4,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -185,7 +185,7 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:uranium_nugget",
-          "weight": 1,
+          "weight": 7,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -200,7 +200,7 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:titanium_nugget",
-          "weight": 1,
+          "weight": 7,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -211,6 +211,11 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 7
         },
         {
           "type": "minecraft:item",

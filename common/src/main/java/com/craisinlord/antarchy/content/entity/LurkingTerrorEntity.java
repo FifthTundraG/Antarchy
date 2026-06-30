@@ -168,7 +168,7 @@ public class LurkingTerrorEntity extends Monster implements GeoEntity {
         if (!this.level().isClientSide() && !this.onGround() && this.tickCount % 40 == 0) {
             this.playSound(AntarchySoundEvents.LURKING_TERROR_FLY_LOOP.get(), 0.45F, 0.95F + this.random.nextFloat() * 0.1F);
         }
-        if (attackAnimTicks > 0) attackAnimTicks--;
+        if (!this.level().isClientSide() && attackAnimTicks > 0) attackAnimTicks--;
     }
 
     @Override

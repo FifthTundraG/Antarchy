@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -169,9 +171,28 @@ public class CreepingHorrorEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide()) {
-            this.entityData.set(CLIMBING, this.horizontalCollision);
-        }
         if (attackAnimTicks > 0) attackAnimTicks--;
+        if (this.level().isClientSide()) return;
+
+        boolean climbing = this.horizontalCollision;
+        this.entityData.set(CLIMBING, climbing);
+
+        if (climbing && this.getTarget() != null) {
+            LivingEntity target = this.getTarget();
+            Vec3 toTarget = target.position().subtract(this.position());
+            double hDist = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
+            double speed = this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 2.8D;
+            if (hDist > 0.01D) {
+                this.setDeltaMovement(
+                    (toTarget.x / hDist) * speed,
+                    0.22D,
+                    (toTarget.z / hDist) * speed
+                );
+            } else {
+                Vec3 mov = this.getDeltaMovement();
+                this.setDeltaMovement(mov.x, 0.22D, mov.z);
+            }
+            this.getNavigation().stop();
+        }
     }
 }

@@ -221,7 +221,7 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:uranium_nugget",
-          "weight": 1,
+          "weight": 6,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -236,7 +236,7 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:titanium_nugget",
-          "weight": 1,
+          "weight": 6,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -247,6 +247,11 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 4
         }
       ],
       "rolls": {

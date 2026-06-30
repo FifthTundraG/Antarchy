@@ -64,17 +64,23 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
     private static final String POUNCE_COOLDOWN_KEY = "PounceCooldown";
     private static final String RECOVERY_TICKS_KEY = "RecoveryTicks";
     private static final String POUNCE_TICKS_KEY = "PounceTicks";
+    private static final String LEAPING_TICKS_KEY = "LeapingTicks";
 
     private static final double DEFAULT_MOVEMENT_SPEED = 0.25D;
     private static final double DEFAULT_FOLLOW_RANGE = 16.0D;
     private static final double MELEE_WALK_RANGE = 4.0D;
+    private static final double CHASE_LEAP_RANGE_SQR = 8.0D * 8.0D;
     private static final int DEFAULT_POUNCE_COOLDOWN = 60;
     private static final int DEFAULT_RECOVERY_TICKS = 20;
+    private static final int CHASE_JUMP_COOLDOWN = 25;
     private static final double POUNCE_HORIZONTAL_SPEED = 0.92D;
     private static final double POUNCE_UPWARD_SPEED = 0.75D;
+    private static final double CHASE_LEAP_HORIZONTAL = 1.5D;
+    private static final double CHASE_LEAP_VERTICAL = 0.55D;
     private static final double QUICK_MOVE_SQR = 0.14D * 0.14D;
-    private static final double CLING_SEARCH_RANGE = 1.5D;
     private static final double POUNCE_LAND_DAMAGE_RANGE = 5.0D;
+    private static final int CEILING_SEARCH_RANGE = 30;
+    private static final double CAMOUFLAGE_PLAYER_RANGE = 24.0D;
 
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
@@ -86,6 +92,8 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
     private int pounceCooldownTicks;
     private int recoveryTicks;
     private int pounceTicks;
+    private int leapingTicks;
+    private int chaseJumpCooldownTicks;
     private float visualAlpha = 1.0F;
     private float previousVisualAlpha = 1.0F;
 
@@ -122,12 +130,13 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PounceAttackGoal());
-        this.goalSelector.addGoal(2, new CeilingClingGoal());
-        this.goalSelector.addGoal(3, new ChaseTargetGoal());
-        this.goalSelector.addGoal(4, new WanderGoal());
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 10.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new CloseMeleeGoal());
+        this.goalSelector.addGoal(2, new PounceAttackGoal());
+        this.goalSelector.addGoal(3, new HideOnCeilingGoal());
+        this.goalSelector.addGoal(4, new ChaseTargetGoal());
+        this.goalSelector.addGoal(5, new WanderGoal());
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 10.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -148,6 +157,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         tag.putInt(POUNCE_COOLDOWN_KEY, this.pounceCooldownTicks);
         tag.putInt(RECOVERY_TICKS_KEY, this.recoveryTicks);
         tag.putInt(POUNCE_TICKS_KEY, this.pounceTicks);
+        tag.putInt(LEAPING_TICKS_KEY, this.leapingTicks);
     }
 
     @Override
@@ -156,6 +166,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         this.pounceCooldownTicks = tag.getInt(POUNCE_COOLDOWN_KEY);
         this.recoveryTicks = tag.getInt(RECOVERY_TICKS_KEY);
         this.pounceTicks = tag.getInt(POUNCE_TICKS_KEY);
+        this.leapingTicks = tag.getInt(LEAPING_TICKS_KEY);
     }
 
     @Override
@@ -168,7 +179,10 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         this.previousVisualAlpha = this.visualAlpha;
-        this.visualAlpha += (this.getTargetVisualAlpha() - this.visualAlpha) * 0.25F;
+        float targetAlpha = this.getTargetVisualAlpha();
+        if (this.visualAlpha != targetAlpha) {
+            this.visualAlpha += (targetAlpha - this.visualAlpha) * 0.25F;
+        }
 
         super.tick();
 
@@ -182,11 +196,16 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         if (this.recoveryTicks > 0) {
             this.recoveryTicks--;
         }
+        if (this.chaseJumpCooldownTicks > 0) {
+            this.chaseJumpCooldownTicks--;
+        }
 
         if (this.isClingingToCeiling()) {
             this.tickClinging();
         } else if (this.isPouncing()) {
             this.tickPouncing();
+        } else if (this.isLeapingToCeiling()) {
+            this.tickLeapingToCeiling();
         } else {
             this.setNoGravity(false);
             this.noPhysics = false;
@@ -221,6 +240,9 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         }
         if (this.isPouncing()) {
             this.finishPounce(false);
+        }
+        if (this.isLeapingToCeiling()) {
+            this.cancelLeap();
         }
         return true;
     }
@@ -262,6 +284,10 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         return this.getAttackState() == AttackState.POUNCING;
     }
 
+    public boolean isLeapingToCeiling() {
+        return this.getAttackState() == AttackState.LEAPING_TO_CEILING;
+    }
+
     public float getVisualAlpha(float partialTick) {
         return Mth.lerp(partialTick, this.previousVisualAlpha, this.visualAlpha);
     }
@@ -288,7 +314,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
 
     private PlayState mainAnimController(AnimationState<JumpyBugEntity> state) {
         AttackState attackState = this.getAttackState();
-        if (attackState == AttackState.POUNCING || attackState == AttackState.CLINGING) {
+        if (attackState == AttackState.POUNCING || attackState == AttackState.CLINGING || attackState == AttackState.LEAPING_TO_CEILING) {
             return state.setAndContinue(JUMP_ANIM);
         }
         if (attackState == AttackState.RECOVERING) {
@@ -298,7 +324,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
     }
 
     private void tickClinging() {
-        BlockPos clingPos = this.findClingBlockPos();
+        BlockPos clingPos = this.findCeilingWithinRange(2);
         if (clingPos == null) {
             this.stopClinging();
             return;
@@ -328,37 +354,61 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         }
     }
 
+    private void tickLeapingToCeiling() {
+        this.leapingTicks++;
+        if (this.leapingTicks > 80) {
+            this.cancelLeap();
+            return;
+        }
+        this.getNavigation().stop();
+        BlockPos ceiling = this.findCeilingWithinRange(2);
+        if (ceiling != null) {
+            this.leapingTicks = 0;
+            this.beginClinging();
+        }
+    }
+
     private void updateCamouflage() {
-        if (this.isPouncing()) {
+        if (this.isPouncing() || this.isLeapingToCeiling()) {
+            this.setCamouflaged(false);
+            return;
+        }
+
+        if (this.isClingingToCeiling()) {
+            this.setCamouflaged(true);
+            return;
+        }
+
+        boolean playerNearby = this.level().getNearestPlayer(this, CAMOUFLAGE_PLAYER_RANGE) != null;
+        if (!playerNearby) {
             this.setCamouflaged(false);
             return;
         }
 
         boolean idle = this.getTarget() == null && this.getDeltaMovement().horizontalDistanceSqr() < 0.003D;
-        boolean stalking = this.isClingingToCeiling();
         boolean movingQuickly = this.getDeltaMovement().lengthSqr() > QUICK_MOVE_SQR;
-        boolean shouldCamouflage = !movingQuickly && (idle || stalking);
-        this.setCamouflaged(shouldCamouflage);
+        this.setCamouflaged(!movingQuickly && idle);
     }
 
     @Nullable
-    private BlockPos findClingBlockPos() {
+    private BlockPos findCeilingWithinRange(int maxBlocks) {
         BlockPos origin = this.blockPosition();
-        for (int dy = 1; dy <= 2; dy++) {
+        for (int dy = 1; dy <= maxBlocks; dy++) {
             BlockPos candidate = origin.above(dy);
-            if (this.isCeilingBlock(candidate)) {
+            if (isCeilingBlock(candidate)) {
                 return candidate;
             }
         }
         return null;
     }
 
-    private boolean isCeilingBlock(BlockPos pos) {
-        return this.level().getBlockState(pos).isFaceSturdy(this.level(), pos, net.minecraft.core.Direction.DOWN);
+    @Nullable
+    private BlockPos findCeilingForLeap() {
+        return findCeilingWithinRange(CEILING_SEARCH_RANGE);
     }
 
-    private boolean canClingHere() {
-        return this.findClingBlockPos() != null;
+    private boolean isCeilingBlock(BlockPos pos) {
+        return this.level().getBlockState(pos).isFaceSturdy(this.level(), pos, net.minecraft.core.Direction.DOWN);
     }
 
     private void beginClinging() {
@@ -375,6 +425,23 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         this.setAttackState(AttackState.GROUND);
         this.setNoGravity(false);
         this.noPhysics = false;
+    }
+
+    private void beginLeapToCeiling(BlockPos ceilingPos) {
+        this.setAttackState(AttackState.LEAPING_TO_CEILING);
+        this.setCamouflaged(false);
+        this.leapingTicks = 0;
+        this.getNavigation().stop();
+
+        double dy = ceilingPos.getY() - this.getY();
+        double upwardSpeed = Math.min(2.5D, Math.sqrt(0.16D * Math.max(dy, 1.0D)) + 0.4D);
+        this.setDeltaMovement(0.0D, upwardSpeed, 0.0D);
+        this.hasImpulse = true;
+    }
+
+    private void cancelLeap() {
+        this.leapingTicks = 0;
+        this.setAttackState(AttackState.GROUND);
     }
 
     private void beginPounce(LivingEntity target) {
@@ -407,14 +474,16 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
 
     private boolean canUseAmbush() {
         return !this.isPouncing()
+                && !this.isLeapingToCeiling()
                 && this.recoveryTicks <= 0;
     }
 
-    private enum AttackState implements StringRepresentable {
+    public enum AttackState implements StringRepresentable {
         GROUND(0, "ground"),
         CLINGING(1, "clinging"),
         POUNCING(2, "pouncing"),
-        RECOVERING(3, "recovering");
+        RECOVERING(3, "recovering"),
+        LEAPING_TO_CEILING(4, "leaping_to_ceiling");
 
         private static final IntFunction<AttackState> BY_ID = ByIdMap.continuous(AttackState::id, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final Codec<AttackState> CODEC = StringRepresentable.fromEnum(AttackState::values);
@@ -434,6 +503,61 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         @Override
         public String getSerializedName() {
             return this.name;
+        }
+    }
+
+    private final class CloseMeleeGoal extends Goal {
+        private static final double MELEE_RANGE_SQR = 5.0D * 5.0D;
+        private static final double CONTINUE_RANGE_SQR = 7.0D * 7.0D;
+        private static final int ATTACK_COOLDOWN = 20;
+        private int attackCooldown;
+
+        private CloseMeleeGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity target = JumpyBugEntity.this.getTarget();
+            return target != null
+                    && target.isAlive()
+                    && !JumpyBugEntity.this.isPouncing()
+                    && !JumpyBugEntity.this.isLeapingToCeiling()
+                    && !JumpyBugEntity.this.isClingingToCeiling()
+                    && JumpyBugEntity.this.distanceToSqr(target) <= MELEE_RANGE_SQR;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity target = JumpyBugEntity.this.getTarget();
+            return target != null
+                    && target.isAlive()
+                    && !JumpyBugEntity.this.isPouncing()
+                    && !JumpyBugEntity.this.isLeapingToCeiling()
+                    && !JumpyBugEntity.this.isClingingToCeiling()
+                    && JumpyBugEntity.this.distanceToSqr(target) <= CONTINUE_RANGE_SQR;
+        }
+
+        @Override
+        public void start() {
+            this.attackCooldown = 0;
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity target = JumpyBugEntity.this.getTarget();
+            if (target == null) return;
+
+            JumpyBugEntity.this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+            JumpyBugEntity.this.getNavigation().moveTo(target, 1.1D);
+
+            if (this.attackCooldown > 0) {
+                this.attackCooldown--;
+            }
+            if (this.attackCooldown <= 0 && JumpyBugEntity.this.distanceToSqr(target) <= MELEE_RANGE_SQR) {
+                JumpyBugEntity.this.doHurtTarget(target);
+                this.attackCooldown = ATTACK_COOLDOWN;
+            }
         }
     }
 
@@ -466,8 +590,11 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         }
     }
 
-    private final class CeilingClingGoal extends Goal {
-        private CeilingClingGoal() {
+    private final class HideOnCeilingGoal extends Goal {
+        @Nullable
+        private BlockPos targetCeiling;
+
+        private HideOnCeilingGoal() {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
         }
 
@@ -476,45 +603,60 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
             if (!JumpyBugEntity.this.canUseAmbush() || JumpyBugEntity.this.isClingingToCeiling()) {
                 return false;
             }
-
             LivingEntity target = JumpyBugEntity.this.getTarget();
-            if (target == null) {
-                return JumpyBugEntity.this.random.nextInt(40) == 0 && JumpyBugEntity.this.canClingHere();
+            boolean targetFarAway = target != null
+                    && JumpyBugEntity.this.distanceToSqr(target) > 12.0D * 12.0D;
+            boolean noTarget = target == null;
+            if (!noTarget && !targetFarAway) {
+                return false;
             }
-
-            return JumpyBugEntity.this.distanceToSqr(target) <= (DEFAULT_FOLLOW_RANGE + CLING_SEARCH_RANGE) * (DEFAULT_FOLLOW_RANGE + CLING_SEARCH_RANGE)
-                    && JumpyBugEntity.this.canClingHere();
+            if (JumpyBugEntity.this.random.nextInt(25) != 0) {
+                return false;
+            }
+            this.targetCeiling = JumpyBugEntity.this.findCeilingForLeap();
+            return this.targetCeiling != null;
         }
 
         @Override
         public boolean canContinueToUse() {
-            return JumpyBugEntity.this.isClingingToCeiling();
+            return JumpyBugEntity.this.isClingingToCeiling() || JumpyBugEntity.this.isLeapingToCeiling();
         }
 
         @Override
         public void start() {
-            JumpyBugEntity.this.beginClinging();
+            if (this.targetCeiling != null) {
+                BlockPos ceil = this.targetCeiling;
+                // If we're already adjacent to the ceiling, just cling directly
+                if (ceil.getY() - JumpyBugEntity.this.getY() <= 2) {
+                    JumpyBugEntity.this.beginClinging();
+                } else {
+                    JumpyBugEntity.this.beginLeapToCeiling(ceil);
+                }
+            }
         }
 
         @Override
         public void stop() {
             if (JumpyBugEntity.this.isClingingToCeiling()) {
                 JumpyBugEntity.this.stopClinging();
+            } else if (JumpyBugEntity.this.isLeapingToCeiling()) {
+                JumpyBugEntity.this.cancelLeap();
             }
+            this.targetCeiling = null;
         }
 
         @Override
         public void tick() {
-            LivingEntity target = JumpyBugEntity.this.getTarget();
-            if (target == null) {
-                return;
-            }
-
-            JumpyBugEntity.this.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            if (JumpyBugEntity.this.pounceCooldownTicks <= 0
-                    && (JumpyBugEntity.this.hasLineOfSight(target) || JumpyBugEntity.this.distanceToSqr(target) <= 4.0D)) {
-                JumpyBugEntity.this.stopClinging();
-                JumpyBugEntity.this.beginPounce(target);
+            if (JumpyBugEntity.this.isClingingToCeiling()) {
+                LivingEntity target = JumpyBugEntity.this.getTarget();
+                if (target != null) {
+                    JumpyBugEntity.this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                    if (JumpyBugEntity.this.pounceCooldownTicks <= 0
+                            && (JumpyBugEntity.this.hasLineOfSight(target) || JumpyBugEntity.this.distanceToSqr(target) <= 4.0D)) {
+                        JumpyBugEntity.this.stopClinging();
+                        JumpyBugEntity.this.beginPounce(target);
+                    }
+                }
             }
         }
     }
@@ -531,6 +673,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
                     && target.isAlive()
                     && !JumpyBugEntity.this.isClingingToCeiling()
                     && !JumpyBugEntity.this.isPouncing()
+                    && !JumpyBugEntity.this.isLeapingToCeiling()
                     && JumpyBugEntity.this.recoveryTicks <= 0;
         }
 
@@ -547,11 +690,24 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
             }
 
             JumpyBugEntity.this.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            // Only walk when close; at range, pounce is the primary approach
-            if (JumpyBugEntity.this.distanceToSqr(target) <= MELEE_WALK_RANGE * MELEE_WALK_RANGE) {
+            double distSqr = JumpyBugEntity.this.distanceToSqr(target);
+
+            if (distSqr <= MELEE_WALK_RANGE * MELEE_WALK_RANGE) {
                 JumpyBugEntity.this.getNavigation().moveTo(target, 1.05D);
-            } else {
+            } else if (distSqr > CHASE_LEAP_RANGE_SQR) {
+                if (JumpyBugEntity.this.onGround() && JumpyBugEntity.this.chaseJumpCooldownTicks <= 0) {
+                    Vec3 dir = target.position().subtract(JumpyBugEntity.this.position()).normalize();
+                    JumpyBugEntity.this.setDeltaMovement(
+                            dir.x * CHASE_LEAP_HORIZONTAL,
+                            CHASE_LEAP_VERTICAL,
+                            dir.z * CHASE_LEAP_HORIZONTAL
+                    );
+                    JumpyBugEntity.this.hasImpulse = true;
+                    JumpyBugEntity.this.chaseJumpCooldownTicks = CHASE_JUMP_COOLDOWN;
+                }
                 JumpyBugEntity.this.getNavigation().stop();
+            } else {
+                JumpyBugEntity.this.getNavigation().moveTo(target, 1.05D);
             }
         }
     }
@@ -565,6 +721,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         public boolean canUse() {
             return !JumpyBugEntity.this.isClingingToCeiling()
                     && !JumpyBugEntity.this.isPouncing()
+                    && !JumpyBugEntity.this.isLeapingToCeiling()
                     && JumpyBugEntity.this.getTarget() == null
                     && super.canUse();
         }
@@ -573,6 +730,7 @@ public class JumpyBugEntity extends Monster implements GeoEntity {
         public boolean canContinueToUse() {
             return !JumpyBugEntity.this.isClingingToCeiling()
                     && !JumpyBugEntity.this.isPouncing()
+                    && !JumpyBugEntity.this.isLeapingToCeiling()
                     && super.canContinueToUse();
         }
     }

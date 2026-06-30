@@ -264,6 +264,7 @@ public final class AntarchyFabricContent {
     private static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(Registries.POTION, Antarchy.MODID);
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Antarchy.MODID);
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Antarchy.MODID);
+    private static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, Antarchy.MODID);
     private static final Tier ULTIMATE_TIER = new SimpleToolTier(
             3072,
             10.5F,
@@ -1808,6 +1809,26 @@ public final class AntarchyFabricContent {
             () -> new DeferredSpawnEggItem(CREEPING_HORROR, 0x6B3A1F, 0x6B0000, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> LURKING_TERROR_SPAWN_EGG = ITEMS.register("lurking_terror_spawn_egg",
             () -> new DeferredSpawnEggItem(LURKING_TERROR, 0x2D5A1B, 0x8B0000, new Item.Properties()));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = ENTITY_TYPES.register("cheep",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.CheepEntity::new, MobCategory.WATER_CREATURE)
+                    .sized(1.0F, 1.2F)
+                    .clientTrackingRange(8)
+                    .build("cheep"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.DorrieEntity::new, MobCategory.WATER_CREATURE)
+                    .sized(2.4F, 2.0F)
+                    .clientTrackingRange(10)
+                    .build("dorrie"));
+    public static final DeferredItem<Item> CHEEP_ITEM = ITEMS.register("cheep",
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build())));
+    public static final DeferredItem<com.craisinlord.antarchy.content.item.CheepOnAStickItem> CHEEP_ON_A_STICK = ITEMS.register("cheep_on_a_stick",
+            () -> new com.craisinlord.antarchy.content.item.CheepOnAStickItem(new Item.Properties().stacksTo(1).durability(25)));
+    public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
+            () -> new DeferredSpawnEggItem(CHEEP, 0xFF00AA, 0x00FF44, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
+            () -> new DeferredSpawnEggItem(DORRIE, 0x1B91B3, 0xC0E8FF, new Item.Properties()));
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANTARCHY_TAB = CREATIVE_MODE_TABS.register("antarchy",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .title(net.minecraft.network.chat.Component.translatable("itemGroup.antarchy.antarchy"))
@@ -1894,6 +1915,8 @@ public final class AntarchyFabricContent {
         FabricDefaultAttributeRegistry.register(TORETERROR.get(), ToreterrorEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(CREEPING_HORROR.get(), CreepingHorrorEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(LURKING_TERROR.get(), LurkingTerrorEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(DORRIE.get(), com.craisinlord.antarchy.content.entity.DorrieEntity.createAttributes().build());
 
         FabricDefaultAttributeRegistry.register(RED_ANT.get(), buildAntAttributes(
                 AntarchySettings.redAntHealth(),
@@ -2048,6 +2071,8 @@ public final class AntarchyFabricContent {
                  "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg",
                  "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
             case "stink_bug", "chiten" -> 22;
+            case "cheep" -> 21;
+            case "cheep_on_a_stick" -> 52;
             case "water_cannon" -> 52;
             case "primordial_helmet", "primordial_chestplate", "primordial_leggings", "primordial_boots" -> 53;
             case "jumpy_boots" -> 54;
@@ -2329,7 +2354,11 @@ public final class AntarchyFabricContent {
         MOB_EFFECTS.register();
         POTIONS.register();
         ITEMS.register();
+        MENUS.register();
         CREATIVE_MODE_TABS.register();
+
+        // Wire common-module accessors after all registrations are complete.
+        AntarchyObjects.CHEEP_ITEM = () -> CHEEP_ITEM.get();
 
         AntarchySoundEvents.bind(
                 SQUIDZOOKA_FIRE,
@@ -2480,6 +2509,8 @@ public final class AntarchyFabricContent {
                 CREEPING_HORROR,
                 LURKING_TERROR,
                 STINK_BUG,
+                CHEEP,
+                DORRIE,
                 () -> DUPLICATOR_LOG.get(),
                 () -> DUPLICATOR_SAPLING.get(),
                 () -> DUCT_TAPE.get(),

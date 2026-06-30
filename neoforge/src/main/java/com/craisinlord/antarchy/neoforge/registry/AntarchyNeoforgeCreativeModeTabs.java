@@ -115,6 +115,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
         }
 
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(AntarchyNeoforgeItems.CHEEP_ON_A_STICK.get());
             event.insertAfter(new ItemStack(Items.SHEARS), new ItemStack(AntarchyNeoforgeItems.DUCT_TAPE_ITEM.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(new ItemStack(Items.MINECART), new ItemStack(AntarchyNeoforgeItems.DIAMOND_MINECART_ITEM.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.accept(AntarchyNeoforgeItems.BILE_BUCKET.get());
@@ -144,6 +145,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.MOLEVORE_NOSE.get());
             event.accept(AntarchyNeoforgeItems.MOLEWORM_ITEM.get());
             event.accept(AntarchyNeoforgeItems.MUD_PIE.get());
+            event.accept(AntarchyNeoforgeItems.CHEEP.get());
             event.accept(AntarchyNeoforgeItems.LUCID_EYE.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_SHARD.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_APPLE.get());
@@ -407,7 +409,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
 
             // 15 - Tools
             case "ultimate_pickaxe", "ultimate_axe", "ultimate_shovel", "ultimate_hoe",
-                 "duct_tape", "diamond_minecart", "gravity_sculk_sensor" -> 15;
+                 "duct_tape", "diamond_minecart", "gravity_sculk_sensor", "cheep_on_a_stick" -> 15;
 
             // 16 - Liquid buckets
             case "bile_bucket", "ichor_bucket", "antiwater_bucket", "cloud_bucket" -> 16;
@@ -435,7 +437,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             case "ultimate_bow", "ultimate_crossbow" -> 20;
 
             // 21 - Foods
-            case "cloud_shark_fin_soup", "mud_pie", "rainbow_sugar",
+            case "cloud_shark_fin_soup", "mud_pie", "cheep", "rainbow_sugar",
                  "blood_crystal_apple" -> 21;
 
             // 22 - Crafting ingredients
