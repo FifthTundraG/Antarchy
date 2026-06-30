@@ -163,6 +163,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new ToreterrorFloatGoal());
         this.goalSelector.addGoal(1, new ToreterrorRangedGoal());
         this.goalSelector.addGoal(2, new ToreterrorJumpGoal());
         this.goalSelector.addGoal(3, new ToreterrorSpinGoal());
@@ -819,6 +820,28 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         @Override
         public void stop() {
             ToreterrorEntity.this.jumpAnimTicks = 0;
+        }
+    }
+
+    private final class ToreterrorFloatGoal extends Goal {
+        ToreterrorFloatGoal() {
+            this.setFlags(EnumSet.of(Flag.JUMP));
+        }
+
+        @Override
+        public boolean canUse() {
+            return ToreterrorEntity.this.isInWater() && !ToreterrorEntity.this.onGround();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return canUse();
+        }
+
+        @Override
+        public void tick() {
+            Vec3 vel = ToreterrorEntity.this.getDeltaMovement();
+            ToreterrorEntity.this.setDeltaMovement(vel.x, Math.min(vel.y + 0.08D, 0.2D), vel.z);
         }
     }
 

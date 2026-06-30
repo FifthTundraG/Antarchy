@@ -1,6 +1,7 @@
 package com.craisinlord.antarchy.fabric.client;
 
 import com.craisinlord.antarchy.Antarchy;
+import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.client.renderer.*;
 import com.craisinlord.antarchy.content.client.particle.*;
 import com.craisinlord.antarchy.content.client.renderer.AntiwaterFluidRenderer;
@@ -49,10 +50,6 @@ public final class AntarchyFabricClientBootstrap {
 
     public static void register() {
         AntarchyKeyBindings.register();
-        net.minecraft.client.gui.screens.MenuScreens.register(
-                com.craisinlord.antarchy.fabric.AntarchyFabricContent.DORRIE_MENU.get(),
-                com.craisinlord.antarchy.content.client.screen.DorrieScreen::new
-        );
         registerRenderers();
         registerEntityLayers();
         registerColors();
@@ -119,6 +116,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.LURKING_TERROR.get(), LurkingTerrorRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.CHEEP.get(), com.craisinlord.antarchy.content.client.renderer.CheepRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.DORRIE.get(), com.craisinlord.antarchy.content.client.renderer.DorrieRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.HERCULES_BEETLE.get(), com.craisinlord.antarchy.content.client.renderer.HerculesBeetleRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.boatLayer(), BoatModel::createBodyModel);
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
@@ -321,6 +319,7 @@ public final class AntarchyFabricClientBootstrap {
 
     private static void registerClientCallbacks() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            HerculesBeetleImpactShakeClientState.tick();
             if (client.player != null) {
                 ParalyzedClientHandler.clampPlayerInput(client.player);
             }
@@ -332,6 +331,7 @@ public final class AntarchyFabricClientBootstrap {
             BloodCrystalKatanaTrailHandler.tick();
             ScorpionWhipTetherRenderHandler.tick();
             DorrieJumpClientHandler.tick();
+            HerculesBeetleClientHandler.tick();
         });
 
         GravityGunClientHandler.register();

@@ -22,7 +22,12 @@
       }
     }
   },
-  "spawn_costs": {},
+  "spawn_costs": {
+    "antarchy:hercules_beetle": {
+      "energy_budget": 0.1,
+      "charge": 15
+    }
+  },
   "carvers": {
     "air": [],
     "liquid": []
@@ -61,6 +66,12 @@
         "weight": 95,
         "minCount": 2,
         "maxCount": 5
+      },
+      {
+        "type": "antarchy:hercules_beetle",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
     "creature": [

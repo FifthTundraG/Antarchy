@@ -115,7 +115,6 @@ public class AntarchyNeoforgeCreativeModeTabs {
         }
 
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            event.accept(AntarchyNeoforgeItems.CHEEP_ON_A_STICK.get());
             event.insertAfter(new ItemStack(Items.SHEARS), new ItemStack(AntarchyNeoforgeItems.DUCT_TAPE_ITEM.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(new ItemStack(Items.MINECART), new ItemStack(AntarchyNeoforgeItems.DIAMOND_MINECART_ITEM.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.accept(AntarchyNeoforgeItems.BILE_BUCKET.get());
@@ -384,7 +383,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             // 8 - Blood crystal blocks (not the shard ingredient)
             case "blood_crystal_block", "small_blood_crystal_bud", "medium_blood_crystal_bud",
                  "large_blood_crystal_bud", "budding_blood_crystal", "blood_crystal_cluster",
-                 "myrmite", "broodstone", "chiten_block", "amber_moss_block", "amber_moss_carpet" -> 8;
+                 "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
 
             // 9 - Ouranwood leaves
             case "ouranwood_leaves" -> 9;
@@ -409,7 +408,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
 
             // 15 - Tools
             case "ultimate_pickaxe", "ultimate_axe", "ultimate_shovel", "ultimate_hoe",
-                 "duct_tape", "diamond_minecart", "gravity_sculk_sensor", "cheep_on_a_stick" -> 15;
+                 "duct_tape", "diamond_minecart", "gravity_sculk_sensor" -> 15;
 
             // 16 - Liquid buckets
             case "bile_bucket", "ichor_bucket", "antiwater_bucket", "cloud_bucket" -> 16;

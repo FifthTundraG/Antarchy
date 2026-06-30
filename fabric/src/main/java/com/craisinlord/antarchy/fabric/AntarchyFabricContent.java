@@ -114,6 +114,7 @@ import com.craisinlord.antarchy.content.item.DiamondMinecartItem;
 import com.craisinlord.antarchy.content.item.ReverieBottleItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
 import com.craisinlord.antarchy.content.item.SizeRayItem;
 import com.craisinlord.antarchy.content.item.SquidzookaItem;
 import com.craisinlord.antarchy.content.item.SimpleToolTier;
@@ -1820,14 +1821,19 @@ public final class AntarchyFabricContent {
                     .sized(2.4F, 2.0F)
                     .clientTrackingRange(10)
                     .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.HerculesBeetleEntity>> HERCULES_BEETLE = ENTITY_TYPES.register("hercules_beetle",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.HerculesBeetleEntity::new, MobCategory.MONSTER)
+                    .sized(3.0F, 4.0F)
+                    .clientTrackingRange(12)
+                    .build("hercules_beetle"));
     public static final DeferredItem<Item> CHEEP_ITEM = ITEMS.register("cheep",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build())));
-    public static final DeferredItem<com.craisinlord.antarchy.content.item.CheepOnAStickItem> CHEEP_ON_A_STICK = ITEMS.register("cheep_on_a_stick",
-            () -> new com.craisinlord.antarchy.content.item.CheepOnAStickItem(new Item.Properties().stacksTo(1).durability(25)));
     public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
             () -> new DeferredSpawnEggItem(CHEEP, 0xFF00AA, 0x00FF44, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
             () -> new DeferredSpawnEggItem(DORRIE, 0x1B91B3, 0xC0E8FF, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> HERCULES_BEETLE_SPAWN_EGG = ITEMS.register("hercules_beetle_spawn_egg",
+            () -> new DeferredSpawnEggItem(HERCULES_BEETLE, 0x6B1F2A, 0xD4AF37, new Item.Properties().rarity(Rarity.RARE)));
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANTARCHY_TAB = CREATIVE_MODE_TABS.register("antarchy",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -1917,6 +1923,7 @@ public final class AntarchyFabricContent {
         FabricDefaultAttributeRegistry.register(LURKING_TERROR.get(), LurkingTerrorEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(DORRIE.get(), com.craisinlord.antarchy.content.entity.DorrieEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(HERCULES_BEETLE.get(), com.craisinlord.antarchy.content.entity.HerculesBeetleEntity.createAttributes().build());
 
         FabricDefaultAttributeRegistry.register(RED_ANT.get(), buildAntAttributes(
                 AntarchySettings.redAntHealth(),
@@ -2069,10 +2076,10 @@ public final class AntarchyFabricContent {
                  "bomber_spawn_egg", "jumpy_bug_spawn_egg", "spit_bug_spawn_egg", "stink_bug_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg", "octopus_bomb_spawn_egg",
                  "nightmare_spawn_egg", "bed_bug_spawn_egg", "lucid_spawn_egg", "scorpion_spawn_egg",
                  "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg",
+                 "hercules_beetle_spawn_egg",
                  "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
             case "stink_bug", "chiten" -> 22;
             case "cheep" -> 21;
-            case "cheep_on_a_stick" -> 52;
             case "water_cannon" -> 52;
             case "primordial_helmet", "primordial_chestplate", "primordial_leggings", "primordial_boots" -> 53;
             case "jumpy_boots" -> 54;
@@ -2359,6 +2366,7 @@ public final class AntarchyFabricContent {
 
         // Wire common-module accessors after all registrations are complete.
         AntarchyObjects.CHEEP_ITEM = () -> CHEEP_ITEM.get();
+        AntarchyObjects.setHerculesBeetle(() -> HERCULES_BEETLE.get());
 
         AntarchySoundEvents.bind(
                 SQUIDZOOKA_FIRE,
@@ -2588,6 +2596,7 @@ public final class AntarchyFabricContent {
         LucidEyeProjectileEntity.invertedEffectSupplier = () -> mobEffectHolder(INVERTED);
 
         ScorpionWhipTetherSync.setSink(AntarchyFabricNetworking::syncScorpionWhipTether);
+        HerculesBeetleImpactShakeSync.setSink((player, ticks) -> net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload(ticks)));
         BloodCrystalKatanaItem.setTrailCallback(AntarchyFabricNetworking::syncKatanaTrail);
         com.craisinlord.antarchy.content.gravity.AntarchyGravityApi.setSyncDispatcher(AntarchyFabricNetworking::syncGravityEntity);
         AntarchyFabricEvents.register();

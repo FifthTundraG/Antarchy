@@ -7,7 +7,6 @@ import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
 import com.craisinlord.antarchy.content.item.*;
-import com.craisinlord.antarchy.content.item.CheepOnAStickItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalArmorItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalAppleItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
@@ -369,8 +368,6 @@ public final class AntarchyNeoforgeItems {
                             .nutrition(2)
                             .saturationModifier(0.2F)
                             .build())));
-    public static final DeferredItem<CheepOnAStickItem> CHEEP_ON_A_STICK = ITEMS.register("cheep_on_a_stick",
-            () -> new CheepOnAStickItem(new Item.Properties().stacksTo(1).durability(25)));
     public static final DeferredItem<Item> MOLEWORM_ITEM = ITEMS.register("moleworm",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder()
@@ -591,6 +588,8 @@ public final class AntarchyNeoforgeItems {
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.CHEEP, 0xAA22FF, 0x22FF44, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.DORRIE, 0x1B91B3, 0xC0E8FF, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> HERCULES_BEETLE_SPAWN_EGG = ITEMS.register("hercules_beetle_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.HERCULES_BEETLE, 0x6B1F2A, 0xD4AF37, new Item.Properties().rarity(Rarity.RARE)));
 
     private AntarchyNeoforgeItems() {}
 

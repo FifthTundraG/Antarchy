@@ -150,7 +150,7 @@ public final class AntarchySettings {
     private static int basiliskSpawnMaxLightLevel = 5;
     private static double basiliskHealth = 150.0D;
     private static double basiliskAttackDamage = 36.0D;
-    private static double basiliskMovementSpeed = 0.30D;
+    private static double basiliskMovementSpeed = 0.225D;
     private static double basiliskArmor = 6.0D;
     private static double basiliskKnockbackResistance = 0.5D;
     private static double basiliskFollowRange = 28.0D;
@@ -470,6 +470,9 @@ public final class AntarchySettings {
     private static double cheepHealth = 8.0D;
     private static double cheepAttackDamage = 3.0D;
     private static double dorrieHealth = 60.0D;
+    private static double herculesBeetleHealth = 500.0D;
+    private static double herculesBeetleAttackDamage = 30.0D;
+    private static double herculesBeetleChargeDamage = 40.0D;
 
     private AntarchySettings() {
     }
@@ -2398,5 +2401,11 @@ public final class AntarchySettings {
     public static double cheepAttackDamage() { return cheepAttackDamage; }
     public static void setCheepAttackDamage(double v) { cheepAttackDamage = v; }
     public static double dorrieHealth() { return dorrieHealth; }
+    public static double herculesBeetleHealth() { return herculesBeetleHealth; }
+    public static void setHerculesBeetleHealth(double v) { herculesBeetleHealth = v; }
+    public static double herculesBeetleAttackDamage() { return herculesBeetleAttackDamage; }
+    public static void setHerculesBeetleAttackDamage(double v) { herculesBeetleAttackDamage = v; }
+    public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
+    public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
     public static void setDorrieHealth(double v) { dorrieHealth = v; }
 }

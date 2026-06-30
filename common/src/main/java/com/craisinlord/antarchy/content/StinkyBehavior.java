@@ -104,6 +104,19 @@ public final class StinkyBehavior {
         applyNearbyNausea(entity, STINK_BUG_AURA_RADIUS, STINK_BUG_BURST_NAUSEA_DURATION_TICKS);
     }
 
+    public static void applyBurstStinkyEffect(LivingEntity source, double radius, int durationTicks) {
+        if (source.level().isClientSide()) {
+            return;
+        }
+        for (LivingEntity entity : source.level().getEntitiesOfClass(
+                LivingEntity.class,
+                source.getBoundingBox().inflate(radius),
+                e -> e.isAlive() && e != source
+        )) {
+            entity.addEffect(new MobEffectInstance(AntarchyObjects.STINKY_EFFECT.get(), durationTicks, 0, false, true, true));
+        }
+    }
+
     public static void applyNearbyNausea(LivingEntity source, double radius, int durationTicks) {
         if (source.level().isClientSide()) {
             return;
