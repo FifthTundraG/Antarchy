@@ -193,6 +193,13 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
 
 
+    // Hercules Beetle
+
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_HEALTH;
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_ATTACK_DAMAGE;
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_CHARGE_DAMAGE;
+
+
     // Lucid
 
     private static final ModConfigSpec.DoubleValue LUCID_ATTACK_RANGE;
@@ -493,6 +500,12 @@ public final class AntarchyMobsConfig {
         DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
         b.pop();
 
+        b.push("herculesBeetle");
+        HERCULES_BEETLE_HEALTH = b.comment("Base max health.").defineInRange("health", 500.0D, 1.0D, 32768.0D);
+        HERCULES_BEETLE_ATTACK_DAMAGE = b.comment("Base melee damage for ground and flying attacks.").defineInRange("attackDamage", 30.0D, 0.0D, 1024.0D);
+        HERCULES_BEETLE_CHARGE_DAMAGE = b.comment("AOE impact damage dealt when a charge collides.").defineInRange("chargeDamage", 40.0D, 0.0D, 1024.0D);
+        b.pop();
+
         b.push("toreterror");
         TORETERROR_HEALTH                  = b.comment("Base max health.").defineInRange("health", 300.0D, 1.0D, 32768.0D);
         TORETERROR_JUMP_ATTACK_DAMAGE      = b.comment("Damage dealt by the jump shockwave.").defineInRange("jumpAttackDamage", 14.0D, 0.0D, 1024.0D);
@@ -652,4 +665,7 @@ public final class AntarchyMobsConfig {
     static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
     static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
     static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
+    static double  herculesBeetleHealth()                   { return HERCULES_BEETLE_HEALTH.get(); }
+    static double  herculesBeetleAttackDamage()             { return HERCULES_BEETLE_ATTACK_DAMAGE.get(); }
+    static double  herculesBeetleChargeDamage()             { return HERCULES_BEETLE_CHARGE_DAMAGE.get(); }
 }

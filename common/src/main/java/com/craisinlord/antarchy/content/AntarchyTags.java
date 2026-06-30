@@ -30,6 +30,7 @@ public final class AntarchyTags {
         public static final TagKey<Block> MOLEVORE_SEE_THROUGH_BLOCKS = TagKey.create(Registries.BLOCK, id("molevore_see_through_blocks"));
         public static final TagKey<Block> TERMITE_FOODS = TagKey.create(Registries.BLOCK, id("termite_foods"));
         public static final TagKey<Block> UMBRAL_MOSS_REPLACEABLE = TagKey.create(Registries.BLOCK, id("umbral_moss_replaceable"));
+        public static final TagKey<Block> HERCULES_BEETLE_CHARGE_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, id("hercules_beetle_charge_immune_blocks"));
 
         private Blocks() {
         }
@@ -88,6 +89,7 @@ public final class AntarchyTags {
         public static final TagKey<Item> CATERPILLAR_FOODS = TagKey.create(Registries.ITEM, id("caterpillar_foods"));
         public static final TagKey<Item> BUTTERFLY_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("butterfly_breeding_foods"));
         public static final TagKey<Item> REVERIE_DUPLICATION_ITEMS = TagKey.create(Registries.ITEM, id("reverie_duplication_items"));
+        public static final TagKey<Item> HERCULES_BEETLE_FOOD = TagKey.create(Registries.ITEM, id("hercules_beetle_food"));
 
         private Items() {
         }

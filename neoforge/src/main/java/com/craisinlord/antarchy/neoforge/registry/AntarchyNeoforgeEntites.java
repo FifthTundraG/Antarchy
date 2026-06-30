@@ -15,6 +15,7 @@ import com.craisinlord.antarchy.content.entity.DrTrayaurusEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
 import com.craisinlord.antarchy.content.entity.EmperorScorpionEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
+import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
@@ -311,6 +312,11 @@ public final class AntarchyNeoforgeEntites {
                     .sized(2.4F, 2.0F)
                     .clientTrackingRange(10)
                     .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = ENTITY_TYPES.register("hercules_beetle",
+            () -> EntityType.Builder.of(HerculesBeetleEntity::new, MobCategory.MONSTER)
+                    .sized(3.0F, 4.0F)
+                    .clientTrackingRange(12)
+                    .build("hercules_beetle"));
     public static final DeferredHolder<EntityType<?>, EntityType<UpwardFallingBlockEntity>> UPWARD_FALLING_BLOCK = ENTITY_TYPES.register("upward_falling_block",
             () -> EntityType.Builder.<UpwardFallingBlockEntity>of(
                             UpwardFallingBlockEntity::new, MobCategory.MISC)

@@ -1,13 +1,14 @@
 package com.craisinlord.antarchy.content.entity;
 
-import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.config.AntarchySettings;
-import com.craisinlord.antarchy.content.item.CheepOnAStickItem;
+import java.util.EnumSet;
+import java.util.List;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -31,8 +32,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
-import java.util.EnumSet;
-import java.util.List;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -40,7 +39,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -54,6 +52,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class DorrieEntity extends Animal implements GeoEntity {
     private static final ResourceLocation CHEEP_ITEM_ID = ResourceLocation.fromNamespaceAndPath("antarchy", "cheep");
+
     private static final EntityDataAccessor<Boolean> HAS_SADDLE =
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TAMED =
@@ -62,8 +61,8 @@ public class DorrieEntity extends Animal implements GeoEntity {
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.INT);
 
     private static final int MAX_CHARGE_TICKS = 40;
-    private static final float BASE_SPEED = 0.6F;
-    private static final float BOOSTED_SPEED = 1.3F;
+    private static final float WATER_RIDE_SPEED = 1.26F;
+    private static final float LAND_BEACH_SPEED = 0.04F;
 
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation SWIM_ANIM = RawAnimation.begin().thenLoop("swim");
@@ -73,16 +72,21 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
+    private static final int RIDES_TO_TAME = 4;
+    private static final int BUCK_DELAY_TICKS = 60;
+
     private int chargeTicks = 0;
     private boolean isCharging = false;
     private boolean isLeaping = false;
     private boolean wasInAir = false;
     private int landAnimTicks = 0;
-    private boolean isPressingJump = false;
+    private int rideAttempts = 0;
+    private int buckTimer = 0;
+    private int swimForwardTicks = 0;
 
     public DorrieEntity(EntityType<? extends DorrieEntity> entityType, Level level) {
         super(entityType, level);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, BASE_SPEED, 1.0F, true);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 1.0F, true);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
@@ -113,11 +117,10 @@ public class DorrieEntity extends Animal implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, AntarchySettings.dorrieHealth())
-                .add(Attributes.MOVEMENT_SPEED, BASE_SPEED)
+                .add(Attributes.MOVEMENT_SPEED, 1.0D)
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D);
     }
-
 
     public boolean hasSaddle() {
         return this.entityData.get(HAS_SADDLE);
@@ -143,12 +146,12 @@ public class DorrieEntity extends Animal implements GeoEntity {
         this.entityData.set(JUMP_CHARGE, charge);
     }
 
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Tamed", this.isTamed());
         tag.putBoolean("HasSaddle", this.hasSaddle());
+        tag.putInt("RideAttempts", this.rideAttempts);
     }
 
     @Override
@@ -156,28 +159,20 @@ public class DorrieEntity extends Animal implements GeoEntity {
         super.readAdditionalSaveData(tag);
         this.setTamed(tag.getBoolean("Tamed"));
         this.setSaddle(tag.getBoolean("HasSaddle"));
+        this.rideAttempts = tag.getInt("RideAttempts");
     }
-
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
         if (!this.isTamed()) {
-            if (!this.level().isClientSide && this.isCheepItem(stack)) {
-                if (!player.getAbilities().instabuild) stack.shrink(1);
-                if (this.random.nextInt(3) == 0) {
-                    this.setTamed(true);
-                    this.playSound(SoundEvents.HORSE_BREATHE, 0.5F, 1.0F);
-                } else {
-                    this.playSound(SoundEvents.DOLPHIN_HURT, 0.5F, 1.0F);
-                }
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            if (!this.level().isClientSide) {
+                player.startRiding(this);
             }
-            return super.mobInteract(player, hand);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        // Remove saddle with empty hand
         if (this.hasSaddle() && stack.isEmpty() && !player.isPassengerOfSameVehicle(this)) {
             if (!this.level().isClientSide) {
                 this.setSaddle(false);
@@ -187,19 +182,21 @@ public class DorrieEntity extends Animal implements GeoEntity {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        // Apply saddle
         if (!this.hasSaddle() && stack.is(Items.SADDLE)) {
             if (!this.level().isClientSide) {
                 this.setSaddle(true);
-                if (!player.getAbilities().instabuild) stack.shrink(1);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
                 this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.0F);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        // Mount
         if (this.hasSaddle() && !player.isPassengerOfSameVehicle(this)) {
-            if (!this.level().isClientSide) player.startRiding(this);
+            if (!this.level().isClientSide) {
+                player.startRiding(this);
+            }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
@@ -207,79 +204,90 @@ public class DorrieEntity extends Animal implements GeoEntity {
     }
 
     @Override
-    public boolean isFood(ItemStack stack) {
-        return this.isCheepItem(stack);
-    }
-
-
-    @Override
     @Nullable
     public LivingEntity getControllingPassenger() {
-        if (!this.isTamed() || !this.hasSaddle()) return null;
+        if (!this.isTamed() || !this.hasSaddle()) {
+            return null;
+        }
         Entity passenger = this.getFirstPassenger();
-        if (passenger instanceof Player player) return player;
+        if (passenger instanceof Player player) {
+            return player;
+        }
         return null;
-    }
-
-    private boolean riderHasCheepStick(Player player) {
-        return player.getMainHandItem().getItem() instanceof CheepOnAStickItem
-                || player.getOffhandItem().getItem() instanceof CheepOnAStickItem;
-    }
-
-    private ItemStack getCheepStick(Player player) {
-        if (player.getMainHandItem().getItem() instanceof CheepOnAStickItem) return player.getMainHandItem();
-        if (player.getOffhandItem().getItem() instanceof CheepOnAStickItem) return player.getOffhandItem();
-        return ItemStack.EMPTY;
     }
 
     @Override
     protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
-        if (!riderHasCheepStick(player)) return Vec3.ZERO;
-        float forward = player.zza > 0 ? player.zza : player.zza / 4.0F;
+        float forward = player.zza;
         float strafe = player.xxa * 0.5F;
-        return new Vec3(strafe, travelVector.y, forward);
+        return new Vec3(strafe, 0, forward);
     }
 
     @Override
     protected float getRiddenSpeed(Player player) {
-        float speed = BASE_SPEED;
-        if (riderHasCheepStick(player)) {
-            speed = BOOSTED_SPEED;
-            if (!this.level().isClientSide) {
-                ItemStack stick = getCheepStick(player);
-                if (!stick.isEmpty() && this.tickCount % 10 == 0) {
-                    stick.hurtAndBreak(1, player,
-                            player.getMainHandItem().getItem() instanceof CheepOnAStickItem
-                                    ? net.minecraft.world.entity.EquipmentSlot.MAINHAND
-                                    : net.minecraft.world.entity.EquipmentSlot.OFFHAND);
-                }
-            }
-        }
+        float speed = (this.isInWater() || this.isInLava())
+                ? WATER_RIDE_SPEED * (1.0F + Math.min(this.swimForwardTicks, 60) * 0.025F)
+                : LAND_BEACH_SPEED;
         return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * speed;
     }
-
 
     @Override
     public void tick() {
         super.tick();
 
-        if (!this.level().isClientSide) {
-            LivingEntity passenger = this.getControllingPassenger();
-
-            if (passenger != null && isPressingJump) {
-                Vec3 mov = this.getDeltaMovement();
-                double boost = this.isInWater() ? 0.1D : 0.04D;
-                this.setDeltaMovement(mov.x, Math.min(mov.y + boost, 0.5D), mov.z);
-                this.hasImpulse = true;
+        if (this.getControllingPassenger() instanceof Player player) {
+            this.setYRot(player.getYRot());
+            this.yRotO = this.getYRot();
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+            if (this.isInWater() || this.isInLava()) {
+                if (player.zza > 0.05F) {
+                    this.swimForwardTicks = Math.min(this.swimForwardTicks + 1, 60);
+                } else {
+                    this.swimForwardTicks = Math.max(this.swimForwardTicks - 2, 0);
+                }
+            } else {
+                this.swimForwardTicks = 0;
             }
-
-            if (passenger instanceof Player && isCharging) {
-                chargeTicks = Math.min(chargeTicks + 1, MAX_CHARGE_TICKS);
-                setJumpCharge((int) ((chargeTicks / (float) MAX_CHARGE_TICKS) * 100));
-            }
+        } else {
+            this.swimForwardTicks = 0;
         }
 
-        if (landAnimTicks > 0) landAnimTicks--;
+        if (!this.level().isClientSide && !this.isTamed() && this.getFirstPassenger() instanceof Player rider) {
+            buckTimer++;
+            if (buckTimer >= BUCK_DELAY_TICKS) {
+                rider.stopRiding();
+                buckTimer = 0;
+                rideAttempts++;
+                if (rideAttempts >= RIDES_TO_TAME) {
+                    this.setTamed(true);
+                    this.playSound(SoundEvents.HORSE_BREATHE, 0.8F, 1.0F);
+                } else {
+                    this.playSound(SoundEvents.HORSE_ANGRY, 0.8F, 1.0F);
+                }
+            }
+        } else if (!this.isTamed() && this.getFirstPassenger() == null) {
+            buckTimer = 0;
+        }
+
+        if (!this.level().isClientSide && this.getControllingPassenger() instanceof Player && isCharging) {
+            chargeTicks = Math.min(chargeTicks + 1, MAX_CHARGE_TICKS);
+            setJumpCharge((int) ((chargeTicks / (float) MAX_CHARGE_TICKS) * 100));
+        }
+
+        // Surface buoyancy: when in water and not mid-leap, push toward the waterline.
+        // Stronger upward force when fully submerged, gentle when at the surface so
+        // Dorrie glides on top rather than diving or bouncing.
+        if (this.isInWater() && !isLeaping) {
+            Vec3 mov = this.getDeltaMovement();
+            double push = this.isUnderWater() ? 0.07D : 0.015D;
+            double cappedY = this.isUnderWater() ? 0.3D : 0.05D;
+            this.setDeltaMovement(mov.x, Math.min(mov.y + push, cappedY), mov.z);
+        }
+
+        if (landAnimTicks > 0) {
+            landAnimTicks--;
+        }
 
         boolean inAirNow = !this.onGround() && !this.isInWater() && !this.isInLava();
         if (wasInAir && !inAirNow && isLeaping) {
@@ -289,32 +297,29 @@ public class DorrieEntity extends Animal implements GeoEntity {
         wasInAir = inAirNow;
     }
 
+    public void setPressingJump(boolean pressing) {}
 
-    /** Called when the rider presses/releases space (up movement). */
-    public void setPressingJump(boolean pressing) {
-        this.isPressingJump = pressing;
-    }
-
-    /** Called when the rider presses left-control (charge start). */
     public void startJumpCharge() {
         if (!this.level().isClientSide) {
             isCharging = true;
         }
     }
 
-    /** Called when the rider releases left-control (charge release). */
     public void releaseJump() {
         if (!this.level().isClientSide && isCharging) {
             float power = chargeTicks / (float) MAX_CHARGE_TICKS;
             if (power > 0.05F) {
-                double horizontal = 0.8D + power * 1.4D;
-                double vertical = 0.4D + power * 0.8D;
                 Vec3 look = this.getLookAngle();
                 Vec3 current = this.getDeltaMovement();
+                // Add to existing momentum — no direction snap. The rider already has
+                // forward speed, so the jump just launches them upward and slightly
+                // accelerates in the direction they're already facing.
+                double forwardAdd = power * 0.5D;
+                double vertical    = 0.55D + power * 0.9D;
                 this.setDeltaMovement(
-                        look.x * horizontal * 0.7D + current.x * 0.3D,
+                        current.x + look.x * forwardAdd,
                         vertical,
-                        look.z * horizontal * 0.7D + current.z * 0.3D
+                        current.z + look.z * forwardAdd
                 );
                 this.hasImpulse = true;
                 isLeaping = true;
@@ -325,21 +330,20 @@ public class DorrieEntity extends Animal implements GeoEntity {
         }
     }
 
-
     @Override
     protected void positionRider(Entity passenger, MoveFunction moveFunction) {
         if (this.hasPassenger(passenger)) {
+            Vec3 forward = this.getLookAngle().multiply(1.0D, 0.0D, 1.0D);
             moveFunction.accept(passenger,
-                    this.getX(),
-                    this.getY() + this.getPassengersRidingOffset() + passenger.getBbHeight() * 0.5D,
-                    this.getZ());
+                    this.getX() - forward.x * 0.25D,
+                    this.getY() + 0.5D,
+                    this.getZ() - forward.z * 0.25D);
         }
     }
 
     public double getPassengersRidingOffset() {
         return 0.6D;
     }
-
 
     @Override
     protected void dropEquipment() {
@@ -349,13 +353,11 @@ public class DorrieEntity extends Animal implements GeoEntity {
         }
     }
 
-
     @Override
     @Nullable
     public DorrieEntity getBreedOffspring(ServerLevel level, AgeableMob mob) {
         return null;
     }
-
 
     @Override
     public boolean canBeLeashed() {
@@ -382,14 +384,15 @@ public class DorrieEntity extends Animal implements GeoEntity {
         return SoundEvents.DOLPHIN_SWIM;
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main_controller", 2, this::mainAnimController));
     }
 
     private PlayState mainAnimController(AnimationState<DorrieEntity> state) {
-        if (landAnimTicks > 0) return state.setAndContinue(JUMP_LAND_ANIM);
+        if (landAnimTicks > 0) {
+            return state.setAndContinue(JUMP_LAND_ANIM);
+        }
         if (isLeaping) {
             return state.setAndContinue(wasInAir ? JUMP_LOOP_ANIM : JUMP_START_ANIM);
         }
@@ -401,12 +404,17 @@ public class DorrieEntity extends Animal implements GeoEntity {
         return this.geoCache;
     }
 
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return this.isCheepItem(stack);
+    }
+
     private boolean isCheepItem(ItemStack stack) {
         return !stack.isEmpty() && stack.is(BuiltInRegistries.ITEM.getOptional(CHEEP_ITEM_ID).orElse(Items.AIR));
     }
 
     private static class HuntCheepGoal extends Goal {
-        private static final int COOLDOWN_TICKS = 600; // 30 seconds
+        private static final int COOLDOWN_TICKS = 600;
         private static final double HUNT_RANGE = 16.0D;
         private static final double ATTACK_RANGE_SQ = 2.5D * 2.5D;
 
@@ -421,13 +429,21 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
         @Override
         public boolean canUse() {
-            if (dorrie.level().isClientSide) return false;
-            if (cooldown > 0) { cooldown--; return false; }
+            if (dorrie.level().isClientSide) {
+                return false;
+            }
+            if (cooldown > 0) {
+                cooldown--;
+                return false;
+            }
+            if (dorrie.getControllingPassenger() != null) {
+                return false;
+            }
             List<CheepEntity> nearby = dorrie.level().getEntitiesOfClass(
-                    CheepEntity.class,
-                    dorrie.getBoundingBox().inflate(HUNT_RANGE)
-            );
-            if (nearby.isEmpty()) return false;
+                    CheepEntity.class, dorrie.getBoundingBox().inflate(HUNT_RANGE));
+            if (nearby.isEmpty()) {
+                return false;
+            }
             nearby.sort((a, b) -> Double.compare(a.distanceToSqr(dorrie), b.distanceToSqr(dorrie)));
             target = nearby.get(0);
             return true;
@@ -435,7 +451,9 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
         @Override
         public boolean canContinueToUse() {
-            return target != null && target.isAlive() && dorrie.distanceToSqr(target) <= HUNT_RANGE * HUNT_RANGE * 4;
+            return target != null && target.isAlive()
+                    && dorrie.getControllingPassenger() == null
+                    && dorrie.distanceToSqr(target) <= HUNT_RANGE * HUNT_RANGE * 4;
         }
 
         @Override
@@ -445,11 +463,14 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
         @Override
         public void tick() {
-            if (target == null) return;
+            if (target == null) {
+                return;
+            }
             dorrie.getLookControl().setLookAt(target, 30.0F, 30.0F);
             dorrie.getNavigation().moveTo(target, 1.4D);
             if (dorrie.distanceToSqr(target) <= ATTACK_RANGE_SQ) {
-                target.hurt(dorrie.damageSources().mobAttack(dorrie), (float) dorrie.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                target.hurt(dorrie.damageSources().mobAttack(dorrie),
+                        (float) dorrie.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 stop();
             }
         }
@@ -460,6 +481,5 @@ public class DorrieEntity extends Animal implements GeoEntity {
             dorrie.getNavigation().stop();
             cooldown = COOLDOWN_TICKS;
         }
-
     }
 }

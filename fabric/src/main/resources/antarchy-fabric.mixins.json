@@ -20,7 +20,7 @@
   ],
   "client": [
     "client.NightmareCameraShakeMixin",
-    "client.ToreterrorCameraShakeMixin",
+    "client.CameraShakeMixin",
     "client.DuctTapeInputMixin",
     "client.AntiwaterFogMixin",
     "client.GravityGunMouseScrollMixin",

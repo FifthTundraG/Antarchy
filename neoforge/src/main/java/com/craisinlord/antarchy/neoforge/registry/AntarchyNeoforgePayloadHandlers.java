@@ -4,6 +4,7 @@ import com.craisinlord.antarchy.content.network.BloodCrystalKatanaTrailPayload;
 import com.craisinlord.antarchy.neoforge.network.AntarchyGravityNetworking;
 import com.craisinlord.antarchy.neoforge.network.BrutalflyElytraNetworking;
 import com.craisinlord.antarchy.neoforge.network.DorrieJumpNetworking;
+import com.craisinlord.antarchy.neoforge.network.HerculesBeetleNetworking;
 import com.craisinlord.antarchy.neoforge.network.JumpyBootsNetworking;
 import com.craisinlord.antarchy.neoforge.network.MultipartNetworking;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +23,7 @@ public class AntarchyNeoforgePayloadHandlers {
         BrutalflyElytraNetworking.register(registrar);
         JumpyBootsNetworking.register(registrar);
         DorrieJumpNetworking.register(registrar);
+        HerculesBeetleNetworking.register(registrar);
         registrar.playToClient(
                 com.craisinlord.antarchy.content.network.BloodglassStatePayload.TYPE,
                 com.craisinlord.antarchy.content.network.BloodglassStatePayload.STREAM_CODEC,

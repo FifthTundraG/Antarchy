@@ -5,6 +5,7 @@ import com.craisinlord.antarchy.content.entity.BomberEntity;
 import com.craisinlord.antarchy.content.entity.ButterflyEntity;
 import com.craisinlord.antarchy.content.entity.CaterpillarEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
+import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
 import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.WaterBombEntity;
@@ -95,6 +96,8 @@ public final class AntarchyObjects {
     public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -431,6 +434,10 @@ public final class AntarchyObjects {
 
     public static void setOctopusBomb(Supplier<EntityType<OctopusBombEntity>> supplier) {
         OCTOPUS_BOMB = supplier;
+    }
+
+    public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
+        HERCULES_BEETLE = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

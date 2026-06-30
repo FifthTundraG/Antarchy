@@ -1,6 +1,9 @@
 package com.craisinlord.antarchy.neoforge;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -12,6 +15,7 @@ public final class AntarchyConfigModuleNeoforge {
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMobsConfig.SPEC,  "antarchy/antarchy_mobs.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyToolsConfig.SPEC, "antarchy/antarchy_tools.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMiscConfig.SPEC,  "antarchy/antarchy_misc.toml");
+        HerculesBeetleImpactShakeSync.setSink((player, ticks) -> PacketDistributor.sendToPlayer(player, new HerculesBeetleImpactShakePayload(ticks)));
         AntarchyNeoforge.modEventBusTempHolder.addListener(AntarchyConfigModuleNeoforge::onConfigChange);
     }
 
@@ -169,6 +173,9 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setCheepHealth(AntarchyMobsConfig.cheepHealth());
         AntarchySettings.setCheepAttackDamage(AntarchyMobsConfig.cheepAttackDamage());
         AntarchySettings.setDorrieHealth(AntarchyMobsConfig.dorrieHealth());
+        AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
+        AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
+        AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
     }
 
     private static void bakeToolsConfig() {

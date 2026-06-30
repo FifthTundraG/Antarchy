@@ -29,11 +29,20 @@ public final class AntarchyKeyBindings {
             CATEGORY
     );
 
+    public static final KeyMapping HERCULES_BEETLE_CHARGE = new KeyMapping(
+            "key.antarchy.hercules_beetle_charge",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_LCONTROL,
+            CATEGORY
+    );
+
     private AntarchyKeyBindings() {}
 
     @SubscribeEvent
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
         event.register(BRUTALFLY_FLAP);
         event.register(DORRIE_CHARGE_JUMP);
+        event.register(HERCULES_BEETLE_CHARGE);
     }
 }

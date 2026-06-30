@@ -51,6 +51,7 @@
     "client.ElythiaSkyMixin",
     "client.ElytraModelAccessor",
     "client.LightningBoltRendererMixin",
+    "client.MountedVehicleCameraMixin",
     "client.ParalyzedMouseTurnMixin",
     "client.ScreenEffectRendererFireVisualMixin",
     "client.SplashManagerMixin",

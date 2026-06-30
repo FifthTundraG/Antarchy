@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -38,9 +39,12 @@ public class StinkBugEntity extends Animal implements GeoEntity {
     private static final RawAnimation FART_ANIM = RawAnimation.begin().thenPlay("fart");
     private static final int FART_ANIMATION_TICKS = 30;
     private static final int STINK_BURST_PARTICLES = 32;
+    private static final double STINK_BURST_RADIUS = 8.0D;
+    private static final int STINK_BURST_DURATION_TICKS = 1200;
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private int fartAnimationTicks;
+    private boolean pendingFartBurst;
 
     public StinkBugEntity(EntityType<? extends StinkBugEntity> entityType, Level level) {
         super(entityType, level);
@@ -65,9 +69,10 @@ public class StinkBugEntity extends Animal implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new WaterAvoidingRandomStrollGoal(this, 0.9D));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.4D));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.9D));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -76,15 +81,20 @@ public class StinkBugEntity extends Animal implements GeoEntity {
 
         if (this.fartAnimationTicks > 0) {
             this.fartAnimationTicks--;
+            if (this.fartAnimationTicks == 0 && this.pendingFartBurst && !this.level().isClientSide()) {
+                StinkyBehavior.emitBurst(this, STINK_BURST_PARTICLES);
+                StinkyBehavior.applyBurstStinkyEffect(this, STINK_BURST_RADIUS, STINK_BURST_DURATION_TICKS);
+                this.pendingFartBurst = false;
+            }
         }
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean hurt = super.hurt(source, amount);
-        if (hurt) {
+        if (hurt && !this.pendingFartBurst) {
             this.triggerFartAnimation();
-            StinkyBehavior.emitBurst(this, STINK_BURST_PARTICLES);
+            this.pendingFartBurst = true;
         }
         return hurt;
     }
