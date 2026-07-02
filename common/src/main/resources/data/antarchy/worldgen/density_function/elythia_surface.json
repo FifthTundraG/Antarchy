@@ -70,7 +70,7 @@
           },
           "argument2": {
             "type": "minecraft:mul",
-            "argument1": 0.55,
+            "argument1": 0.58,
             "argument2": "minecraft:overworld/continents"
           }
         }

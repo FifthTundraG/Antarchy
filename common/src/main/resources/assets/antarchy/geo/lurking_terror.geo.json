@@ -6,9 +6,9 @@
 				"identifier": "geometry.lurkingterror",
 				"texture_width": 128,
 				"texture_height": 128,
-				"visible_bounds_width": 7,
-				"visible_bounds_height": 3.5,
-				"visible_bounds_offset": [0, 1.25, 0]
+				"visible_bounds_width": 8,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
 			},
 			"bones": [
 				{
@@ -96,7 +96,7 @@
 					"parent": "tailmiddle",
 					"pivot": [0, 6, 35],
 					"cubes": [
-						{"origin": [-5, 1, 35], "size": [10, 10, 14], "uv": [0, 26]}
+						{"origin": [-5, 1, 35], "size": [10, 10, 14], "uv": [49, 95]}
 					]
 				},
 				{

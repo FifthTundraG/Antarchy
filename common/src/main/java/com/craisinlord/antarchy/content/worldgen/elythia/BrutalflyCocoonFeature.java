@@ -1,25 +1,20 @@
 package com.craisinlord.antarchy.content.worldgen.elythia;
 
 import com.craisinlord.antarchy.content.AntarchyObjects;
-import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BrutalflyCocoonFeature extends Feature<NoneFeatureConfiguration> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BrutalflyCocoonFeature.class);
     private static final int MAX_ANCHOR_Y = 160;
     private static final int COCOON_CLEAR_RADIUS = 1;
     private static final int COCOON_CLEAR_MIN_Y_OFFSET = -16;
@@ -33,22 +28,11 @@ public class BrutalflyCocoonFeature extends Feature<NoneFeatureConfiguration> {
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel level = context.level();
-        ServerLevel serverLevel;
-        if (level instanceof WorldGenRegion region) {
-            serverLevel = region.getLevel();
-        } else if (level instanceof ServerLevel sl) {
-            serverLevel = sl;
-        } else {
-            return false;
-        }
-
         RandomSource random = context.random();
         BlockPos origin = context.origin();
         int chunkX = origin.getX() & ~15;
         int chunkZ = origin.getZ() & ~15;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        int failNoLog = 0;
-        int failClearBelow = 0;
 
         for (int attempt = 0; attempt < 12; attempt++) {
             int x = chunkX + 1 + random.nextInt(14);
@@ -59,49 +43,21 @@ public class BrutalflyCocoonFeature extends Feature<NoneFeatureConfiguration> {
             }
 
             int searchTopY = Math.min(MAX_ANCHOR_Y, level.getMaxBuildHeight() - 2);
-            boolean foundLog = false;
             for (int y = searchTopY; y > groundY + 12; y--) {
                 pos.set(x, y, z);
                 if (!level.getBlockState(pos).is(BlockTags.LOGS)) {
                     continue;
                 }
 
-                foundLog = true;
                 BlockPos anchor = pos.immutable();
-                BlockPos blocker = findCocoonBlocker(level, anchor);
-                if (blocker != null) {
-                    failClearBelow++;
-                    LOGGER.info(
-                            "[BrutalflyCocoon] chamber failed at log ({},{},{}) blocked by {} ({}) at {}",
-                            x,
-                            y,
-                            z,
-                            level.getBlockState(blocker),
-                            level.getBlockState(blocker).getBlock(),
-                            blocker
-                    );
+                if (findCocoonBlocker(level, anchor) != null) {
                     continue;
                 }
 
-                if (spawnCocoonedBrutalfly(serverLevel, level, anchor, random)) {
-                    LOGGER.info("[BrutalflyCocoon] SUCCESS at ({},{},{})", x, y, z);
-                    return true;
-                }
-                return false;
-            }
-
-            if (!foundLog) {
-                failNoLog++;
+                return placeCocoonSpawner(level, anchor);
             }
         }
 
-        LOGGER.info(
-                "[BrutalflyCocoon] FAILED for chunk ({},{}): no-log={}, chamber={}",
-                chunkX >> 4,
-                chunkZ >> 4,
-                failNoLog,
-                failClearBelow
-        );
         return false;
     }
 
@@ -113,28 +69,21 @@ public class BrutalflyCocoonFeature extends Feature<NoneFeatureConfiguration> {
         return findCocoonBlocker(level, anchor) == null;
     }
 
-    static boolean spawnCocoonedBrutalfly(ServerLevel serverLevel, WorldGenLevel level, BlockPos anchor, RandomSource random) {
+    static boolean placeCocoonSpawner(WorldGenLevel level, BlockPos anchor) {
         if (!canUseAnchor(level, anchor)) {
             return false;
         }
 
         clearCocoonVolume(level, anchor);
-        BrutalflyEntity brutalfly = AntarchyObjects.BRUTALFLY.get().create(serverLevel);
-        if (brutalfly == null) {
-            return false;
-        }
-
-        brutalfly.moveTo(
-                anchor.getX() + 0.5,
-                anchor.getY() - 15.0,
-                anchor.getZ() + 0.5,
-                random.nextFloat() * 360.0F,
-                0.0F
-        );
-        brutalfly.setCocooned(true, anchor);
-        brutalfly.setHealth(brutalfly.getMaxHealth());
-        serverLevel.addFreshEntity(brutalfly);
+        setCocoonSpawnerMarker(level, anchor);
         return true;
+    }
+
+    static void setCocoonSpawnerMarker(WorldGenLevel level, BlockPos anchor) {
+        Block marker = AntarchyObjects.BRUTALFLY_COCOON_SPAWNER.get();
+        BlockPos markerPos = anchor.below();
+        level.setBlock(markerPos, marker.defaultBlockState(), 19);
+        level.scheduleTick(markerPos, marker, 20);
     }
 
     static @org.jetbrains.annotations.Nullable BlockPos findCocoonBlocker(WorldGenLevel level, BlockPos anchor) {
@@ -173,7 +122,7 @@ public class BrutalflyCocoonFeature extends Feature<NoneFeatureConfiguration> {
                     }
 
                     pos.set(anchor.getX() + dx, worldY, anchor.getZ() + dz);
-                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 19);
                 }
             }
         }

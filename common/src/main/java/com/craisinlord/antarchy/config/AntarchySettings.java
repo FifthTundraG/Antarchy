@@ -145,7 +145,7 @@ public final class AntarchySettings {
 
     private static double nightmareSwordBaseDamage = 15.0D;
     
-    private static double nightmareSwordScalingFactor = 1.0D;
+    private static double nightmareSwordScalingFactor = 1.5D;
     private static boolean basiliskPetrifyingGazeEnabled = true;
     private static int basiliskSpawnMaxLightLevel = 5;
     private static double basiliskHealth = 150.0D;

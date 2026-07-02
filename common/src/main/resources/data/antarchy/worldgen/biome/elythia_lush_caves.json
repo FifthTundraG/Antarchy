@@ -16,10 +16,9 @@
         "type": "minecraft:spore_blossom_air"
       }
     },
-    "ambient_sound": "minecraft:ambient.cave",
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
+      "tick_delay": 60000,
       "block_search_extent": 8,
       "offset": 2.0
     }

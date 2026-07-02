@@ -34,10 +34,14 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class StinkBugEntity extends Animal implements GeoEntity {
+    private static final String MAIN_CONTROLLER = "main_controller";
+    private static final String FART_CONTROLLER = "fart_controller";
+    private static final String FART_TRIGGER = "fart";
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation FART_ANIM = RawAnimation.begin().thenPlay("fart");
     private static final int FART_ANIMATION_TICKS = 30;
+    private static final int FART_RELEASE_TICKS = 6;
     private static final int STINK_BURST_PARTICLES = 32;
     private static final double STINK_BURST_RADIUS = 8.0D;
     private static final int STINK_BURST_DURATION_TICKS = 1200;
@@ -81,7 +85,7 @@ public class StinkBugEntity extends Animal implements GeoEntity {
 
         if (this.fartAnimationTicks > 0) {
             this.fartAnimationTicks--;
-            if (this.fartAnimationTicks == 0 && this.pendingFartBurst && !this.level().isClientSide()) {
+            if (this.fartAnimationTicks == FART_RELEASE_TICKS && this.pendingFartBurst && !this.level().isClientSide()) {
                 StinkyBehavior.emitBurst(this, STINK_BURST_PARTICLES);
                 StinkyBehavior.applyBurstStinkyEffect(this, STINK_BURST_RADIUS, STINK_BURST_DURATION_TICKS);
                 this.pendingFartBurst = false;
@@ -112,7 +116,9 @@ public class StinkBugEntity extends Animal implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "main_controller", 2, this::mainAnimController));
+        controllers.add(new AnimationController<>(this, MAIN_CONTROLLER, 2, this::mainAnimController));
+        controllers.add(new AnimationController<>(this, FART_CONTROLLER, 0, state -> PlayState.STOP)
+                .triggerableAnim(FART_TRIGGER, FART_ANIM));
     }
 
     @Override
@@ -121,15 +127,14 @@ public class StinkBugEntity extends Animal implements GeoEntity {
     }
 
     private <T extends StinkBugEntity> PlayState mainAnimController(AnimationState<T> animationState) {
-        if (this.fartAnimationTicks > 0) {
-            animationState.setAnimation(FART_ANIM);
-            return PlayState.CONTINUE;
-        }
         animationState.setAnimation(animationState.isMoving() ? WALK_ANIM : IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     private void triggerFartAnimation() {
         this.fartAnimationTicks = FART_ANIMATION_TICKS;
+        if (!this.level().isClientSide()) {
+            this.triggerAnim(FART_CONTROLLER, FART_TRIGGER);
+        }
     }
 }

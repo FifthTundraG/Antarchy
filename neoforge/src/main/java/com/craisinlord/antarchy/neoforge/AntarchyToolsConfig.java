@@ -336,14 +336,14 @@ public final class AntarchyToolsConfig {
                     "Base attack damage. Also the minimum damage at full health.",
                     "Formula: damage = baseDamage * (1 + missingHealthFraction * scalingFactor)"
                 )
-                .defineInRange("baseDamage",    30.0D, 0.0D, 1024.0D);
+                .defineInRange("baseDamage",    15.0D, 0.0D, 1024.0D);
         NIGHTMARE_SWORD_ATTACK_SPEED    = b.comment("Attack speed of the Nightmare Sword.").defineInRange("attackSpeed",  -2.4D, -10.0D, 10.0D);
         NIGHTMARE_SWORD_SCALING_FACTOR  = b
                 .comment(
                     "How much damage scales with missing health.",
                     "At 1.0 and 0 HP remaining: damage doubles. At full health: always baseDamage."
                 )
-                .defineInRange("scalingFactor",  1.0D, 0.0D, 100.0D);
+                .defineInRange("scalingFactor",  1.5D, 0.0D, 100.0D);
         b.pop();
 
         b.push("fallenKingCrown");

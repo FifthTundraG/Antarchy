@@ -1,5 +1,5 @@
 {
-  "sea_level": 65,
+  "sea_level": 60,
   "disable_mob_generation": false,
   "aquifers_enabled": true,
   "ore_veins_enabled": false,
@@ -128,11 +128,7 @@
                             "when_in_range": {
                               "type": "minecraft:min",
                               "argument1": "antarchy:elythia_surface",
-                              "argument2": {
-                                "type": "minecraft:mul",
-                                "argument1": 5.0,
-                                "argument2": "minecraft:overworld/caves/entrances"
-                              }
+                              "argument2": 1000000.0
                             },
                             "when_out_of_range": {
                               "type": "minecraft:max",
@@ -188,13 +184,9 @@
                                       }
                                     }
                                   },
-                                  "argument2": "minecraft:overworld/caves/entrances"
+                                  "argument2": 1000000.0
                                 },
-                                "argument2": {
-                                  "type": "minecraft:add",
-                                  "argument1": "minecraft:overworld/caves/spaghetti_2d",
-                                  "argument2": "minecraft:overworld/caves/spaghetti_roughness_function"
-                                }
+                                "argument2": 1000000.0
                               },
                               "argument2": {
                                 "type": "minecraft:range_choice",
@@ -216,7 +208,7 @@
           }
         }
       },
-      "argument2": "minecraft:overworld/caves/noodle"
+      "argument2": 1000000.0
     },
     "fluid_level_floodedness": {
       "type": "minecraft:noise",

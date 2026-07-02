@@ -15,11 +15,11 @@
     "BloodglassRespawnMixin",
     "DreamCampfireBlockEntityMixin",
     "JumpyBootsFallDamageMixin",
+    "WoodTypeInvoker",
     "infinity.RandomSpringMixin",
     "infinity.PortalCreatorMixin"
   ],
   "client": [
-    "client.NightmareCameraShakeMixin",
     "client.CameraShakeMixin",
     "client.DuctTapeInputMixin",
     "client.AntiwaterFogMixin",
