@@ -225,6 +225,8 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> SQUIRREL_NEST_BLOCK = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> BRUTALFLY_COCOON_SPAWNER = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<AntNestBlockEntity>> ANT_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<AntNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<DreamCampfireBlockEntity>> DREAM_CAMPFIRE_BLOCK_ENTITY = (Supplier<BlockEntityType<DreamCampfireBlockEntity>>) UNBOUND;
@@ -324,6 +326,7 @@ public final class AntarchyObjects {
             Supplier<Block> waspNest,
             Supplier<Block> hushweed,
             Supplier<Block> squirrelNestBlock,
+            Supplier<Block> brutalflyCocoonSpawner,
             Supplier<BlockEntityType<AntNestBlockEntity>> antNestBlockEntity,
             Supplier<BlockEntityType<DreamCampfireBlockEntity>> dreamCampfireBlockEntity,
             Supplier<BlockEntityType<WaspNestBlockEntity>> waspNestBlockEntity,
@@ -417,6 +420,7 @@ public final class AntarchyObjects {
         WASP_NEST = waspNest;
         HUSHWEED = hushweed;
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
+        BRUTALFLY_COCOON_SPAWNER = brutalflyCocoonSpawner;
         ANT_NEST_BLOCK_ENTITY = antNestBlockEntity;
         DREAM_CAMPFIRE_BLOCK_ENTITY = dreamCampfireBlockEntity;
         WASP_NEST_BLOCK_ENTITY = waspNestBlockEntity;

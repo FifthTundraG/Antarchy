@@ -516,13 +516,13 @@ public final class AntarchyFabricContent {
             () -> new TorchflowerBushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)
                     .lightLevel(state -> AntarchySettings.glowingTorchflowers() ? 15 : 0)));
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
-            () -> new net.minecraft.world.level.block.StandingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
+            () -> new net.minecraft.world.level.block.StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
-            () -> new net.minecraft.world.level.block.WallSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
+            () -> new net.minecraft.world.level.block.WallSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.CeilingHangingSignBlock> OURANWOOD_HANGING_SIGN = BLOCKS.register("ouranwood_hanging_sign",
-            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallHangingSignBlock> OURANWOOD_WALL_HANGING_SIGN = BLOCKS.register("ouranwood_wall_hanging_sign",
-            () -> new net.minecraft.world.level.block.WallHangingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.WallHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
     public static final DeferredBlock<DuplicatorSaplingBlock> DUPLICATOR_SAPLING = BLOCKS.register("duplicator_sapling",
             () -> new DuplicatorSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
     public static final DeferredBlock<DuctTapeBlock> DUCT_TAPE = BLOCKS.register("duct_tape",
@@ -701,6 +701,8 @@ public final class AntarchyFabricContent {
             () -> new WaspNestBlock(AntarchyFabricContent::waspNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.BEE_NEST)));
     public static final DeferredBlock<com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock> OURANWOOD_SQUIRREL_NEST = BLOCKS.register("ouranwood_squirrel_nest",
             () -> new com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COARSE_DIRT).noLootTable()));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock> BRUTALFLY_COCOON_SPAWNER = BLOCKS.register("brutalfly_cocoon_spawner",
+            () -> new com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().noLootTable()));
     public static final DeferredBlock<HushweedBlock> HUSHWEED = BLOCKS.register("hushweed",
             () -> new HushweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AZALEA).noCollission().noOcclusion()));
     public static final DeferredHolder<MobEffect, DreadMobEffect> DREAD = MOB_EFFECTS.register("dread", DreadMobEffect::new);
@@ -1717,11 +1719,11 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> TERMITE_SPAWN_EGG = ITEMS.register("termite_spawn_egg",
             () -> new DeferredSpawnEggItem(TERMITE, 0xD4B96A, 0xFF6B1A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEWORM_SPAWN_EGG = ITEMS.register("moleworm_spawn_egg",
-            () -> new DeferredSpawnEggItem(MOLEWORM, 0x7A6150, 0xD2B8A3, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(MOLEWORM, 0xB8B8B8, 0x8A623A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MANTIS_SPAWN_EGG = ITEMS.register("mantis_spawn_egg",
             () -> new DeferredSpawnEggItem(MANTIS, 0xF8F8F2, 0x63B44A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEVORE_SPAWN_EGG = ITEMS.register("molevore_spawn_egg",
-            () -> new DeferredSpawnEggItem(MOLEVORE, 0x3E2E24, 0xB67B4F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+            () -> new DeferredSpawnEggItem(MOLEVORE, 0x4A4A4A, 0x6B4A2B, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> TRIFFID_SPAWN_EGG = ITEMS.register("triffid_spawn_egg",
             () -> new DeferredSpawnEggItem(TRIFFID, 0x4C8F3A, 0xFF2FB3, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> APPLE_COW_SPAWN_EGG = ITEMS.register("apple_cow_spawn_egg",
@@ -2578,6 +2580,7 @@ public final class AntarchyFabricContent {
                 () -> WASP_NEST.get(),
                 () -> HUSHWEED.get(),
                 () -> OURANWOOD_SQUIRREL_NEST.get(),
+                () -> BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> ANT_NEST_BLOCK_ENTITY.get(),
                 () -> DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> WASP_NEST_BLOCK_ENTITY.get(),

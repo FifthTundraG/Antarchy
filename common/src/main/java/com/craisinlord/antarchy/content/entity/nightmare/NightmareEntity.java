@@ -216,6 +216,14 @@ public class NightmareEntity extends Monster implements GeoEntity {
         if (this.level().isClientSide) {
             this.tickClientParticles();
             this.updateFlightRotation();
+            if (this.isRoaring()) {
+                com.craisinlord.antarchy.content.client.CameraShakeClientState.register(
+                        this,
+                        com.craisinlord.antarchy.content.client.CameraShakeClientState.NIGHTMARE_RANGE,
+                        com.craisinlord.antarchy.content.client.CameraShakeClientState.NIGHTMARE_STRENGTH,
+                        this::isRoaring
+                );
+            }
             return;
         }
 

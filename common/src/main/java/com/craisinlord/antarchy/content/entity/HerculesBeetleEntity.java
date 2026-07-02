@@ -142,8 +142,9 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
     private static final double FLY_ATTACK_RANGE = 5.5D;
     private static final double CHARGE_TRIGGER_RANGE = 12.0D;
     private static final int MAX_BROKEN_BLOCKS = 32;
+    private static final int MAX_SUFFOCATION_BLOCKS = 12;
     private static final EntityDimensions DEFAULT_DIMENSIONS = EntityDimensions.scalable(3.0F, 4.0F);
-    private static final double MOUNTED_FLYING_SPEED_MULTIPLIER = 0.14D;
+    private static final double MOUNTED_FLYING_SPEED_MULTIPLIER = 0.06D;
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private final ServerBossEvent bossEvent =
@@ -314,6 +315,10 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
             this.flightCooldown--;
         }
 
+        if (!this.level().isClientSide && !this.isKnockedDown() && this.isInWall()) {
+            this.breakBlocksForSuffocation();
+        }
+
         if (this.isKnockedDown()) {
             this.tickKnockedDown();
         } else if (this.chargeTicksRemaining > 0 || this.getAnimationState() == ANIM_CHARGE) {
@@ -469,6 +474,10 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
             this.setAnimationState(ANIM_FLY);
             return;
         }
+        if (!this.onGround()) {
+            this.setAnimationState(ANIM_FLY);
+            return;
+        }
         if (this.getControllingPassenger() instanceof Player rider
                 && (Math.abs(rider.zza) > 0.05F || Math.abs(rider.xxa) > 0.05F)) {
             this.setAnimationState(ANIM_WALK);
@@ -482,7 +491,7 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
     @Override
     protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
         if (!this.isFlying()) {
-            return new Vec3(player.xxa * 0.35D, 0.0D, player.zza);
+            return new Vec3(player.xxa * 0.22D, 0.0D, player.zza);
         }
 
         double vertical = 0.0D;
@@ -495,7 +504,7 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
             vertical -= 0.16D;
         }
 
-        return new Vec3(player.xxa * 0.35D, vertical, player.zza);
+        return new Vec3(player.xxa * 0.22D, vertical, player.zza);
     }
 
     @Override
@@ -857,6 +866,34 @@ public class HerculesBeetleEntity extends TamableAnimal implements GeoEntity, Fl
                 BlockPos.containing(pathBox.maxX, pathBox.maxY, pathBox.maxZ)
         )) {
             if (broken >= MAX_BROKEN_BLOCKS) {
+                break;
+            }
+            BlockState state = serverLevel.getBlockState(pos);
+            BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
+            if (state.isAir()
+                    || state.is(AntarchyTags.Blocks.HERCULES_BEETLE_CHARGE_IMMUNE_BLOCKS)
+                    || blockEntity != null
+                    || state.getDestroySpeed(serverLevel, pos) < 0.0F) {
+                continue;
+            }
+            if (serverLevel.destroyBlock(pos, true, this)) {
+                broken++;
+            }
+        }
+    }
+
+    private void breakBlocksForSuffocation() {
+        if (!(this.level() instanceof ServerLevel serverLevel) || !serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            return;
+        }
+
+        AABB box = this.getBoundingBox().inflate(0.15D, 0.15D, 0.15D);
+        int broken = 0;
+        for (BlockPos pos : BlockPos.betweenClosed(
+                BlockPos.containing(box.minX, box.minY, box.minZ),
+                BlockPos.containing(box.maxX, box.maxY, box.maxZ)
+        )) {
+            if (broken >= MAX_SUFFOCATION_BLOCKS) {
                 break;
             }
             BlockState state = serverLevel.getBlockState(pos);

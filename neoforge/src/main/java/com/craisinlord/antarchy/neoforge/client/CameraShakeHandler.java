@@ -1,12 +1,11 @@
 package com.craisinlord.antarchy.neoforge.client;
 
 import com.craisinlord.antarchy.Antarchy;
+import com.craisinlord.antarchy.content.client.CameraShakeClientState;
 import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
-import com.craisinlord.antarchy.content.entity.ToreterrorEntity;
-import com.craisinlord.antarchy.content.entity.nightmare.NightmareEntity;
+import com.craisinlord.antarchy.content.item.BigBerthaItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,9 +13,7 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 
 @EventBusSubscriber(modid = Antarchy.MODID, value = Dist.CLIENT)
 public final class CameraShakeHandler {
-    private static final double MAX_SHAKE_RANGE = 48.0D;
     private static final int TORETERROR_SHAKE_TICKS = 25;
-    private static final double NIGHTMARE_SHAKE_RANGE = 32.0D;
 
     private CameraShakeHandler() {
     }
@@ -24,34 +21,21 @@ public final class CameraShakeHandler {
     @SubscribeEvent
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.player == null) return;
-
-        Vec3 cameraPos = event.getCamera().getPosition();
-        float shakeStrength = 0.0F;
-
-        for (ToreterrorEntity toreterror : mc.level.getEntitiesOfClass(
-                ToreterrorEntity.class,
-                mc.player.getBoundingBox().inflate(MAX_SHAKE_RANGE),
-                t -> t.isAlive() && t.isJumpShaking()
-        )) {
-            double distance = Math.sqrt(cameraPos.distanceToSqr(toreterror.position().add(0, toreterror.getBbHeight() * 0.5, 0)));
-            if (distance > MAX_SHAKE_RANGE) continue;
-            shakeStrength += (float) ((1.0D - distance / MAX_SHAKE_RANGE) * 1.0D);
+        if (mc.level == null || mc.player == null) {
+            CameraShakeClientState.clear();
+            return;
         }
 
-        for (NightmareEntity nightmare : mc.level.getEntitiesOfClass(
-                NightmareEntity.class,
-                mc.player.getBoundingBox().inflate(NIGHTMARE_SHAKE_RANGE),
-                entity -> entity.isAlive() && entity.isRoaring()
-        )) {
-            double distance = Math.sqrt(cameraPos.distanceToSqr(nightmare.position().add(0.0D, nightmare.getBbHeight() * 0.5D, 0.0D)));
-            if (distance > NIGHTMARE_SHAKE_RANGE) continue;
-            shakeStrength += (float) ((1.0D - distance / NIGHTMARE_SHAKE_RANGE) * 1.35D);
-        }
+        float shakeStrength = CameraShakeClientState.getStrength(event.getCamera().getPosition());
 
         int beetleShakeTicks = HerculesBeetleImpactShakeClientState.getTicks();
         if (beetleShakeTicks > 0) {
             shakeStrength += (float) beetleShakeTicks / TORETERROR_SHAKE_TICKS * 2.0F;
+        }
+
+        int bigBerthaShakeTicks = BigBerthaItem.clientShakeTicks;
+        if (bigBerthaShakeTicks > 0) {
+            shakeStrength += (float) bigBerthaShakeTicks / TORETERROR_SHAKE_TICKS * 2.0F;
         }
 
         if (shakeStrength <= 0.0F) return;

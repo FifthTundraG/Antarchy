@@ -258,6 +258,7 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.WASP_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED.get(),
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_SQUIRREL_NEST.get(),
+                () -> AntarchyNeoforgeBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> AntarchyNeoforgeBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST_BLOCK_ENTITY.get(),

@@ -207,7 +207,17 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide) return;
+        if (this.level().isClientSide) {
+            if (this.isJumpShaking()) {
+                com.craisinlord.antarchy.content.client.CameraShakeClientState.register(
+                        this,
+                        com.craisinlord.antarchy.content.client.CameraShakeClientState.TORETERROR_RANGE,
+                        com.craisinlord.antarchy.content.client.CameraShakeClientState.TORETERROR_STRENGTH,
+                        this::isJumpShaking
+                );
+            }
+            return;
+        }
 
         if (this.shootCooldown > 0) this.shootCooldown--;
         if (this.jumpCooldown > 0) this.jumpCooldown--;

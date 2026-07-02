@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AccessorRangedAttribute",
-    "BlockEntitySignMixin",
+    "BlockEntityTypeSignMixin",
     "BloodglassMixin",
     "DreamFireBlockMixin",
     "DreamSandLowGravityMixin",

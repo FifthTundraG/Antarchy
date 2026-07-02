@@ -1137,11 +1137,16 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     public void collectNut(ItemEntity itemEntity) {
+        ItemStack itemStack = itemEntity.getItem();
+        if (itemStack.isEmpty()) {
+            itemEntity.discard();
+            return;
+        }
+
         this.startPickupAnimation();
 
-        ItemStack particleStack = itemEntity.getItem().copy();
+        ItemStack particleStack = itemStack.copy();
         particleStack.setCount(1);
-        ItemStack itemStack = itemEntity.getItem();
         itemStack.shrink(1);
         if (itemStack.isEmpty()) {
             itemEntity.discard();
@@ -1667,6 +1672,11 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
         @Override
         public void tick() {
             if (this.targetNut != null) {
+                if (!this.targetNut.isAlive() || this.targetNut.getItem().isEmpty()) {
+                    this.targetNut = null;
+                    return;
+                }
+
                 FlyingSquirrelEntity.this.getLookControl().setLookAt(this.targetNut, 30.0F, 30.0F);
 
                 if (--this.repathDelay <= 0 && !FlyingSquirrelEntity.this.isGliding()) {

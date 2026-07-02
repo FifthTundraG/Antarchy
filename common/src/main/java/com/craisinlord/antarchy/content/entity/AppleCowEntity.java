@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.Shearable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +20,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -47,7 +45,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
     private static final String NAP_COOLDOWN_KEY = "NapCooldown";
     private static final String QUIRK_TICKS_KEY = "QuirkTicks";
     private static final String SHEARED_KEY = "Sheared";
-    private static final String GRASS_EAT_TICKS_KEY = "GrassEatTicks";
+    private static final String REGROW_TICKS_KEY = "RegrowTicks";
     private static final String MAIN_CONTROLLER = "main_controller";
     private static final String SLEEP_TRANSITION_CONTROLLER = "sleep_transition_controller";
     private static final String START_SLEEP_TRIGGER = "start_sleep";
@@ -60,7 +58,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
     private static final int DAY_NAP_MAX_TICKS = 20 * 60 * 2;
     private static final int DAY_NAP_COOLDOWN_TICKS = 20 * 60 * 10;
     private static final int NIGHT_NAP_COOLDOWN_TICKS = 20 * 60 * 8;
-    private static final int GRASS_REGROW_TICKS = 20 * 60 * 3;
+    private static final int APPLE_REGROW_TICKS = 20 * 60 * 3;
 
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
@@ -73,7 +71,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
     private int sleepTicksRemaining;
     private int napCooldownTicks;
     private int idleAnimationCycleTicks;
-    private int grassEatTicks;
+    private int regrowTicks;
 
     protected AppleCowEntity(EntityType<? extends Cow> entityType, Level level) {
         super(entityType, level);
@@ -92,7 +90,6 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new AppleCowSleepGoal());
-        this.goalSelector.addGoal(1, new AppleCowGrazeGoal());
     }
 
     @Override
@@ -148,8 +145,12 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
             return;
         }
 
-        if (!this.isSheared()) {
-            this.grassEatTicks = 0;
+        if (this.isSheared()) {
+            this.regrowTicks++;
+            if (this.regrowTicks >= APPLE_REGROW_TICKS) {
+                this.setSheared(false);
+                this.regrowTicks = 0;
+            }
         }
 
         if (this.shouldStartNap()) {
@@ -190,7 +191,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
         tag.putInt(NAP_COOLDOWN_KEY, this.napCooldownTicks);
         tag.putInt(QUIRK_TICKS_KEY, this.getQuirkTicks());
         tag.putBoolean(SHEARED_KEY, this.isSheared());
-        tag.putInt(GRASS_EAT_TICKS_KEY, this.grassEatTicks);
+        tag.putInt(REGROW_TICKS_KEY, this.regrowTicks);
     }
 
     @Override
@@ -201,7 +202,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
         this.napCooldownTicks = tag.contains(NAP_COOLDOWN_KEY) ? tag.getInt(NAP_COOLDOWN_KEY) : randomNapCooldown();
         this.setQuirkTicks(tag.getInt(QUIRK_TICKS_KEY));
         this.setSheared(tag.getBoolean(SHEARED_KEY));
-        this.grassEatTicks = tag.getInt(GRASS_EAT_TICKS_KEY);
+        this.regrowTicks = tag.getInt(REGROW_TICKS_KEY);
     }
 
     public boolean isSleeping() {
@@ -346,7 +347,7 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
         }
 
         this.setSheared(true);
-        this.grassEatTicks = 0;
+        this.regrowTicks = 0;
         this.stopCowSleeping();
         this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, 1.0F);
         this.spawnAtLocation(new ItemStack(this.shearDropItem(), 2), this.getBbHeight() * 0.66F);
@@ -388,58 +389,5 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
         public void tick() {
             AppleCowEntity.this.applySleepStillness();
         }
-    }
-
-    private final class AppleCowGrazeGoal extends Goal {
-        private AppleCowGrazeGoal() {
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        @Override
-        public boolean canUse() {
-            return AppleCowEntity.this.isSheared()
-                    && AppleCowEntity.this.isOnGrassBlock()
-                    && AppleCowEntity.this.isEligibleForSleep()
-                    && AppleCowEntity.this.random.nextInt(20) == 0;
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            return AppleCowEntity.this.isSheared()
-                    && AppleCowEntity.this.isOnGrassBlock()
-                    && AppleCowEntity.this.grassEatTicks < GRASS_REGROW_TICKS;
-        }
-
-        @Override
-        public void start() {
-            AppleCowEntity.this.getNavigation().stop();
-        }
-
-        @Override
-        public void tick() {
-            AppleCowEntity.this.getNavigation().stop();
-            if (!AppleCowEntity.this.level().isClientSide && AppleCowEntity.this.isSheared() && AppleCowEntity.this.isOnGrassBlock()) {
-                AppleCowEntity.this.grassEatTicks++;
-                if (AppleCowEntity.this.grassEatTicks >= GRASS_REGROW_TICKS) {
-                    AppleCowEntity.this.setSheared(false);
-                    AppleCowEntity.this.grassEatTicks = 0;
-                    AppleCowEntity.this.playSound(SoundEvents.GENERIC_EAT, 0.7F, 1.0F + AppleCowEntity.this.random.nextFloat() * 0.2F);
-                } else if (AppleCowEntity.this.grassEatTicks % 40 == 0) {
-                    AppleCowEntity.this.playSound(SoundEvents.GENERIC_EAT, 0.4F, 1.0F + AppleCowEntity.this.random.nextFloat() * 0.15F);
-                }
-            }
-        }
-
-        @Override
-        public void stop() {
-            if (!AppleCowEntity.this.isSheared()) {
-                AppleCowEntity.this.grassEatTicks = 0;
-            }
-        }
-    }
-
-    private boolean isOnGrassBlock() {
-        BlockPos below = this.blockPosition().below();
-        return this.level().getBlockState(below).is(Blocks.GRASS_BLOCK);
     }
 }

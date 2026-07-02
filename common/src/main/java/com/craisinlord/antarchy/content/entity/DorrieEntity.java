@@ -275,9 +275,6 @@ public class DorrieEntity extends Animal implements GeoEntity {
             setJumpCharge((int) ((chargeTicks / (float) MAX_CHARGE_TICKS) * 100));
         }
 
-        // Surface buoyancy: when in water and not mid-leap, push toward the waterline.
-        // Stronger upward force when fully submerged, gentle when at the surface so
-        // Dorrie glides on top rather than diving or bouncing.
         if (this.isInWater() && !isLeaping) {
             Vec3 mov = this.getDeltaMovement();
             double push = this.isUnderWater() ? 0.07D : 0.015D;
@@ -311,9 +308,6 @@ public class DorrieEntity extends Animal implements GeoEntity {
             if (power > 0.05F) {
                 Vec3 look = this.getLookAngle();
                 Vec3 current = this.getDeltaMovement();
-                // Add to existing momentum — no direction snap. The rider already has
-                // forward speed, so the jump just launches them upward and slightly
-                // accelerates in the direction they're already facing.
                 double forwardAdd = power * 0.5D;
                 double vertical    = 0.55D + power * 0.9D;
                 this.setDeltaMovement(
