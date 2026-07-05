@@ -396,6 +396,10 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_WALK = registerSoundEvent("bomber_walk");
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_KNOCK = registerSoundEvent("bomber_knock");
     public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_EXPLODE = registerSoundEvent("bomber_explode");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_IDLE = registerSoundEvent("toreterror_idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_HURT = registerSoundEvent("toreterror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_DEATH = registerSoundEvent("toreterror_death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_BOMBER_FIRE = registerSoundEvent("toreterror_bomber_fire");
     public static final DeferredHolder<SoundEvent, SoundEvent> STINKY_FLY_SOUND = registerSoundEvent("stinky_fly");
     public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_GROWL = registerSoundEvent("creeping_horror_growl");
     public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_HURT = registerSoundEvent("creeping_horror_hurt");
@@ -1814,7 +1818,7 @@ public final class AntarchyFabricContent {
             () -> new DeferredSpawnEggItem(LURKING_TERROR, 0x2D5A1B, 0x8B0000, new Item.Properties()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = ENTITY_TYPES.register("cheep",
-            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.CheepEntity::new, MobCategory.WATER_CREATURE)
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.CheepEntity::new, MobCategory.WATER_AMBIENT)
                     .sized(1.0F, 1.2F)
                     .clientTrackingRange(8)
                     .build("cheep"));
@@ -1828,8 +1832,6 @@ public final class AntarchyFabricContent {
                     .sized(3.0F, 4.0F)
                     .clientTrackingRange(12)
                     .build("hercules_beetle"));
-    public static final DeferredItem<Item> CHEEP_ITEM = ITEMS.register("cheep",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2F).build())));
     public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
             () -> new DeferredSpawnEggItem(CHEEP, 0xFF00AA, 0x00FF44, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
@@ -1968,6 +1970,7 @@ public final class AntarchyFabricContent {
         SpawnPlacements.register(KRAKEN.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KrakenEntity::canSpawn);
         SpawnPlacements.register(MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn);
         SpawnPlacements.register(OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn);
+        SpawnPlacements.register(CHEEP.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.AbstractFish::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(NIGHTMARE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NightmareEntity::canSpawn);
         SpawnPlacements.register(MOLEWORM.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MolewormEntity::canSpawn);
         SpawnPlacements.register(MANTIS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MantisEntity::canSpawn);
@@ -2081,7 +2084,6 @@ public final class AntarchyFabricContent {
                  "hercules_beetle_spawn_egg",
                  "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
             case "stink_bug", "chiten" -> 22;
-            case "cheep" -> 21;
             case "water_cannon" -> 52;
             case "primordial_helmet", "primordial_chestplate", "primordial_leggings", "primordial_boots" -> 53;
             case "jumpy_boots" -> 54;
@@ -2367,7 +2369,6 @@ public final class AntarchyFabricContent {
         CREATIVE_MODE_TABS.register();
 
         // Wire common-module accessors after all registrations are complete.
-        AntarchyObjects.CHEEP_ITEM = () -> CHEEP_ITEM.get();
         AntarchyObjects.setHerculesBeetle(() -> HERCULES_BEETLE.get());
 
         AntarchySoundEvents.bind(
@@ -2484,6 +2485,10 @@ public final class AntarchyFabricContent {
                 BOMBER_WALK,
                 BOMBER_KNOCK,
                 BOMBER_EXPLODE,
+                TORETERROR_IDLE,
+                TORETERROR_HURT,
+                TORETERROR_DEATH,
+                TORETERROR_BOMBER_FIRE,
                 STINKY_FLY_SOUND,
                 CREEPING_HORROR_GROWL,
                 CREEPING_HORROR_HURT,

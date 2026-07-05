@@ -1,8 +1,11 @@
 package com.craisinlord.antarchy.neoforge;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.config.ConfigResetGuard;
 import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload;
 import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
+import java.nio.file.Path;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
@@ -12,6 +15,13 @@ public final class AntarchyConfigModuleNeoforge {
     private AntarchyConfigModuleNeoforge() {}
 
     public static void init(ModContainer modContainer) {
+        Path configDir = FMLPaths.CONFIGDIR.get().resolve("antarchy");
+        ConfigResetGuard.wipeIfNeeded(
+                configDir,
+                configDir.resolve("antarchy_mobs.toml"),
+                configDir.resolve("antarchy_tools.toml"),
+                configDir.resolve("antarchy_misc.toml")
+        );
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMobsConfig.SPEC,  "antarchy/antarchy_mobs.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyToolsConfig.SPEC, "antarchy/antarchy_tools.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMiscConfig.SPEC,  "antarchy/antarchy_misc.toml");

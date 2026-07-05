@@ -303,7 +303,7 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(10)
                     .build("lurking_terror"));
     public static final DeferredHolder<EntityType<?>, EntityType<CheepEntity>> CHEEP = ENTITY_TYPES.register("cheep",
-            () -> EntityType.Builder.of(CheepEntity::new, MobCategory.WATER_CREATURE)
+            () -> EntityType.Builder.of(CheepEntity::new, MobCategory.WATER_AMBIENT)
                     .sized(1.0F, 1.2F)
                     .clientTrackingRange(8)
                     .build("cheep"));

@@ -51,7 +51,9 @@
       "antarchy:elythia_underground"
     ],
     [],
-    [],
+    [
+      "minecraft:patch_sugar_cane"
+    ],
     []
   ],
   "creature_spawn_probability": 0.04,

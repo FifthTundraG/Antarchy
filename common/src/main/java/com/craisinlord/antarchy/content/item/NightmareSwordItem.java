@@ -1,9 +1,11 @@
 package com.craisinlord.antarchy.content.item;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.content.client.NightmareSwordTooltipHelper;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -19,6 +21,18 @@ public class NightmareSwordItem extends SwordItem {
         super(tier, properties);
         this.tier = tier;
         this.attackSpeed = attackSpeed;
+    }
+
+    public static float calculateDamage(LivingEntity attacker) {
+        float baseDamage = (float) AntarchySettings.nightmareSwordBaseDamage();
+        float maxHealth = attacker.getMaxHealth();
+        if (maxHealth <= 0.0F) {
+            return baseDamage;
+        }
+
+        float missingFraction = (maxHealth - attacker.getHealth()) / maxHealth;
+        float scalingFactor = (float) AntarchySettings.nightmareSwordScalingFactor();
+        return baseDamage + missingFraction * scalingFactor * baseDamage;
     }
 
     @Override
@@ -38,6 +52,7 @@ public class NightmareSwordItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.antarchy.nightmare_sword").withStyle(ChatFormatting.DARK_RED));
+        tooltipComponents.add(NightmareSwordTooltipHelper.damageLine());
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

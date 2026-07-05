@@ -454,8 +454,8 @@ public final class AntarchySettings {
     private static double toreterrorHealth = 300.0D;
     private static double toreterrorJumpAttackDamage = 14.0D;
     private static double toreterrorJumpAttackKnockback = 2.5D;
-    private static double toreterrorSpinDamage = 8.0D;
-    private static double toreterrorSpinKnockback = 1.5D;
+    private static double toreterrorSpinDamage = 6.0D;
+    private static double toreterrorSpinKnockback = 0.9D;
     private static double toreterrorRangedWaterBombChance = 0.5D;
     private static double toreterrorProjectileDamageMultiplier = 0.5D;
     private static double waterBombDamage = 6.0D;

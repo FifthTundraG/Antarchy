@@ -12,6 +12,7 @@
     "FireVisualBaseFireBlockMixin",
     "FireVisualEntityMixin",
     "GlowVinesUnderLeavesMixin",
+    "NightmareSwordDamageMixin",
     "ServerPlayerGameModeMixin",
     "SquidzookaEnchantMixin",
     "SquidzookaMultishotMixin",
