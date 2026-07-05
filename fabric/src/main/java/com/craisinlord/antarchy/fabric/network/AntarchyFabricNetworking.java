@@ -54,6 +54,7 @@ public final class AntarchyFabricNetworking {
 
         PayloadTypeRegistry.playC2S().register(GravityGunPrimaryPayload.TYPE, GravityGunPrimaryPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(GravityGunScrollPayload.TYPE, GravityGunScrollPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(BigBerthaModeCyclePayload.TYPE, BigBerthaModeCyclePayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(DiamondMinecartInputPayload.TYPE, DiamondMinecartInputPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(BrutalflyElytraFlapPayload.TYPE, BrutalflyElytraFlapPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(JumpyBootsLaunchPayload.TYPE, JumpyBootsLaunchPayload.STREAM_CODEC);
@@ -71,6 +72,8 @@ public final class AntarchyFabricNetworking {
                 context.server().execute(() -> handleGravityGunPrimary(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(GravityGunScrollPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleGravityGunScroll(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(BigBerthaModeCyclePayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleBigBerthaModeCycle(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(DiamondMinecartInputPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleDiamondMinecartInput(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(BrutalflyElytraFlapPayload.TYPE, (payload, context) ->
@@ -188,6 +191,13 @@ public final class AntarchyFabricNetworking {
             return;
         }
         GravityGunItem.adjustHeldDistance(player.getMainHandItem(), payload.distanceDelta());
+    }
+
+    private static void handleBigBerthaModeCycle(ServerPlayer player, BigBerthaModeCyclePayload payload) {
+        if (!(player.getMainHandItem().getItem() instanceof BigBerthaItem bigBerthaItem)) {
+            return;
+        }
+        bigBerthaItem.tryCycleModeWhileCoolingDown(player.serverLevel(), player, player.getMainHandItem());
     }
 
     private static void handleDiamondMinecartInput(ServerPlayer player, DiamondMinecartInputPayload payload) {

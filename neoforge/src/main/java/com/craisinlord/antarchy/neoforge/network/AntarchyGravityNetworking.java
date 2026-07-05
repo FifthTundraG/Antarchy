@@ -2,7 +2,9 @@ package com.craisinlord.antarchy.neoforge.network;
 
 import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityApi;
+import com.craisinlord.antarchy.content.item.BigBerthaItem;
 import com.craisinlord.antarchy.content.item.GravityGunItem;
+import com.craisinlord.antarchy.content.network.BigBerthaModeCyclePayload;
 import com.craisinlord.antarchy.content.network.GravityGunPrimaryPayload;
 import com.craisinlord.antarchy.content.network.GravityGunScrollPayload;
 import com.craisinlord.antarchy.content.network.GravityStatePayload;
@@ -29,6 +31,10 @@ public final class AntarchyGravityNetworking {
                 GravityGunScrollPayload.TYPE,
                 GravityGunScrollPayload.STREAM_CODEC,
                 AntarchyGravityNetworking::handleGravityGunScroll
+        ).playToServer(
+                BigBerthaModeCyclePayload.TYPE,
+                BigBerthaModeCyclePayload.STREAM_CODEC,
+                AntarchyGravityNetworking::handleBigBerthaModeCycle
         ).playToServer(
                 com.craisinlord.antarchy.content.network.DiamondMinecartInputPayload.TYPE,
                 com.craisinlord.antarchy.content.network.DiamondMinecartInputPayload.STREAM_CODEC,
@@ -102,6 +108,20 @@ public final class AntarchyGravityNetworking {
             if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
             if (!(serverPlayer.getVehicle() instanceof DiamondMinecartEntity cart)) return;
             cart.onInputReceived(payload.inputFlags());
+        });
+    }
+
+    private static void handleBigBerthaModeCycle(BigBerthaModeCyclePayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer serverPlayer)) {
+                return;
+            }
+
+            if (!(serverPlayer.getMainHandItem().getItem() instanceof BigBerthaItem bigBerthaItem)) {
+                return;
+            }
+
+            bigBerthaItem.tryCycleModeWhileCoolingDown(serverPlayer.serverLevel(), serverPlayer, serverPlayer.getMainHandItem());
         });
     }
 

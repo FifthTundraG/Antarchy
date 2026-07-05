@@ -334,6 +334,7 @@ public final class AntarchyFabricClientBootstrap {
             HerculesBeetleClientHandler.tick();
         });
 
+        BigBerthaClientHandler.register();
         GravityGunClientHandler.register();
 
         ElythiaFireflyManager.register();
