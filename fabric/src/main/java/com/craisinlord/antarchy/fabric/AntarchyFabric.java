@@ -26,6 +26,14 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.PLACED_FEATURE,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "shellstone_lower")
     );
+    private static final TagKey<net.minecraft.world.level.biome.Biome> MISSILE_SQUID_SPAWN_BIOMES = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "missile_squid_spawn_biomes")
+    );
+    private static final TagKey<net.minecraft.world.level.biome.Biome> OCTOPUS_BOMB_SPAWN_BIOMES = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "octopus_bomb_spawn_biomes")
+    );
 
     @Override
     public void onInitialize() {
@@ -54,6 +62,18 @@ public final class AntarchyFabric implements ModInitializer {
                 BiomeSelectors.tag(SHELLSTONE_BIOMES),
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 SHELLSTONE_LOWER
+        );
+        BiomeModifications.addSpawn(
+                BiomeSelectors.tag(MISSILE_SQUID_SPAWN_BIOMES),
+                net.minecraft.world.entity.MobCategory.MONSTER,
+                AntarchyFabricContent.MISSILE_SQUID.get(),
+                2, 1, 2
+        );
+        BiomeModifications.addSpawn(
+                BiomeSelectors.tag(OCTOPUS_BOMB_SPAWN_BIOMES),
+                net.minecraft.world.entity.MobCategory.MONSTER,
+                AntarchyFabricContent.OCTOPUS_BOMB.get(),
+                2, 1, 2
         );
     }
 }
