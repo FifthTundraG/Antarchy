@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 
 public final class GravityGunClientHandler {
     private static final double SCROLL_STEP_DISTANCE = 0.75D;
@@ -34,8 +33,7 @@ public final class GravityGunClientHandler {
             return;
         }
 
-        long window = mc.getWindow().getWindow();
-        boolean attackDown = org.lwjgl.glfw.GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
+        boolean attackDown = mc.options.keyAttack.isDown();
         if (attackDown && !lastAttackDown) {
             ClientPlayNetworking.send(new GravityGunPrimaryPayload());
         }

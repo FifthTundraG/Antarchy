@@ -8,37 +8,39 @@ import com.craisinlord.antarchy.content.network.GravityGunScrollPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = Antarchy.MODID, value = Dist.CLIENT)
 public final class GravityGunClientHandler {
     private static final double SCROLL_STEP_DISTANCE = 0.75D;
+    private static boolean lastAttackDown;
 
     private GravityGunClientHandler() {
     }
 
     @SubscribeEvent
-    public static void onMouseButton(InputEvent.MouseButton.Pre event) {
+    public static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null || mc.screen != null || !AntarchySettings.gravityGunEnabled()) {
-            return;
-        }
-
-        if (event.getButton() != GLFW.GLFW_MOUSE_BUTTON_LEFT || event.getAction() != GLFW.GLFW_PRESS) {
+            lastAttackDown = false;
             return;
         }
 
         if (!(mc.player.getMainHandItem().getItem() instanceof GravityGunItem)) {
+            lastAttackDown = false;
             return;
         }
 
-        PacketDistributor.sendToServer(new GravityGunPrimaryPayload());
-        event.setCanceled(true);
+        boolean attackDown = mc.options.keyAttack.isDown();
+        if (attackDown && !lastAttackDown) {
+            PacketDistributor.sendToServer(new GravityGunPrimaryPayload());
+        }
+        lastAttackDown = attackDown;
     }
 
     @SubscribeEvent

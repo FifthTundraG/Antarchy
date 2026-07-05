@@ -335,6 +335,15 @@ public class BigBerthaItem extends SwordItem implements GeoItem {
         }
     }
 
+    public boolean tryCycleModeWhileCoolingDown(Level level, Player player, ItemStack stack) {
+        if (player.getMainHandItem() != stack || !player.isShiftKeyDown() || !player.getCooldowns().isOnCooldown(this)) {
+            return false;
+        }
+
+        cycleMode(level, player, stack);
+        return true;
+    }
+
     private void startMolevoreSpin(Level level, Player player, ItemStack stack) {
         Vec3 direction = player.getLookAngle().multiply(1.0D, 0.0D, 1.0D);
         if (direction.lengthSqr() < 1.0E-4D) {

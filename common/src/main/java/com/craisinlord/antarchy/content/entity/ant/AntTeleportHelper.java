@@ -90,7 +90,7 @@ public final class AntTeleportHelper {
             return destination;
         }
 
-        // If the player's respawn is not in the overworld, return them to overworld spawn instead.
+        // If the player's respawn is not in the overworld, return them to overworld spawn instead
         return player.server.overworld();
     }
 
