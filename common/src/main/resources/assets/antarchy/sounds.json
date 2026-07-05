@@ -466,6 +466,53 @@
       }
     ]
   },
+  "toreterror_idle": {
+    "subtitle": "subtitles.antarchy.toreterror_idle",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/idle1"
+      },
+      {
+        "name": "antarchy:mob/toreterror/idle2"
+      },
+      {
+        "name": "antarchy:mob/toreterror/idle3"
+      }
+    ]
+  },
+  "toreterror_hurt": {
+    "subtitle": "subtitles.antarchy.toreterror_hurt",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/hurt1"
+      },
+      {
+        "name": "antarchy:mob/toreterror/hurt2"
+      },
+      {
+        "name": "antarchy:mob/toreterror/hurt3"
+      }
+    ]
+  },
+  "toreterror_death": {
+    "subtitle": "subtitles.antarchy.toreterror_death",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/death"
+      }
+    ]
+  },
+  "toreterror_bomber_fire": {
+    "subtitle": "subtitles.antarchy.toreterror_bomber_fire",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/bomber_fire1"
+      },
+      {
+        "name": "antarchy:mob/toreterror/bomber_fire2"
+      }
+    ]
+  },
   "creeping_horror_growl": {
     "subtitle": "subtitles.antarchy.creeping_horror_growl",
     "sounds": [

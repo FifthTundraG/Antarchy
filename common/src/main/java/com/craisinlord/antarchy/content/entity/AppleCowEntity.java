@@ -353,6 +353,18 @@ public abstract class AppleCowEntity extends Cow implements GeoEntity, Shearable
         this.spawnAtLocation(new ItemStack(this.shearDropItem(), 2), this.getBbHeight() * 0.66F);
     }
 
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, net.minecraft.world.damagesource.DamageSource damageSource, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+
+        if (this.isBaby() || this.isSheared()) {
+            return;
+        }
+
+        int count = this instanceof AppleCowEntityVariants.EnchantedGoldenAppleCow ? 1 : 1 + this.random.nextInt(2);
+        this.spawnAtLocation(new ItemStack(this.shearDropItem(), count));
+    }
+
     private net.minecraft.world.item.Item shearDropItem() {
         if (this instanceof AppleCowEntityVariants.EnchantedGoldenAppleCow) {
             return Items.ENCHANTED_GOLDEN_APPLE;

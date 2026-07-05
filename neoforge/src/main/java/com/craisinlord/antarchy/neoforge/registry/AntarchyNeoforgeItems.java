@@ -362,12 +362,6 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<Item> URANIUM_INGOT = ITEMS.registerSimpleItem("uranium_ingot", new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
     public static final DeferredItem<Item> TITANIUM_INGOT = ITEMS.registerSimpleItem("titanium_ingot", new Item.Properties().rarity(Rarity.UNCOMMON).fireResistant());
     public static final DeferredItem<Item> MOLEVORE_NOSE = ITEMS.registerSimpleItem("molevore_nose", new Item.Properties().rarity(Rarity.RARE));
-    public static final DeferredItem<Item> CHEEP = ITEMS.register("cheep",
-            () -> new Item(new Item.Properties()
-                    .food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationModifier(0.2F)
-                            .build())));
     public static final DeferredItem<Item> MOLEWORM_ITEM = ITEMS.register("moleworm",
             () -> new Item(new Item.Properties()
                     .food(new FoodProperties.Builder()

@@ -1,18 +1,24 @@
 package com.craisinlord.antarchy.content.entity.ant;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.ItemStack;
@@ -20,11 +26,76 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public final class AntTeleportHelper {
+    private static final double COMPANION_FOLLOW_RADIUS = 16.0D;
+
     private AntTeleportHelper() {
+    }
+
+    public static void teleportPlayerWithCompanions(ServerPlayer player, ServerLevel destination, Vec3 destinationPos) {
+        Mob vehicle = player.getVehicle() instanceof Mob mob ? mob : null;
+        List<Mob> companions = collectCompanions(player);
+        player.teleportTo(destination, destinationPos.x, destinationPos.y, destinationPos.z, player.getYRot(), player.getXRot());
+        Mob movedVehicle = null;
+        for (Mob companion : companions) {
+            Mob moved = moveCompanion(companion, destination, destinationPos);
+            if (companion == vehicle) {
+                movedVehicle = moved;
+            }
+        }
+
+        if (movedVehicle != null) {
+            player.startRiding(movedVehicle, true);
+        }
+    }
+
+    private static List<Mob> collectCompanions(ServerPlayer player) {
+        List<Mob> companions = new ArrayList<>();
+        if (player.getVehicle() instanceof Mob vehicle) {
+            companions.add(vehicle);
+        }
+
+        for (Mob mob : player.serverLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(COMPANION_FOLLOW_RADIUS), mob -> isFollowingPet(mob, player))) {
+            if (!companions.contains(mob)) {
+                companions.add(mob);
+            }
+        }
+
+        return companions;
+    }
+
+    private static boolean isFollowingPet(Mob mob, ServerPlayer player) {
+        if (!mob.isAlive()) {
+            return false;
+        }
+
+        if (mob instanceof TamableAnimal tamable) {
+            return tamable.isTame() && player.getUUID().equals(tamable.getOwnerUUID()) && !tamable.isOrderedToSit();
+        }
+
+        if (mob instanceof AbstractHorse horse) {
+            return horse.isTamed() && player.getUUID().equals(horse.getOwnerUUID());
+        }
+
+        return mob instanceof OwnableEntity ownable && player.getUUID().equals(ownable.getOwnerUUID());
+    }
+
+    @Nullable
+    private static Mob moveCompanion(Mob companion, ServerLevel destination, Vec3 destinationPos) {
+        companion.stopRiding();
+        companion.ejectPassengers();
+        companion.getNavigation().stop();
+        if (companion.level() == destination) {
+            companion.teleportTo(destinationPos.x, destinationPos.y, destinationPos.z);
+            return companion;
+        }
+
+        Entity moved = companion.changeDimension(new DimensionTransition(destination, destinationPos, Vec3.ZERO, companion.getYRot(), companion.getXRot(), DimensionTransition.DO_NOTHING));
+        return moved instanceof Mob mob ? mob : null;
     }
 
     static InteractionResult handleInteraction(BaseAntEntity ant, Player player, ItemStack itemStack) {
@@ -62,7 +133,7 @@ public final class AntTeleportHelper {
         }
 
         Vec3 destinationPos = getDestinationPosition(serverPlayer, destination);
-        serverPlayer.teleportTo(destination, destinationPos.x, destinationPos.y, destinationPos.z, serverPlayer.getYRot(), serverPlayer.getXRot());
+        teleportPlayerWithCompanions(serverPlayer, destination, destinationPos);
         serverPlayer.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
         return InteractionResult.CONSUME;
     }

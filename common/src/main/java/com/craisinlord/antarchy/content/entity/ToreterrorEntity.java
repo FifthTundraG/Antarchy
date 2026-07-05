@@ -2,6 +2,7 @@ package com.craisinlord.antarchy.content.entity;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.damage.AntarchyDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -78,7 +79,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private static final int RAPID_FIRE_END_TICK = 60;
     private static final int SHOOT_BOMBER_TICK = 12;
     private static final int SHOOT_BOMBER_SECOND_TICK = 32;
-    private static final int JUMP_TOTAL_TICKS = 55;
+    private static final int JUMP_TOTAL_TICKS = 40;
     private static final int JUMP_LAUNCH_TICK = 10;
     private static final int JUMP_SHAKE_TICKS = 12;
     private static final int SPIN_START_TOTAL_TICKS = 5;
@@ -93,8 +94,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private static final double RANGED_MAX_RANGE_SQR = 625.0D;
     private static final double SPIN_TRIGGER_RANGE_SQR = 225.0D;
     private static final double SPIN_LEASH_RANGE_SQR = 225.0D;
-    private static final double SPIN_RADIUS = 4.5D;
-    private static final double SPIN_MOVE_SPEED = 0.833D;
+    private static final double SPIN_RADIUS = 2.5D;
+    private static final double SPIN_MOVE_SPEED = 0.65D;
     private static final double SPIN_ANIMATION_SPEED = 0.49D;
     private static final double JUMP_SHOCKWAVE_RADIUS = 6.0D;
 
@@ -145,7 +146,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.325D)
                 .add(Attributes.FOLLOW_RANGE, 48.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.85D)
-                .add(Attributes.ARMOR, 10.0D);
+                .add(Attributes.ARMOR, 16.0D)
+                .add(Attributes.ARMOR_TOUGHNESS, 4.0D);
     }
 
     public static boolean canSpawn(EntityType<ToreterrorEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnReason, BlockPos pos, net.minecraft.util.RandomSource random) {
@@ -284,7 +286,22 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         return this.entityData.get(JUMP_SHAKING);
     }
 
-@Override
+    @Override
+    protected net.minecraft.sounds.SoundEvent getAmbientSound() {
+        return AntarchySoundEvents.TORETERROR_IDLE.get();
+    }
+
+    @Override
+    protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource damageSource) {
+        return AntarchySoundEvents.TORETERROR_HURT.get();
+    }
+
+    @Override
+    protected net.minecraft.sounds.SoundEvent getDeathSound() {
+        return AntarchySoundEvents.TORETERROR_DEATH.get();
+    }
+
+    @Override
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         this.bossEvent.addPlayer(player);
@@ -423,7 +440,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             LivingEntity target = this.getTarget();
             if (target != null) {
                 Vec3 toTarget = target.position().subtract(this.position()).normalize();
-                this.setDeltaMovement(toTarget.x * 0.6D, 1.4D, toTarget.z * 0.6D);
+                this.setDeltaMovement(toTarget.x * 0.6D, 1.15D, toTarget.z * 0.6D);
                 this.hasImpulse = true;
             }
         }
@@ -431,20 +448,18 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             this.jumpAirborne = true;
         }
         if (this.jumpLaunched && this.jumpAirborne && !this.shockwaveApplied) {
-            boolean forceLand = this.jumpAnimTicks <= 1;
-            if (forceLand) {
-                BlockPos pos = BlockPos.containing(this.getX(), this.getY(), this.getZ());
-                while (pos.getY() > this.level().getMinBuildHeight() && this.level().isEmptyBlock(pos)) {
-                    pos = pos.below();
-                }
-                this.teleportTo(this.getX(), pos.getY() + 1.0, this.getZ());
-                this.setDeltaMovement(Vec3.ZERO);
-            }
-            if (this.onGround() || forceLand) {
+            if (this.onGround()) {
                 this.shockwaveApplied = true;
                 this.applyJumpShockwave();
                 this.jumpShakeTicks = JUMP_SHAKE_TICKS;
                 this.entityData.set(JUMP_SHAKING, true);
+            } else if (this.jumpAnimTicks <= 10) {
+                Vec3 vel = this.getDeltaMovement();
+                this.setDeltaMovement(vel.x * 0.5D, Math.min(vel.y, -1.5D), vel.z * 0.5D);
+                this.hasImpulse = true;
+                if (this.jumpAnimTicks <= 2) {
+                    this.jumpAnimTicks = 2;
+                }
             }
         }
         this.jumpAnimTicks--;
@@ -517,7 +532,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         this.spinEndTicks--;
         if (this.spinEndTicks <= 0) {
             this.stopSpinSequence();
-            this.spinCooldown = 260 + this.random.nextInt(80);
+            this.spinCooldown = 340 + this.random.nextInt(80);
             this.spinHitCooldowns.clear();
         }
     }
@@ -532,7 +547,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             return;
         }
         Vec3 forward = this.spinDirection.lengthSqr() > 1.0E-4D ? this.spinDirection.normalize() : towardTarget;
-        Vec3 combined = forward.scale(0.95D).add(towardTarget.scale(0.05D));
+        Vec3 combined = forward.scale(0.99D).add(towardTarget.scale(0.01D));
         this.spinDirection = combined.lengthSqr() > 1.0E-4D ? combined.normalize() : towardTarget;
     }
 
@@ -703,6 +718,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
         LivingEntity target = this.getTarget();
         if (target == null) return;
+        this.playSound(AntarchySoundEvents.TORETERROR_BOMBER_FIRE.get(), 1.1F, 0.9F + this.random.nextFloat() * 0.15F);
         int count = 3;
         for (int i = 0; i < count; i++) {
             BomberEntity bomber = AntarchyObjects.BOMBER.get().create(this.level());

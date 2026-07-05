@@ -155,7 +155,7 @@ public final class StinkyBehavior {
     }
 
     private static void attractArthropod(Mob mob, LivingEntity source) {
-        if (!isValidStinkySourceForMob(mob, source)) {
+        if (!isValidStinkyAttackSourceForMob(mob, source)) {
             return;
         }
 
@@ -169,7 +169,7 @@ public final class StinkyBehavior {
     }
 
     private static void repelPassiveOrNeutralMob(Mob mob, LivingEntity source) {
-        if (!(mob instanceof PathfinderMob pathfinderMob) || !isValidStinkySourceForMob(mob, source)) {
+        if (!(mob instanceof PathfinderMob pathfinderMob) || !isValidStinkyRepelSourceForMob(mob, source)) {
             return;
         }
 
@@ -195,11 +195,24 @@ public final class StinkyBehavior {
         return !(mob instanceof Enemy);
     }
 
-    private static boolean isValidStinkySourceForMob(Mob mob, LivingEntity source) {
+    private static boolean isValidStinkyAttackSourceForMob(Mob mob, LivingEntity source) {
+        if (!isValidStinkyRepelSourceForMob(mob, source)) {
+            return false;
+        }
         if (source == mob || !source.isAlive() || !source.hasEffect(AntarchyObjects.STINKY_EFFECT.get())) {
             return false;
         }
         if (source instanceof Player player && (player.isCreative() || player.isSpectator())) {
+            return false;
+        }
+        return !mob.isAlliedTo(source);
+    }
+
+    private static boolean isValidStinkyRepelSourceForMob(Mob mob, LivingEntity source) {
+        if (source == mob || !source.isAlive() || !source.hasEffect(AntarchyObjects.STINKY_EFFECT.get())) {
+            return false;
+        }
+        if (source instanceof Player player && player.isSpectator()) {
             return false;
         }
         return !mob.isAlliedTo(source);

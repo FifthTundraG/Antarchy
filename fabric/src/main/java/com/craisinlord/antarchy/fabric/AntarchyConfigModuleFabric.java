@@ -2,6 +2,7 @@ package com.craisinlord.antarchy.fabric;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.config.ConfigResetGuard;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -35,6 +36,13 @@ public final class AntarchyConfigModuleFabric {
     }
 
     public static void init() {
+        ConfigResetGuard.wipeIfNeeded(
+                CONFIG_DIR,
+                ConfigSection.MOBS.path,
+                ConfigSection.TOOLS.path,
+                ConfigSection.MISC.path,
+                LEGACY_CONFIG_PATH
+        );
         JsonObject legacy = readConfig(LEGACY_CONFIG_PATH);
         Map<ConfigSection, JsonObject> loaded = new LinkedHashMap<>();
         Map<ConfigSection, JsonObject> normalized = new LinkedHashMap<>();

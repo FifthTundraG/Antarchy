@@ -74,7 +74,6 @@ public final class AntarchyNeoForgeEvents {
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::onInvertedEffectExpired);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleUltimateBowDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleUltimateCrossbowDamage);
-        NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNightmareSwordDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNightmareArmorDoubleDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipAttackEntity);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipLeftClickBlock);
@@ -672,19 +671,6 @@ public final class AntarchyNeoForgeEvents {
     }
 
 
-    static void handleNightmareSwordDamage(LivingIncomingDamageEvent event) {
-        net.minecraft.world.damagesource.DamageSource source = event.getSource();
-        if (!(source.getEntity() instanceof Player attacker)) return;
-        if (!(attacker.getMainHandItem().getItem() instanceof NightmareSwordItem)) return;
-
-        float maxHealth = attacker.getMaxHealth();
-        if (maxHealth <= 0) return;
-        float missingFraction = (maxHealth - attacker.getHealth()) / maxHealth;
-        float baseDamage = (float) AntarchySettings.nightmareSwordBaseDamage();
-        float scalingFactor = (float) AntarchySettings.nightmareSwordScalingFactor();
-
-        event.setAmount(baseDamage + missingFraction * scalingFactor * baseDamage);
-    }
 
     static void handleNightmareArmorDoubleDamage(LivingIncomingDamageEvent event) {
         net.minecraft.world.damagesource.DamageSource source = event.getSource();

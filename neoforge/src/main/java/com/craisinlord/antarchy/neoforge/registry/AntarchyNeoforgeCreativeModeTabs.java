@@ -144,7 +144,6 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.MOLEVORE_NOSE.get());
             event.accept(AntarchyNeoforgeItems.MOLEWORM_ITEM.get());
             event.accept(AntarchyNeoforgeItems.MUD_PIE.get());
-            event.accept(AntarchyNeoforgeItems.CHEEP.get());
             event.accept(AntarchyNeoforgeItems.LUCID_EYE.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_SHARD.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_APPLE.get());
@@ -436,7 +435,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             case "ultimate_bow", "ultimate_crossbow" -> 20;
 
             // 21 - Foods
-            case "cloud_shark_fin_soup", "mud_pie", "cheep", "rainbow_sugar",
+            case "cloud_shark_fin_soup", "mud_pie", "rainbow_sugar",
                  "blood_crystal_apple" -> 21;
 
             // 22 - Crafting ingredients
