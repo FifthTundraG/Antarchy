@@ -61,10 +61,11 @@ public final class AntarchyFabricEvents {
             if (entity instanceof ServerPlayer sp) {
                 BloodglassManager.handleDeath(sp);
             }
-            if (!(entity instanceof MissileSquidEntity missileSquid)) {
-                return;
-            }
-            if (missileSquid.isSpawnedByKraken()) {
+            if (entity instanceof MissileSquidEntity missileSquid) {
+                if (missileSquid.isSpawnedByKraken()) {
+                    return;
+                }
+            } else if (entity.getType() != net.minecraft.world.entity.EntityType.SQUID) {
                 return;
             }
             if (!(entity.level() instanceof ServerLevel serverLevel)) {

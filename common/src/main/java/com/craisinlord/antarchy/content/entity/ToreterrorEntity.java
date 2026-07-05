@@ -3,6 +3,7 @@ package com.craisinlord.antarchy.content.entity;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.AntarchySoundEvents;
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.damage.AntarchyDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -132,6 +133,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private Vec3 spinDirection = Vec3.ZERO;
     private int spinStrafeSign = 1;
     private int spinStuckTicks;
+    private Vec3 spinProgressAnchor = Vec3.ZERO;
+    private int spinProgressTicks;
     private final Map<UUID, Integer> spinHitCooldowns = new HashMap<>();
 
     public ToreterrorEntity(EntityType<? extends ToreterrorEntity> entityType, Level level) {
@@ -514,6 +517,16 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             this.spinStuckTicks = 0;
         }
 
+        this.spinProgressTicks++;
+        if (this.spinProgressTicks >= 20) {
+            if (this.position().distanceToSqr(this.spinProgressAnchor) < 4.0D) {
+                this.beginSpinEnd();
+                return;
+            }
+            this.spinProgressAnchor = this.position();
+            this.spinProgressTicks = 0;
+        }
+
         int elapsed = this.spinLoopTotalTicks - this.spinLoopTicks;
         if (elapsed % SPIN_HIT_INTERVAL == 0) {
             this.applySpinDamage();
@@ -679,6 +692,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         this.spinDirection = Vec3.ZERO;
         this.spinStrafeSign = 1;
         this.spinStuckTicks = 0;
+        this.spinProgressAnchor = Vec3.ZERO;
+        this.spinProgressTicks = 0;
     }
 
     private Vec3 calcLaunchVelocity(Vec3 from, Vec3 to, double minSpeed) {
@@ -699,6 +714,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
         LivingEntity target = this.getTarget();
         if (target == null) return;
+        this.playSound(AntarchySoundEvents.SQUIDZOOKA_FIRE.get(), 0.8F, 0.9F + this.random.nextFloat() * 0.2F);
         Vec3 from = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 to = new Vec3(target.getX(), target.getEyeY(), target.getZ());
         Vec3 baseVel = calcLaunchVelocity(from, to, 1.5);
@@ -892,6 +908,8 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             ToreterrorEntity.this.spinLoopTicks = ToreterrorEntity.this.spinLoopTotalTicks;
             ToreterrorEntity.this.spinEndTicks = 0;
             ToreterrorEntity.this.spinStuckTicks = 0;
+            ToreterrorEntity.this.spinProgressAnchor = ToreterrorEntity.this.position();
+            ToreterrorEntity.this.spinProgressTicks = 0;
             ToreterrorEntity.this.spinStrafeSign = ToreterrorEntity.this.random.nextBoolean() ? 1 : -1;
             ToreterrorEntity.this.spinHitCooldowns.clear();
             ToreterrorEntity.this.spinDirection = target == null

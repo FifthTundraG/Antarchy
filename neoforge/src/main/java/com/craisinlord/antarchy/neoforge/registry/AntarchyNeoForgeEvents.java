@@ -114,8 +114,11 @@ public final class AntarchyNeoForgeEvents {
     }
 
     public static void onMissileSquidDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof MissileSquidEntity missileSquid)) return;
-        if (missileSquid.isSpawnedByKraken()) return;
+        if (event.getEntity() instanceof MissileSquidEntity missileSquid) {
+            if (missileSquid.isSpawnedByKraken()) return;
+        } else if (event.getEntity().getType() != EntityType.SQUID) {
+            return;
+        }
         if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
 
         BlockPos deathPos = event.getEntity().blockPosition();
