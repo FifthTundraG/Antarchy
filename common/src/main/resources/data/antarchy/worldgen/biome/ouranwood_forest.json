@@ -101,8 +101,16 @@
     ],
     "axolotls": [],
     "underground_water_creature": [],
-    "water_creature": [],
-    "water_ambient": [],
+    "water_creature": [
+      {
+        "type": "antarchy:octopus_bomb",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      }],
+    "water_ambient": [
+      { "type": "antarchy:cheep", "weight": 10, "minCount": 3, "maxCount": 6 },
+      { "type": "minecraft:tropical_fish", "weight": 20, "minCount": 4, "maxCount": 8 }],
     "misc": []
   }
 }

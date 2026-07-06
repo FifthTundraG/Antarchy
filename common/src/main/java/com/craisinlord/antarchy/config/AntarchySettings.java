@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 public final class AntarchySettings {
-    private static boolean disableInfinityBookPortalCreation = false;
+    private static boolean disableInfinityBookPortalCreation = true;
     private static boolean easterBunnyEnabled = true;
     private static int easterBunnyNaturalSpawnChancePercent = 1;
     private static boolean rainbowAntsLeadToInfinityDimensions = true;
@@ -31,7 +31,7 @@ public final class AntarchySettings {
     private static double waspHealth = 16.0D;
     private static double waspAttackDamage = 4.0D;
     private static double waspMovementSpeed = 0.39D;
-    private static double bomberHealth = 10.0D;
+    private static double bomberHealth = 15.0D;
     private static double bomberAttackDamage = 4.0D;
     private static double bomberExplosionDamage = 8.0D;
     private static double bomberExplosionRadius = 4.0D;
@@ -90,6 +90,8 @@ public final class AntarchySettings {
     private static ResourceKey<Level> rainbowAntNonInfinityFallbackDimension = dimensionKey("antarchy:elythia");
     private static double krakenHealth = 1500.0D;
     private static double krakenAttackDamage = 45.0D;
+    private static double octopusBombHealth = 100.0D;
+    private static double octopusBombAttackDamage = 16.0D;
     private static double brutalflyHealth = 400.0D;
     private static double brutalflySwipeDamage = 15.0D;
     private static double brutalflySpitDamage = 5.0D;
@@ -98,6 +100,12 @@ public final class AntarchySettings {
     private static double mantisMovementSpeed = 0.42D;
     private static double mantisFlyingSpeed = 0.77D;
     private static boolean mantisIgnoreLightLevel = false;
+    private static double alphaMantisHealth = 500.0D;
+    private static double alphaMantisAttackDamage = 18.0D;
+    private static double alphaMantisMovementSpeed = 0.42D;
+    private static double alphaMantisFlyingSpeed = 0.77D;
+    private static int alphaMantisSummonIntervalTicks = 300;
+    private static int alphaMantisMaxMinions = 4;
     private static double krakenProjectileDamageTakenMultiplier = 0.5D;
     private static boolean krakenSquidSpawnEnabled = true;
     private static boolean krakenMassSpawnEnabled = true;
@@ -143,12 +151,12 @@ public final class AntarchySettings {
 
     private static double nightmareSwordBaseDamage = 15.0D;
     
-    private static double nightmareSwordScalingFactor = 1.0D;
+    private static double nightmareSwordScalingFactor = 1.5D;
     private static boolean basiliskPetrifyingGazeEnabled = true;
     private static int basiliskSpawnMaxLightLevel = 5;
     private static double basiliskHealth = 150.0D;
     private static double basiliskAttackDamage = 36.0D;
-    private static double basiliskMovementSpeed = 0.30D;
+    private static double basiliskMovementSpeed = 0.225D;
     private static double basiliskArmor = 6.0D;
     private static double basiliskKnockbackResistance = 0.5D;
     private static double basiliskFollowRange = 28.0D;
@@ -225,23 +233,23 @@ public final class AntarchySettings {
     private static final int     reverieAmbientTargetMaxAgeTicks  = 40;
     private static final int     reverieAmbientPulseIntervalMinTicks = 12;
     private static final int     reverieAmbientPulseIntervalMaxTicks = 19;
-    private static double emperorScorpionHealth = 100.0D;
-    private static double emperorScorpionAttackDamage = 12.0D;
+    private static double emperorScorpionHealth = 400.0D;
+    private static double emperorScorpionAttackDamage = 28.0D;
     private static double emperorScorpionMovementSpeed = 0.32D;
-    private static double emperorScorpionArmor = 6.0D;
-    private static double emperorScorpionKnockbackResistance = 0.6D;
-    private static double emperorScorpionFollowRange = 32.0D;
+    private static double emperorScorpionArmor = 25.0D;
+    private static double emperorScorpionKnockbackResistance = 0.8D;
+    private static double emperorScorpionFollowRange = 40.0D;
     private static int emperorScorpionXpReward = 25;
-    private static int emperorScorpionClawAnimTicks = 12;
-    private static int emperorScorpionClawHitTick = 6;
-    private static int emperorScorpionClawCooldownTicks = 16;
-    private static int emperorScorpionStingAnimTicks = 18;
-    private static int emperorScorpionStingHitTick = 9;
-    private static int emperorScorpionStingCooldownTicks = 42;
-    private static int emperorScorpionPoisonTicks = 100;
-    private static int emperorScorpionWeaknessTicks = 80;
-    private static int emperorScorpionSummonIntervalTicks = 180;
-    private static int emperorScorpionMaxSummonedScorpions = 4;
+    private static int emperorScorpionClawAnimTicks = 23;
+    private static int emperorScorpionClawHitTick = 12;
+    private static int emperorScorpionClawCooldownTicks = 28;
+    private static int emperorScorpionStingAnimTicks = 25;
+    private static int emperorScorpionStingHitTick = 13;
+    private static int emperorScorpionStingCooldownTicks = 60;
+    private static int emperorScorpionPoisonTicks = 300;
+    private static int emperorScorpionWeaknessTicks = 120;
+    private static int emperorScorpionSummonIntervalTicks = 140;
+    private static int emperorScorpionMaxSummonedScorpions = 8;
     private static double scorpionHealth = 30.0D;
     private static double scorpionAttackDamage = 5.0D;
     private static double scorpionMovementSpeed = 0.29D;
@@ -271,6 +279,10 @@ public final class AntarchySettings {
     private static double bedBugAttackLungeHorizontalSpeed = 0.42D;
     private static double bedBugAttackLungeVerticalSpeed = 0.1D;
     private static float bedBugHealAmount = 2.0F;
+    private static double jumpyBugHealth = 100.0D;
+    private static double jumpyBugPounceDamage = 12.0D;
+    private static double jumpyBugLatchDamage = 1.0D;
+    private static double jumpyBugCamouflageAlpha = 0.18D;
     private static double brutalflyArmor = 10.0D;
     private static double brutalflyArmorToughness = 4.0D;
     private static double brutalflyKnockbackResistance = 0.7D;
@@ -426,6 +438,7 @@ public final class AntarchySettings {
     private static double ductTapeRepairPercentPerUse = 0.25D;
     private static double ultimateArmorKnockbackResistance = 0.1D;
     private static double nightmareArmorKnockbackResistance = 0.1D;
+    private static double primordialArmorKnockbackPerPiece = 0.5D;
     private static int fallenKingCrownArmorValue = 2;
     private static double fallenKingCrownArmorToughness = 0.0D;
     private static boolean elythiaFireflyParticlesEnabled = true;
@@ -447,14 +460,25 @@ public final class AntarchySettings {
     private static double toreterrorHealth = 300.0D;
     private static double toreterrorJumpAttackDamage = 14.0D;
     private static double toreterrorJumpAttackKnockback = 2.5D;
-    private static double toreterrorSpinDamage = 8.0D;
-    private static double toreterrorSpinKnockback = 1.5D;
+    private static double toreterrorSpinDamage = 6.0D;
+    private static double toreterrorSpinKnockback = 0.9D;
     private static double toreterrorRangedWaterBombChance = 0.5D;
+    private static double toreterrorProjectileDamageMultiplier = 0.5D;
     private static double waterBombDamage = 6.0D;
     private static int waterBombLifetimeTicks = 120;
     private static double waterBombGravity = 0.12D;
     private static double waterBombKnockback = 1.2D;
     private static double waterCannonCooldownSeconds = 1.5D;
+    private static double creepingHorrorHealth = 15.0D;
+    private static double creepingHorrorAttackDamage = 6.0D;
+    private static double lurkingTerrorHealth = 15.0D;
+    private static double lurkingTerrorAttackDamage = 6.0D;
+    private static double cheepHealth = 8.0D;
+    private static double cheepAttackDamage = 3.0D;
+    private static double dorrieHealth = 60.0D;
+    private static double herculesBeetleHealth = 500.0D;
+    private static double herculesBeetleAttackDamage = 30.0D;
+    private static double herculesBeetleChargeDamage = 40.0D;
 
     private AntarchySettings() {
     }
@@ -723,6 +747,18 @@ public final class AntarchySettings {
         return krakenAttackDamage;
     }
 
+    public static double octopusBombHealth() {
+        return octopusBombHealth;
+    }
+
+    public static void setOctopusBombHealth(double value) { octopusBombHealth = value; }
+
+    public static double octopusBombAttackDamage() {
+        return octopusBombAttackDamage;
+    }
+
+    public static void setOctopusBombAttackDamage(double value) { octopusBombAttackDamage = value; }
+
     public static double brutalflyHealth() {
         return brutalflyHealth;
     }
@@ -757,6 +793,30 @@ public final class AntarchySettings {
 
     public static void setMantisIgnoreLightLevel(boolean value) {
         mantisIgnoreLightLevel = value;
+    }
+
+    public static double alphaMantisHealth() {
+        return alphaMantisHealth;
+    }
+
+    public static double alphaMantisAttackDamage() {
+        return alphaMantisAttackDamage;
+    }
+
+    public static double alphaMantisMovementSpeed() {
+        return alphaMantisMovementSpeed;
+    }
+
+    public static double alphaMantisFlyingSpeed() {
+        return alphaMantisFlyingSpeed;
+    }
+
+    public static int alphaMantisSummonIntervalTicks() {
+        return alphaMantisSummonIntervalTicks;
+    }
+
+    public static int alphaMantisMaxMinions() {
+        return alphaMantisMaxMinions;
     }
 
     public static double waspHealth() {
@@ -1161,6 +1221,30 @@ public final class AntarchySettings {
 
     public static void setMantisFlyingSpeed(double value) {
         mantisFlyingSpeed = value;
+    }
+
+    public static void setAlphaMantisHealth(double value) {
+        alphaMantisHealth = value;
+    }
+
+    public static void setAlphaMantisAttackDamage(double value) {
+        alphaMantisAttackDamage = value;
+    }
+
+    public static void setAlphaMantisMovementSpeed(double value) {
+        alphaMantisMovementSpeed = value;
+    }
+
+    public static void setAlphaMantisFlyingSpeed(double value) {
+        alphaMantisFlyingSpeed = value;
+    }
+
+    public static void setAlphaMantisSummonIntervalTicks(int value) {
+        alphaMantisSummonIntervalTicks = value;
+    }
+
+    public static void setAlphaMantisMaxMinions(int value) {
+        alphaMantisMaxMinions = value;
     }
 
     public static void setKrakenProjectileDamageTakenMultiplier(double value) {
@@ -1810,6 +1894,18 @@ public final class AntarchySettings {
     public static float bedBugHealAmount() { return bedBugHealAmount; }
     public static void setBedBugHealAmount(float value) { bedBugHealAmount = value; }
 
+    public static double jumpyBugHealth() { return jumpyBugHealth; }
+    public static void setJumpyBugHealth(double value) { jumpyBugHealth = value; }
+
+    public static double jumpyBugPounceDamage() { return jumpyBugPounceDamage; }
+    public static void setJumpyBugPounceDamage(double value) { jumpyBugPounceDamage = value; }
+
+    public static double jumpyBugLatchDamage() { return jumpyBugLatchDamage; }
+    public static void setJumpyBugLatchDamage(double value) { jumpyBugLatchDamage = value; }
+
+    public static double jumpyBugCamouflageAlpha() { return jumpyBugCamouflageAlpha; }
+    public static void setJumpyBugCamouflageAlpha(double value) { jumpyBugCamouflageAlpha = value; }
+
     public static double brutalflyArmor() { return brutalflyArmor; }
     public static void setBrutalflyArmor(double value) { brutalflyArmor = value; }
 
@@ -2275,6 +2371,9 @@ public final class AntarchySettings {
     public static double nightmareArmorKnockbackResistance() { return nightmareArmorKnockbackResistance; }
     public static void setNightmareArmorKnockbackResistance(double value) { nightmareArmorKnockbackResistance = value; }
 
+    public static double primordialArmorKnockbackPerPiece() { return primordialArmorKnockbackPerPiece; }
+    public static void setPrimordialArmorKnockbackPerPiece(double value) { primordialArmorKnockbackPerPiece = value; }
+
     public static int fallenKingCrownArmorValue() { return fallenKingCrownArmorValue; }
     public static void setFallenKingCrownArmorValue(int value) { fallenKingCrownArmorValue = value; }
 
@@ -2330,6 +2429,8 @@ public final class AntarchySettings {
     public static void setToreterrorSpinKnockback(double v) { toreterrorSpinKnockback = v; }
     public static double toreterrorRangedWaterBombChance() { return toreterrorRangedWaterBombChance; }
     public static void setToreterrorRangedWaterBombChance(double v) { toreterrorRangedWaterBombChance = v; }
+    public static double toreterrorProjectileDamageMultiplier() { return toreterrorProjectileDamageMultiplier; }
+    public static void setToreterrorProjectileDamageMultiplier(double v) { toreterrorProjectileDamageMultiplier = v; }
     public static double waterBombDamage() { return waterBombDamage; }
     public static void setWaterBombDamage(double v) { waterBombDamage = v; }
     public static int waterBombLifetimeTicks() { return waterBombLifetimeTicks; }
@@ -2340,4 +2441,25 @@ public final class AntarchySettings {
     public static void setWaterBombKnockback(double v) { waterBombKnockback = v; }
     public static double waterCannonCooldownSeconds() { return waterCannonCooldownSeconds; }
     public static void setWaterCannonCooldownSeconds(double v) { waterCannonCooldownSeconds = v; }
+
+    public static double creepingHorrorHealth() { return creepingHorrorHealth; }
+    public static void setCreepingHorrorHealth(double v) { creepingHorrorHealth = v; }
+    public static double creepingHorrorAttackDamage() { return creepingHorrorAttackDamage; }
+    public static void setCreepingHorrorAttackDamage(double v) { creepingHorrorAttackDamage = v; }
+    public static double lurkingTerrorHealth() { return lurkingTerrorHealth; }
+    public static void setLurkingTerrorHealth(double v) { lurkingTerrorHealth = v; }
+    public static double lurkingTerrorAttackDamage() { return lurkingTerrorAttackDamage; }
+    public static void setLurkingTerrorAttackDamage(double v) { lurkingTerrorAttackDamage = v; }
+    public static double cheepHealth() { return cheepHealth; }
+    public static void setCheepHealth(double v) { cheepHealth = v; }
+    public static double cheepAttackDamage() { return cheepAttackDamage; }
+    public static void setCheepAttackDamage(double v) { cheepAttackDamage = v; }
+    public static double dorrieHealth() { return dorrieHealth; }
+    public static double herculesBeetleHealth() { return herculesBeetleHealth; }
+    public static void setHerculesBeetleHealth(double v) { herculesBeetleHealth = v; }
+    public static double herculesBeetleAttackDamage() { return herculesBeetleAttackDamage; }
+    public static void setHerculesBeetleAttackDamage(double v) { herculesBeetleAttackDamage = v; }
+    public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
+    public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
+    public static void setDorrieHealth(double v) { dorrieHealth = v; }
 }

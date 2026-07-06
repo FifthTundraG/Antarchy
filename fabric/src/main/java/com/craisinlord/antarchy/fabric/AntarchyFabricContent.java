@@ -14,10 +14,15 @@ import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
+import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.TermiteNestFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.NyxiteSpikeConfiguration;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.AntiwaterSpringsConfiguration;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.AntiwaterSpringsFeature;
@@ -36,6 +41,7 @@ import com.craisinlord.antarchy.content.effect.GrowthMobEffect;
 import com.craisinlord.antarchy.content.effect.InvertedMobEffect;
 import com.craisinlord.antarchy.content.effect.ParalyzedMobEffect;
 import com.craisinlord.antarchy.content.effect.ShrinkMobEffect;
+import com.craisinlord.antarchy.content.effect.StinkyMobEffect;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.AppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.EnchantedGoldenAppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.GoldenAppleCow;
@@ -55,8 +61,11 @@ import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
+import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
+import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodBoatEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodChestBoatEntity;
+import com.craisinlord.antarchy.content.entity.AlphaMantisEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
 import com.craisinlord.antarchy.content.entity.basilisk.BasiliskEntity;
 import com.craisinlord.antarchy.content.entity.EmperorScorpionEntity;
@@ -66,19 +75,25 @@ import com.craisinlord.antarchy.content.item.LucidPearlItem;
 import com.craisinlord.antarchy.content.entity.nightmare.NightmareEntity;
 import com.craisinlord.antarchy.content.entity.ToreterrorEntity;
 import com.craisinlord.antarchy.content.entity.WaterBombEntity;
+import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
+import com.craisinlord.antarchy.content.entity.LurkingTerrorEntity;
 import com.craisinlord.antarchy.content.item.PrimordialArmorItem;
 import com.craisinlord.antarchy.content.item.WaterCannonItem;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
+import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
 import com.craisinlord.antarchy.content.entity.MolevoreEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
 import com.craisinlord.antarchy.content.entity.BomberEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugEntity;
+import com.craisinlord.antarchy.content.entity.SpitBugProjectileEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
 import com.craisinlord.antarchy.content.entity.WaspEntity;
 import com.craisinlord.antarchy.content.entity.ant.BaseAntEntity;
 import com.craisinlord.antarchy.content.entity.ant.BrownAntEntity;
 import com.craisinlord.antarchy.content.entity.ant.RainbowAntEntity;
 import com.craisinlord.antarchy.content.entity.ant.RedAntEntity;
+import com.craisinlord.antarchy.content.entity.ant.TermiteEntity;
 import com.craisinlord.antarchy.content.item.BattleAxeItem;
 import com.craisinlord.antarchy.content.item.BasiliskDaggerItem;
 import com.craisinlord.antarchy.content.item.BigBerthaItem;
@@ -100,6 +115,7 @@ import com.craisinlord.antarchy.content.item.DiamondMinecartItem;
 import com.craisinlord.antarchy.content.item.ReverieBottleItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
 import com.craisinlord.antarchy.content.item.SizeRayItem;
 import com.craisinlord.antarchy.content.item.SquidzookaItem;
 import com.craisinlord.antarchy.content.item.SimpleToolTier;
@@ -111,6 +127,7 @@ import com.craisinlord.antarchy.content.item.NightmareSwordItem;
 import com.craisinlord.antarchy.content.item.OuranwoodBoatOnlyItem;
 import com.craisinlord.antarchy.content.item.OuranwoodChestBoatItem;
 import com.craisinlord.antarchy.content.item.RainbowSugarItem;
+import com.craisinlord.antarchy.content.worldgen.elythia.CoralSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaBiomeSource;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaRiverCarveFunction;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaFloraFeature;
@@ -128,6 +145,9 @@ import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodCocoonTreeFeat
 import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodTreeConfiguration;
 import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodTreeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.TriffidPatchFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.BedBugNestFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.BedBugSurfaceClusterFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.CloudSeaCalciteFeature;
@@ -191,6 +211,7 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
@@ -200,9 +221,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.GlowLichenBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -242,6 +266,7 @@ public final class AntarchyFabricContent {
     private static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(Registries.POTION, Antarchy.MODID);
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Antarchy.MODID);
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Antarchy.MODID);
+    private static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, Antarchy.MODID);
     private static final Tier ULTIMATE_TIER = new SimpleToolTier(
             3072,
             10.5F,
@@ -369,6 +394,23 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_HURT = registerSoundEvent("molevore_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_ATTACK = registerSoundEvent("molevore_attack");
     public static final DeferredHolder<SoundEvent, SoundEvent> MOLEVORE_DIG = registerSoundEvent("molevore_dig");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_WALK = registerSoundEvent("bomber_walk");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_KNOCK = registerSoundEvent("bomber_knock");
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOMBER_EXPLODE = registerSoundEvent("bomber_explode");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_IDLE = registerSoundEvent("toreterror_idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_HURT = registerSoundEvent("toreterror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_DEATH = registerSoundEvent("toreterror_death");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_BOMBER_FIRE = registerSoundEvent("toreterror_bomber_fire");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_UP = registerSoundEvent("toreterror_jump_up");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_LAND = registerSoundEvent("toreterror_jump_land");
+    public static final DeferredHolder<SoundEvent, SoundEvent> STINKY_FLY_SOUND = registerSoundEvent("stinky_fly");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_GROWL = registerSoundEvent("creeping_horror_growl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_HURT = registerSoundEvent("creeping_horror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_BITE = registerSoundEvent("creeping_horror_bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_SNARL = registerSoundEvent("lurking_terror_snarl");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_HURT = registerSoundEvent("lurking_terror_hurt");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_BITE = registerSoundEvent("lurking_terror_bite");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LURKING_TERROR_FLY_LOOP = registerSoundEvent("lurking_terror_fly_loop");
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCT_TAPE_USE = registerSoundEvent("duct_tape_use");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_HYPNOTIC_GAS = registerSoundEvent("potent_nyxite_hypnotic_gas");
     public static final DeferredHolder<SoundEvent, SoundEvent> POTENT_NYXITE_GEYSER_ERUPTION_START = registerSoundEvent("potent_nyxite_geyser_eruption_start");
@@ -481,13 +523,13 @@ public final class AntarchyFabricContent {
             () -> new TorchflowerBushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)
                     .lightLevel(state -> AntarchySettings.glowingTorchflowers() ? 15 : 0)));
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
-            () -> new net.minecraft.world.level.block.StandingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
+            () -> new net.minecraft.world.level.block.StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
-            () -> new net.minecraft.world.level.block.WallSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
+            () -> new net.minecraft.world.level.block.WallSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.CeilingHangingSignBlock> OURANWOOD_HANGING_SIGN = BLOCKS.register("ouranwood_hanging_sign",
-            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallHangingSignBlock> OURANWOOD_WALL_HANGING_SIGN = BLOCKS.register("ouranwood_wall_hanging_sign",
-            () -> new net.minecraft.world.level.block.WallHangingSignBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.WallHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
     public static final DeferredBlock<DuplicatorSaplingBlock> DUPLICATOR_SAPLING = BLOCKS.register("duplicator_sapling",
             () -> new DuplicatorSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
     public static final DeferredBlock<DuctTapeBlock> DUCT_TAPE = BLOCKS.register("duct_tape",
@@ -538,6 +580,12 @@ public final class AntarchyFabricContent {
             () -> new Block(AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<Block> CRACKED_SHELLSTONE_BRICKS = BLOCKS.register("cracked_shellstone_bricks",
             () -> new Block(AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<net.minecraft.world.level.block.StairBlock> MOSSY_SHELLSTONE_BRICK_STAIRS = BLOCKS.register("mossy_shellstone_brick_stairs",
+            () -> new net.minecraft.world.level.block.StairBlock(MOSSY_SHELLSTONE_BRICKS.get().defaultBlockState(), AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<net.minecraft.world.level.block.SlabBlock> MOSSY_SHELLSTONE_BRICK_SLAB = BLOCKS.register("mossy_shellstone_brick_slab",
+            () -> new net.minecraft.world.level.block.SlabBlock(AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<net.minecraft.world.level.block.WallBlock> MOSSY_SHELLSTONE_BRICK_WALL = BLOCKS.register("mossy_shellstone_brick_wall",
+            () -> new net.minecraft.world.level.block.WallBlock(AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<net.minecraft.world.level.block.StairBlock> SHELLSTONE_STAIRS = BLOCKS.register("shellstone_stairs",
             () -> new net.minecraft.world.level.block.StairBlock(SHELLSTONE.get().defaultBlockState(), AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<net.minecraft.world.level.block.SlabBlock> SHELLSTONE_SLAB = BLOCKS.register("shellstone_slab",
@@ -578,6 +626,10 @@ public final class AntarchyFabricContent {
             () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DREAM_FIRE_FLAME = PARTICLE_TYPES.register("dream_fire_flame",
             () -> simpleParticleType());
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_GAS = PARTICLE_TYPES.register("stinky_gas",
+            () -> simpleParticleType());
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_FLY = PARTICLE_TYPES.register("stinky_fly",
+            () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS = PARTICLE_TYPES.register("hypnotic_gas",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS_CLOUD = PARTICLE_TYPES.register("hypnotic_gas_cloud",
@@ -587,6 +639,8 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS_CLOUD_DOWN = PARTICLE_TYPES.register("hypnotic_gas_cloud_down",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FIREFLY = PARTICLE_TYPES.register("firefly",
+            () -> simpleParticleType());
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ORANGE_ASH = PARTICLE_TYPES.register("orange_ash",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, ParticleType<InvertedGeyserBaseParticleOptions>> INVERTED_GEYSER_BASE = PARTICLE_TYPES.register("inverted_geyser_base",
             () -> particleType(InvertedGeyserBaseParticleOptions::codec, InvertedGeyserBaseParticleOptions::streamCodec));
@@ -620,11 +674,14 @@ public final class AntarchyFabricContent {
             () -> new WaspNestBlock(AntarchyFabricContent::waspNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.BEE_NEST)));
     public static final DeferredBlock<com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock> OURANWOOD_SQUIRREL_NEST = BLOCKS.register("ouranwood_squirrel_nest",
             () -> new com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COARSE_DIRT).noLootTable()));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock> BRUTALFLY_COCOON_SPAWNER = BLOCKS.register("brutalfly_cocoon_spawner",
+            () -> new com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().noLootTable()));
     public static final DeferredBlock<HushweedBlock> HUSHWEED = BLOCKS.register("hushweed",
             () -> new HushweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AZALEA).noCollission().noOcclusion()));
     public static final DeferredHolder<MobEffect, DreadMobEffect> DREAD = MOB_EFFECTS.register("dread", DreadMobEffect::new);
     public static final DeferredHolder<MobEffect, ParalyzedMobEffect> PARALYZED = MOB_EFFECTS.register("paralyzed", ParalyzedMobEffect::new);
     public static final DeferredHolder<MobEffect, InvertedMobEffect> INVERTED = MOB_EFFECTS.register("inverted", InvertedMobEffect::new);
+    public static final DeferredHolder<MobEffect, StinkyMobEffect> STINKY = MOB_EFFECTS.register("stinky", StinkyMobEffect::new);
     public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.BloodglassWardEffect> BLOODGLASS_WARD = MOB_EFFECTS.register("bloodglass_ward", com.craisinlord.antarchy.content.effect.BloodglassWardEffect::new);
     private static final DeferredHolder<Attribute, Attribute> BLOODGLASS_MAX_HEARTS = ATTRIBUTES.register(
             "bloodglass_max_hearts",
@@ -638,6 +695,10 @@ public final class AntarchyFabricContent {
             () -> new Potion(new MobEffectInstance(mobEffectHolder(INVERTED), 600)));
     public static final DeferredHolder<Potion, Potion> LONG_INVERSION = POTIONS.register("long_inversion",
             () -> new Potion("inversion", new MobEffectInstance(mobEffectHolder(INVERTED), 2400)));
+    public static final DeferredHolder<Potion, Potion> STINKY_POTION = POTIONS.register("stinky",
+            () -> new Potion(new MobEffectInstance(mobEffectHolder(STINKY), 1200)));
+    public static final DeferredHolder<Potion, Potion> LONG_STINKY = POTIONS.register("long_stinky",
+            () -> new Potion("stinky", new MobEffectInstance(mobEffectHolder(STINKY), 2400)));
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
     public static final DeferredHolder<Potion, Potion> PARALYSIS = POTIONS.register("paralysis",
@@ -660,6 +721,29 @@ public final class AntarchyFabricContent {
             () -> new Potion("growing", new MobEffectInstance(mobEffectHolder(GROWTH_EFFECT), 900, 1)));
     public static final DeferredHolder<Potion, Potion> EXTREME_GROWING = POTIONS.register("extreme_growing",
             () -> new Potion("growing", new MobEffectInstance(mobEffectHolder(GROWTH_EFFECT), 600, 2)));
+    public static final DeferredHolder<Fluid, Fluid> BILE = FLUIDS.register("bile",
+            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Source(
+                    () -> lookupFlowingFluid("bile"),
+                    () -> lookupFlowingFluid("flowing_bile"),
+                    () -> lookupItem("bile_bucket"),
+                    "bile",
+                    4,
+                    1,
+                    5
+            ));
+    public static final DeferredHolder<Fluid, Fluid> FLOWING_BILE = FLUIDS.register("flowing_bile",
+            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Flowing(
+                    () -> lookupFlowingFluid("bile"),
+                    () -> lookupFlowingFluid("flowing_bile"),
+                    () -> lookupItem("bile_bucket"),
+                    "bile",
+                    4,
+                    1,
+                    5
+            ));
+    public static final DeferredBlock<LiquidBlock> BILE_BLOCK = BLOCKS.register("bile",
+            () -> new BileLiquidBlock((net.minecraft.world.level.material.FlowingFluid) BILE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 5).noLootTable()));
+
     public static final DeferredHolder<Fluid, Fluid> ICHOR = FLUIDS.register("ichor",
             () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Source(
                     () -> lookupFlowingFluid("ichor"),
@@ -706,6 +790,11 @@ public final class AntarchyFabricContent {
                     .sized(3.125F, 2.5F)
                     .clientTrackingRange(8)
                     .build("mantis"));
+    public static final DeferredHolder<EntityType<?>, EntityType<AlphaMantisEntity>> ALPHA_MANTIS = ENTITY_TYPES.register("alpha_mantis",
+            () -> EntityType.Builder.of(AlphaMantisEntity::new, MobCategory.MONSTER)
+                    .sized(4.0F, 3.25F)
+                    .clientTrackingRange(10)
+                    .build("alpha_mantis"));
     public static final DeferredHolder<EntityType<?>, EntityType<OuranwoodBoatEntity>> OURANWOOD_BOAT_ENTITY = ENTITY_TYPES.register("ouranwood_boat",
             () -> EntityType.Builder.<OuranwoodBoatEntity>of(OuranwoodBoatEntity::new, MobCategory.MISC)
                     .sized(1.375F, 0.5625F)
@@ -902,8 +991,6 @@ public final class AntarchyFabricContent {
             () -> new BrownAntNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, RainbowAntNestFeature> RAINBOW_ANT_NEST_FEATURE = FEATURES.register("rainbow_ant_nest",
             () -> new RainbowAntNestFeature(SimpleBlockConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, TermiteNestFeature> TERMITE_NEST_FEATURE = FEATURES.register("termite_nest",
-            () -> new TermiteNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_LARGE_TREE = FEATURES.register("ouranwood_large_tree",
             () -> new OuranwoodTreeFeature(OuranwoodTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_YOUNG_TREE = FEATURES.register("ouranwood_young_tree",
@@ -974,6 +1061,12 @@ public final class AntarchyFabricContent {
             () -> new LucidAntiwaterPoolFeature(ThoraxisAntiwaterPoolConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisDuneFeature> THORAXIS_DUNE = FEATURES.register("thoraxis_dune",
             () -> new ThoraxisDuneFeature(ThoraxisDuneConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, CoralSpikeFeature> ELYTHIA_CORAL_SPIKE = FEATURES.register("elythia_coral_spike",
+            () -> new CoralSpikeFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.elythia.FallenOuranwoodFeature> FALLEN_OURANWOOD_TREE = FEATURES.register("fallen_ouranwood_tree",
+            () -> new com.craisinlord.antarchy.content.worldgen.elythia.FallenOuranwoodFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.elythia.FungalMushroomFeature> FUNGAL_MUSHROOM = FEATURES.register("fungal_mushroom",
+            () -> new com.craisinlord.antarchy.content.worldgen.elythia.FungalMushroomFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<MapCodec<? extends BiomeSource>, MapCodec<ThoraxisBiomeSource>> THORAXIS_BIOME_SOURCE = BIOME_SOURCES.register("thoraxis_biome_source",
             () -> ThoraxisBiomeSource.CODEC);
 
@@ -1083,6 +1176,9 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> CHISELED_SHELLSTONE_ITEM = ITEMS.registerSimpleBlockItem(CHISELED_SHELLSTONE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> MOSSY_SHELLSTONE_BRICKS_ITEM = ITEMS.registerSimpleBlockItem(MOSSY_SHELLSTONE_BRICKS);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> CRACKED_SHELLSTONE_BRICKS_ITEM = ITEMS.registerSimpleBlockItem(CRACKED_SHELLSTONE_BRICKS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MOSSY_SHELLSTONE_BRICK_STAIRS_ITEM = ITEMS.registerSimpleBlockItem(MOSSY_SHELLSTONE_BRICK_STAIRS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MOSSY_SHELLSTONE_BRICK_SLAB_ITEM = ITEMS.registerSimpleBlockItem(MOSSY_SHELLSTONE_BRICK_SLAB);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MOSSY_SHELLSTONE_BRICK_WALL_ITEM = ITEMS.registerSimpleBlockItem(MOSSY_SHELLSTONE_BRICK_WALL);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SHELLSTONE_STAIRS_ITEM = ITEMS.registerSimpleBlockItem(SHELLSTONE_STAIRS);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SHELLSTONE_SLAB_ITEM = ITEMS.registerSimpleBlockItem(SHELLSTONE_SLAB);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SHELLSTONE_WALL_ITEM = ITEMS.registerSimpleBlockItem(SHELLSTONE_WALL);
@@ -1103,9 +1199,15 @@ public final class AntarchyFabricContent {
             () -> new StandingAndWallBlockItem(DREAM_TORCH.get(), DREAM_WALL_TORCH.get(), new Item.Properties(), Direction.UP));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DREAM_LANTERN_ITEM = ITEMS.registerSimpleBlockItem(DREAM_LANTERN);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DREAM_CAMPFIRE_ITEM = ITEMS.registerSimpleBlockItem(DREAM_CAMPFIRE);
+    public static final DeferredItem<Item> CREEPING_HORROR_EGG_ITEM = ITEMS.register("creeping_horror_egg",
+            () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> LURKING_TERROR_EGG_ITEM = ITEMS.register("lurking_terror_egg",
+            () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BED_BUG_EGG_ITEM = ITEMS.registerSimpleBlockItem(BED_BUG_EGG);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> WASP_NEST_ITEM = ITEMS.registerSimpleBlockItem(WASP_NEST);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> HUSHWEED_ITEM = ITEMS.registerSimpleBlockItem(HUSHWEED);
+    public static final DeferredItem<BucketItem> BILE_BUCKET = ITEMS.register("bile_bucket",
+            () -> new BucketItem(BILE.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<BucketItem> ICHOR_BUCKET = ITEMS.register("ichor_bucket",
             () -> new BucketItem(ICHOR.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<BucketItem> ANTIWATER_BUCKET = ITEMS.register("antiwater_bucket",
@@ -1139,8 +1241,29 @@ public final class AntarchyFabricContent {
                     -2.2F
             ));
     public static final DeferredItem<Item> MANTIS_CLAW = ITEMS.registerSimpleItem("mantis_claw", new Item.Properties().rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<Item> KING_SCALE = ITEMS.register("king_scale",
+            () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> QUEEN_SCALE = ITEMS.register("queen_scale",
+            () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.RARE)));
+    public static final DeferredItem<Item> STINK_BUG_ITEM = ITEMS.register("stink_bug",
+            () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> JUMPY_BUG_LEG = ITEMS.register("jumpy_bug_leg",
             () -> new MobComingSoonTooltipItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    private static final DeferredHolder<ArmorMaterial, ArmorMaterial> JUMPY_BOOTS_ARMOR_MATERIAL = ARMOR_MATERIALS.register("jumpy_boots",
+            () -> new ArmorMaterial(
+                    createJumpyBootsDefense(),
+                    15,
+                    net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_NETHERITE,
+                    () -> Ingredient.of(net.minecraft.world.item.Items.NETHERITE_BOOTS),
+                    java.util.List.of(new ArmorMaterial.Layer(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "jumpy_boots"))),
+                    3.0F,
+                    0.1F
+            ));
+    public static final DeferredItem<com.craisinlord.antarchy.content.item.JumpyBootsItem> JUMPY_BOOTS = ITEMS.register("jumpy_boots",
+            () -> new com.craisinlord.antarchy.content.item.JumpyBootsItem(
+                    net.minecraft.core.Holder.direct(JUMPY_BOOTS_ARMOR_MATERIAL.get()),
+                    new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().durability(ArmorItem.Type.BOOTS.getDurability(37))
+            ));
     public static final DeferredItem<Item> BRUTALFLY_WING = ITEMS.registerSimpleItem("brutalfly_wing", new Item.Properties().rarity(Rarity.UNCOMMON));
     public static final DeferredItem<BrutalflyElytraItem> BRUTALFLY_ELYTRA = ITEMS.register("brutalfly_elytra",
             () -> new BrutalflyElytraItem(new Item.Properties().rarity(Rarity.UNCOMMON).durability(480)));
@@ -1436,7 +1559,7 @@ public final class AntarchyFabricContent {
                     .build("cloud_shark"));
     public static final DeferredHolder<EntityType<?>, EntityType<KrakenEntity>> KRAKEN = ENTITY_TYPES.register("kraken",
             () -> EntityType.Builder.of(KrakenEntity::new, MobCategory.MONSTER)
-                    .sized(5.2F, 9.8F)
+                    .sized(11.4F, 39.0F)
                     .clientTrackingRange(12)
                     .build("kraken"));
     public static final DeferredHolder<EntityType<?>, EntityType<MissileSquidEntity>> MISSILE_SQUID = ENTITY_TYPES.register("missile_squid",
@@ -1444,6 +1567,11 @@ public final class AntarchyFabricContent {
                     .sized(1.62F, 3.18F)
                     .clientTrackingRange(10)
                     .build("missile_squid"));
+    public static final DeferredHolder<EntityType<?>, EntityType<OctopusBombEntity>> OCTOPUS_BOMB = ENTITY_TYPES.register("octopus_bomb",
+            () -> EntityType.Builder.of(OctopusBombEntity::new, MobCategory.MONSTER)
+                    .sized(2.4F, 2.9F)
+                    .clientTrackingRange(10)
+                    .build("octopus_bomb"));
     public static final DeferredHolder<EntityType<?>, EntityType<NightmareEntity>> NIGHTMARE = ENTITY_TYPES.register("nightmare",
             () -> EntityType.Builder.of(NightmareEntity::new, MobCategory.MONSTER)
                     .sized(3.2F, 3.8F)
@@ -1472,8 +1600,8 @@ public final class AntarchyFabricContent {
                     .build("basilisk"));
     public static final DeferredHolder<EntityType<?>, EntityType<EmperorScorpionEntity>> EMPEROR_SCORPION = ENTITY_TYPES.register("emperor_scorpion",
             () -> EntityType.Builder.of(EmperorScorpionEntity::new, MobCategory.MONSTER)
-                    .sized(4.05F, 1.35F)
-                    .clientTrackingRange(10)
+                    .sized(6.0F, 3.0F)
+                    .clientTrackingRange(12)
                     .build("emperor_scorpion"));
     public static final DeferredHolder<EntityType<?>, EntityType<LucidEyeProjectileEntity>> LUCID_PEARL_PROJECTILE = ENTITY_TYPES.register("lucid_pearl_projectile",
             () -> EntityType.Builder.<LucidEyeProjectileEntity>of(LucidEyeProjectileEntity::new, MobCategory.MISC)
@@ -1508,7 +1636,7 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> CATERPILLAR_SPAWN_EGG = ITEMS.register("caterpillar_spawn_egg",
             () -> new DeferredSpawnEggItem(CATERPILLAR, 0xA8D96A, 0xF4E04D, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> BUTTERFLY_SPAWN_EGG = ITEMS.register("butterfly_spawn_egg",
-            () -> new DeferredSpawnEggItem(BUTTERFLY, 0x111111, 0xFF7A00, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(BUTTERFLY, 0x7A4A1E, 0xFF7A00, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> REVERIE_SPAWN_EGG = ITEMS.register("reverie_spawn_egg",
             () -> new DeferredSpawnEggItem(REVERIE, 0xF2F2F2, 0xBFC3C7, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> BRUTALFLY_SPAWN_EGG = ITEMS.register("brutalfly_spawn_egg",
@@ -1520,11 +1648,13 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> RAINBOW_ANT_SPAWN_EGG = ITEMS.register("rainbow_ant_spawn_egg",
             () -> new DeferredSpawnEggItem(RAINBOW_ANT, 0x56D4F0, 0xF66DBB, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEWORM_SPAWN_EGG = ITEMS.register("moleworm_spawn_egg",
-            () -> new DeferredSpawnEggItem(MOLEWORM, 0x7A6150, 0xD2B8A3, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(MOLEWORM, 0xB8B8B8, 0x8A623A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MANTIS_SPAWN_EGG = ITEMS.register("mantis_spawn_egg",
             () -> new DeferredSpawnEggItem(MANTIS, 0xF8F8F2, 0x63B44A, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ALPHA_MANTIS_SPAWN_EGG = ITEMS.register("alpha_mantis_spawn_egg",
+            () -> new DeferredSpawnEggItem(ALPHA_MANTIS, 0x8FDD6C, 0x2F5D22, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEVORE_SPAWN_EGG = ITEMS.register("molevore_spawn_egg",
-            () -> new DeferredSpawnEggItem(MOLEVORE, 0x3E2E24, 0xB67B4F, new Item.Properties().rarity(Rarity.UNCOMMON)));
+            () -> new DeferredSpawnEggItem(MOLEVORE, 0x4A4A4A, 0x6B4A2B, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> TRIFFID_SPAWN_EGG = ITEMS.register("triffid_spawn_egg",
             () -> new DeferredSpawnEggItem(TRIFFID, 0x4C8F3A, 0xFF2FB3, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> APPLE_COW_SPAWN_EGG = ITEMS.register("apple_cow_spawn_egg",
@@ -1545,6 +1675,8 @@ public final class AntarchyFabricContent {
             () -> new DeferredSpawnEggItem(KRAKEN, 0x163C53, 0x4F8E99, new Item.Properties().rarity(Rarity.EPIC)));
     public static final DeferredItem<DeferredSpawnEggItem> MISSILE_SQUID_SPAWN_EGG = ITEMS.register("missile_squid_spawn_egg",
             () -> new DeferredSpawnEggItem(MISSILE_SQUID, 0xD88FA7, 0x8D5269, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<DeferredSpawnEggItem> OCTOPUS_BOMB_SPAWN_EGG = ITEMS.register("octopus_bomb_spawn_egg",
+            () -> new DeferredSpawnEggItem(OCTOPUS_BOMB, 0xC882C8, 0x5C1A7A, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> NIGHTMARE_SPAWN_EGG = ITEMS.register("nightmare_spawn_egg",
             () -> new DeferredSpawnEggItem(NIGHTMARE, 0x22121C, 0xB51B2D, new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<DeferredSpawnEggItem> BED_BUG_SPAWN_EGG = ITEMS.register("bed_bug_spawn_egg",
@@ -1556,7 +1688,7 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> BASILISK_SPAWN_EGG = ITEMS.register("basilisk_spawn_egg",
             () -> new DeferredSpawnEggItem(BASILISK, 0x4A7C40, 0xD4A040, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> EMPEROR_SCORPION_SPAWN_EGG = ITEMS.register("emperor_scorpion_spawn_egg",
-            () -> new DeferredSpawnEggItem(EMPEROR_SCORPION, 0x1A1A0A, 0x8B2200, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(EMPEROR_SCORPION, 0x3A3242, 0xD8CDB4, new Item.Properties()));
     public static final DeferredItem<LucidEyeItem> LUCID_EYE = ITEMS.register("lucid_eye",
             () -> new LucidEyeItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<LucidPearlItem> LUCID_PEARL = ITEMS.register("lucid_pearl",
@@ -1580,7 +1712,7 @@ public final class AntarchyFabricContent {
                     new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant().durability(ArmorItem.Type.BOOTS.getDurability(37))));
     public static final DeferredHolder<EntityType<?>, EntityType<ToreterrorEntity>> TORETERROR = ENTITY_TYPES.register("toreterror",
             () -> EntityType.Builder.of(ToreterrorEntity::new, MobCategory.MONSTER)
-                    .sized(2.5F, 3.0F)
+                    .sized(2.0F, 3.0F)
                     .clientTrackingRange(14)
                     .build("toreterror"));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterBombEntity>> WATER_BOMB = ENTITY_TYPES.register("water_bomb",
@@ -1591,6 +1723,15 @@ public final class AntarchyFabricContent {
                     .build("water_bomb"));
     public static final DeferredItem<DeferredSpawnEggItem> TORETERROR_SPAWN_EGG = ITEMS.register("toreterror_spawn_egg",
             () -> new DeferredSpawnEggItem(TORETERROR, 0x90EE90, 0x5C4033, new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = ENTITY_TYPES.register("cheep",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.CheepEntity::new, MobCategory.WATER_AMBIENT)
+                    .sized(1.0F, 1.2F)
+                    .clientTrackingRange(8)
+                    .build("cheep"));
+    public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
+            () -> new DeferredSpawnEggItem(CHEEP, 0xFF00AA, 0x00FF44, new Item.Properties()));
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANTARCHY_TAB = CREATIVE_MODE_TABS.register("antarchy",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .title(net.minecraft.network.chat.Component.translatable("itemGroup.antarchy.antarchy"))
@@ -1660,17 +1801,20 @@ public final class AntarchyFabricContent {
         FabricDefaultAttributeRegistry.register(CLOUD_SHARK.get(), CloudSharkEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(KRAKEN.get(), KrakenEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(MISSILE_SQUID.get(), MissileSquidEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(OCTOPUS_BOMB.get(), OctopusBombEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(NIGHTMARE.get(), NightmareEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(BED_BUG.get(), BedBugEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(WASP.get(), WaspEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(BOMBER.get(), BomberEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(MANTIS.get(), MantisEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(ALPHA_MANTIS.get(), AlphaMantisEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(TRIFFID.get(), TriffidEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(LUCID.get(), LucidEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(SCORPION.get(), ScorpionEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(BASILISK.get(), BasiliskEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(EMPEROR_SCORPION.get(), EmperorScorpionEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(TORETERROR.get(), ToreterrorEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
 
         FabricDefaultAttributeRegistry.register(RED_ANT.get(), buildAntAttributes(
                 AntarchySettings.redAntHealth(),
@@ -1705,9 +1849,12 @@ public final class AntarchyFabricContent {
         SpawnPlacements.register(BOMBER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BomberEntity::canSpawn);
         SpawnPlacements.register(KRAKEN.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KrakenEntity::canSpawn);
         SpawnPlacements.register(MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn);
+        SpawnPlacements.register(OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn);
+        SpawnPlacements.register(CHEEP.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.AbstractFish::checkSurfaceWaterAnimalSpawnRules);
         SpawnPlacements.register(NIGHTMARE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NightmareEntity::canSpawn);
         SpawnPlacements.register(MOLEWORM.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MolewormEntity::canSpawn);
         SpawnPlacements.register(MANTIS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MantisEntity::canSpawn);
+        SpawnPlacements.register(ALPHA_MANTIS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AlphaMantisEntity::checkAlphaMantisSpawnRules);
         SpawnPlacements.register(MOLEVORE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MolevoreEntity::canSpawn);
         SpawnPlacements.register(BED_BUG.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BedBugEntity::canSpawn);
         SpawnPlacements.register(LUCID.get(), SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LucidEntity::canSpawn);
@@ -1735,6 +1882,8 @@ public final class AntarchyFabricContent {
         acceptPotionFamily(output, LONG_DREAD);
         acceptPotionFamily(output, INVERSION);
         acceptPotionFamily(output, LONG_INVERSION);
+        acceptPotionFamily(output, STINKY_POTION);
+        acceptPotionFamily(output, LONG_STINKY);
         acceptPotionFamily(output, PARALYSIS);
         acceptPotionFamily(output, LONG_PARALYSIS);
         acceptPotionFamily(output, HASTE);
@@ -1771,38 +1920,51 @@ public final class AntarchyFabricContent {
                  "polished_nyxite_stairs", "polished_nyxite_slab", "polished_nyxite_wall",
                  "nyxite_brick_stairs", "nyxite_brick_slab", "nyxite_brick_wall",
                  "pale_nyxite", "nyxite_spike", "potent_nyxite" -> 1;
-            case "antimetal", "polished_antimetal" -> 2;
+            case "shellstone", "polished_shellstone", "shellstone_bricks", "chiseled_shellstone",
+                 "mossy_shellstone_bricks", "cracked_shellstone_bricks",
+                 "shellstone_stairs", "shellstone_slab", "shellstone_wall",
+                 "polished_shellstone_stairs", "polished_shellstone_slab", "polished_shellstone_wall",
+                 "shellstone_brick_stairs", "shellstone_brick_slab", "shellstone_brick_wall",
+                 "mossy_shellstone_brick_stairs", "mossy_shellstone_brick_slab", "mossy_shellstone_brick_wall" -> 2;
+            case "antimetal", "polished_antimetal" -> 3;
             case "dream_sand", "dream_sandstone", "chiseled_dream_sandstone",
                  "cut_dream_sandstone", "smooth_dream_sandstone",
                  "dream_sandstone_stairs", "dream_sandstone_slab", "dream_sandstone_wall",
                  "smooth_dream_sandstone_stairs", "smooth_dream_sandstone_slab",
-                 "cut_dream_sandstone_slab" -> 3;
+                 "cut_dream_sandstone_slab" -> 4;
             case "umbral_moss_block", "umbral_moss_carpet" -> 4;
-            case "torchflower_bush", "hushweed", "orange_milkweed", "pink_milkweed" -> 5;
+            case "torchflower_bush", "hushweed", "orange_milkweed", "pink_milkweed", "amber_lichen", "creepvine" -> 6;
             case "blood_crystal_block", "budding_blood_crystal",
                  "small_blood_crystal_bud", "medium_blood_crystal_bud",
-                 "large_blood_crystal_bud", "blood_crystal_cluster" -> 6;
+                 "large_blood_crystal_bud", "blood_crystal_cluster" -> 7;
+            case "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
             case "uranium_ore", "deepslate_uranium_ore", "titanium_ore", "deepslate_titanium_ore",
                  "uranium_block", "titanium_block", "raw_uranium_block", "raw_titanium_block",
                  "cut_uranium", "cut_titanium", "cut_uranium_slab", "cut_titanium_slab",
                  "cut_uranium_stairs", "cut_titanium_stairs", "chiseled_uranium",
                  "chiseled_titanium", "uranium_bulb", "titanium_bulb",
                  "uranium_door", "titanium_door", "uranium_trapdoor", "titanium_trapdoor",
-                 "uranium_bars", "titanium_bars" -> 7;
+                 "uranium_bars", "titanium_bars" -> 8;
+            case "bile_vein" -> 9;
             case "infested_rooted_dirt", "infested_coarse_dirt", "triffid_goo_block",
-                 "cloud_block" -> 8;
-            case "dream_torch", "dream_lantern", "dream_campfire", "dream_fire", "dream_fire_ceiling" -> 9;
+                 "cloud_block", "creeping_horror_egg", "lurking_terror_egg" -> 9;
+            case "dream_torch", "dream_lantern", "dream_campfire", "dream_fire", "dream_fire_ceiling" -> 10;
             case "easter_bunny_spawn_egg", "flying_squirrel_spawn_egg", "caterpillar_spawn_egg",
                  "butterfly_spawn_egg", "reverie_spawn_egg", "brutalfly_spawn_egg",
-                 "red_ant_spawn_egg", "brown_ant_spawn_egg", "rainbow_ant_spawn_egg",
-                 "moleworm_spawn_egg", "mantis_spawn_egg", "molevore_spawn_egg", "triffid_spawn_egg",
+                 "red_ant_spawn_egg", "brown_ant_spawn_egg", "rainbow_ant_spawn_egg", "termite_spawn_egg",
+                 "moleworm_spawn_egg", "mantis_spawn_egg", "alpha_mantis_spawn_egg", "molevore_spawn_egg", "triffid_spawn_egg",
                  "apple_cow_spawn_egg", "golden_apple_cow_spawn_egg", "enchanted_golden_apple_cow_spawn_egg",
                  "honeyed_apple_cow_spawn_egg", "dr_trayaurus_spawn_egg", "wasp_spawn_egg",
-                 "bomber_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg",
+                 "bomber_spawn_egg", "jumpy_bug_spawn_egg", "spit_bug_spawn_egg", "stink_bug_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg", "octopus_bomb_spawn_egg",
                  "nightmare_spawn_egg", "bed_bug_spawn_egg", "lucid_spawn_egg", "scorpion_spawn_egg",
-                 "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg" -> 90;
+                 "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg",
+                 "hercules_beetle_spawn_egg",
+                 "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
+            case "stink_bug", "chiten" -> 22;
             case "water_cannon" -> 52;
             case "primordial_helmet", "primordial_chestplate", "primordial_leggings", "primordial_boots" -> 53;
+            case "jumpy_boots" -> 54;
+            case "king_scale", "queen_scale" -> 22;
             default -> 50;
         };
     }
@@ -1957,6 +2119,16 @@ public final class AntarchyFabricContent {
         return defense;
     }
 
+    private static java.util.EnumMap<ArmorItem.Type, Integer> createJumpyBootsDefense() {
+        java.util.EnumMap<ArmorItem.Type, Integer> defense = new java.util.EnumMap<>(ArmorItem.Type.class);
+        defense.put(ArmorItem.Type.BOOTS, 3);
+        defense.put(ArmorItem.Type.LEGGINGS, 0);
+        defense.put(ArmorItem.Type.CHESTPLATE, 0);
+        defense.put(ArmorItem.Type.HELMET, 0);
+        defense.put(ArmorItem.Type.BODY, 0);
+        return defense;
+    }
+
     private static java.util.EnumMap<ArmorItem.Type, Integer> createBloodCrystalArmorDefense() {
         java.util.EnumMap<ArmorItem.Type, Integer> defense = new java.util.EnumMap<>(ArmorItem.Type.class);
         defense.put(ArmorItem.Type.BOOTS, 2);
@@ -2036,6 +2208,8 @@ public final class AntarchyFabricContent {
         FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
             builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(LUCID_EYE.get()), potionHolder(INVERSION));
             builder.registerPotionRecipe(potionHolder(INVERSION), Ingredient.of(Items.REDSTONE), potionHolder(LONG_INVERSION));
+            builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(STINK_BUG_ITEM.get()), potionHolder(STINKY_POTION));
+            builder.registerPotionRecipe(potionHolder(STINKY_POTION), Ingredient.of(Items.REDSTONE), potionHolder(LONG_STINKY));
             builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(BASILISK_FANG.get()), potionHolder(PARALYSIS));
             builder.registerPotionRecipe(potionHolder(PARALYSIS), Ingredient.of(Items.REDSTONE), potionHolder(LONG_PARALYSIS));
             builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(MOLEWORM_ITEM.get()), potionHolder(HASTE));
@@ -2047,6 +2221,7 @@ public final class AntarchyFabricContent {
             builder.registerPotionRecipe(potionHolder(GROWING), Ingredient.of(Items.GLOWSTONE_DUST), potionHolder(STRONG_GROWING));
             builder.registerPotionRecipe(potionHolder(STRONG_GROWING), Ingredient.of(Items.GLOWSTONE_DUST), potionHolder(EXTREME_GROWING));
             builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(CLOUD_SHARK_FIN.get()), net.minecraft.world.item.alchemy.Potions.SLOW_FALLING);
+            builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(JUMPY_BUG_LEG.get()), Potions.LEAPING);
             builder.registerPotionRecipe(net.minecraft.world.item.alchemy.Potions.AWKWARD, Ingredient.of(CORNEA_EAR.get()), net.minecraft.world.item.alchemy.Potions.NIGHT_VISION);
         });
 
@@ -2067,7 +2242,10 @@ public final class AntarchyFabricContent {
         MOB_EFFECTS.register();
         POTIONS.register();
         ITEMS.register();
+        MENUS.register();
         CREATIVE_MODE_TABS.register();
+
+        // Wire common-module accessors after all registrations are complete.
 
         AntarchySoundEvents.bind(
                 SQUIDZOOKA_FIRE,
@@ -2180,9 +2358,27 @@ public final class AntarchyFabricContent {
                 MOLEVORE_HURT,
                 MOLEVORE_ATTACK,
                 MOLEVORE_DIG,
+                BOMBER_WALK,
+                BOMBER_KNOCK,
+                BOMBER_EXPLODE,
+                TORETERROR_IDLE,
+                TORETERROR_HURT,
+                TORETERROR_DEATH,
+                TORETERROR_BOMBER_FIRE,
+                TORETERROR_JUMP_UP,
+                TORETERROR_JUMP_LAND,
+                STINKY_FLY_SOUND,
+                CREEPING_HORROR_GROWL,
+                CREEPING_HORROR_HURT,
+                CREEPING_HORROR_BITE,
+                LURKING_TERROR_SNARL,
+                LURKING_TERROR_HURT,
+                LURKING_TERROR_BITE,
+                LURKING_TERROR_FLY_LOOP,
                 DUCT_TAPE_USE
         );
 
+        AntarchyObjects.setOctopusBomb(OCTOPUS_BOMB);
         AntarchyObjects.bind(
                 EASTER_BUNNY,
                 FLYING_SQUIRREL,
@@ -2203,6 +2399,7 @@ public final class AntarchyFabricContent {
                 HUSH_PROJECTILE,
                 TORETERROR,
                 WATER_BOMB,
+                CHEEP,
                 () -> DUPLICATOR_LOG.get(),
                 () -> DUPLICATOR_SAPLING.get(),
                 () -> DUCT_TAPE.get(),
@@ -2215,6 +2412,9 @@ public final class AntarchyFabricContent {
                 () -> CHISELED_SHELLSTONE.get(),
                 () -> MOSSY_SHELLSTONE_BRICKS.get(),
                 () -> CRACKED_SHELLSTONE_BRICKS.get(),
+                () -> MOSSY_SHELLSTONE_BRICK_STAIRS.get(),
+                () -> MOSSY_SHELLSTONE_BRICK_SLAB.get(),
+                () -> MOSSY_SHELLSTONE_BRICK_WALL.get(),
                 () -> SHELLSTONE_STAIRS.get(),
                 () -> SHELLSTONE_SLAB.get(),
                 () -> SHELLSTONE_WALL.get(),
@@ -2243,6 +2443,7 @@ public final class AntarchyFabricContent {
                 () -> mobEffectHolder(DREAD),
                 () -> mobEffectHolder(PARALYZED),
                 () -> mobEffectHolder(INVERTED),
+                () -> mobEffectHolder(STINKY),
                 () -> OURANWOOD_ACORN_BLOCK.get(),
                 () -> MOSSY_OURANWOOD_LOG.get(),
                 () -> MOSSY_OURANWOOD_WOOD.get(),
@@ -2253,10 +2454,13 @@ public final class AntarchyFabricContent {
                 () -> WASP_NEST.get(),
                 () -> HUSHWEED.get(),
                 () -> OURANWOOD_SQUIRREL_NEST.get(),
+                () -> BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> ANT_NEST_BLOCK_ENTITY.get(),
                 () -> DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> WASP_NEST_BLOCK_ENTITY.get(),
                 () -> HUSHWEED_BLOCK_ENTITY.get(),
+                () -> STINKY_GAS.get(),
+                () -> STINKY_FLY.get(),
                 () -> attributeHolder(DOUBLE_DAMAGE_CHANCE),
                 () -> attributeHolder(BLOODGLASS_MAX_HEARTS),
                 () -> mobEffectHolder(BLOODGLASS_WARD)
@@ -2269,6 +2473,7 @@ public final class AntarchyFabricContent {
         LucidEyeProjectileEntity.invertedEffectSupplier = () -> mobEffectHolder(INVERTED);
 
         ScorpionWhipTetherSync.setSink(AntarchyFabricNetworking::syncScorpionWhipTether);
+        HerculesBeetleImpactShakeSync.setSink((player, ticks) -> net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload(ticks)));
         BloodCrystalKatanaItem.setTrailCallback(AntarchyFabricNetworking::syncKatanaTrail);
         com.craisinlord.antarchy.content.gravity.AntarchyGravityApi.setSyncDispatcher(AntarchyFabricNetworking::syncGravityEntity);
         AntarchyFabricEvents.register();

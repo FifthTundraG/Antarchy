@@ -55,6 +55,7 @@ import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.UUID;
 
 public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
@@ -71,6 +72,8 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
             SynchedEntityData.defineId(FlyingSquirrelEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TEXTURE_VARIANT =
             SynchedEntityData.defineId(FlyingSquirrelEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<UUID>> SHOULDER_PLAYER_DATA =
+            SynchedEntityData.defineId(FlyingSquirrelEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private static final String PICKUP_ANIM_TICKS_KEY = "PickupAnimTicks";
     private static final String TEXTURE_VARIANT_KEY = "TextureVariant";
@@ -227,6 +230,7 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
         builder.define(CLIMBING, false);
         builder.define(PICKING_UP_NUT, false);
         builder.define(TEXTURE_VARIANT, TEXTURE_VARIANT_REGULAR);
+        builder.define(SHOULDER_PLAYER_DATA, Optional.empty());
     }
 
     @Override
@@ -376,13 +380,19 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
             }
 
             if (this.isOnShoulder()) {
-                if (!(this.getVehicle() instanceof Player shoulderPlayer)
-                        || !shoulderPlayer.isAlive()) {
+                Player shoulderPlayer = this.getShoulderPlayer();
+                if (shoulderPlayer == null || !shoulderPlayer.isAlive()) {
                     this.dismountShoulder();
                 } else if (this.shoulderSneakGraceTicks <= 0 && shoulderPlayer.isShiftKeyDown()) {
                     this.glideOffShoulder();
                 } else {
+                    Vec3 shoulderPos = this.getShoulderRidePos(shoulderPlayer);
+                    this.setPos(shoulderPos.x, shoulderPos.y, shoulderPos.z);
                     this.setDeltaMovement(Vec3.ZERO);
+                    this.setYRot(shoulderPlayer.getYHeadRot());
+                    this.setXRot(shoulderPlayer.getXRot());
+                    this.yBodyRot = shoulderPlayer.getYHeadRot();
+                    this.yHeadRot = shoulderPlayer.getYHeadRot();
                     this.fallDistance = 0.0F;
                 }
                 this.setNoGravity(true);
@@ -434,22 +444,25 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
 
             this.tickIdleStallLogging(horizontalSpeed);
         }
+        if (this.isOnShoulder() && this.level().isClientSide) {
+            Player shoulderPlayer = this.getShoulderPlayer();
+            if (shoulderPlayer != null) {
+                Vec3 shoulderPos = this.getShoulderRidePos(shoulderPlayer);
+                this.setPos(shoulderPos.x, shoulderPos.y, shoulderPos.z);
+                this.setDeltaMovement(Vec3.ZERO);
+                this.setYRot(shoulderPlayer.getYHeadRot());
+                this.setXRot(shoulderPlayer.getXRot());
+                this.yBodyRot = shoulderPlayer.getYHeadRot();
+                this.yHeadRot = shoulderPlayer.getYHeadRot();
+                this.fallDistance = 0.0F;
+            }
+        }
         this.setNoGravity(this.isGliding() || this.isClimbingTrunk() || this.isClimbingToShoulder() || this.isOnShoulder());
     }
 
     @Override
     public void rideTick() {
         super.rideTick();
-        if (this.getVehicle() instanceof Player player) {
-            Vec3 shoulderPos = this.getShoulderRidePos(player);
-            this.setPos(shoulderPos.x, shoulderPos.y, shoulderPos.z);
-            this.setDeltaMovement(Vec3.ZERO);
-            this.setYRot(player.getYHeadRot());
-            this.setXRot(player.getXRot());
-            this.yBodyRot = player.getYHeadRot();
-            this.yHeadRot = player.getYHeadRot();
-            this.fallDistance = 0.0F;
-        }
     }
 
     @Override
@@ -703,7 +716,14 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     public boolean isOnShoulder() {
-        return this.getVehicle() instanceof Player;
+        return this.entityData.get(SHOULDER_PLAYER_DATA).isPresent();
+    }
+
+    @Nullable
+    private Player getShoulderPlayer() {
+        return this.entityData.get(SHOULDER_PLAYER_DATA)
+                .map(uuid -> this.level().getPlayerByUUID(uuid))
+                .orElse(null);
     }
 
     public boolean isClimbingToShoulder() {
@@ -725,10 +745,9 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     private void dismountShoulder() {
-        Entity vehicle = this.getVehicle();
-        if (vehicle != null) {
-            this.stopRiding();
-            Vec3 dismountPos = vehicle.position().add(0.0D, 0.1D, 0.0D);
+        Player shoulderPlayer = this.getShoulderPlayer();
+        if (shoulderPlayer != null) {
+            Vec3 dismountPos = shoulderPlayer.position().add(0.0D, 0.1D, 0.0D);
             this.setPos(dismountPos.x, dismountPos.y, dismountPos.z);
         }
         this.clearShoulderMountState();
@@ -737,6 +756,7 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     private void clearShoulderMountState() {
+        this.entityData.set(SHOULDER_PLAYER_DATA, Optional.empty());
         this.shoulderPlayerId = null;
         this.shoulderClimbStartPos = null;
         this.climbingToShoulderTicks = 0;
@@ -746,16 +766,15 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     private void glideOffShoulder() {
-        Entity vehicle = this.getVehicle();
-        if (!(vehicle instanceof Player player)) {
+        Player player = this.getShoulderPlayer();
+        if (player == null) {
             this.dismountShoulder();
             return;
         }
 
         Vec3 launchPos = this.getShoulderRidePos(player);
-        this.stopRiding();
-        this.setPos(launchPos.x, launchPos.y, launchPos.z);
         this.clearShoulderMountState();
+        this.setPos(launchPos.x, launchPos.y, launchPos.z);
         this.fallDistance = 0.0F;
 
         BlockPos glideTarget = this.findFallGlideTarget();
@@ -815,7 +834,7 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
         this.shoulderPlayerId = null;
         this.shoulderSneakGraceTicks = SHOULDER_SNEAK_GRACE_TICKS;
         this.setClimbingTrunk(false);
-        this.startRiding(player, true);
+        this.entityData.set(SHOULDER_PLAYER_DATA, Optional.of(player.getUUID()));
         this.setDeltaMovement(Vec3.ZERO);
         this.fallDistance = 0.0F;
     }
@@ -1118,11 +1137,16 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     public void collectNut(ItemEntity itemEntity) {
+        ItemStack itemStack = itemEntity.getItem();
+        if (itemStack.isEmpty()) {
+            itemEntity.discard();
+            return;
+        }
+
         this.startPickupAnimation();
 
-        ItemStack particleStack = itemEntity.getItem().copy();
+        ItemStack particleStack = itemStack.copy();
         particleStack.setCount(1);
-        ItemStack itemStack = itemEntity.getItem();
         itemStack.shrink(1);
         if (itemStack.isEmpty()) {
             itemEntity.discard();
@@ -1648,6 +1672,11 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
         @Override
         public void tick() {
             if (this.targetNut != null) {
+                if (!this.targetNut.isAlive() || this.targetNut.getItem().isEmpty()) {
+                    this.targetNut = null;
+                    return;
+                }
+
                 FlyingSquirrelEntity.this.getLookControl().setLookAt(this.targetNut, 30.0F, 30.0F);
 
                 if (--this.repathDelay <= 0 && !FlyingSquirrelEntity.this.isGliding()) {

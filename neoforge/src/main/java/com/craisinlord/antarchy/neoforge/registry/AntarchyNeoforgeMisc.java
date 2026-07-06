@@ -8,10 +8,18 @@ import com.craisinlord.antarchy.content.effect.GrowthMobEffect;
 import com.craisinlord.antarchy.content.effect.InvertedMobEffect;
 import com.craisinlord.antarchy.content.effect.ParalyzedMobEffect;
 import com.craisinlord.antarchy.content.effect.ShrinkMobEffect;
+import com.craisinlord.antarchy.content.effect.StinkyMobEffect;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.TermiteNestFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
+import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.*;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.*;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluid;
@@ -22,8 +30,6 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -35,7 +41,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.tags.TagKey;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
@@ -59,7 +64,6 @@ public final class AntarchyNeoforgeMisc {
     private static final DeferredRegister<MapCodec<? extends EntitySubPredicate>> ENTITY_SUB_PREDICATES = DeferredRegister.create(Registries.ENTITY_SUB_PREDICATE_TYPE, Antarchy.MODID);
     private static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Antarchy.MODID);
 
-    // Attributes
     public static final DeferredHolder<Attribute, Attribute> DOUBLE_DAMAGE_CHANCE = ATTRIBUTES.register(
             "double_damage_chance",
             () -> new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.antarchy.double_damage_chance", 0.0, 0.0, 1.0).setSyncable(true)
@@ -73,6 +77,7 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<MobEffect, DreadMobEffect> DREAD = MOB_EFFECTS.register("dread", DreadMobEffect::new);
     public static final DeferredHolder<MobEffect, ParalyzedMobEffect> PARALYZED = MOB_EFFECTS.register("paralyzed", ParalyzedMobEffect::new);
     public static final DeferredHolder<MobEffect, InvertedMobEffect> INVERTED = MOB_EFFECTS.register("inverted", InvertedMobEffect::new);
+    public static final DeferredHolder<MobEffect, StinkyMobEffect> STINKY = MOB_EFFECTS.register("stinky", StinkyMobEffect::new);
     public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.BloodglassWardEffect> BLOODGLASS_WARD = MOB_EFFECTS.register("bloodglass_ward", com.craisinlord.antarchy.content.effect.BloodglassWardEffect::new);
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
@@ -82,6 +87,10 @@ public final class AntarchyNeoforgeMisc {
             () -> new Potion(new MobEffectInstance(INVERTED, 600)));
     public static final DeferredHolder<Potion, Potion> LONG_INVERSION = POTIONS.register("long_inversion",
             () -> new Potion("inversion", new MobEffectInstance(INVERTED, 2400)));
+    public static final DeferredHolder<Potion, Potion> STINKY_POTION = POTIONS.register("stinky",
+            () -> new Potion(new MobEffectInstance(STINKY, 1200)));
+    public static final DeferredHolder<Potion, Potion> LONG_STINKY = POTIONS.register("long_stinky",
+            () -> new Potion("stinky", new MobEffectInstance(STINKY, 2400)));
     public static final DeferredHolder<Potion, Potion> PARALYSIS = POTIONS.register("paralysis",
             () -> new Potion(new MobEffectInstance(PARALYZED, 200)));
     public static final DeferredHolder<Potion, Potion> LONG_PARALYSIS = POTIONS.register("long_paralysis",
@@ -104,6 +113,15 @@ public final class AntarchyNeoforgeMisc {
             () -> new Potion("growing", new MobEffectInstance(GROWTH_EFFECT, 600, 2)));
 
     // Fluid types
+    public static final DeferredHolder<FluidType, FluidType> BILE_TYPE = FLUID_TYPES.register("bile",
+            () -> new FluidType(FluidType.Properties.create()
+                    .descriptionId("block.antarchy.bile")
+                    .fallDistanceModifier(0.0F)
+                    .supportsBoating(true)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .density(1100)
+                    .viscosity(1200)));
     public static final DeferredHolder<FluidType, FluidType> ICHOR_TYPE = FLUID_TYPES.register("ichor",
             () -> new FluidType(FluidType.Properties.create()
                     .descriptionId("block.antarchy.ichor")
@@ -125,6 +143,10 @@ public final class AntarchyNeoforgeMisc {
                     .viscosity(1000)));
 
     // Fluids
+    public static final DeferredHolder<Fluid, Fluid> BILE = FLUIDS.register("bile",
+            () -> new BaseFlowingFluid.Source(bileProperties()));
+    public static final DeferredHolder<Fluid, Fluid> FLOWING_BILE = FLUIDS.register("flowing_bile",
+            () -> new BaseFlowingFluid.Flowing(bileProperties()));
     public static final DeferredHolder<Fluid, Fluid> ICHOR = FLUIDS.register("ichor",
             () -> new BaseFlowingFluid.Source(ichorProperties()));
     public static final DeferredHolder<Fluid, Fluid> FLOWING_ICHOR = FLUIDS.register("flowing_ichor",
@@ -137,6 +159,10 @@ public final class AntarchyNeoforgeMisc {
     // Particle types
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DREAM_FIRE_FLAME = PARTICLE_TYPES.register("dream_fire_flame",
             () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_GAS = PARTICLE_TYPES.register("stinky_gas",
+            () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_FLY = PARTICLE_TYPES.register("stinky_fly",
+            () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS = PARTICLE_TYPES.register("hypnotic_gas",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS_CLOUD = PARTICLE_TYPES.register("hypnotic_gas_cloud",
@@ -146,6 +172,8 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS_CLOUD_DOWN = PARTICLE_TYPES.register("hypnotic_gas_cloud_down",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FIREFLY = PARTICLE_TYPES.register("firefly",
+            () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ORANGE_ASH = PARTICLE_TYPES.register("orange_ash",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, ParticleType<InvertedGeyserBaseParticleOptions>> INVERTED_GEYSER_BASE = PARTICLE_TYPES.register("inverted_geyser_base",
             () -> particleType(InvertedGeyserBaseParticleOptions::codec, InvertedGeyserBaseParticleOptions::streamCodec));
@@ -163,8 +191,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new BrownAntNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, RainbowAntNestFeature> RAINBOW_ANT_NEST_FEATURE = FEATURES.register("rainbow_ant_nest",
             () -> new RainbowAntNestFeature(SimpleBlockConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, TermiteNestFeature> TERMITE_NEST_FEATURE = FEATURES.register("termite_nest",
-            () -> new TermiteNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_LARGE_TREE = FEATURES.register("ouranwood_large_tree",
             () -> new OuranwoodTreeFeature(OuranwoodTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_YOUNG_TREE = FEATURES.register("ouranwood_young_tree",
@@ -205,6 +231,12 @@ public final class AntarchyNeoforgeMisc {
             () -> new ElythiaTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaLargeTuffBoulderFeature> ELYTHIA_LARGE_TUFF_BOULDER = FEATURES.register("elythia_large_tuff_boulder",
             () -> new ElythiaLargeTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, CoralSpikeFeature> ELYTHIA_CORAL_SPIKE = FEATURES.register("elythia_coral_spike",
+            () -> new CoralSpikeFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, FallenOuranwoodFeature> FALLEN_OURANWOOD_TREE = FEATURES.register("fallen_ouranwood_tree",
+            () -> new FallenOuranwoodFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, FungalMushroomFeature> FUNGAL_MUSHROOM = FEATURES.register("fungal_mushroom",
+            () -> new FungalMushroomFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisFissureFeature> THORAXIS_FISSURE = FEATURES.register("thoraxis_fissure",
             () -> new ThoraxisFissureFeature(ThoraxisFissureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisRibColumnsFeature> THORAXIS_RIB_COLUMNS = FEATURES.register("thoraxis_rib_columns",
@@ -257,10 +289,20 @@ public final class AntarchyNeoforgeMisc {
         ATTRIBUTES.register(modEventBus);
     }
 
+
     static BaseFlowingFluid.Properties ichorProperties() {
         return new BaseFlowingFluid.Properties(ICHOR_TYPE, ICHOR, FLOWING_ICHOR)
                 .bucket(() -> AntarchyNeoforgeItems.ICHOR_BUCKET.get())
                 .block(() -> AntarchyNeoforgeBlocks.ICHOR_BLOCK.get())
+                .slopeFindDistance(4)
+                .levelDecreasePerBlock(1)
+                .tickRate(5);
+    }
+
+    static BaseFlowingFluid.Properties bileProperties() {
+        return new BaseFlowingFluid.Properties(BILE_TYPE, BILE, FLOWING_BILE)
+                .bucket(() -> AntarchyNeoforgeItems.BILE_BUCKET.get())
+                .block(() -> AntarchyNeoforgeBlocks.BILE_BLOCK.get())
                 .slopeFindDistance(4)
                 .levelDecreasePerBlock(1)
                 .tickRate(5);

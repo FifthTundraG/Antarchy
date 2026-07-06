@@ -5,9 +5,13 @@ import com.craisinlord.antarchy.content.entity.BomberEntity;
 import com.craisinlord.antarchy.content.entity.ButterflyEntity;
 import com.craisinlord.antarchy.content.entity.CaterpillarEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
+import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
+import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.WaterBombEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
+import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
+import com.craisinlord.antarchy.content.entity.LurkingTerrorEntity;
 import com.craisinlord.antarchy.content.entity.ToreterrorEntity;
 import com.craisinlord.antarchy.content.entity.WaspEntity;
 import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
@@ -15,6 +19,7 @@ import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyOrbEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.entity.flying_squirrel.FlyingSquirrelEntity;
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
+import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
@@ -25,6 +30,7 @@ import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import java.util.function.Supplier;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.EntityType;
@@ -48,6 +54,8 @@ public final class AntarchyObjects {
     public static Supplier<EntityType<KrakenEntity>> KRAKEN = (Supplier<EntityType<KrakenEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<MissileSquidEntity>> MISSILE_SQUID = (Supplier<EntityType<MissileSquidEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<OctopusBombEntity>> OCTOPUS_BOMB = (Supplier<EntityType<OctopusBombEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<MolewormEntity>> MOLEWORM = (Supplier<EntityType<MolewormEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -79,6 +87,20 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<WaterBombEntity>> WATER_BOMB = (Supplier<EntityType<WaterBombEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<CreepingHorrorEntity>> CREEPING_HORROR = (Supplier<EntityType<CreepingHorrorEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<LurkingTerrorEntity>> LURKING_TERROR = (Supplier<EntityType<LurkingTerrorEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<StinkBugEntity>> STINK_BUG = (Supplier<EntityType<StinkBugEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_LOG = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_SAPLING = (Supplier<Block>) UNBOUND;
@@ -102,6 +124,12 @@ public final class AntarchyObjects {
     public static Supplier<Block> MOSSY_SHELLSTONE_BRICKS = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> CRACKED_SHELLSTONE_BRICKS = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> MOSSY_SHELLSTONE_BRICK_STAIRS = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> MOSSY_SHELLSTONE_BRICK_SLAB = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> MOSSY_SHELLSTONE_BRICK_WALL = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> SHELLSTONE_STAIRS = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -129,6 +157,10 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> NYXITE_SPIKE = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> CHITEN_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> CHITEN_SPIKE = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> POTENT_NYXITE = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> ANTIMETAL = (Supplier<Block>) UNBOUND;
@@ -153,6 +185,8 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Item> REVERIE_BOTTLE = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Item> STINK_BUG_ITEM = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Holder<MobEffect>> DREAD = (Supplier<Holder<MobEffect>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Holder<Attribute>> DOUBLE_DAMAGE_CHANCE = (Supplier<Holder<Attribute>>) UNBOUND;
@@ -164,6 +198,8 @@ public final class AntarchyObjects {
     public static Supplier<Holder<MobEffect>> PARALYZED_EFFECT = (Supplier<Holder<MobEffect>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Holder<MobEffect>> INVERTED_EFFECT = (Supplier<Holder<MobEffect>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Holder<MobEffect>> STINKY_EFFECT = (Supplier<Holder<MobEffect>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> OURANWOOD_ACORN_BLOCK = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -179,11 +215,17 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> BED_BUG_EGG = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> CREEPING_HORROR_EGGS = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> LURKING_TERROR_EGGS = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> WASP_NEST = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> HUSHWEED = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> SQUIRREL_NEST_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> BRUTALFLY_COCOON_SPAWNER = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<AntNestBlockEntity>> ANT_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<AntNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -192,6 +234,10 @@ public final class AntarchyObjects {
     public static Supplier<BlockEntityType<WaspNestBlockEntity>> WASP_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<WaspNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<HushweedBlockEntity>> HUSHWEED_BLOCK_ENTITY = (Supplier<BlockEntityType<HushweedBlockEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<SimpleParticleType> STINKY_GAS = (Supplier<SimpleParticleType>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<SimpleParticleType> STINKY_FLY = (Supplier<SimpleParticleType>) UNBOUND;
 
     private AntarchyObjects() {
     }
@@ -216,6 +262,7 @@ public final class AntarchyObjects {
             Supplier<EntityType<HushProjectileEntity>> hushProjectile,
             Supplier<EntityType<ToreterrorEntity>> toreterror,
             Supplier<EntityType<WaterBombEntity>> waterBomb,
+            Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> cheep,
             Supplier<Block> duplicatorLog,
             Supplier<Block> duplicatorSapling,
             Supplier<Block> ductTape,
@@ -228,6 +275,9 @@ public final class AntarchyObjects {
             Supplier<Block> chiseledShellstone,
             Supplier<Block> mossyShellstoneBricks,
             Supplier<Block> crackedShellstoneBricks,
+            Supplier<Block> mossyShellstoneBrickStairs,
+            Supplier<Block> mossyShellstoneBrickSlab,
+            Supplier<Block> mossyShellstoneBrickWall,
             Supplier<Block> shellstoneStairs,
             Supplier<Block> shellstoneSlab,
             Supplier<Block> shellstoneWall,
@@ -256,6 +306,7 @@ public final class AntarchyObjects {
             Supplier<Holder<MobEffect>> dread,
             Supplier<Holder<MobEffect>> paralyzedEffect,
             Supplier<Holder<MobEffect>> invertedEffect,
+            Supplier<Holder<MobEffect>> stinkyEffect,
             Supplier<Block> ouranwoodAcornBlock,
             Supplier<Block> mossyOuranwoodLog,
             Supplier<Block> mossyOuranwoodWood,
@@ -266,10 +317,13 @@ public final class AntarchyObjects {
             Supplier<Block> waspNest,
             Supplier<Block> hushweed,
             Supplier<Block> squirrelNestBlock,
+            Supplier<Block> brutalflyCocoonSpawner,
             Supplier<BlockEntityType<AntNestBlockEntity>> antNestBlockEntity,
             Supplier<BlockEntityType<DreamCampfireBlockEntity>> dreamCampfireBlockEntity,
             Supplier<BlockEntityType<WaspNestBlockEntity>> waspNestBlockEntity,
             Supplier<BlockEntityType<HushweedBlockEntity>> hushweedBlockEntity,
+            Supplier<SimpleParticleType> stinkyGas,
+            Supplier<SimpleParticleType> stinkyFly,
             Supplier<Holder<Attribute>> doubleDamageChance,
             Supplier<Holder<Attribute>> bloodglassMaxHearts,
             Supplier<Holder<MobEffect>> bloodglassWard
@@ -293,6 +347,7 @@ public final class AntarchyObjects {
         HUSH_PROJECTILE = hushProjectile;
         TORETERROR = toreterror;
         WATER_BOMB = waterBomb;
+        CHEEP = cheep;
         DUPLICATOR_LOG = duplicatorLog;
         DUPLICATOR_SAPLING = duplicatorSapling;
         DUCT_TAPE = ductTape;
@@ -305,6 +360,9 @@ public final class AntarchyObjects {
         CHISELED_SHELLSTONE = chiseledShellstone;
         MOSSY_SHELLSTONE_BRICKS = mossyShellstoneBricks;
         CRACKED_SHELLSTONE_BRICKS = crackedShellstoneBricks;
+        MOSSY_SHELLSTONE_BRICK_STAIRS = mossyShellstoneBrickStairs;
+        MOSSY_SHELLSTONE_BRICK_SLAB = mossyShellstoneBrickSlab;
+        MOSSY_SHELLSTONE_BRICK_WALL = mossyShellstoneBrickWall;
         SHELLSTONE_STAIRS = shellstoneStairs;
         SHELLSTONE_SLAB = shellstoneSlab;
         SHELLSTONE_WALL = shellstoneWall;
@@ -333,6 +391,7 @@ public final class AntarchyObjects {
         DREAD = dread;
         PARALYZED_EFFECT = paralyzedEffect;
         INVERTED_EFFECT = invertedEffect;
+        STINKY_EFFECT = stinkyEffect;
         OURANWOOD_ACORN_BLOCK = ouranwoodAcornBlock;
         MOSSY_OURANWOOD_LOG = mossyOuranwoodLog;
         MOSSY_OURANWOOD_WOOD = mossyOuranwoodWood;
@@ -343,10 +402,13 @@ public final class AntarchyObjects {
         WASP_NEST = waspNest;
         HUSHWEED = hushweed;
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
+        BRUTALFLY_COCOON_SPAWNER = brutalflyCocoonSpawner;
         ANT_NEST_BLOCK_ENTITY = antNestBlockEntity;
         DREAM_CAMPFIRE_BLOCK_ENTITY = dreamCampfireBlockEntity;
         WASP_NEST_BLOCK_ENTITY = waspNestBlockEntity;
         HUSHWEED_BLOCK_ENTITY = hushweedBlockEntity;
+        STINKY_GAS = stinkyGas;
+        STINKY_FLY = stinkyFly;
         DOUBLE_DAMAGE_CHANCE = doubleDamageChance;
         BLOODGLASS_MAX_HEARTS = bloodglassMaxHearts;
         BLOODGLASS_WARD = bloodglassWard;
@@ -354,6 +416,14 @@ public final class AntarchyObjects {
 
     public static boolean isDuplicatorTreeBlock(BlockState state) {
         return state.is(DUPLICATOR_LOG.get()) || state.is(DUPLICATOR_SAPLING.get());
+    }
+
+    public static void setOctopusBomb(Supplier<EntityType<OctopusBombEntity>> supplier) {
+        OCTOPUS_BOMB = supplier;
+    }
+
+    public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
+        HERCULES_BEETLE = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

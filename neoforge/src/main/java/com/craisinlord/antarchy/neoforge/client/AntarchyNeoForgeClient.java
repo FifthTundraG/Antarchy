@@ -4,6 +4,8 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.client.hud.BloodglassHudRenderer;
 import com.craisinlord.antarchy.content.client.particle.*;
 import com.craisinlord.antarchy.content.client.renderer.*;
+import com.craisinlord.antarchy.content.client.renderer.CreepingHorrorRenderer;
+import com.craisinlord.antarchy.content.client.renderer.LurkingTerrorRenderer;
 import com.craisinlord.antarchy.neoforge.AntarchyNeoForgeFluidTypes;
 import com.craisinlord.antarchy.neoforge.registry.AntarchyNeoforgeBlocks;
 import com.craisinlord.antarchy.neoforge.registry.AntarchyNeoforgeEntites;
@@ -13,6 +15,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ArmorStandModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -31,6 +34,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.CampfireRenderer;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -70,6 +74,8 @@ public final class AntarchyNeoForgeClient {
     private static final ResourceLocation UNDERWATER_OVERLAY = ResourceLocation.withDefaultNamespace("textures/misc/underwater.png");
     private static final ResourceLocation ANTIWATER_STILL = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/antiwater_still");
     private static final ResourceLocation ANTIWATER_FLOW = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/antiwater_flow");
+    private static final ResourceLocation BILE_STILL = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/bile/bile_still");
+    private static final ResourceLocation BILE_FLOW = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/bile/bile_flowing");
     private AntarchyNeoForgeClient() {
     }
 
@@ -87,6 +93,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.RAINBOW_ANT.get(), context -> withParalyzedGeoLayer(new AntRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.MOLEWORM.get(), context -> withParalyzedGeoLayer(new MolewormRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.MANTIS.get(), context -> withParalyzedGeoLayer(new MantisRenderer(context)));
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.ALPHA_MANTIS.get(), context -> withParalyzedGeoLayer(new AlphaMantisRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.MOLEVORE.get(), context -> withParalyzedGeoLayer(new MolevoreRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.TRIFFID.get(), context -> withParalyzedGeoLayer(new TriffidRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.OURANWOOD_BOAT_ENTITY.get(), context -> new OuranwoodBoatRenderer<>(context, OURANWOOD_BOAT_TEXTURE, false));
@@ -99,6 +106,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.CLOUD_SHARK.get(), context -> withParalyzedGeoLayer(new CloudSharkRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.KRAKEN.get(), context -> withParalyzedGeoLayer(new KrakenRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.MISSILE_SQUID.get(), context -> withParalyzedGeoLayer(new MissileSquidRenderer(context)));
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.OCTOPUS_BOMB.get(), context -> withParalyzedGeoLayer(new OctopusBombRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.NIGHTMARE.get(), context -> withParalyzedGeoLayer(new NightmareRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.LUCID.get(), context -> withParalyzedGeoLayer(new LucidRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.BED_BUG.get(), context -> withParalyzedGeoLayer(new BedBugRenderer(context)));
@@ -116,6 +124,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.EMPEROR_SCORPION.get(), context -> withParalyzedGeoLayer(new EmperorScorpionRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.TORETERROR.get(), ToreterrorRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.WATER_BOMB.get(), WaterBombRenderer::new);
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.CHEEP.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.CheepRenderer(context)));
     }
 
     @SubscribeEvent
@@ -129,6 +138,11 @@ public final class AntarchyNeoForgeClient {
                 renderer.addLayer(new BrutalflyElytraLayer(renderer));
                 renderer.addLayer(new FallenKingCrownLayer(renderer));
             }
+        }
+        LivingEntityRenderer<net.minecraft.world.entity.decoration.ArmorStand, ArmorStandModel> armorStandRenderer =
+                (LivingEntityRenderer<net.minecraft.world.entity.decoration.ArmorStand, ArmorStandModel>) event.getRenderer(EntityType.ARMOR_STAND);
+        if (armorStandRenderer != null) {
+            armorStandRenderer.addLayer(new FallenKingCrownArmorStandLayer(armorStandRenderer));
         }
         BuiltInRegistries.ENTITY_TYPE.forEach(entityType -> addParalyzedLayerToEntity(event, entityType));
     }
@@ -189,6 +203,8 @@ public final class AntarchyNeoForgeClient {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(AntarchyNeoforgeMisc.DREAM_FIRE_FLAME.get(), DreamFlameParticle.Provider::new);
+        event.registerSpriteSet(AntarchyNeoforgeMisc.STINKY_GAS.get(), HypnoticGasParticle.Provider::new);
+        event.registerSpriteSet(AntarchyNeoforgeMisc.STINKY_FLY.get(), FireflyParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.HYPNOTIC_GAS.get(), HypnoticGasParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.HYPNOTIC_GAS_DOWN.get(), sprites -> new HypnoticGasParticle.Provider(sprites, true));
         event.registerSpecial(AntarchyNeoforgeMisc.HYPNOTIC_GAS_CLOUD.get(), new HypnoticGasCloudParticle.Provider());
@@ -198,6 +214,7 @@ public final class AntarchyNeoForgeClient {
         event.registerSpriteSet(AntarchyNeoforgeMisc.INVERTED_GEYSER_POOF.get(), InvertedGeyserBaseParticle.Provider::new);
         event.registerSpecial(AntarchyNeoforgeMisc.INVERTED_GEYSER_ERUPTION.get(), new InvertedGeyserEruptionParticle.Provider());
         event.registerSpriteSet(AntarchyNeoforgeMisc.FIREFLY.get(), FireflyParticle.Provider::new);
+        event.registerSpriteSet(AntarchyNeoforgeMisc.ORANGE_ASH.get(), OrangeAshParticle.Provider::new);
     }
 
     @SubscribeEvent
@@ -221,6 +238,14 @@ public final class AntarchyNeoForgeClient {
         event.registerAboveAll(
                 ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "triffid_goo"),
                 (guiGraphics, partialTick) -> TriffidGooHudRenderer.render(guiGraphics)
+        );
+        event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "jumpy_boots"),
+                (guiGraphics, partialTick) -> JumpyBootsHudRenderer.render(guiGraphics)
+        );
+        event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "dorrie_jump"),
+                (guiGraphics, partialTick) -> DorrieJumpHudRenderer.render(guiGraphics)
         );
     }
 
@@ -270,6 +295,50 @@ public final class AntarchyNeoForgeClient {
                 RenderSystem.setShaderFogShape(FogShape.CYLINDER);
             }
         }, AntarchyNeoForgeFluidTypes.ICHOR_TYPE.get());
+
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return BILE_STILL;
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return BILE_FLOW;
+            }
+
+            @Override
+            public ResourceLocation getOverlayTexture() {
+                return WATER_OVERLAY;
+            }
+
+            @Override
+            public ResourceLocation getRenderOverlayTexture(Minecraft mc) {
+                return UNDERWATER_OVERLAY;
+            }
+
+            @Override
+            public int getTintColor() {
+                return 0xFFFFFFFF;
+            }
+
+            @Override
+            public int getTintColor(FluidState state, BlockAndTintGetter getter, net.minecraft.core.BlockPos pos) {
+                return 0xFFFFFFFF;
+            }
+
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return new Vector3f(0.38F, 0.42F, 0.10F);
+            }
+
+            @Override
+            public void modifyFogRender(Camera camera, net.minecraft.client.renderer.FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+                RenderSystem.setShaderFogStart(0.25F);
+                RenderSystem.setShaderFogEnd(Math.min(farDistance, 4.0F));
+                RenderSystem.setShaderFogShape(FogShape.CYLINDER);
+            }
+        }, AntarchyNeoForgeFluidTypes.BILE_TYPE.get());
 
         event.registerFluidType(new IClientFluidTypeExtensions() {
             @Override

@@ -1,6 +1,12 @@
 package com.craisinlord.antarchy.neoforge;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
+import com.craisinlord.antarchy.config.ConfigResetGuard;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload;
+import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
+import java.nio.file.Path;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -9,9 +15,17 @@ public final class AntarchyConfigModuleNeoforge {
     private AntarchyConfigModuleNeoforge() {}
 
     public static void init(ModContainer modContainer) {
+        Path configDir = FMLPaths.CONFIGDIR.get().resolve("antarchy");
+        ConfigResetGuard.wipeIfNeeded(
+                configDir,
+                configDir.resolve("antarchy_mobs.toml"),
+                configDir.resolve("antarchy_tools.toml"),
+                configDir.resolve("antarchy_misc.toml")
+        );
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMobsConfig.SPEC,  "antarchy/antarchy_mobs.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyToolsConfig.SPEC, "antarchy/antarchy_tools.toml");
         modContainer.registerConfig(ModConfig.Type.COMMON, AntarchyMiscConfig.SPEC,  "antarchy/antarchy_misc.toml");
+        HerculesBeetleImpactShakeSync.setSink((player, ticks) -> PacketDistributor.sendToPlayer(player, new HerculesBeetleImpactShakePayload(ticks)));
         AntarchyNeoforge.modEventBusTempHolder.addListener(AntarchyConfigModuleNeoforge::onConfigChange);
     }
 
@@ -74,6 +88,11 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setBomberExplosionDamage(AntarchyMobsConfig.bomberExplosionDamage());
         AntarchySettings.setBomberExplosionRadius(AntarchyMobsConfig.bomberExplosionRadius());
 
+        AntarchySettings.setJumpyBugHealth(AntarchyMobsConfig.jumpyBugHealth());
+        AntarchySettings.setJumpyBugPounceDamage(AntarchyMobsConfig.jumpyBugPounceDamage());
+        AntarchySettings.setJumpyBugLatchDamage(AntarchyMobsConfig.jumpyBugLatchDamage());
+        AntarchySettings.setJumpyBugCamouflageAlpha(AntarchyMobsConfig.jumpyBugCamouflageAlpha());
+
         AntarchySettings.setKrakenHealth(AntarchyMobsConfig.krakenHealth());
         AntarchySettings.setKrakenAttackDamage(AntarchyMobsConfig.krakenAttackDamage());
         AntarchySettings.setKrakenProjectileDamageTakenMultiplier(AntarchyMobsConfig.krakenProjectileDamageTakenMultiplier());
@@ -89,6 +108,13 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setMantisMovementSpeed(AntarchyMobsConfig.mantisMovementSpeed());
         AntarchySettings.setMantisFlyingSpeed(AntarchyMobsConfig.mantisFlyingSpeed());
         AntarchySettings.setMantisIgnoreLightLevel(AntarchyMobsConfig.mantisIgnoreLightLevel());
+
+        AntarchySettings.setAlphaMantisHealth(AntarchyMobsConfig.alphaMantisHealth());
+        AntarchySettings.setAlphaMantisAttackDamage(AntarchyMobsConfig.alphaMantisAttackDamage());
+        AntarchySettings.setAlphaMantisMovementSpeed(AntarchyMobsConfig.alphaMantisMovementSpeed());
+        AntarchySettings.setAlphaMantisFlyingSpeed(AntarchyMobsConfig.alphaMantisFlyingSpeed());
+        AntarchySettings.setAlphaMantisSummonIntervalTicks(AntarchyMobsConfig.alphaMantisSummonIntervalTicks());
+        AntarchySettings.setAlphaMantisMaxMinions(AntarchyMobsConfig.alphaMantisMaxMinions());
 
         AntarchySettings.setTriffidHealth(AntarchyMobsConfig.triffidHealth());
         AntarchySettings.setTriffidAttackDamage(AntarchyMobsConfig.triffidAttackDamage());
@@ -150,11 +176,23 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setToreterrorSpinDamage(AntarchyMobsConfig.toreterrorSpinDamage());
         AntarchySettings.setToreterrorSpinKnockback(AntarchyMobsConfig.toreterrorSpinKnockback());
         AntarchySettings.setToreterrorRangedWaterBombChance(AntarchyMobsConfig.toreterrorRangedWaterBombChance());
+        AntarchySettings.setToreterrorProjectileDamageMultiplier(AntarchyMobsConfig.toreterrorProjectileDamageMultiplier());
         AntarchySettings.setWaterBombDamage(AntarchyMobsConfig.waterBombDamage());
         AntarchySettings.setWaterBombLifetimeTicks(AntarchyMobsConfig.waterBombLifetimeTicks());
         AntarchySettings.setWaterBombGravity(AntarchyMobsConfig.waterBombGravity());
         AntarchySettings.setWaterBombKnockback(AntarchyMobsConfig.waterBombKnockback());
         AntarchySettings.setWaterCannonCooldownSeconds(AntarchyMobsConfig.waterCannonCooldownSeconds());
+
+        AntarchySettings.setCreepingHorrorHealth(AntarchyMobsConfig.creepingHorrorHealth());
+        AntarchySettings.setCreepingHorrorAttackDamage(AntarchyMobsConfig.creepingHorrorAttackDamage());
+        AntarchySettings.setLurkingTerrorHealth(AntarchyMobsConfig.lurkingTerrorHealth());
+        AntarchySettings.setLurkingTerrorAttackDamage(AntarchyMobsConfig.lurkingTerrorAttackDamage());
+        AntarchySettings.setCheepHealth(AntarchyMobsConfig.cheepHealth());
+        AntarchySettings.setCheepAttackDamage(AntarchyMobsConfig.cheepAttackDamage());
+        AntarchySettings.setDorrieHealth(AntarchyMobsConfig.dorrieHealth());
+        AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
+        AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
+        AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
     }
 
     private static void bakeToolsConfig() {
@@ -237,6 +275,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setNightmareBootsArmorToughness(AntarchyToolsConfig.nightmareBootsArmorToughness());
         AntarchySettings.setNightmareArmorKnockbackResistance(AntarchyToolsConfig.nightmareArmorKnockbackResistance());
         AntarchySettings.setNightmareArmorDreadAuraRangePerPiece(AntarchyToolsConfig.nightmareArmorDreadAuraRangePerPiece());
+        AntarchySettings.setPrimordialArmorKnockbackPerPiece(AntarchyToolsConfig.primordialArmorKnockbackPerPiece());
         AntarchySettings.setNightmareSwordBaseDamage(AntarchyToolsConfig.nightmareSwordBaseDamage());
         AntarchySettings.setNightmareSwordAttackSpeed(AntarchyToolsConfig.nightmareSwordAttackSpeed());
         AntarchySettings.setNightmareSwordScalingFactor(AntarchyToolsConfig.nightmareSwordScalingFactor());

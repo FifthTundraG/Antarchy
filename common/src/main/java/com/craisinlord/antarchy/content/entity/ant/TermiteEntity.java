@@ -1,9 +1,11 @@
 package com.craisinlord.antarchy.content.entity.ant;
 
+import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.AntarchyTags;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -17,10 +19,22 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 
 public class TermiteEntity extends BaseAntEntity implements GeoEntity {
-    private static final int WOOD_SEARCH_INTERVAL_TICKS = 10;
+    private static final int WOOD_BITE_ANIMATION_TICKS = 8;
+    private static final int WOOD_SEARCH_INTERVAL_TICKS = 20;
     private static final int WOOD_REPATH_INTERVAL_TICKS = 6;
     private static final int WOOD_SEARCH_RADIUS_HORIZONTAL = 12;
     private static final int WOOD_SEARCH_RADIUS_VERTICAL = 4;
+    private static final Vec3i[] IMMEDIATE_WOOD_OFFSETS = {
+        new Vec3i(0, 1, 0),
+        new Vec3i(0, 0, -1),
+        new Vec3i(0, 0, 1),
+        new Vec3i(1, 0, 0),
+        new Vec3i(-1, 0, 0),
+        new Vec3i(0, 1, -1),
+        new Vec3i(0, 1, 1),
+        new Vec3i(1, 1, 0),
+        new Vec3i(-1, 1, 0),
+    };
     @Nullable
     private BlockPos targetWoodPos;
     private int nextWoodSearchTick;
@@ -79,13 +93,8 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
     }
 
     @Override
-    protected boolean canGroupWithNestmates() {
-        return false;
-    }
-
-    @Override
-    protected boolean canMarch() {
-        return false;
+    protected boolean shouldUseBiteAnimation() {
+        return true;
     }
 
     @Override
@@ -119,35 +128,23 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
     }
 
     private boolean tryEatNearbyWood() {
-        for (BlockPos targetPos : this.getImmediateWoodChecks()) {
+        BlockPos basePos = this.blockPosition();
+        for (Vec3i offset : IMMEDIATE_WOOD_OFFSETS) {
+            BlockPos targetPos = basePos.offset(offset);
             BlockState targetState = this.level().getBlockState(targetPos);
             if (!targetState.is(AntarchyTags.Blocks.TERMITE_FOODS)) {
                 continue;
             }
 
             SoundType soundType = targetState.getSoundType();
+            this.triggerBiteAnimation(WOOD_BITE_ANIMATION_TICKS);
             this.level().destroyBlock(targetPos, false, this);
             this.level().playSound(null, targetPos, soundType.getBreakSound(), this.getSoundSource(), 0.7F, 1.1F);
+            this.playSound(AntarchySoundEvents.ANT_BITE.get(), 0.35F, 0.95F + this.random.nextFloat() * 0.1F);
             return true;
         }
 
         return false;
-    }
-
-    private BlockPos[] getImmediateWoodChecks() {
-        BlockPos basePos = this.blockPosition();
-        BlockPos abovePos = basePos.above();
-        return new BlockPos[] {
-                basePos.above(),
-                basePos.north(),
-                basePos.south(),
-                basePos.east(),
-                basePos.west(),
-                abovePos.north(),
-                abovePos.south(),
-                abovePos.east(),
-                abovePos.west()
-        };
     }
 
     @Nullable
@@ -168,20 +165,52 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
     @Nullable
     private BlockPos findClosestWoodTarget() {
         BlockPos origin = this.blockPosition();
+        int ox = origin.getX();
+        int oy = origin.getY();
+        int oz = origin.getZ();
         BlockPos bestPos = null;
-        double bestDistance = Double.MAX_VALUE;
+        double bestDistSq = Double.MAX_VALUE;
+        BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
 
-        for (BlockPos pos : BlockPos.betweenClosed(
-                origin.offset(-WOOD_SEARCH_RADIUS_HORIZONTAL, -WOOD_SEARCH_RADIUS_VERTICAL, -WOOD_SEARCH_RADIUS_HORIZONTAL),
-                origin.offset(WOOD_SEARCH_RADIUS_HORIZONTAL, WOOD_SEARCH_RADIUS_VERTICAL + 2, WOOD_SEARCH_RADIUS_HORIZONTAL))) {
-            if (!this.isValidWoodTarget(pos)) {
-                continue;
+        for (int r = 0; r <= WOOD_SEARCH_RADIUS_HORIZONTAL; r++) {
+            if (bestPos != null && bestDistSq <= (double)(r * r)) {
+                break;
             }
-
-            double distance = pos.distSqr(origin);
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestPos = pos.immutable();
+            for (int dy = -WOOD_SEARCH_RADIUS_VERTICAL; dy <= WOOD_SEARCH_RADIUS_VERTICAL + 2; dy++) {
+                if (r == 0) {
+                    candidate.set(ox, oy + dy, oz);
+                    if (this.isValidWoodTarget(candidate)) {
+                        double d = candidate.distSqr(origin);
+                        if (d < bestDistSq) { bestDistSq = d; bestPos = candidate.immutable(); }
+                    }
+                    continue;
+                }
+                // North/South faces (dz = ±r)
+                for (int dx = -r; dx <= r; dx++) {
+                    candidate.set(ox + dx, oy + dy, oz - r);
+                    if (this.isValidWoodTarget(candidate)) {
+                        double d = candidate.distSqr(origin);
+                        if (d < bestDistSq) { bestDistSq = d; bestPos = candidate.immutable(); }
+                    }
+                    candidate.set(ox + dx, oy + dy, oz + r);
+                    if (this.isValidWoodTarget(candidate)) {
+                        double d = candidate.distSqr(origin);
+                        if (d < bestDistSq) { bestDistSq = d; bestPos = candidate.immutable(); }
+                    }
+                }
+                // East/West faces (dx = ±r, corners already covered above)
+                for (int dz = -r + 1; dz <= r - 1; dz++) {
+                    candidate.set(ox - r, oy + dy, oz + dz);
+                    if (this.isValidWoodTarget(candidate)) {
+                        double d = candidate.distSqr(origin);
+                        if (d < bestDistSq) { bestDistSq = d; bestPos = candidate.immutable(); }
+                    }
+                    candidate.set(ox + r, oy + dy, oz + dz);
+                    if (this.isValidWoodTarget(candidate)) {
+                        double d = candidate.distSqr(origin);
+                        if (d < bestDistSq) { bestDistSq = d; bestPos = candidate.immutable(); }
+                    }
+                }
             }
         }
 
@@ -215,9 +244,10 @@ public class TermiteEntity extends BaseAntEntity implements GeoEntity {
     }
 
     private boolean isWalkableStandPos(BlockPos pos) {
-        BlockState floorState = this.level().getBlockState(pos.below());
+        BlockPos floor = pos.below();
+        BlockState floorState = this.level().getBlockState(floor);
         return this.level().getBlockState(pos).isAir()
                 && this.level().getBlockState(pos.above()).isAir()
-                && floorState.isFaceSturdy(this.level(), pos.below(), Direction.UP);
+                && floorState.isFaceSturdy(this.level(), floor, Direction.UP);
     }
 }

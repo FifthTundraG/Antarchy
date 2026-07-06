@@ -57,6 +57,14 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue BOMBER_EXPLOSION_RADIUS;
 
 
+    // Jumpy Bug
+
+    private static final ModConfigSpec.DoubleValue JUMPY_BUG_HEALTH;
+    private static final ModConfigSpec.DoubleValue JUMPY_BUG_POUNCE_DAMAGE;
+    private static final ModConfigSpec.DoubleValue JUMPY_BUG_LATCH_DAMAGE;
+    private static final ModConfigSpec.DoubleValue JUMPY_BUG_CAMOUFLAGE_ALPHA;
+
+
     // Kraken
 
     private static final ModConfigSpec.DoubleValue  KRAKEN_HEALTH;
@@ -80,6 +88,16 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue  MANTIS_MOVEMENT_SPEED;
     private static final ModConfigSpec.DoubleValue  MANTIS_FLYING_SPEED;
     private static final ModConfigSpec.BooleanValue MANTIS_IGNORE_LIGHT_LEVEL;
+
+
+    // Alpha Mantis
+
+    private static final ModConfigSpec.DoubleValue ALPHA_MANTIS_HEALTH;
+    private static final ModConfigSpec.DoubleValue ALPHA_MANTIS_ATTACK_DAMAGE;
+    private static final ModConfigSpec.DoubleValue ALPHA_MANTIS_MOVEMENT_SPEED;
+    private static final ModConfigSpec.DoubleValue ALPHA_MANTIS_FLYING_SPEED;
+    private static final ModConfigSpec.IntValue    ALPHA_MANTIS_SUMMON_INTERVAL_TICKS;
+    private static final ModConfigSpec.IntValue    ALPHA_MANTIS_MAX_MINIONS;
 
 
     // Triffid
@@ -154,11 +172,42 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue  TORETERROR_SPIN_DAMAGE;
     private static final ModConfigSpec.DoubleValue  TORETERROR_SPIN_KNOCKBACK;
     private static final ModConfigSpec.DoubleValue  TORETERROR_RANGED_WATER_BOMB_CHANCE;
+    private static final ModConfigSpec.DoubleValue  TORETERROR_PROJECTILE_DAMAGE_MULTIPLIER;
     private static final ModConfigSpec.DoubleValue  WATER_BOMB_DAMAGE;
     private static final ModConfigSpec.IntValue     WATER_BOMB_LIFETIME_TICKS;
     private static final ModConfigSpec.DoubleValue  WATER_BOMB_GRAVITY;
     private static final ModConfigSpec.DoubleValue  WATER_BOMB_KNOCKBACK;
     private static final ModConfigSpec.DoubleValue  WATER_CANNON_COOLDOWN_SECONDS;
+
+
+    // Creeping Horror
+
+    private static final ModConfigSpec.DoubleValue CREEPING_HORROR_HEALTH;
+    private static final ModConfigSpec.DoubleValue CREEPING_HORROR_ATTACK_DAMAGE;
+
+
+    // Lurking Terror
+
+    private static final ModConfigSpec.DoubleValue LURKING_TERROR_HEALTH;
+    private static final ModConfigSpec.DoubleValue LURKING_TERROR_ATTACK_DAMAGE;
+
+
+    // Cheep
+
+    private static final ModConfigSpec.DoubleValue CHEEP_HEALTH;
+    private static final ModConfigSpec.DoubleValue CHEEP_ATTACK_DAMAGE;
+
+
+    // Dorrie
+
+    private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
+
+
+    // Hercules Beetle
+
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_HEALTH;
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_ATTACK_DAMAGE;
+    private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_CHARGE_DAMAGE;
 
 
     // Lucid
@@ -288,6 +337,16 @@ public final class AntarchyMobsConfig {
         b.pop();
 
 
+        // Jumpy Bug
+
+        b.push("jumpyBug");
+        JUMPY_BUG_HEALTH = b.comment("Base max health.").defineInRange("health", 12.0D, 1.0D, 32768.0D);
+        JUMPY_BUG_POUNCE_DAMAGE = b.comment("Damage dealt on a successful pounce latch.").defineInRange("pounceDamage", 2.0D, 0.0D, 1024.0D);
+        JUMPY_BUG_LATCH_DAMAGE = b.comment("Damage dealt per bite while latched.").defineInRange("latchDamage", 1.0D, 0.0D, 1024.0D);
+        JUMPY_BUG_CAMOUFLAGE_ALPHA = b.comment("Renderer alpha while camouflaged.").defineInRange("camouflageAlpha", 0.18D, 0.01D, 1.0D);
+        b.pop();
+
+
         // Kraken
 
         b.push("kraken");
@@ -316,6 +375,18 @@ public final class AntarchyMobsConfig {
         MANTIS_MOVEMENT_SPEED     = b.comment("Base movement speed.")                                                                                             .defineInRange("movementSpeed",      0.42D, 0.0D, 10.0D);
         MANTIS_FLYING_SPEED       = b.comment("Base flying speed.")                                                                                               .defineInRange("flyingSpeed",        0.77D, 0.0D, 10.0D);
         MANTIS_IGNORE_LIGHT_LEVEL = b.comment("If false, mantises only spawn naturally in darkness (standard monster rules). If true, light level is ignored.").define("ignoreLightLevel", false);
+        b.pop();
+
+
+        // Alpha Mantis
+
+        b.push("alphaMantis");
+        ALPHA_MANTIS_HEALTH                = b.comment("Base max health.")                                              .defineInRange("health",             500.0D, 1.0D, 32768.0D);
+        ALPHA_MANTIS_ATTACK_DAMAGE         = b.comment("Base attack damage.")                                           .defineInRange("attackDamage",        18.0D, 0.0D, 1024.0D);
+        ALPHA_MANTIS_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                          .defineInRange("movementSpeed",       0.42D, 0.0D, 10.0D);
+        ALPHA_MANTIS_FLYING_SPEED          = b.comment("Base flying speed.")                                            .defineInRange("flyingSpeed",         0.77D, 0.0D, 10.0D);
+        ALPHA_MANTIS_SUMMON_INTERVAL_TICKS = b.comment("Ticks between mantis minion summons while in combat.")          .defineInRange("summonIntervalTicks",   300, 20, 72000);
+        ALPHA_MANTIS_MAX_MINIONS           = b.comment("Maximum summoned mantises alive near the alpha at once.")       .defineInRange("maxMinions",              4, 0, 32);
         b.pop();
 
 
@@ -432,6 +503,31 @@ public final class AntarchyMobsConfig {
 
         b.pop(); // dread
 
+        b.push("creepingHorror");
+        CREEPING_HORROR_HEALTH        = b.comment("Base max health.").defineInRange("health", 15.0D, 1.0D, 32768.0D);
+        CREEPING_HORROR_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 6.0D, 0.0D, 1024.0D);
+        b.pop();
+
+        b.push("lurkingTerror");
+        LURKING_TERROR_HEALTH        = b.comment("Base max health.").defineInRange("health", 15.0D, 1.0D, 32768.0D);
+        LURKING_TERROR_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 6.0D, 0.0D, 1024.0D);
+        b.pop();
+
+        b.push("cheep");
+        CHEEP_HEALTH        = b.comment("Base max health.").defineInRange("health", 8.0D, 1.0D, 32768.0D);
+        CHEEP_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 3.0D, 0.0D, 1024.0D);
+        b.pop();
+
+        b.push("dorrie");
+        DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
+        b.pop();
+
+        b.push("herculesBeetle");
+        HERCULES_BEETLE_HEALTH = b.comment("Base max health.").defineInRange("health", 500.0D, 1.0D, 32768.0D);
+        HERCULES_BEETLE_ATTACK_DAMAGE = b.comment("Base melee damage for ground and flying attacks.").defineInRange("attackDamage", 30.0D, 0.0D, 1024.0D);
+        HERCULES_BEETLE_CHARGE_DAMAGE = b.comment("AOE impact damage dealt when a charge collides.").defineInRange("chargeDamage", 40.0D, 0.0D, 1024.0D);
+        b.pop();
+
         b.push("toreterror");
         TORETERROR_HEALTH                  = b.comment("Base max health.").defineInRange("health", 300.0D, 1.0D, 32768.0D);
         TORETERROR_JUMP_ATTACK_DAMAGE      = b.comment("Damage dealt by the jump shockwave.").defineInRange("jumpAttackDamage", 14.0D, 0.0D, 1024.0D);
@@ -439,6 +535,7 @@ public final class AntarchyMobsConfig {
         TORETERROR_SPIN_DAMAGE             = b.comment("Damage per spin-attack tick.").defineInRange("spinDamage", 8.0D, 0.0D, 1024.0D);
         TORETERROR_SPIN_KNOCKBACK          = b.comment("Knockback strength of the spin attack.").defineInRange("spinKnockback", 1.5D, 0.0D, 10.0D);
         TORETERROR_RANGED_WATER_BOMB_CHANCE = b.comment("Chance (0.0-1.0) the ranged attack fires a Water Bomb instead of Bombers.").defineInRange("rangedWaterBombChance", 0.5D, 0.0D, 1.0D);
+        TORETERROR_PROJECTILE_DAMAGE_MULTIPLIER = b.comment("Damage multiplier applied to projectile hits on the Toreterror (0.5 = half damage).").defineInRange("projectileDamageMultiplier", 0.5D, 0.0D, 1.0D);
         WATER_BOMB_DAMAGE                  = b.comment("Damage dealt by a Water Bomb hit.").defineInRange("waterBombDamage", 6.0D, 0.0D, 1024.0D);
         WATER_BOMB_LIFETIME_TICKS          = b.comment("Ticks before a Water Bomb despawns.").defineInRange("waterBombLifetimeTicks", 120, 1, 6000);
         WATER_BOMB_GRAVITY                 = b.comment("Gravity applied to Water Bombs (higher = steeper arc).").defineInRange("waterBombGravity", 0.12D, 0.0D, 2.0D);
@@ -494,6 +591,11 @@ public final class AntarchyMobsConfig {
     static double  bomberExplosionDamage()                  { return BOMBER_EXPLOSION_DAMAGE.get(); }
     static double  bomberExplosionRadius()                  { return BOMBER_EXPLOSION_RADIUS.get(); }
 
+    static double  jumpyBugHealth()                         { return JUMPY_BUG_HEALTH.get(); }
+    static double  jumpyBugPounceDamage()                   { return JUMPY_BUG_POUNCE_DAMAGE.get(); }
+    static double  jumpyBugLatchDamage()                    { return JUMPY_BUG_LATCH_DAMAGE.get(); }
+    static double  jumpyBugCamouflageAlpha()                { return JUMPY_BUG_CAMOUFLAGE_ALPHA.get(); }
+
     static double  krakenHealth()                           { return KRAKEN_HEALTH.get(); }
     static double  krakenAttackDamage()                     { return KRAKEN_ATTACK_DAMAGE.get(); }
     static double  krakenProjectileDamageTakenMultiplier()  { return KRAKEN_PROJECTILE_DAMAGE_TAKEN_MULTIPLIER.get(); }
@@ -509,6 +611,12 @@ public final class AntarchyMobsConfig {
     static double  mantisMovementSpeed()                    { return MANTIS_MOVEMENT_SPEED.get(); }
     static double  mantisFlyingSpeed()                      { return MANTIS_FLYING_SPEED.get(); }
     static boolean mantisIgnoreLightLevel()                 { return MANTIS_IGNORE_LIGHT_LEVEL.get(); }
+    static double  alphaMantisHealth()                      { return ALPHA_MANTIS_HEALTH.get(); }
+    static double  alphaMantisAttackDamage()                { return ALPHA_MANTIS_ATTACK_DAMAGE.get(); }
+    static double  alphaMantisMovementSpeed()               { return ALPHA_MANTIS_MOVEMENT_SPEED.get(); }
+    static double  alphaMantisFlyingSpeed()                 { return ALPHA_MANTIS_FLYING_SPEED.get(); }
+    static int     alphaMantisSummonIntervalTicks()         { return ALPHA_MANTIS_SUMMON_INTERVAL_TICKS.get(); }
+    static int     alphaMantisMaxMinions()                  { return ALPHA_MANTIS_MAX_MINIONS.get(); }
 
     static double  triffidHealth()                          { return TRIFFID_HEALTH.get(); }
     static double  triffidAttackDamage()                    { return TRIFFID_ATTACK_DAMAGE.get(); }
@@ -564,6 +672,7 @@ public final class AntarchyMobsConfig {
     static double  toreterrorSpinDamage()                   { return TORETERROR_SPIN_DAMAGE.get(); }
     static double  toreterrorSpinKnockback()                { return TORETERROR_SPIN_KNOCKBACK.get(); }
     static double  toreterrorRangedWaterBombChance()        { return TORETERROR_RANGED_WATER_BOMB_CHANCE.get(); }
+    static double  toreterrorProjectileDamageMultiplier()   { return TORETERROR_PROJECTILE_DAMAGE_MULTIPLIER.get(); }
     static double  waterBombDamage()                        { return WATER_BOMB_DAMAGE.get(); }
     static int     waterBombLifetimeTicks()                 { return WATER_BOMB_LIFETIME_TICKS.get(); }
     static double  waterBombGravity()                       { return WATER_BOMB_GRAVITY.get(); }
@@ -576,4 +685,15 @@ public final class AntarchyMobsConfig {
     static boolean dreadHallucinationMobsEnabled()          { return DREAD_HALLUCINATION_MOBS_ENABLED.get(); }
     static double  dreadHallucinationMobMinInterval()       { return DREAD_HALLUCINATION_MOB_MIN_INTERVAL.get(); }
     static double  dreadHallucinationMobMaxInterval()       { return DREAD_HALLUCINATION_MOB_MAX_INTERVAL.get(); }
+
+    static double  creepingHorrorHealth()                   { return CREEPING_HORROR_HEALTH.get(); }
+    static double  creepingHorrorAttackDamage()             { return CREEPING_HORROR_ATTACK_DAMAGE.get(); }
+    static double  lurkingTerrorHealth()                    { return LURKING_TERROR_HEALTH.get(); }
+    static double  lurkingTerrorAttackDamage()              { return LURKING_TERROR_ATTACK_DAMAGE.get(); }
+    static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
+    static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
+    static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
+    static double  herculesBeetleHealth()                   { return HERCULES_BEETLE_HEALTH.get(); }
+    static double  herculesBeetleAttackDamage()             { return HERCULES_BEETLE_ATTACK_DAMAGE.get(); }
+    static double  herculesBeetleChargeDamage()             { return HERCULES_BEETLE_CHARGE_DAMAGE.get(); }
 }

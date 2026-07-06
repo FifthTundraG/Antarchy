@@ -111,6 +111,7 @@ public final class AntarchyToolsConfig {
     private static final ModConfigSpec.DoubleValue NIGHTMARE_BOOTS_ARMOR_TOUGHNESS;
     private static final ModConfigSpec.DoubleValue NIGHTMARE_ARMOR_KNOCKBACK_RESISTANCE;
     private static final ModConfigSpec.DoubleValue NIGHTMARE_ARMOR_DREAD_AURA_RANGE_PER_PIECE;
+    private static final ModConfigSpec.DoubleValue PRIMORDIAL_ARMOR_KNOCKBACK_PER_PIECE;
     private static final ModConfigSpec.DoubleValue NIGHTMARE_SWORD_BASE_DAMAGE;
     private static final ModConfigSpec.DoubleValue NIGHTMARE_SWORD_ATTACK_SPEED;
     private static final ModConfigSpec.DoubleValue NIGHTMARE_SWORD_SCALING_FACTOR;
@@ -326,6 +327,7 @@ public final class AntarchyToolsConfig {
                     "Full set (4 pieces) gives 5.0 blocks by default."
                 )
                 .defineInRange("dreadAuraRangePerPiece", 1.25D, 0.0D, 64.0D);
+        PRIMORDIAL_ARMOR_KNOCKBACK_PER_PIECE      = b.comment("Attack knockback added by each Primordial Armor piece.")      .defineInRange("primordialArmorKnockbackPerPiece", 0.5D, 0.0D, 16.0D);
         b.pop();
 
         b.push("nightmareSword");
@@ -334,14 +336,14 @@ public final class AntarchyToolsConfig {
                     "Base attack damage. Also the minimum damage at full health.",
                     "Formula: damage = baseDamage * (1 + missingHealthFraction * scalingFactor)"
                 )
-                .defineInRange("baseDamage",    30.0D, 0.0D, 1024.0D);
+                .defineInRange("baseDamage",    15.0D, 0.0D, 1024.0D);
         NIGHTMARE_SWORD_ATTACK_SPEED    = b.comment("Attack speed of the Nightmare Sword.").defineInRange("attackSpeed",  -2.4D, -10.0D, 10.0D);
         NIGHTMARE_SWORD_SCALING_FACTOR  = b
                 .comment(
                     "How much damage scales with missing health.",
                     "At 1.0 and 0 HP remaining: damage doubles. At full health: always baseDamage."
                 )
-                .defineInRange("scalingFactor",  1.0D, 0.0D, 100.0D);
+                .defineInRange("scalingFactor",  1.5D, 0.0D, 100.0D);
         b.pop();
 
         b.push("fallenKingCrown");
@@ -532,6 +534,7 @@ public final class AntarchyToolsConfig {
     static double  nightmareBootsArmorToughness()            { return NIGHTMARE_BOOTS_ARMOR_TOUGHNESS.get(); }
     static double  nightmareArmorKnockbackResistance()       { return NIGHTMARE_ARMOR_KNOCKBACK_RESISTANCE.get(); }
     static double  nightmareArmorDreadAuraRangePerPiece()    { return NIGHTMARE_ARMOR_DREAD_AURA_RANGE_PER_PIECE.get(); }
+    static double  primordialArmorKnockbackPerPiece()        { return PRIMORDIAL_ARMOR_KNOCKBACK_PER_PIECE.get(); }
     static double  nightmareSwordBaseDamage()                { return NIGHTMARE_SWORD_BASE_DAMAGE.get(); }
     static double  nightmareSwordAttackSpeed()               { return NIGHTMARE_SWORD_ATTACK_SPEED.get(); }
     static double  nightmareSwordScalingFactor()             { return NIGHTMARE_SWORD_SCALING_FACTOR.get(); }

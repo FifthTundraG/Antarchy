@@ -7,6 +7,8 @@
       "type": "antarchy:elythia_biome_source",
       "moleworm_caves_max_y": 30,
       "surface_biome_sample_y": 160,
+      "ocean_max_y": 62,
+      "sea_level": 60,
       "biomes": [
         {
           "biome": "antarchy:moleworm_caves",
@@ -225,6 +227,30 @@
           }
         },
         {
+          "biome": "antarchy:fungal_ouranwood_forest",
+          "parameters": {
+            "temperature": 0.55,
+            "humidity": 0.9,
+            "continentalness": 0.75,
+            "erosion": 0.0,
+            "weirdness": 0.85,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:fungal_ouranwood_forest",
+          "parameters": {
+            "temperature": 0.55,
+            "humidity": 0.9,
+            "continentalness": 0.75,
+            "erosion": 0.0,
+            "weirdness": 0.85,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
           "biome": "antarchy:torchflower_fields",
           "parameters": {
             "temperature": 0.76,
@@ -389,6 +415,114 @@
             "erosion": 0.13,
             "weirdness": 0.20,
             "depth": 0.85,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_ocean",
+          "parameters": {
+            "temperature": 0.65,
+            "humidity": 0.90,
+            "continentalness": -0.88,
+            "erosion": 0.30,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_ocean",
+          "parameters": {
+            "temperature": 0.60,
+            "humidity": 0.88,
+            "continentalness": -0.92,
+            "erosion": 0.25,
+            "weirdness": -0.40,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_ocean",
+          "parameters": {
+            "temperature": 0.70,
+            "humidity": 0.92,
+            "continentalness": -0.85,
+            "erosion": 0.35,
+            "weirdness": 0.40,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_ocean",
+          "parameters": {
+            "temperature": 0.65,
+            "humidity": 0.90,
+            "continentalness": -0.88,
+            "erosion": 0.30,
+            "weirdness": 0.0,
+            "depth": 0.5,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_ocean",
+          "parameters": {
+            "temperature": 0.60,
+            "humidity": 0.88,
+            "continentalness": -0.92,
+            "erosion": 0.25,
+            "weirdness": -0.40,
+            "depth": 0.5,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_coral_spikes",
+          "parameters": {
+            "temperature": 0.80,
+            "humidity": 0.85,
+            "continentalness": -0.88,
+            "erosion": 0.20,
+            "weirdness": 0.50,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_coral_spikes",
+          "parameters": {
+            "temperature": 0.75,
+            "humidity": 0.82,
+            "continentalness": -0.90,
+            "erosion": 0.15,
+            "weirdness": -0.55,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_coral_spikes",
+          "parameters": {
+            "temperature": 0.80,
+            "humidity": 0.85,
+            "continentalness": -0.88,
+            "erosion": 0.20,
+            "weirdness": 0.50,
+            "depth": 0.5,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:elythia_coral_spikes",
+          "parameters": {
+            "temperature": 0.75,
+            "humidity": 0.82,
+            "continentalness": -0.90,
+            "erosion": 0.15,
+            "weirdness": -0.55,
+            "depth": 0.5,
             "offset": 0.0
           }
         }

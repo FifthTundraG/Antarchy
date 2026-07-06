@@ -64,6 +64,11 @@
 		"walk": {
 			"loop": true,
 			"animation_length": 0.5,
+			"sound_effects": {
+				"0.0": {
+					"effect": "antarchy:bomber_walk|0.6|1.0"
+				}
+			},
 			"bones": {
 				"root": {
 					"rotation": {

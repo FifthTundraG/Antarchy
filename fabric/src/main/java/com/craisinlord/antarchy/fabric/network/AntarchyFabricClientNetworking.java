@@ -34,5 +34,7 @@ public final class AntarchyFabricClientNetworking {
                         payload.anchorY(),
                         payload.anchorZ()
                 )));
+        ClientPlayNetworking.registerGlobalReceiver(HerculesBeetleImpactShakePayload.TYPE, (payload, context) ->
+                context.client().execute(() -> AntarchyFabricNetworking.triggerHerculesBeetleImpactShake(payload.durationTicks())));
     }
 }

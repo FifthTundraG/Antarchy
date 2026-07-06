@@ -83,6 +83,7 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
     private static final int SWIPE_TICKS = 18;
     private static final float SWIPE_KNOCKBACK = 2.8F;
     private static final int COCOON_HIT_THRESHOLD = 3;
+    private static final int COCOON_HIT_COOLDOWN_TICKS = 60;
     private static final int COCOON_HIT_ANIM_TICKS = 30;
     private static final int COCOON_HATCH_ANIM_TICKS = 40;
     private static final int COCOON_IDLE_ANIM_TICKS = 70;
@@ -111,6 +112,7 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
     @Nullable
     BlockPos anchorPos;
     private int cocoonHits;
+    private int cocoonHitCooldownTicks;
     private boolean isHatching;
     private int cocoonAnimTicks;
     private boolean pendingHatchAnim;
@@ -261,6 +263,10 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
     }
 
     private void tickCocoon() {
+        if (this.cocoonHitCooldownTicks > 0) {
+            this.cocoonHitCooldownTicks--;
+        }
+
         // Pin position to hang from anchor
         if (this.anchorPos != null) {
             this.setPos(this.anchorPos.getX() + 0.5, this.anchorPos.getY() - 1.5, this.anchorPos.getZ() + 0.5);
@@ -319,6 +325,8 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
         this.entityData.set(IS_COCOONED, false);
         this.isHatching = false;
         this.anchorPos = null;
+        this.cocoonHits = 0;
+        this.cocoonHitCooldownTicks = 0;
         this.refreshDimensions();
         this.setAnimationState(ANIM_FLY);
         Player nearbyPlayer = this.level().getNearestPlayer(this, 48.0D);
@@ -344,6 +352,10 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
         this.anchorPos = anchor;
         this.refreshDimensions();
         if (cocooned) {
+            this.cocoonHits = 0;
+            this.cocoonHitCooldownTicks = 0;
+            this.isHatching = false;
+            this.pendingHatchAnim = false;
             this.setAnimationState(ANIM_COCOON);
         }
     }
@@ -355,9 +367,10 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
         }
 
         if (this.isCocooned() && !this.isHatching) {
-            if (this.level().isClientSide || this.hurtTime > 0) return false;
+            if (this.level().isClientSide || this.cocoonHitCooldownTicks > 0) return false;
             this.hurtTime = this.hurtDuration;
             this.cocoonHits++;
+            this.cocoonHitCooldownTicks = COCOON_HIT_COOLDOWN_TICKS;
             if (this.cocoonHits >= COCOON_HIT_THRESHOLD) {
                 this.startHatching();
             } else {
@@ -706,6 +719,7 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("IsCocooned", this.isCocooned());
         tag.putInt("CocoonHits", this.cocoonHits);
+        tag.putInt("CocoonHitCooldown", this.cocoonHitCooldownTicks);
         if (this.anchorPos != null) {
             tag.putInt("AnchorX", this.anchorPos.getX());
             tag.putInt("AnchorY", this.anchorPos.getY());
@@ -723,6 +737,7 @@ public class BrutalflyEntity extends Monster implements GeoEntity {
             }
             this.setCocooned(true, anchor);
             this.cocoonHits = tag.getInt("CocoonHits");
+            this.cocoonHitCooldownTicks = tag.getInt("CocoonHitCooldown");
         }
     }
 

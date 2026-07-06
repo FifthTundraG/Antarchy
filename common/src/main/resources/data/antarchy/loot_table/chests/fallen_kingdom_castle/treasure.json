@@ -92,7 +92,7 @@
             }
           ],
           "name": "minecraft:diamond",
-          "weight": 10
+          "weight": 12
         }
       ],
       "rolls": {
@@ -116,7 +116,7 @@
             }
           ],
           "name": "antarchy:uranium_nugget",
-          "weight": 1
+          "weight": 8
         },
         {
           "type": "minecraft:item",
@@ -131,7 +131,12 @@
             }
           ],
           "name": "antarchy:titanium_nugget",
-          "weight": 1
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 6
         }
       ],
       "rolls": 1.0

@@ -1,6 +1,7 @@
 package com.craisinlord.antarchy.fabric.client;
 
 import com.craisinlord.antarchy.Antarchy;
+import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.client.renderer.*;
 import com.craisinlord.antarchy.content.client.particle.*;
 import com.craisinlord.antarchy.content.client.renderer.AntiwaterFluidRenderer;
@@ -24,6 +25,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.CampfireRenderer;
+import net.minecraft.client.renderer.entity.ArmorStandRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -75,6 +77,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.RAINBOW_ANT.get(), AntRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MOLEWORM.get(), MolewormRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MANTIS.get(), MantisRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.ALPHA_MANTIS.get(), AlphaMantisRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MOLEVORE.get(), MolevoreRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.TRIFFID.get(), TriffidRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.OURANWOOD_BOAT_ENTITY.get(), context -> new OuranwoodBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/boat/ouranwood.png"), false));
@@ -87,6 +90,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.CLOUD_SHARK.get(), CloudSharkRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.KRAKEN.get(), KrakenRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MISSILE_SQUID.get(), MissileSquidRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.OCTOPUS_BOMB.get(), OctopusBombRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.NIGHTMARE.get(), NightmareRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.LUCID.get(), LucidRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.BED_BUG.get(), BedBugRenderer::new);
@@ -104,6 +108,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.EMPEROR_SCORPION.get(), EmperorScorpionRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.TORETERROR.get(), ToreterrorRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.WATER_BOMB.get(), WaterBombRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.CHEEP.get(), com.craisinlord.antarchy.content.client.renderer.CheepRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.boatLayer(), BoatModel::createBodyModel);
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
@@ -121,6 +126,17 @@ public final class AntarchyFabricClientBootstrap {
     }
 
     private static void registerFluids() {
+        FluidRenderHandlerRegistry.INSTANCE.register(
+                AntarchyFabricContent.BILE.get(),
+                AntarchyFabricContent.FLOWING_BILE.get(),
+                new SimpleFluidRenderHandler(
+                        ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/bile/bile_still"),
+                        ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/bile/bile_flowing"),
+                        ResourceLocation.withDefaultNamespace("block/water_overlay"),
+                        0xFFFFFFFF
+                )
+        );
+
         FluidRenderHandlerRegistry.INSTANCE.register(
                 AntarchyFabricContent.ICHOR.get(),
                 AntarchyFabricContent.FLOWING_ICHOR.get(),
@@ -163,6 +179,8 @@ public final class AntarchyFabricClientBootstrap {
     private static void registerParticles() {
         ParticleFactoryRegistry registry = ParticleFactoryRegistry.getInstance();
         registry.register(AntarchyFabricContent.DREAM_FIRE_FLAME.get(), DreamFlameParticle.Provider::new);
+        registry.register(AntarchyFabricContent.STINKY_GAS.get(), HypnoticGasParticle.Provider::new);
+        registry.register(AntarchyFabricContent.STINKY_FLY.get(), FireflyParticle.Provider::new);
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS.get(), HypnoticGasParticle.Provider::new);
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS_DOWN.get(), sprites -> new HypnoticGasParticle.Provider(sprites, true));
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS_CLOUD.get(), new HypnoticGasCloudParticle.Provider());
@@ -172,6 +190,7 @@ public final class AntarchyFabricClientBootstrap {
         registry.register(AntarchyFabricContent.INVERTED_GEYSER_POOF.get(), InvertedGeyserBaseParticle.Provider::new);
         registry.register(AntarchyFabricContent.INVERTED_GEYSER_ERUPTION.get(), new InvertedGeyserEruptionParticle.Provider());
         registry.register(AntarchyFabricContent.FIREFLY.get(), FireflyParticle.Provider::new);
+        registry.register(AntarchyFabricContent.ORANGE_ASH.get(), OrangeAshParticle.Provider::new);
     }
 
     private static void registerRenderLayers() {
@@ -210,6 +229,8 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CLOUD_BLOCK.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putFluids(
                 RenderType.translucent(),
+                AntarchyFabricContent.BILE.get(),
+                AntarchyFabricContent.FLOWING_BILE.get(),
                 AntarchyFabricContent.ICHOR.get(),
                 AntarchyFabricContent.FLOWING_ICHOR.get(),
                 AntarchyFabricContent.ANTIWATER.get(),
@@ -269,6 +290,10 @@ public final class AntarchyFabricClientBootstrap {
                 }
                 return;
             }
+            if (entityType == EntityType.ARMOR_STAND && renderer instanceof ArmorStandRenderer armorStandRenderer) {
+                registrationHelper.register(new FallenKingCrownArmorStandLayer((net.minecraft.client.renderer.entity.RenderLayerParent) armorStandRenderer));
+                return;
+            }
             if (software.bernie.geckolib.renderer.GeoEntityRenderer.class.isAssignableFrom(renderer.getClass())) {
                 software.bernie.geckolib.renderer.GeoEntityRenderer geoRenderer =
                         (software.bernie.geckolib.renderer.GeoEntityRenderer) (Object) renderer;
@@ -281,30 +306,38 @@ public final class AntarchyFabricClientBootstrap {
 
     private static void registerClientCallbacks() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            HerculesBeetleImpactShakeClientState.tick();
             if (client.player != null) {
                 ParalyzedClientHandler.clampPlayerInput(client.player);
             }
             BrutalflyElytraClientHandler.tick();
+            JumpyBootsClientHandler.tick();
             DiamondMinecartClientHandler.tick();
             ParalyzedClientHandler.tick();
             DreadClientHandler.tick();
             BloodCrystalKatanaTrailHandler.tick();
             ScorpionWhipTetherRenderHandler.tick();
+            DorrieJumpClientHandler.tick();
+            HerculesBeetleClientHandler.tick();
         });
 
+        BigBerthaClientHandler.register();
         GravityGunClientHandler.register();
 
         ElythiaFireflyManager.register();
         LucidSoundHandler.register();
         MogglesClientRenderer.register();
+        StinkySoundHandler.register();
         ReverieTrailHandler.register();
 
         HudRenderCallback.EVENT.register((guiGraphics, partialTick) -> {
             DreadHudRenderer.render(guiGraphics);
             ParalyzedHudRenderer.render(guiGraphics);
             BrutalflyElytraHudRenderer.render(guiGraphics);
+            JumpyBootsHudRenderer.render(guiGraphics);
             BloodglassHudRenderer.render(guiGraphics);
             TriffidGooHudRenderer.render(guiGraphics);
+            DorrieJumpHudRenderer.render(guiGraphics);
         });
 
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {

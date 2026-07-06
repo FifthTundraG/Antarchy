@@ -134,6 +134,23 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeSounds.MOLEVORE_HURT,
                 AntarchyNeoforgeSounds.MOLEVORE_ATTACK,
                 AntarchyNeoforgeSounds.MOLEVORE_DIG,
+                AntarchyNeoforgeSounds.BOMBER_WALK,
+                AntarchyNeoforgeSounds.BOMBER_KNOCK,
+                AntarchyNeoforgeSounds.BOMBER_EXPLODE,
+                AntarchyNeoforgeSounds.TORETERROR_IDLE,
+                AntarchyNeoforgeSounds.TORETERROR_HURT,
+                AntarchyNeoforgeSounds.TORETERROR_DEATH,
+                AntarchyNeoforgeSounds.TORETERROR_BOMBER_FIRE,
+                AntarchyNeoforgeSounds.TORETERROR_JUMP_UP,
+                AntarchyNeoforgeSounds.TORETERROR_JUMP_LAND,
+                AntarchyNeoforgeSounds.STINKY_FLY,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_GROWL,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_HURT,
+                AntarchyNeoforgeSounds.CREEPING_HORROR_BITE,
+                AntarchyNeoforgeSounds.LURKING_TERROR_SNARL,
+                AntarchyNeoforgeSounds.LURKING_TERROR_HURT,
+                AntarchyNeoforgeSounds.LURKING_TERROR_BITE,
+                AntarchyNeoforgeSounds.LURKING_TERROR_FLY_LOOP,
                 AntarchyNeoforgeSounds.DUCT_TAPE_USE
         );
         bindCommonObjects();
@@ -183,6 +200,7 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeEntites.HUSH_PROJECTILE,
                 AntarchyNeoforgeEntites.TORETERROR,
                 AntarchyNeoforgeEntites.WATER_BOMB,
+                AntarchyNeoforgeEntites.CHEEP,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),
@@ -195,6 +213,9 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.CHISELED_SHELLSTONE.get(),
                 () -> AntarchyNeoforgeBlocks.MOSSY_SHELLSTONE_BRICKS.get(),
                 () -> AntarchyNeoforgeBlocks.CRACKED_SHELLSTONE_BRICKS.get(),
+                () -> AntarchyNeoforgeBlocks.MOSSY_SHELLSTONE_BRICK_STAIRS.get(),
+                () -> AntarchyNeoforgeBlocks.MOSSY_SHELLSTONE_BRICK_SLAB.get(),
+                () -> AntarchyNeoforgeBlocks.MOSSY_SHELLSTONE_BRICK_WALL.get(),
                 () -> AntarchyNeoforgeBlocks.SHELLSTONE_STAIRS.get(),
                 () -> AntarchyNeoforgeBlocks.SHELLSTONE_SLAB.get(),
                 () -> AntarchyNeoforgeBlocks.SHELLSTONE_WALL.get(),
@@ -223,6 +244,7 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeMisc.DREAD,
                 () -> AntarchyNeoforgeMisc.PARALYZED,
                 () -> AntarchyNeoforgeMisc.INVERTED,
+                () -> AntarchyNeoforgeMisc.STINKY,
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_ACORN_BLOCK.get(),
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
@@ -233,14 +255,18 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.WASP_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED.get(),
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_SQUIRREL_NEST.get(),
+                () -> AntarchyNeoforgeBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> AntarchyNeoforgeBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED_BLOCK_ENTITY.get(),
+                () -> AntarchyNeoforgeMisc.STINKY_GAS.get(),
+                () -> AntarchyNeoforgeMisc.STINKY_FLY.get(),
                 () -> AntarchyNeoforgeMisc.DOUBLE_DAMAGE_CHANCE,
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_MAX_HEARTS,
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_WARD
         );
+        AntarchyObjects.setOctopusBomb(AntarchyNeoforgeEntites.OCTOPUS_BOMB);
     }
 
     private static boolean isModLoaded(String modId) {

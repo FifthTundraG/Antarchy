@@ -74,7 +74,6 @@ public final class AntarchyNeoForgeEvents {
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::onInvertedEffectExpired);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleUltimateBowDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleUltimateCrossbowDamage);
-        NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNightmareSwordDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNightmareArmorDoubleDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipAttackEntity);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipLeftClickBlock);
@@ -115,7 +114,11 @@ public final class AntarchyNeoForgeEvents {
     }
 
     public static void onMissileSquidDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof MissileSquidEntity)) return;
+        if (event.getEntity() instanceof MissileSquidEntity missileSquid) {
+            if (missileSquid.isSpawnedByKraken()) return;
+        } else if (event.getEntity().getType() != EntityType.SQUID) {
+            return;
+        }
         if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
 
         BlockPos deathPos = event.getEntity().blockPosition();
@@ -671,19 +674,6 @@ public final class AntarchyNeoForgeEvents {
     }
 
 
-    static void handleNightmareSwordDamage(LivingIncomingDamageEvent event) {
-        net.minecraft.world.damagesource.DamageSource source = event.getSource();
-        if (!(source.getEntity() instanceof Player attacker)) return;
-        if (!(attacker.getMainHandItem().getItem() instanceof NightmareSwordItem)) return;
-
-        float maxHealth = attacker.getMaxHealth();
-        if (maxHealth <= 0) return;
-        float missingFraction = (maxHealth - attacker.getHealth()) / maxHealth;
-        float baseDamage = (float) AntarchySettings.nightmareSwordBaseDamage();
-        float scalingFactor = (float) AntarchySettings.nightmareSwordScalingFactor();
-
-        event.setAmount(baseDamage + missingFraction * scalingFactor * baseDamage);
-    }
 
     static void handleNightmareArmorDoubleDamage(LivingIncomingDamageEvent event) {
         net.minecraft.world.damagesource.DamageSource source = event.getSource();
@@ -977,11 +967,14 @@ public final class AntarchyNeoForgeEvents {
     static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.LUCID_EYE.get(), AntarchyNeoforgeMisc.INVERSION);
         event.getBuilder().addMix(AntarchyNeoforgeMisc.INVERSION, Items.REDSTONE, AntarchyNeoforgeMisc.LONG_INVERSION);
+        event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.STINK_BUG.get(), AntarchyNeoforgeMisc.STINKY_POTION);
+        event.getBuilder().addMix(AntarchyNeoforgeMisc.STINKY_POTION, Items.REDSTONE, AntarchyNeoforgeMisc.LONG_STINKY);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.BASILISK_FANG.get(), AntarchyNeoforgeMisc.PARALYSIS);
         event.getBuilder().addMix(AntarchyNeoforgeMisc.PARALYSIS, Items.REDSTONE, AntarchyNeoforgeMisc.LONG_PARALYSIS);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.MOLEWORM_ITEM.get(), AntarchyNeoforgeMisc.HASTE);
         event.getBuilder().addMix(AntarchyNeoforgeMisc.HASTE, Items.GLOWSTONE_DUST, AntarchyNeoforgeMisc.STRONG_HASTE);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.CLOUD_SHARK_FIN.get(), Potions.SLOW_FALLING);
+        event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.JUMPY_BUG_LEG.get(), Potions.LEAPING);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.CORNEA_EAR.get(), Potions.NIGHT_VISION);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.URANIUM_NUGGET.get(), AntarchyNeoforgeMisc.SHRINKING);
         event.getBuilder().addMix(AntarchyNeoforgeMisc.SHRINKING, Items.GLOWSTONE_DUST, AntarchyNeoforgeMisc.STRONG_SHRINKING);

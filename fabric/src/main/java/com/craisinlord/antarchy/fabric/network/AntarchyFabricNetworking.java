@@ -1,14 +1,23 @@
 package com.craisinlord.antarchy.fabric.network;
 
 import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
+import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.entity.multipart.MultipartEntityOwner;
 import com.craisinlord.antarchy.content.entity.multipart.network.MultipartAttackPayload;
 import com.craisinlord.antarchy.content.entity.multipart.network.MultipartInteractPayload;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityApi;
+import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.item.BrutalflyElytraFlightHelper;
 import com.craisinlord.antarchy.content.item.BrutalflyElytraItem;
+import com.craisinlord.antarchy.content.item.BigBerthaItem;
+import com.craisinlord.antarchy.content.item.JumpyBootsHelper;
+import com.craisinlord.antarchy.fabric.util.JumpyBootsFabricHelper;
+import com.craisinlord.antarchy.content.item.JumpyBootsItem;
 import com.craisinlord.antarchy.content.item.GravityGunItem;
 import com.craisinlord.antarchy.content.network.*;
+import com.craisinlord.antarchy.content.entity.DorrieEntity;
+import com.craisinlord.antarchy.content.network.DorrieJumpInputPayload;
+import com.craisinlord.antarchy.content.network.JumpyBootsLaunchPayload;
 import com.craisinlord.antarchy.content.weather.ThoraxisWeatherSnapshot;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -41,11 +50,19 @@ public final class AntarchyFabricNetworking {
         PayloadTypeRegistry.playS2C().register(ScorpionWhipTetherPayload.TYPE, ScorpionWhipTetherPayload.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(BrutalflyElytraAnimationPayload.TYPE, BrutalflyElytraAnimationPayload.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(ThoraxisWeatherPayload.TYPE, ThoraxisWeatherPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(HerculesBeetleImpactShakePayload.TYPE, HerculesBeetleImpactShakePayload.STREAM_CODEC);
 
         PayloadTypeRegistry.playC2S().register(GravityGunPrimaryPayload.TYPE, GravityGunPrimaryPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(GravityGunScrollPayload.TYPE, GravityGunScrollPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(BigBerthaModeCyclePayload.TYPE, BigBerthaModeCyclePayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(DiamondMinecartInputPayload.TYPE, DiamondMinecartInputPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(BrutalflyElytraFlapPayload.TYPE, BrutalflyElytraFlapPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(JumpyBootsLaunchPayload.TYPE, JumpyBootsLaunchPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(DorrieJumpInputPayload.TYPE, DorrieJumpInputPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(HerculesBeetleJumpInputPayload.TYPE, HerculesBeetleJumpInputPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(HerculesBeetleMountedAttackPayload.TYPE, HerculesBeetleMountedAttackPayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(HerculesBeetleMountedChargePayload.TYPE, HerculesBeetleMountedChargePayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartAttackPayload.TYPE, MultipartAttackPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartInteractPayload.TYPE, MultipartInteractPayload.STREAM_CODEC);
     }
@@ -55,10 +72,24 @@ public final class AntarchyFabricNetworking {
                 context.server().execute(() -> handleGravityGunPrimary(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(GravityGunScrollPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleGravityGunScroll(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(BigBerthaModeCyclePayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleBigBerthaModeCycle(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(DiamondMinecartInputPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleDiamondMinecartInput(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(BrutalflyElytraFlapPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleBrutalflyFlap(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(JumpyBootsLaunchPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleJumpyBootsLaunch(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(DorrieJumpInputPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleDorrieJumpInput(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleDorrieChargeJumpInput(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleJumpInputPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleHerculesBeetleJumpInput(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleMountedAttackPayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleHerculesBeetleMountedAttack(context.player(), payload)));
+        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleMountedChargePayload.TYPE, (payload, context) ->
+                context.server().execute(() -> handleHerculesBeetleMountedCharge(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartAttackPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleMultipartAttack(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartInteractPayload.TYPE, (payload, context) ->
@@ -162,6 +193,13 @@ public final class AntarchyFabricNetworking {
         GravityGunItem.adjustHeldDistance(player.getMainHandItem(), payload.distanceDelta());
     }
 
+    private static void handleBigBerthaModeCycle(ServerPlayer player, BigBerthaModeCyclePayload payload) {
+        if (!(player.getMainHandItem().getItem() instanceof BigBerthaItem bigBerthaItem)) {
+            return;
+        }
+        bigBerthaItem.tryCycleModeWhileCoolingDown(player.serverLevel(), player, player.getMainHandItem());
+    }
+
     private static void handleDiamondMinecartInput(ServerPlayer player, DiamondMinecartInputPayload payload) {
         if (player.getVehicle() instanceof DiamondMinecartEntity cart) {
             cart.onInputReceived(payload.inputFlags());
@@ -261,5 +299,78 @@ public final class AntarchyFabricNetworking {
 
         InteractionHand hand = payload.handId() == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         owner.antarchy$interactMultipartPart(part, serverPlayer, part.position(), hand);
+    }
+
+    private static void handleJumpyBootsLaunch(ServerPlayer player, JumpyBootsLaunchPayload payload) {
+        if (!JumpyBootsItem.isWearingJumpyBoots(player)) return;
+        if (player.isSpectator() || player.isPassenger()) return;
+
+        ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
+        if (player.getCooldowns().isOnCooldown(boots.getItem())) return;
+
+        int clampedCharge = Math.min(payload.chargeTicks(), JumpyBootsHelper.CHARGE_TICKS_MAX);
+        if (clampedCharge <= 0) return;
+
+        float verticalBoost = JumpyBootsHelper.verticalBoostFor(clampedCharge);
+        Vec3 current = player.getDeltaMovement();
+        double newX = current.x;
+        double newZ = current.z;
+
+        if (payload.sprinting()) {
+            Vec3 look = player.getLookAngle();
+            newX += look.x * JumpyBootsHelper.SPRINT_FORWARD_BOOST;
+            newZ += look.z * JumpyBootsHelper.SPRINT_FORWARD_BOOST;
+        }
+
+        player.setDeltaMovement(newX, verticalBoost, newZ);
+        player.setPos(player.getX(), player.getY() + 0.001, player.getZ());
+        player.hasImpulse = true;
+        player.hurtMarked = true;
+        player.resetFallDistance();
+        player.connection.send(new ClientboundSetEntityMotionPacket(player));
+
+        player.level().playSound(null, player.blockPosition(), SoundEvents.SLIME_JUMP, SoundSource.PLAYERS,
+                1.0F, 0.6F + (clampedCharge / (float) JumpyBootsHelper.CHARGE_TICKS_MAX) * 0.6F);
+
+        JumpyBootsFabricHelper.setProtectionUntil(player,
+                player.level().getGameTime() + JumpyBootsHelper.FALL_PROTECTION_TICKS);
+
+        player.getCooldowns().addCooldown(boots.getItem(), JumpyBootsHelper.COOLDOWN_TICKS);
+    }
+
+    private static void handleDorrieJumpInput(ServerPlayer player, DorrieJumpInputPayload payload) {
+        if (!(player.getVehicle() instanceof DorrieEntity dorrie)) return;
+        dorrie.setPressingJump(payload.pressing());
+    }
+
+    private static void handleDorrieChargeJumpInput(ServerPlayer player, com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload payload) {
+        if (!(player.getVehicle() instanceof DorrieEntity dorrie)) return;
+        if (payload.pressing()) {
+            dorrie.startJumpCharge();
+        } else {
+            dorrie.releaseJump();
+        }
+    }
+
+    private static void handleHerculesBeetleJumpInput(ServerPlayer player, HerculesBeetleJumpInputPayload payload) {
+        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
+            beetle.setRiderJumpPressed(payload.pressing());
+        }
+    }
+
+    private static void handleHerculesBeetleMountedAttack(ServerPlayer player, HerculesBeetleMountedAttackPayload payload) {
+        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
+            beetle.handleMountedRegularAttack(player);
+        }
+    }
+
+    private static void handleHerculesBeetleMountedCharge(ServerPlayer player, HerculesBeetleMountedChargePayload payload) {
+        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
+            beetle.handleMountedCharge(player, payload.chargeTicks());
+        }
+    }
+
+    public static void triggerHerculesBeetleImpactShake(int durationTicks) {
+        HerculesBeetleImpactShakeClientState.trigger(durationTicks);
     }
 }

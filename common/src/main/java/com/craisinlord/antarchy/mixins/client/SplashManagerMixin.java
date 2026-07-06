@@ -13,9 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(SplashManager.class)
-/*
- * Adds Antarchy splash text without replacing vanilla handling.
- */
 public abstract class SplashManagerMixin {
     @Shadow
     @Final
@@ -35,5 +32,6 @@ public abstract class SplashManagerMixin {
         this.splashes.add("Rainbow sugar yummy");
         this.splashes.add("Now with inverted gravity!");
         this.splashes.add("Everything we need is already here");
+        this.splashes.add("Rub some bacon on it!");
     }
 }

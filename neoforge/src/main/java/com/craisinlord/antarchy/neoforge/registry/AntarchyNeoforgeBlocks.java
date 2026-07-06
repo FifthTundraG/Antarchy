@@ -4,11 +4,14 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.block.*;
+import com.craisinlord.antarchy.content.block.CreepingHorrorEggBlock;
+import com.craisinlord.antarchy.content.block.LurkingTerrorEggBlock;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
+import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
 import com.craisinlord.antarchy.neoforge.OuranwoodWoodTypes;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluidType;
 import com.mojang.serialization.MapCodec;
@@ -136,6 +139,12 @@ public final class AntarchyNeoforgeBlocks {
             () -> new Block(AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<Block> CRACKED_SHELLSTONE_BRICKS = BLOCKS.register("cracked_shellstone_bricks",
             () -> new Block(AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<StairBlock> MOSSY_SHELLSTONE_BRICK_STAIRS = BLOCKS.register("mossy_shellstone_brick_stairs",
+            () -> new StairBlock(MOSSY_SHELLSTONE_BRICKS.get().defaultBlockState(), AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<SlabBlock> MOSSY_SHELLSTONE_BRICK_SLAB = BLOCKS.register("mossy_shellstone_brick_slab",
+            () -> new SlabBlock(AntarchyObjects.shellstoneProperties()));
+    public static final DeferredBlock<WallBlock> MOSSY_SHELLSTONE_BRICK_WALL = BLOCKS.register("mossy_shellstone_brick_wall",
+            () -> new WallBlock(AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<StairBlock> SHELLSTONE_STAIRS = BLOCKS.register("shellstone_stairs",
             () -> new StairBlock(SHELLSTONE.get().defaultBlockState(), AntarchyObjects.shellstoneProperties()));
     public static final DeferredBlock<SlabBlock> SHELLSTONE_SLAB = BLOCKS.register("shellstone_slab",
@@ -198,8 +207,12 @@ public final class AntarchyNeoforgeBlocks {
             () -> new WaspNestBlock(AntarchyNeoforgeItems::waspNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.BEE_NEST)));
     public static final DeferredBlock<com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock> OURANWOOD_SQUIRREL_NEST = BLOCKS.register("ouranwood_squirrel_nest",
             () -> new com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COARSE_DIRT).noLootTable()));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock> BRUTALFLY_COCOON_SPAWNER = BLOCKS.register("brutalfly_cocoon_spawner",
+            () -> new com.craisinlord.antarchy.content.block.BrutalflyCocoonSpawnerBlock(BlockBehaviour.Properties.of().noCollission().instabreak().noLootTable()));
     public static final DeferredBlock<HushweedBlock> HUSHWEED = BLOCKS.register("hushweed",
             () -> new HushweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AZALEA).noCollission().noOcclusion()));
+    public static final DeferredBlock<LiquidBlock> BILE_BLOCK = BLOCKS.register("bile",
+            () -> new BileLiquidBlock((FlowingFluid) AntarchyNeoforgeMisc.BILE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 5).noLootTable()));
     public static final DeferredBlock<LiquidBlock> ICHOR_BLOCK = BLOCKS.register("ichor",
             () -> new LiquidBlock((FlowingFluid) AntarchyNeoforgeMisc.ICHOR.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredBlock<LiquidBlock> ANTIWATER_BLOCK = BLOCKS.register("antiwater",

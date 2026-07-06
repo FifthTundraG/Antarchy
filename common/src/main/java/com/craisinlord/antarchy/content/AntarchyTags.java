@@ -30,6 +30,7 @@ public final class AntarchyTags {
         public static final TagKey<Block> MOLEVORE_SEE_THROUGH_BLOCKS = TagKey.create(Registries.BLOCK, id("molevore_see_through_blocks"));
         public static final TagKey<Block> TERMITE_FOODS = TagKey.create(Registries.BLOCK, id("termite_foods"));
         public static final TagKey<Block> UMBRAL_MOSS_REPLACEABLE = TagKey.create(Registries.BLOCK, id("umbral_moss_replaceable"));
+        public static final TagKey<Block> HERCULES_BEETLE_CHARGE_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, id("hercules_beetle_charge_immune_blocks"));
 
         private Blocks() {
         }
@@ -55,6 +56,7 @@ public final class AntarchyTags {
         public static final TagKey<EntityType<?>> PARALYSIS_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, id("paralysis_immune"));
         public static final TagKey<EntityType<?>> HUSHWEED_TARGETS = TagKey.create(Registries.ENTITY_TYPE, id("hushweed_targets"));
         public static final TagKey<EntityType<?>> TRIFFID_PREY = TagKey.create(Registries.ENTITY_TYPE, id("triffid_prey"));
+        public static final TagKey<EntityType<?>> STINKY_REPELLED_HOSTILES = TagKey.create(Registries.ENTITY_TYPE, id("stinky_repelled_hostiles"));
         public static final TagKey<EntityType<?>> SCORPION_WHIP_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, id("scorpion_whip_immune"));
         public static final TagKey<EntityType<?>> SCORPION_WHIP_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, id("scorpion_whip_blacklist"));
 
@@ -75,6 +77,7 @@ public final class AntarchyTags {
         public static final TagKey<Item> DUCT_TAPE_BLACKLIST = TagKey.create(Registries.ITEM, id("duct_tape_blacklist"));
         public static final TagKey<Item> BROWN_ANT_ACTIVATION_ITEMS = TagKey.create(Registries.ITEM, id("brown_ant_activation_items"));
         public static final TagKey<Item> BROWN_ANT_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("brown_ant_breeding_foods"));
+        public static final TagKey<Item> MULTISHOT_ENCHANTABLE = TagKey.create(Registries.ITEM, id("multishot_enchantable"));
         public static final TagKey<Item> RED_ANT_ACTIVATION_ITEMS = TagKey.create(Registries.ITEM, id("red_ant_activation_items"));
         public static final TagKey<Item> RED_ANT_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("red_ant_breeding_foods"));
         public static final TagKey<Item> RAINBOW_ANT_ACTIVATION_ITEMS = TagKey.create(Registries.ITEM, id("rainbow_ant_activation_items"));
@@ -86,6 +89,7 @@ public final class AntarchyTags {
         public static final TagKey<Item> CATERPILLAR_FOODS = TagKey.create(Registries.ITEM, id("caterpillar_foods"));
         public static final TagKey<Item> BUTTERFLY_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("butterfly_breeding_foods"));
         public static final TagKey<Item> REVERIE_DUPLICATION_ITEMS = TagKey.create(Registries.ITEM, id("reverie_duplication_items"));
+        public static final TagKey<Item> HERCULES_BEETLE_FOOD = TagKey.create(Registries.ITEM, id("hercules_beetle_food"));
 
         private Items() {
         }
@@ -94,6 +98,7 @@ public final class AntarchyTags {
     public static final class Biomes {
         public static final TagKey<Biome> MANTIS_SPAWN_BIOMES = TagKey.create(Registries.BIOME, id("mantis_spawn_biomes"));
         public static final TagKey<Biome> MANTIS_OVERWORLD_SPAWN_BIOMES = TagKey.create(Registries.BIOME, id("mantis_overworld_spawn_biomes"));
+        public static final TagKey<Biome> ELYTHIA_FIREFLY_PARTICLE_BIOMES = TagKey.create(Registries.BIOME, id("elythia_firefly_particle_biomes"));
 
         private Biomes() {
         }

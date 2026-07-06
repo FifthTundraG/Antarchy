@@ -2,6 +2,8 @@ package com.craisinlord.antarchy.neoforge.registry;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.entity.*;
+import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
+import com.craisinlord.antarchy.content.entity.LurkingTerrorEntity;
 import com.craisinlord.antarchy.content.entity.basilisk.BasiliskEntity;
 import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
 import com.craisinlord.antarchy.content.entity.cloud_shark.CloudSharkEntity;
@@ -42,11 +44,13 @@ public class AntarchyNeoforgeEntityAttributes {
         event.put(AntarchyNeoforgeEntites.CLOUD_SHARK.get(), CloudSharkEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.KRAKEN.get(), KrakenEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.MISSILE_SQUID.get(), MissileSquidEntity.createAttributes().build());
+        event.put(AntarchyNeoforgeEntites.OCTOPUS_BOMB.get(), OctopusBombEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.NIGHTMARE.get(), NightmareEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.BED_BUG.get(), BedBugEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.WASP.get(), WaspEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.BOMBER.get(), BomberEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.MANTIS.get(), MantisEntity.createAttributes().build());
+        event.put(AntarchyNeoforgeEntites.ALPHA_MANTIS.get(), AlphaMantisEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.TRIFFID.get(), TriffidEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.LUCID.get(), LucidEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.SCORPION.get(), ScorpionEntity.createAttributes().build());
@@ -63,6 +67,7 @@ public class AntarchyNeoforgeEntityAttributes {
         event.put(AntarchyNeoforgeEntites.RAINBOW_ANT.get(), rainbowAntAttributes);
         event.put(AntarchyNeoforgeEntites.MOLEWORM.get(), MolewormEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.MOLEVORE.get(), MolevoreEntity.createAttributes().build());
+        event.put(AntarchyNeoforgeEntites.CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
     }
 
     private static AttributeSupplier.Builder buildAntAttributes(double health, double speed, double attackDamage) {
