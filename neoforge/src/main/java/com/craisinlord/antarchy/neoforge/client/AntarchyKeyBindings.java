@@ -37,6 +37,14 @@ public final class AntarchyKeyBindings {
             CATEGORY
     );
 
+    public static final KeyMapping ROLLY_POLLY_ROLL = new KeyMapping(
+            "key.antarchy.rolly_polly_roll",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_R,
+            CATEGORY
+    );
+
     private AntarchyKeyBindings() {}
 
     @SubscribeEvent
@@ -44,5 +52,6 @@ public final class AntarchyKeyBindings {
         event.register(BRUTALFLY_FLAP);
         event.register(DORRIE_CHARGE_JUMP);
         event.register(HERCULES_BEETLE_CHARGE);
+        event.register(ROLLY_POLLY_ROLL);
     }
 }

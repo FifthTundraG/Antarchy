@@ -106,6 +106,11 @@ public final class AntarchySettings {
     private static double alphaMantisFlyingSpeed = 0.77D;
     private static int alphaMantisSummonIntervalTicks = 300;
     private static int alphaMantisMaxMinions = 4;
+    private static double rollyPollyHealth = 12.0D;
+    private static double rollyPollyMovementSpeed = 0.3D;
+    private static double rollyPollyRollSpeedMultiplier = 2.2D;
+    private static double rollyPollyTumbleDamage = 1.0D;
+    private static int rollyPollyTameChance = 3;
     private static double krakenProjectileDamageTakenMultiplier = 0.5D;
     private static boolean krakenSquidSpawnEnabled = true;
     private static boolean krakenMassSpawnEnabled = true;
@@ -233,23 +238,23 @@ public final class AntarchySettings {
     private static final int     reverieAmbientTargetMaxAgeTicks  = 40;
     private static final int     reverieAmbientPulseIntervalMinTicks = 12;
     private static final int     reverieAmbientPulseIntervalMaxTicks = 19;
-    private static double emperorScorpionHealth = 100.0D;
-    private static double emperorScorpionAttackDamage = 12.0D;
+    private static double emperorScorpionHealth = 400.0D;
+    private static double emperorScorpionAttackDamage = 28.0D;
     private static double emperorScorpionMovementSpeed = 0.32D;
-    private static double emperorScorpionArmor = 6.0D;
-    private static double emperorScorpionKnockbackResistance = 0.6D;
-    private static double emperorScorpionFollowRange = 32.0D;
+    private static double emperorScorpionArmor = 25.0D;
+    private static double emperorScorpionKnockbackResistance = 0.8D;
+    private static double emperorScorpionFollowRange = 40.0D;
     private static int emperorScorpionXpReward = 25;
-    private static int emperorScorpionClawAnimTicks = 12;
-    private static int emperorScorpionClawHitTick = 6;
-    private static int emperorScorpionClawCooldownTicks = 16;
-    private static int emperorScorpionStingAnimTicks = 18;
-    private static int emperorScorpionStingHitTick = 9;
-    private static int emperorScorpionStingCooldownTicks = 42;
-    private static int emperorScorpionPoisonTicks = 100;
-    private static int emperorScorpionWeaknessTicks = 80;
-    private static int emperorScorpionSummonIntervalTicks = 180;
-    private static int emperorScorpionMaxSummonedScorpions = 4;
+    private static int emperorScorpionClawAnimTicks = 23;
+    private static int emperorScorpionClawHitTick = 12;
+    private static int emperorScorpionClawCooldownTicks = 28;
+    private static int emperorScorpionStingAnimTicks = 25;
+    private static int emperorScorpionStingHitTick = 13;
+    private static int emperorScorpionStingCooldownTicks = 60;
+    private static int emperorScorpionPoisonTicks = 300;
+    private static int emperorScorpionWeaknessTicks = 120;
+    private static int emperorScorpionSummonIntervalTicks = 140;
+    private static int emperorScorpionMaxSummonedScorpions = 8;
     private static double scorpionHealth = 30.0D;
     private static double scorpionAttackDamage = 5.0D;
     private static double scorpionMovementSpeed = 0.29D;
@@ -819,6 +824,26 @@ public final class AntarchySettings {
         return alphaMantisMaxMinions;
     }
 
+    public static double rollyPollyHealth() {
+        return rollyPollyHealth;
+    }
+
+    public static double rollyPollyMovementSpeed() {
+        return rollyPollyMovementSpeed;
+    }
+
+    public static double rollyPollyRollSpeedMultiplier() {
+        return rollyPollyRollSpeedMultiplier;
+    }
+
+    public static double rollyPollyTumbleDamage() {
+        return rollyPollyTumbleDamage;
+    }
+
+    public static int rollyPollyTameChance() {
+        return rollyPollyTameChance;
+    }
+
     public static double waspHealth() {
         return waspHealth;
     }
@@ -1245,6 +1270,26 @@ public final class AntarchySettings {
 
     public static void setAlphaMantisMaxMinions(int value) {
         alphaMantisMaxMinions = value;
+    }
+
+    public static void setRollyPollyHealth(double value) {
+        rollyPollyHealth = value;
+    }
+
+    public static void setRollyPollyMovementSpeed(double value) {
+        rollyPollyMovementSpeed = value;
+    }
+
+    public static void setRollyPollyRollSpeedMultiplier(double value) {
+        rollyPollyRollSpeedMultiplier = value;
+    }
+
+    public static void setRollyPollyTumbleDamage(double value) {
+        rollyPollyTumbleDamage = value;
+    }
+
+    public static void setRollyPollyTameChance(int value) {
+        rollyPollyTameChance = value;
     }
 
     public static void setKrakenProjectileDamageTakenMultiplier(double value) {

@@ -116,6 +116,12 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setAlphaMantisSummonIntervalTicks(AntarchyMobsConfig.alphaMantisSummonIntervalTicks());
         AntarchySettings.setAlphaMantisMaxMinions(AntarchyMobsConfig.alphaMantisMaxMinions());
 
+        AntarchySettings.setRollyPollyHealth(AntarchyMobsConfig.rollyPollyHealth());
+        AntarchySettings.setRollyPollyMovementSpeed(AntarchyMobsConfig.rollyPollyMovementSpeed());
+        AntarchySettings.setRollyPollyRollSpeedMultiplier(AntarchyMobsConfig.rollyPollyRollSpeedMultiplier());
+        AntarchySettings.setRollyPollyTumbleDamage(AntarchyMobsConfig.rollyPollyTumbleDamage());
+        AntarchySettings.setRollyPollyTameChance(AntarchyMobsConfig.rollyPollyTameChance());
+
         AntarchySettings.setTriffidHealth(AntarchyMobsConfig.triffidHealth());
         AntarchySettings.setTriffidAttackDamage(AntarchyMobsConfig.triffidAttackDamage());
         AntarchySettings.setTriffidGrabDamage(AntarchyMobsConfig.triffidGrabDamage());

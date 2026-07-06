@@ -90,6 +90,7 @@ public final class AntarchyTags {
         public static final TagKey<Item> BUTTERFLY_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("butterfly_breeding_foods"));
         public static final TagKey<Item> REVERIE_DUPLICATION_ITEMS = TagKey.create(Registries.ITEM, id("reverie_duplication_items"));
         public static final TagKey<Item> HERCULES_BEETLE_FOOD = TagKey.create(Registries.ITEM, id("hercules_beetle_food"));
+        public static final TagKey<Item> ROLLY_POLLY_FOOD = TagKey.create(Registries.ITEM, id("rolly_polly_food"));
 
         private Items() {
         }

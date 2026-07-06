@@ -100,6 +100,15 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.IntValue    ALPHA_MANTIS_MAX_MINIONS;
 
 
+    // Rolly Polly
+
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_HEALTH;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_MOVEMENT_SPEED;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_ROLL_SPEED_MULTIPLIER;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_TUMBLE_DAMAGE;
+    private static final ModConfigSpec.IntValue    ROLLY_POLLY_TAME_CHANCE;
+
+
     // Triffid
 
     private static final ModConfigSpec.DoubleValue TRIFFID_HEALTH;
@@ -390,6 +399,17 @@ public final class AntarchyMobsConfig {
         b.pop();
 
 
+        // Rolly Polly
+
+        b.push("rollyPolly");
+        ROLLY_POLLY_HEALTH                = b.comment("Base max health.")                                                          .defineInRange("health",              12.0D, 1.0D, 32768.0D);
+        ROLLY_POLLY_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                                      .defineInRange("movementSpeed",        0.3D, 0.0D, 10.0D);
+        ROLLY_POLLY_ROLL_SPEED_MULTIPLIER = b.comment("Speed multiplier while rolled up and ridden.")                              .defineInRange("rollSpeedMultiplier",  2.2D, 0.1D, 20.0D);
+        ROLLY_POLLY_TUMBLE_DAMAGE         = b.comment("Damage dealt to a helmetless rider while rolling. 0 disables.")             .defineInRange("tumbleDamage",         1.0D, 0.0D, 1024.0D);
+        ROLLY_POLLY_TAME_CHANCE           = b.comment("Taming succeeds with a 1-in-N chance per food item.")                       .defineInRange("tameChance",               3, 1, 100);
+        b.pop();
+
+
         // Triffid
 
         b.push("triffid");
@@ -617,6 +637,11 @@ public final class AntarchyMobsConfig {
     static double  alphaMantisFlyingSpeed()                 { return ALPHA_MANTIS_FLYING_SPEED.get(); }
     static int     alphaMantisSummonIntervalTicks()         { return ALPHA_MANTIS_SUMMON_INTERVAL_TICKS.get(); }
     static int     alphaMantisMaxMinions()                  { return ALPHA_MANTIS_MAX_MINIONS.get(); }
+    static double  rollyPollyHealth()                       { return ROLLY_POLLY_HEALTH.get(); }
+    static double  rollyPollyMovementSpeed()                { return ROLLY_POLLY_MOVEMENT_SPEED.get(); }
+    static double  rollyPollyRollSpeedMultiplier()          { return ROLLY_POLLY_ROLL_SPEED_MULTIPLIER.get(); }
+    static double  rollyPollyTumbleDamage()                 { return ROLLY_POLLY_TUMBLE_DAMAGE.get(); }
+    static int     rollyPollyTameChance()                   { return ROLLY_POLLY_TAME_CHANCE.get(); }
 
     static double  triffidHealth()                          { return TRIFFID_HEALTH.get(); }
     static double  triffidAttackDamage()                    { return TRIFFID_ATTACK_DAMAGE.get(); }

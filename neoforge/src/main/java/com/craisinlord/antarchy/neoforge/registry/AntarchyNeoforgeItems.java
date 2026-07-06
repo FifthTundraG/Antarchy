@@ -515,6 +515,8 @@ public final class AntarchyNeoforgeItems {
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.MANTIS, 0xF8F8F2, 0x63B44A, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> ALPHA_MANTIS_SPAWN_EGG = ITEMS.register("alpha_mantis_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.ALPHA_MANTIS, 0x8FDD6C, 0x2F5D22, new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<DeferredSpawnEggItem> ROLLY_POLLY_SPAWN_EGG = ITEMS.register("rolly_polly_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.ROLLY_POLLY, 0x7284A3, 0xBCC8DB, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> MOLEVORE_SPAWN_EGG = ITEMS.register("molevore_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.MOLEVORE, 0x4A4A4A, 0x6B4A2B, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<DeferredSpawnEggItem> TRIFFID_SPAWN_EGG = ITEMS.register("triffid_spawn_egg",
@@ -556,7 +558,7 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<DeferredSpawnEggItem> BASILISK_SPAWN_EGG = ITEMS.register("basilisk_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.BASILISK, 0x4A7C40, 0xD4A040, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> EMPEROR_SCORPION_SPAWN_EGG = ITEMS.register("emperor_scorpion_spawn_egg",
-            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.EMPEROR_SCORPION, 0x1A1A0A, 0x8B2200, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.EMPEROR_SCORPION, 0x3A3242, 0xD8CDB4, new Item.Properties()));
     public static final DeferredItem<LucidEyeItem> LUCID_EYE = ITEMS.register("lucid_eye",
             () -> new LucidEyeItem(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<LucidPearlItem> LUCID_PEARL = ITEMS.register("lucid_pearl",
