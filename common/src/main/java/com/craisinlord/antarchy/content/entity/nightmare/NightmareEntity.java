@@ -76,15 +76,11 @@ public class NightmareEntity extends Monster implements GeoEntity {
     private static final int ANIM_ATTACK = 3;
     private static final int ANIM_FLY_ATTACK = 4;
     private static final int ANIM_ROAR = 5;
-    private static final int ANIM_DEATH = 6;
-    private static final int ANIM_TAKEOFF = 7;
-    private static final int ANIM_FLY_DAMAGED = 8;
-
-    private static final int ATTACK_TOTAL_TICKS = 18;
-    private static final int ATTACK_DAMAGE_TICK = 9;
-    private static final int INTRO_ROAR_TICKS = 32;
-    private static final int COMBAT_ROAR_TICKS = 24;
-    private static final int DEATH_TICKS = 36;
+    private static final int ATTACK_TOTAL_TICKS = 20;
+    private static final int ATTACK_DAMAGE_TICK = 10;
+    private static final int INTRO_ROAR_TICKS = 30;
+    private static final int COMBAT_ROAR_TICKS = 30;
+    private static final int DEATH_TICKS = 30;
     private static final int TARGET_RESET_TICKS = 60;
     private static final int DREAD_TICKS = 160;
     private static final int WEAKNESS_TICKS = 100;
@@ -101,15 +97,12 @@ public class NightmareEntity extends Monster implements GeoEntity {
     private static final double FLIGHT_DISENGAGE_RANGE_SQR = 36.0D;
     private static final double ROAR_RETRY_DISTANCE_SQR = 400.0D;
 
-    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("Idle");
+    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation TAKEOFF_ANIM = RawAnimation.begin().thenPlay("animation").thenLoop("fly");
     private static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("fly");
-    private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("attack").thenLoop("Idle");
-    private static final RawAnimation FLY_ATTACK_ANIM = RawAnimation.begin().thenPlay("fly_attack").thenLoop("fly");
-    private static final RawAnimation ROAR_ANIM = RawAnimation.begin().thenPlay("roar").thenLoop("Idle");
-    private static final RawAnimation DEATH_ANIM = RawAnimation.begin().thenPlayAndHold("death");
-
+    private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("attack").thenLoop("idle");
+    private static final RawAnimation FLY_ATTACK_ANIM = RawAnimation.begin().thenPlay("attack2").thenLoop("fly");
+    private static final RawAnimation ROAR_ANIM = RawAnimation.begin().thenPlay("roar").thenLoop("idle");
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private int attackCooldown;
@@ -179,18 +172,14 @@ public class NightmareEntity extends Monster implements GeoEntity {
         int animState = this.getAnimationState();
         state.getController().setAnimationSpeed(switch (animState) {
             case ANIM_FLY -> 0.45D;
-            case ANIM_DEATH -> 0.6D;
             default -> 1.0D;
         });
         return switch (animState) {
             case ANIM_WALK -> state.setAndContinue(WALK_ANIM);
-            case ANIM_TAKEOFF -> state.setAndContinue(TAKEOFF_ANIM);
             case ANIM_FLY -> state.setAndContinue(FLY_ANIM);
-//            case ANIM_FLY_DAMAGED -> state.setAndContinue(FLY_ANIM);
             case ANIM_ATTACK -> state.setAndContinue(ATTACK_ANIM);
             case ANIM_FLY_ATTACK -> state.setAndContinue(FLY_ATTACK_ANIM);
             case ANIM_ROAR -> state.setAndContinue(ROAR_ANIM);
-            case ANIM_DEATH -> state.setAndContinue(DEATH_ANIM);
             default -> state.setAndContinue(IDLE_ANIM);
         };
     }
@@ -257,7 +246,6 @@ public class NightmareEntity extends Monster implements GeoEntity {
         }
 
         if (this.isDeadOrDying()) {
-            this.setAnimationState(ANIM_DEATH);
             this.updateFlightRotation();
             return;
         }
@@ -375,7 +363,6 @@ public class NightmareEntity extends Monster implements GeoEntity {
     @Override
     public void die(DamageSource damageSource) {
         if (!this.level().isClientSide) {
-            this.setAnimationState(ANIM_DEATH);
             this.attackAnimationTicks = 0;
             this.attackCooldown = 0;
             this.roarTicks = 0;
@@ -389,9 +376,6 @@ public class NightmareEntity extends Monster implements GeoEntity {
     @Override
     protected void tickDeath() {
         this.deathTime++;
-        if (this.deathTime == 1) {
-            this.setAnimationState(ANIM_DEATH);
-        }
         if (this.deathTime >= DEATH_TICKS) {
             this.remove(RemovalReason.KILLED);
             this.dropExperience(this);
@@ -649,7 +633,6 @@ public class NightmareEntity extends Monster implements GeoEntity {
 
     private void updateAnimationState() {
         if (this.isDeadOrDying()) {
-            this.setAnimationState(ANIM_DEATH);
             this.groundMoveTicks = 0;
             this.wingFlapCooldown = 0;
             return;
@@ -669,7 +652,7 @@ public class NightmareEntity extends Monster implements GeoEntity {
         if (this.flyingToTarget) {
             this.groundMoveTicks = 0;
             if (this.onGround() || this.airborneTicks <= 8) {
-                this.setAnimationState(ANIM_TAKEOFF);
+                this.setAnimationState(ANIM_FLY);
                 this.wingFlapCooldown = 0;
             } else {
                 this.setAnimationState(ANIM_FLY);
