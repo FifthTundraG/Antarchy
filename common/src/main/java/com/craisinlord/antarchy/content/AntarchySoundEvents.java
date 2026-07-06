@@ -126,6 +126,9 @@ public final class AntarchySoundEvents {
     public static Supplier<SoundEvent> TORETERROR_HURT = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> TORETERROR_DEATH = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> TORETERROR_BOMBER_FIRE = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> TORETERROR_SPIN = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> TORETERROR_RICOCHET = (Supplier<SoundEvent>) UNBOUND;
+    public static Supplier<SoundEvent> WATER_CANNON_FIRE = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> TORETERROR_JUMP_UP = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> TORETERROR_JUMP_LAND = (Supplier<SoundEvent>) UNBOUND;
     public static Supplier<SoundEvent> STINKY_FLY = (Supplier<SoundEvent>) UNBOUND;
@@ -259,6 +262,9 @@ public final class AntarchySoundEvents {
             Supplier<SoundEvent> toreterrorHurt,
             Supplier<SoundEvent> toreterrorDeath,
             Supplier<SoundEvent> toreterrorBomberFire,
+            Supplier<SoundEvent> toreterrorSpin,
+            Supplier<SoundEvent> toreterrorRicochet,
+            Supplier<SoundEvent> waterCannonFire,
             Supplier<SoundEvent> toreterrorJumpUp,
             Supplier<SoundEvent> toreterrorJumpLand,
             Supplier<SoundEvent> stinkyFly,
@@ -388,6 +394,9 @@ public final class AntarchySoundEvents {
         TORETERROR_HURT = toreterrorHurt;
         TORETERROR_DEATH = toreterrorDeath;
         TORETERROR_BOMBER_FIRE = toreterrorBomberFire;
+        TORETERROR_SPIN = toreterrorSpin;
+        TORETERROR_RICOCHET = toreterrorRicochet;
+        WATER_CANNON_FIRE = waterCannonFire;
         TORETERROR_JUMP_UP = toreterrorJumpUp;
         TORETERROR_JUMP_LAND = toreterrorJumpLand;
         STINKY_FLY = stinkyFly;
