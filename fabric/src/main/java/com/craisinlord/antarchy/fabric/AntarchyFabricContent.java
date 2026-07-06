@@ -401,6 +401,8 @@ public final class AntarchyFabricContent {
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_HURT = registerSoundEvent("toreterror_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_DEATH = registerSoundEvent("toreterror_death");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_BOMBER_FIRE = registerSoundEvent("toreterror_bomber_fire");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_UP = registerSoundEvent("toreterror_jump_up");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_LAND = registerSoundEvent("toreterror_jump_land");
     public static final DeferredHolder<SoundEvent, SoundEvent> STINKY_FLY_SOUND = registerSoundEvent("stinky_fly");
     public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_GROWL = registerSoundEvent("creeping_horror_growl");
     public static final DeferredHolder<SoundEvent, SoundEvent> CREEPING_HORROR_HURT = registerSoundEvent("creeping_horror_hurt");
@@ -2499,6 +2501,8 @@ public final class AntarchyFabricContent {
                 TORETERROR_HURT,
                 TORETERROR_DEATH,
                 TORETERROR_BOMBER_FIRE,
+                TORETERROR_JUMP_UP,
+                TORETERROR_JUMP_LAND,
                 STINKY_FLY_SOUND,
                 CREEPING_HORROR_GROWL,
                 CREEPING_HORROR_HURT,
