@@ -122,6 +122,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
     private int shootCooldown;
     private int jumpCooldown;
     private int spinCooldown;
+    private int spinRicochetCooldown;
     private boolean jumpLaunched;
     private boolean jumpAirborne;
     private boolean shockwaveApplied;
@@ -227,6 +228,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         if (this.shootCooldown > 0) this.shootCooldown--;
         if (this.jumpCooldown > 0) this.jumpCooldown--;
         if (this.spinCooldown > 0) this.spinCooldown--;
+        if (this.spinRicochetCooldown > 0) this.spinRicochetCooldown--;
         if (this.jumpShakeTicks > 0) {
             this.jumpShakeTicks--;
             if (this.jumpShakeTicks <= 0) {
@@ -575,6 +577,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             return true;
         }
 
+        this.playSpinRicochetSound();
         this.spinStrafeSign *= -1;
         Vec3 bounced = rotateHorizontal(direction, this.spinStrafeSign * 35.0D);
         if (this.trySpinMoves(bounced, true)) {
@@ -588,6 +591,14 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
 
         Vec3 reversedBounce = rotateHorizontal(reversed, this.spinStrafeSign * 25.0D);
         return this.trySpinMoves(reversedBounce, true);
+    }
+
+    private void playSpinRicochetSound() {
+        if (this.spinRicochetCooldown > 0) {
+            return;
+        }
+        this.spinRicochetCooldown = 6;
+        this.playSound(AntarchySoundEvents.TORETERROR_RICOCHET.get(), 1.0F, 0.95F + this.random.nextFloat() * 0.1F);
     }
 
     private boolean trySpinMoves(Vec3 baseDirection, boolean bounced) {
@@ -715,7 +726,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
         LivingEntity target = this.getTarget();
         if (target == null) return;
-        this.playSound(AntarchySoundEvents.SQUIDZOOKA_FIRE.get(), 0.8F, 0.9F + this.random.nextFloat() * 0.2F);
+        this.playSound(AntarchySoundEvents.WATER_CANNON_FIRE.get(), 0.8F, 0.9F + this.random.nextFloat() * 0.2F);
         Vec3 from = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 to = new Vec3(target.getX(), target.getEyeY(), target.getZ());
         Vec3 baseVel = calcLaunchVelocity(from, to, 1.5);
@@ -917,6 +928,7 @@ public class ToreterrorEntity extends Monster implements GeoEntity {
             ToreterrorEntity.this.spinDirection = target == null
                     ? Vec3.ZERO
                     : ToreterrorEntity.this.horizontalDirectionTo(target.position());
+            ToreterrorEntity.this.playSound(AntarchySoundEvents.TORETERROR_SPIN.get(), 1.1F, 0.95F + ToreterrorEntity.this.random.nextFloat() * 0.1F);
         }
 
         @Override

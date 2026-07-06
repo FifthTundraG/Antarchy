@@ -34,7 +34,6 @@ dependencies {
 //    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
 
-    annotationProcessor "org.spongepowered:mixin:0.8.7:processor"
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${rootProject.mixin_extras}"))
 }
 
@@ -42,10 +41,13 @@ architectury {
     common("fabric", "neoforge")
 }
 
+// No mixin AP / refmap in common: the fabric project compiles common's sources itself
+// and generates its own refmap. With the legacy AP enabled here, loom injects a
+// "refmap" line into the built antarchy-common.mixins.json, which breaks NeoForge
+// (it resolves to fabric-only intermediary names like field_6353).
 loom {
     mixin {
-        useLegacyMixinAp = true
-        defaultRefmapName = "antarchy.refmap.json"
+        useLegacyMixinAp = false
     }
 }
 
