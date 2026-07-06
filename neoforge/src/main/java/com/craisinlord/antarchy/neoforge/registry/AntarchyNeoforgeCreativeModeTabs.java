@@ -60,6 +60,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.TERMITE_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.MOLEWORM_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.MANTIS_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.ALPHA_MANTIS_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.MOLEVORE_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.TRIFFID_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.APPLE_COW_SPAWN_EGG.get());
