@@ -79,6 +79,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.MOLEWORM.get(), MolewormRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MANTIS.get(), MantisRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.ALPHA_MANTIS.get(), AlphaMantisRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.ROLLY_POLLY.get(), RollyPollyRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MOLEVORE.get(), MolevoreRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.TRIFFID.get(), TriffidRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.OURANWOOD_BOAT_ENTITY.get(), context -> new OuranwoodBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/boat/ouranwood.png"), false));
@@ -333,6 +334,7 @@ public final class AntarchyFabricClientBootstrap {
             ScorpionWhipTetherRenderHandler.tick();
             DorrieJumpClientHandler.tick();
             HerculesBeetleClientHandler.tick();
+            RollyPollyClientHandler.tick();
         });
 
         BigBerthaClientHandler.register();
