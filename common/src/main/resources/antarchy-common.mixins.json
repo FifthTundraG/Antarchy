@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AccessorRangedAttribute",
+    "BoneMealItemVeryTallGrassMixin",
     "BlockEntityTypeSignMixin",
     "BloodglassMixin",
     "DreamFireBlockMixin",
@@ -48,10 +49,12 @@
     "multipart.EntityMultipartLifecycleMixin"
   ],
   "client": [
+    "client.BlockRenderDispatcherBigBushMixin",
     "client.CavarynSkyMixin",
     "client.ElythiaSkyMixin",
     "client.ElytraModelAccessor",
     "client.LightningBoltRendererMixin",
+    "client.LivingEntityRendererBigBushMixin",
     "client.MountedVehicleCameraMixin",
     "client.ParalyzedMouseTurnMixin",
     "client.ScreenEffectRendererFireVisualMixin",

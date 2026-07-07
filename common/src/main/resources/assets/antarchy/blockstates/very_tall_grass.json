@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "part=lower": { "model": "antarchy:block/very_tall_grass_bottom" },
+    "part=middle": { "model": "antarchy:block/very_tall_grass_middle" },
+    "part=upper": { "model": "antarchy:block/very_tall_grass_top" }
+  }
+}

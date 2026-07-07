@@ -161,6 +161,10 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ORANGE_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.ORANGE_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> PINK_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PINK_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TORCHFLOWER_BUSH_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.TORCHFLOWER_BUSH);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_SHORT_GRASS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.VERY_SHORT_GRASS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_TALL_GRASS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.VERY_TALL_GRASS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BIG_BUSH_ITEM = ITEMS.register("big_bush",
+            () -> new com.craisinlord.antarchy.content.item.BigBushBlockItem(AntarchyNeoforgeBlocks.BIG_BUSH.get(), new Item.Properties()));
     public static final DeferredItem<net.minecraft.world.item.SignItem> OURANWOOD_SIGN_ITEM = ITEMS.register("ouranwood_sign",
             () -> new net.minecraft.world.item.SignItem(new Item.Properties().stacksTo(16), AntarchyNeoforgeBlocks.OURANWOOD_SIGN.get(), AntarchyNeoforgeBlocks.OURANWOOD_WALL_SIGN.get()));
     public static final DeferredItem<net.minecraft.world.item.HangingSignItem> OURANWOOD_HANGING_SIGN_ITEM = ITEMS.register("ouranwood_hanging_sign",

@@ -132,7 +132,22 @@ public final class AntarchyFabricClientBootstrap {
                 AntarchyFabricContent.OURANWOOD_LEAVES.get()
         );
         ColorProviderRegistry.BLOCK.register((state, level, pos, tintIndex) -> 0xFF4A0000, AntarchyFabricContent.ANTIWATER_BLOCK.get());
+        ColorProviderRegistry.BLOCK.register(
+                (state, level, pos, tintIndex) -> level != null && pos != null
+                        ? BiomeColors.getAverageGrassColor(level, pos)
+                        : net.minecraft.world.level.GrassColor.getDefaultColor(),
+                AntarchyFabricContent.BIG_BUSH.get(),
+                AntarchyFabricContent.BIG_BUSH_PART.get(),
+                AntarchyFabricContent.VERY_SHORT_GRASS.get(),
+                AntarchyFabricContent.VERY_TALL_GRASS.get()
+        );
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> FoliageColor.getDefaultColor(), AntarchyFabricContent.OURANWOOD_LEAVES_ITEM.get());
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor(),
+                AntarchyFabricContent.BIG_BUSH_ITEM.get(),
+                AntarchyFabricContent.VERY_SHORT_GRASS_ITEM.get(),
+                AntarchyFabricContent.VERY_TALL_GRASS_ITEM.get()
+        );
     }
 
     private static void registerFluids() {
@@ -212,6 +227,10 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ORANGE_MILKWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PINK_MILKWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TORCHFLOWER_BUSH.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.BIG_BUSH.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.BIG_BUSH_PART.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.VERY_SHORT_GRASS.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.VERY_TALL_GRASS.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.HUSHWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CORNEA_STALK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.FALLEN_KING_CROWN_BLOCK.get(), RenderType.cutout());
@@ -345,6 +364,7 @@ public final class AntarchyFabricClientBootstrap {
         MogglesClientRenderer.register();
         StinkySoundHandler.register();
         ReverieTrailHandler.register();
+        ClientTickEvents.END_CLIENT_TICK.register(com.craisinlord.antarchy.content.client.BigBushCameraHider::update);
 
         HudRenderCallback.EVENT.register((guiGraphics, partialTick) -> {
             DreadHudRenderer.render(guiGraphics);
