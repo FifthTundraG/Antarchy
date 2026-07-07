@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "cap=false": { "model": "antarchy:block/big_bush_part" },
+    "cap=true": { "model": "antarchy:block/big_bush_stage3_top" }
+  }
+}
