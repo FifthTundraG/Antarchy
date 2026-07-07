@@ -36,8 +36,8 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         RandomSource random = context.random();
         BlockPos origin = context.origin();
         int attempts = switch (this.variant) {
-            case FOREST -> 240;
-            case MEADOW -> 110;
+            case FOREST -> 185;
+            case MEADOW -> 95;
             case TORCHFLOWER_FIELDS -> 60;
             case BUTTERFLY_FIELDS -> 150;
             case FLOWER_FOREST_MILKWEED -> 14;
@@ -171,33 +171,30 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
 
         float roll = random.nextFloat();
         if (this.variant == Variant.MEADOW) {
-            if (roll < 0.40F) {
+            if (roll < 0.34F) {
                 return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
             }
-            if (roll < 0.80F) {
+            if (roll < 0.78F) {
                 return placeSingle(level, plantPos, veryShortGrass());
             }
-            if (roll < 0.88F) {
-                return placeVeryTall(level, plantPos, veryTallGrass());
-            }
-            if (roll < 0.98F) {
+            if (roll < 0.81F) {
                 return placeDouble(level, plantPos, Blocks.TALL_GRASS.defaultBlockState());
             }
-            return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
-        }
-        if (roll < 0.24F) {
-            return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
-        }
-        if (roll < 0.60F) {
             return placeSingle(level, plantPos, veryShortGrass());
         }
-        if (roll < 0.74F) {
+        if (roll < 0.14F) {
+            return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
+        }
+        if (roll < 0.52F) {
+            return placeSingle(level, plantPos, veryShortGrass());
+        }
+        if (roll < 0.72F) {
             return placeSingle(level, plantPos, Blocks.FERN);
         }
-        if (roll < 0.84F) {
+        if (roll < 0.80F) {
             return placeDouble(level, plantPos, Blocks.TALL_GRASS.defaultBlockState());
         }
-        if (roll < 0.96F) {
+        if (roll < 0.84F) {
             return placeVeryTall(level, plantPos, veryTallGrass());
         }
         return placeDouble(level, plantPos, Blocks.LARGE_FERN.defaultBlockState());
@@ -220,7 +217,7 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         boolean placed = false;
-        int bushAttempts = 10 + random.nextInt(6);
+        int bushAttempts = 12 + random.nextInt(7);
         for (int i = 0; i < bushAttempts; i++) {
             int x = origin.getX() + random.nextInt(radius * 2 + 1) - radius;
             int z = origin.getZ() + random.nextInt(radius * 2 + 1) - radius;

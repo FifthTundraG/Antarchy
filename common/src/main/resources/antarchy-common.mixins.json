@@ -53,6 +53,7 @@
     "client.CavarynSkyMixin",
     "client.ElythiaSkyMixin",
     "client.ElytraModelAccessor",
+    "client.GameRendererSwingThroughGrassMixin",
     "client.LightningBoltRendererMixin",
     "client.LivingEntityRendererBigBushMixin",
     "client.MountedVehicleCameraMixin",

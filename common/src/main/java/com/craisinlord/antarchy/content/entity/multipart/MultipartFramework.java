@@ -7,6 +7,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public final class MultipartFramework {
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MultipartFramework.class);
+    private static boolean warnedMissingFactory;
+
     public interface PartFactory {
         Entity create(MultipartEntityOwner owner, int partIndex, MultipartPartDefinition spec);
     }
@@ -43,6 +46,15 @@ public final class MultipartFramework {
     }
 
     public static Entity[] createMultipartParts(MultipartEntityOwner owner) {
+        if (partFactory == null) {
+            if (!warnedMissingFactory) {
+                warnedMissingFactory = true;
+                LOGGER.warn("Multipart part factory has not been bootstrapped on this platform; "
+                        + "multipart entities will fall back to their base hitbox only");
+            }
+            return new Entity[0];
+        }
+
         MultipartLayout layout = owner.antarchy$getMultipartLayout();
         MultipartPartDefinition[] parts = layout.parts();
         Entity[] created = new Entity[parts.length];

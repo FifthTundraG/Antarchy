@@ -40,6 +40,7 @@ public final class AntarchyMiscConfig {
     private static final ModConfigSpec.BooleanValue DUPLICATOR_TREE_ENABLED;
     private static final ModConfigSpec.BooleanValue GLOWING_TORCHFLOWERS;
     private static final ModConfigSpec.BooleanValue GLOW_VINES_UNDER_LEAVES;
+    private static final ModConfigSpec.BooleanValue SWING_THROUGH_GRASS_ENABLED;
     private static final ModConfigSpec.BooleanValue ENTITY_SPECIFIC_FIRE_OVERLAY_ENABLED;
 
     static {
@@ -120,6 +121,7 @@ public final class AntarchyMiscConfig {
         DUPLICATOR_TREE_ENABLED              = b.comment("If false, duplicator trees do not generate and duplicator saplings produce nothing.").define("duplicatorTreeEnabled",           true);
         GLOWING_TORCHFLOWERS                 = b.comment("Whether fully-grown torchflower blocks emit light.")                                  .define("glowingTorchflowers",              true);
         GLOW_VINES_UNDER_LEAVES              = b.comment("Whether glow vines can be placed and survive when attached under leaf blocks.")       .define("glowVinesUnderLeaves",             true);
+        SWING_THROUGH_GRASS_ENABLED          = b.comment("If true, empty collision plants like grass do not block melee target picking.")      .define("swingThroughGrassEnabled",         true);
         ENTITY_SPECIFIC_FIRE_OVERLAY_ENABLED = b.comment("If true, burning entities use soul fire / dream fire overlays where appropriate.")   .define("entitySpecificFireOverlayEnabled", true);
         b.pop();
 
@@ -141,6 +143,7 @@ public final class AntarchyMiscConfig {
     static boolean duplicatorTreeEnabled()               { return DUPLICATOR_TREE_ENABLED.get(); }
     static boolean glowingTorchflowers()                 { return GLOWING_TORCHFLOWERS.get(); }
     static boolean glowVinesUnderLeaves()                { return GLOW_VINES_UNDER_LEAVES.get(); }
+    static boolean swingThroughGrassEnabled()            { return SWING_THROUGH_GRASS_ENABLED.get(); }
     static boolean entitySpecificFireOverlayEnabled()    { return ENTITY_SPECIFIC_FIRE_OVERLAY_ENABLED.get(); }
 
     static double  hushweedSporeLifetimeSeconds()        { return HUSHWEED_SPORE_LIFETIME_SECONDS.get(); }

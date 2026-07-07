@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * Invisible filler block for the grown {@link BigBushBlock} footprint. Breaking a
  * part destroys the whole bush (drops come from the origin's loot table). The one
  * part directly two above the origin of a stage-3 bush renders the top slice of
- * the oversized cross model (CAP=true).
+ * the oversized cross model
  */
 public class BigBushPartBlock extends Block {
     public static final MapCodec<BigBushPartBlock> CODEC = Block.simpleCodec(BigBushPartBlock::new);
@@ -113,8 +113,6 @@ public class BigBushPartBlock extends Block {
             level.removeBlock(pos, false);
             return;
         }
-        // Grown bushes need sturdy support under the whole footprint; break with
-        // drops if any of it is gone (mirrors plants popping when their dirt breaks).
         BlockState originState = level.getBlockState(origin);
         if (!originState.canSurvive(level, origin)) {
             level.destroyBlock(origin, true);

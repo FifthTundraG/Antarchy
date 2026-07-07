@@ -5,22 +5,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_sword",
-          "weight": 18,
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 5.0,
-                "max": 18.0
-              },
-              "options": "#minecraft:on_random_loot"
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:bow",
           "weight": 16,
           "functions": [
@@ -34,32 +18,6 @@
               "options": "#minecraft:on_random_loot"
             }
           ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:crossbow",
-          "weight": 15,
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 6.0,
-                "max": 20.0
-              },
-              "options": "#minecraft:on_random_loot"
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "antarchy:battle_axe",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
-          "name": "antarchy:scorpion_whip",
-          "weight": 8
         },
         {
           "type": "minecraft:item",
@@ -143,21 +101,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:amethyst_shard",
-          "weight": 8,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2.0,
-                "max": 6.0
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:experience_bottle",
           "weight": 6,
           "functions": [
@@ -180,7 +123,7 @@
               "function": "minecraft:set_components",
               "components": {
                 "minecraft:potion_contents": {
-                  "potion": "minecraft:swiftness"
+                  "potion": "antarchy:shrinking"
                 }
               }
             }
@@ -210,7 +153,7 @@
               "function": "minecraft:set_components",
               "components": {
                 "minecraft:potion_contents": {
-                  "potion": "minecraft:regeneration"
+                  "potion": "antarchy:inverted"
                 }
               }
             }
@@ -240,6 +183,36 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "antarchy:uranium_nugget",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "antarchy:titanium_nugget",
           "weight": 3,
           "functions": [
             {

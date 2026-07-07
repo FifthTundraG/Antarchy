@@ -390,9 +390,9 @@ public final class AntarchyMobsConfig {
         // Alpha Mantis
 
         b.push("alphaMantis");
-        ALPHA_MANTIS_HEALTH                = b.comment("Base max health.")                                              .defineInRange("health",             500.0D, 1.0D, 32768.0D);
+        ALPHA_MANTIS_HEALTH                = b.comment("Base max health.")                                              .defineInRange("health",             250.0D, 1.0D, 32768.0D);
         ALPHA_MANTIS_ATTACK_DAMAGE         = b.comment("Base attack damage.")                                           .defineInRange("attackDamage",        18.0D, 0.0D, 1024.0D);
-        ALPHA_MANTIS_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                          .defineInRange("movementSpeed",       0.42D, 0.0D, 10.0D);
+        ALPHA_MANTIS_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                          .defineInRange("movementSpeed",       0.546D, 0.0D, 10.0D);
         ALPHA_MANTIS_FLYING_SPEED          = b.comment("Base flying speed.")                                            .defineInRange("flyingSpeed",         0.77D, 0.0D, 10.0D);
         ALPHA_MANTIS_SUMMON_INTERVAL_TICKS = b.comment("Ticks between mantis minion summons while in combat.")          .defineInRange("summonIntervalTicks",   300, 20, 72000);
         ALPHA_MANTIS_MAX_MINIONS           = b.comment("Maximum summoned mantises alive near the alpha at once.")       .defineInRange("maxMinions",              4, 0, 32);

@@ -174,6 +174,7 @@ public final class AntarchyConfigModuleFabric {
                     || name.equals("duplicatorTreeEnabled")
                     || name.equals("glowingTorchflowers")
                     || name.equals("glowVinesUnderLeaves")
+                    || name.equals("swingThroughGrassEnabled")
                     || name.equals("entitySpecificFireOverlayEnabled")
                     || name.equals("dreamSandEnabled")
                     || name.startsWith("dreamSand")

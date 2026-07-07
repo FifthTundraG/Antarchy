@@ -1115,8 +1115,11 @@ public final class AntarchyNeoForgeEvents {
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.UMBRAL_MOSS_CARPET.get().asItem(), 0.3f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.AMBER_MOSS_BLOCK.get().asItem(), 0.65f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.AMBER_MOSS_CARPET.get().asItem(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.BIG_BUSH.get().asItem(), 0.65f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.CREEPVINE.get().asItem(), 0.3f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.HUSHWEED.get().asItem(), 0.65f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.VERY_SHORT_GRASS.get().asItem(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.VERY_TALL_GRASS.get().asItem(), 0.5f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.CORNEA_EAR.get(), 0.65f);
         });
     }

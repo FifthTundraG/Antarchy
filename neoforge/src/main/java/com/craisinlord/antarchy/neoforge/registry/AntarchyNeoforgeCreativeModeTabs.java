@@ -98,6 +98,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.TORCHFLOWER_BUSH_ITEM.get());
             event.accept(AntarchyNeoforgeItems.BIG_BUSH_ITEM.get());
             event.accept(AntarchyNeoforgeItems.VERY_SHORT_GRASS_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.VERY_TALL_GRASS_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.AMBER_LICHEN_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CREEPVINE_ITEM.get());
