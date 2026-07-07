@@ -64,9 +64,9 @@ public class MantisEntity extends Monster implements GeoEntity {
             net.minecraft.network.syncher.SynchedEntityData.defineId(MantisEntity.class, net.minecraft.network.syncher.EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-    private int attackAnimationTicks;
-    private int flyBurstTicks;
-    private int flyCooldownTicks;
+    protected int attackAnimationTicks;
+    protected int flyBurstTicks;
+    protected int flyCooldownTicks;
     private int debugLogTicks = 0;
 
     public MantisEntity(EntityType<? extends MantisEntity> entityType, Level level) {
@@ -147,13 +147,21 @@ public class MantisEntity extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, COMBAT_SPEED, true));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, WANDER_SPEED));
+        this.goalSelector.addGoal(2, this.createCombatGoal());
+        this.goalSelector.addGoal(3, this.createIdleStrollGoal());
 
         HurtByTargetGoal hurtByTargetGoal = new HurtByTargetGoal(this);
         this.targetSelector.addGoal(1, hurtByTargetGoal);
         // randomInterval lowered from default 10 to 5 for faster re-acquisition
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 5, true, false, null));
+    }
+
+    protected MeleeAttackGoal createCombatGoal() {
+        return new MeleeAttackGoal(this, this.getCombatSpeed(), true);
+    }
+
+    protected WaterAvoidingRandomStrollGoal createIdleStrollGoal() {
+        return new WaterAvoidingRandomStrollGoal(this, WANDER_SPEED);
     }
 
     @Override
@@ -206,8 +214,9 @@ public class MantisEntity extends Monster implements GeoEntity {
 
             LivingEntity target = this.getTarget();
             if (target != null && target.isAlive()) {
+                this.onActiveTarget(target);
                 this.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            } else if (this.flyBurstTicks <= 0 && this.flyCooldownTicks <= 0 && this.onGround() && this.random.nextInt(180) == 0) {
+            } else if (this.shouldStartFlightBurst()) {
                 this.startFlightBurst();
             }
 
@@ -262,6 +271,26 @@ public class MantisEntity extends Monster implements GeoEntity {
             this.setYRot(yBodyRot);
         }
         super.setYBodyRot(yBodyRot);
+    }
+
+    protected double getCombatSpeed() {
+        return COMBAT_SPEED;
+    }
+
+    protected void onActiveTarget(LivingEntity target) {
+    }
+
+    protected boolean shouldStartFlightBurst() {
+        return this.flyBurstTicks <= 0
+                && this.flyCooldownTicks <= 0
+                && this.onGround()
+                && this.random.nextInt(180) == 0;
+    }
+
+    protected void stopFlightBurst() {
+        this.flyBurstTicks = 0;
+        this.flyCooldownTicks = 0;
+        this.setNoGravity(false);
     }
 
     private void startFlightBurst() {

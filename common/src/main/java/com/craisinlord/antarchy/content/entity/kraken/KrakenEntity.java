@@ -6,6 +6,8 @@ import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.damage.AntarchyDamageSources;
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
 import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
+import com.craisinlord.antarchy.content.entity.multipart.MultipartEntityOwner;
+import com.craisinlord.antarchy.content.entity.multipart.MultipartLayout;
 import com.craisinlord.antarchy.content.damage.AntarchyDamageTypes;
 
 import java.util.List;
@@ -60,7 +62,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.keyframe.event.builtin.AutoPlayingSoundKeyframeHandler;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class KrakenEntity extends Monster implements GeoEntity {
+public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityOwner {
     private static final EntityDataAccessor<Integer> ATTACK_STATE = SynchedEntityData.defineId(KrakenEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ROARING = SynchedEntityData.defineId(KrakenEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> PHASE_TWO = SynchedEntityData.defineId(KrakenEntity.class, EntityDataSerializers.BOOLEAN);
@@ -127,6 +129,9 @@ public class KrakenEntity extends Monster implements GeoEntity {
     private float orbitDirection = 1.0F;
     private boolean stormActive;
 
+    @Nullable
+    private Entity[] multipartParts;
+
     public KrakenEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new FlyingMoveControl(this, 20, true);
@@ -147,6 +152,22 @@ public class KrakenEntity extends Monster implements GeoEntity {
 
     public static boolean canSpawn(EntityType<KrakenEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
         return level.getFluidState(pos).is(FluidTags.WATER) && level.getFluidState(pos.above()).is(FluidTags.WATER);
+    }
+
+    @Override
+    public MultipartLayout antarchy$getMultipartLayout() {
+        return KrakenMultipartLayout.INSTANCE;
+    }
+
+    @Override
+    @Nullable
+    public Entity[] antarchy$getMultipartParts() {
+        return this.multipartParts;
+    }
+
+    @Override
+    public void antarchy$setMultipartParts(@Nullable Entity[] parts) {
+        this.multipartParts = parts;
     }
 
     @Override

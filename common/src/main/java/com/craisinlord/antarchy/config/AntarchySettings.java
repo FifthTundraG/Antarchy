@@ -17,6 +17,7 @@ public final class AntarchySettings {
     private static boolean duplicatorTreeEnabled = true;
     private static boolean glowingTorchflowers = true;
     private static boolean glowVinesUnderLeaves = true;
+    private static boolean swingThroughGrassEnabled = true;
     private static boolean sizeChangingRaysEnabled = true;
     private static double sizeRayMinScale = 0.1D;
     private static double sizeRayMaxScale = 10.0D;
@@ -100,9 +101,9 @@ public final class AntarchySettings {
     private static double mantisMovementSpeed = 0.42D;
     private static double mantisFlyingSpeed = 0.77D;
     private static boolean mantisIgnoreLightLevel = false;
-    private static double alphaMantisHealth = 500.0D;
+    private static double alphaMantisHealth = 250.0D;
     private static double alphaMantisAttackDamage = 18.0D;
-    private static double alphaMantisMovementSpeed = 0.42D;
+    private static double alphaMantisMovementSpeed = 0.546D;
     private static double alphaMantisFlyingSpeed = 0.77D;
     private static int alphaMantisSummonIntervalTicks = 300;
     private static int alphaMantisMaxMinions = 4;
@@ -240,7 +241,7 @@ public final class AntarchySettings {
     private static final int     reverieAmbientPulseIntervalMaxTicks = 19;
     private static double emperorScorpionHealth = 400.0D;
     private static double emperorScorpionAttackDamage = 28.0D;
-    private static double emperorScorpionMovementSpeed = 0.32D;
+    private static double emperorScorpionMovementSpeed = 0.384D;
     private static double emperorScorpionArmor = 25.0D;
     private static double emperorScorpionKnockbackResistance = 0.8D;
     private static double emperorScorpionFollowRange = 40.0D;
@@ -538,6 +539,10 @@ public final class AntarchySettings {
 
     public static boolean glowVinesUnderLeaves() {
         return glowVinesUnderLeaves;
+    }
+
+    public static boolean swingThroughGrassEnabled() {
+        return swingThroughGrassEnabled;
     }
 
     public static boolean sizeChangingRaysEnabled() {
@@ -982,6 +987,10 @@ public final class AntarchySettings {
 
     public static void setGlowVinesUnderLeaves(boolean value) {
         glowVinesUnderLeaves = value;
+    }
+
+    public static void setSwingThroughGrassEnabled(boolean value) {
+        swingThroughGrassEnabled = value;
     }
 
     public static void setSizeChangingRaysEnabled(boolean value) {

@@ -2136,6 +2136,11 @@
 		"spin_attack": {
 			"loop": true,
 			"animation_length": 0.2917,
+			"sound_effects": {
+				"0.0": {
+					"effect": "antarchy:toreterror_spin|1.1|0.95"
+				}
+			},
 			"bones": {
 				"R_arm": {
 					"rotation": {

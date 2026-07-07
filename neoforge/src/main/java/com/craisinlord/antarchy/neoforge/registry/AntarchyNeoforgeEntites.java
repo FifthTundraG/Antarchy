@@ -97,7 +97,7 @@ public final class AntarchyNeoforgeEntites {
                     .build("mantis"));
     public static final DeferredHolder<EntityType<?>, EntityType<AlphaMantisEntity>> ALPHA_MANTIS = ENTITY_TYPES.register("alpha_mantis",
             () -> EntityType.Builder.of(AlphaMantisEntity::new, MobCategory.MONSTER)
-                    .sized(4.0F, 3.25F)
+                    .sized(4.25F, 3.35F)
                     .clientTrackingRange(10)
                     .build("alpha_mantis"));
     public static final DeferredHolder<EntityType<?>, EntityType<RollyPollyEntity>> ROLLY_POLLY = ENTITY_TYPES.register("rolly_polly",

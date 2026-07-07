@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Multiblock bush grown with bonemeal. The origin block (this one) carries the
+ * Multiblock bush grown with bonemeal. The origin block carries the
  * loot/age; the rest of the footprint is filled with invisible
  * {@link BigBushPartBlock}s.
  *
@@ -75,7 +75,7 @@ public class BigBushBlock extends BushBlock implements BonemealableBlock {
         return state.getValue(AGE) == 0 ? SMALL_SHAPE : Shapes.block();
     }
 
-    /** All part positions belonging to a bush with the given origin state/pos (origin itself excluded). */
+    /** All part positions belonging to a bush with the given origin state/pos */
     public static List<BlockPos> partPositions(BlockState state, BlockPos origin) {
         List<BlockPos> positions = new ArrayList<>();
         int age = state.getValue(AGE);
@@ -106,7 +106,7 @@ public class BigBushBlock extends BushBlock implements BonemealableBlock {
         return positions;
     }
 
-    /** Ground-level columns of the footprint; each needs a sturdy block below it. */
+    /** Ground columns of the footprint, each needs a sturdy block below it. */
     public static List<BlockPos> supportColumns(BlockState state, BlockPos origin) {
         List<BlockPos> columns = new ArrayList<>();
         int age = state.getValue(AGE);
@@ -247,7 +247,6 @@ public class BigBushBlock extends BushBlock implements BonemealableBlock {
             return;
         }
         if (!target.origin().equals(pos)) {
-            // Relocating the origin: removing it cascades and clears the old parts.
             level.removeBlock(pos, false);
         }
         placeStage(level, target.origin(), target.state());

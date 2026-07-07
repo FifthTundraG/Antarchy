@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -92,6 +93,16 @@ public class AlphaMantisEntity extends MantisEntity {
     }
 
     @Override
+    protected MeleeAttackGoal createCombatGoal() {
+        return new MeleeAttackGoal(this, this.getCombatSpeed(), true);
+    }
+
+    @Override
+    protected double getCombatSpeed() {
+        return 1.05D;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (this.level().isClientSide) {
@@ -153,6 +164,18 @@ public class AlphaMantisEntity extends MantisEntity {
             serverLevel.addFreshEntity(minion);
         }
         this.playSound(com.craisinlord.antarchy.content.AntarchySoundEvents.MANTIS_AMBIENT.get(), 2.0F, 0.6F);
+    }
+
+    @Override
+    protected void onActiveTarget(LivingEntity target) {
+        if (this.flyBurstTicks > 0 || this.flyCooldownTicks > 0) {
+            this.stopFlightBurst();
+        }
+    }
+
+    @Override
+    protected boolean shouldStartFlightBurst() {
+        return false;
     }
 
     @Override

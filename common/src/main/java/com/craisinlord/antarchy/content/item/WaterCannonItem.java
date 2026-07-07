@@ -66,7 +66,7 @@ public class WaterCannonItem extends ProjectileWeaponItem implements GeoItem {
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 AntarchySoundEvents.WATER_CANNON_FIRE.get(), SoundSource.PLAYERS,
-                0.8F, 0.9F + level.getRandom().nextFloat() * 0.2F);
+                0.22F, 0.9F + level.getRandom().nextFloat() * 0.2F);
 
         if (!level.isClientSide()) {
             WaterBombEntity bomb = new WaterBombEntity(level, player);
