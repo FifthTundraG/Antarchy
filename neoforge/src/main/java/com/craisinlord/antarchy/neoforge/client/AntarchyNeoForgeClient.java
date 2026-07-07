@@ -198,6 +198,15 @@ public final class AntarchyNeoForgeClient {
                 (state, level, pos, tintIndex) -> 0xFF4A0000,
                 AntarchyNeoforgeBlocks.ANTIWATER_BLOCK.get()
         );
+        event.register(
+                (state, level, pos, tintIndex) -> level != null && pos != null
+                        ? BiomeColors.getAverageGrassColor(level, pos)
+                        : net.minecraft.world.level.GrassColor.getDefaultColor(),
+                AntarchyNeoforgeBlocks.BIG_BUSH.get(),
+                AntarchyNeoforgeBlocks.BIG_BUSH_PART.get(),
+                AntarchyNeoforgeBlocks.VERY_SHORT_GRASS.get(),
+                AntarchyNeoforgeBlocks.VERY_TALL_GRASS.get()
+        );
     }
 
     @SubscribeEvent
@@ -205,6 +214,12 @@ public final class AntarchyNeoForgeClient {
         event.register(
                 (stack, tintIndex) -> FoliageColor.getDefaultColor(),
                 AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get()
+        );
+        event.register(
+                (stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor(),
+                AntarchyNeoforgeItems.BIG_BUSH_ITEM.get(),
+                AntarchyNeoforgeItems.VERY_SHORT_GRASS_ITEM.get(),
+                AntarchyNeoforgeItems.VERY_TALL_GRASS_ITEM.get()
         );
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ICHOR_BUCKET.get());
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ANTIWATER_BUCKET.get());
@@ -422,6 +437,10 @@ public final class AntarchyNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.PINK_MILKWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.TORCHFLOWER_BUSH.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.BIG_BUSH.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.BIG_BUSH_PART.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.VERY_SHORT_GRASS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.VERY_TALL_GRASS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.HUSHWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORNEA_STALK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ANTIMETAL_SCAFFOLDING.get(), RenderType.cutout());

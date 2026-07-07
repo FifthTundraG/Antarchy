@@ -1,9 +1,9 @@
 {
-  "feature": "antarchy:brown_ant_nest",
+  "feature": "antarchy:rainbow_ant_nest",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 20
+      "chance": 512
     },
     {
       "type": "minecraft:in_square"

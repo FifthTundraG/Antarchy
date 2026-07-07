@@ -526,6 +526,27 @@ public final class AntarchyFabricContent {
     public static final DeferredBlock<TorchflowerBushBlock> TORCHFLOWER_BUSH = BLOCKS.register("torchflower_bush",
             () -> new TorchflowerBushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)
                     .lightLevel(state -> AntarchySettings.glowingTorchflowers() ? 15 : 0)));
+    public static final DeferredBlock<VeryShortGrassBlock> VERY_SHORT_GRASS = BLOCKS.register("very_short_grass",
+            () -> new VeryShortGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)));
+    public static final DeferredBlock<VeryTallGrassBlock> VERY_TALL_GRASS = BLOCKS.register("very_tall_grass",
+            () -> new VeryTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS)));
+    public static final DeferredBlock<BigBushBlock> BIG_BUSH = BLOCKS.register("big_bush",
+            () -> new BigBushBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .sound(net.minecraft.world.level.block.SoundType.GRASS)
+                    .ignitedByLava()
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+    public static final DeferredBlock<BigBushPartBlock> BIG_BUSH_PART = BLOCKS.register("big_bush_part",
+            () -> new BigBushPartBlock(BlockBehaviour.Properties.of()
+                    .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .sound(net.minecraft.world.level.block.SoundType.GRASS)
+                    .ignitedByLava()
+                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+                    .noLootTable()));
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
             () -> new net.minecraft.world.level.block.StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
@@ -1171,6 +1192,10 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_BUTTON);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_LEAVES);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_ACORN = ITEMS.registerSimpleBlockItem(OURANWOOD_ACORN_BLOCK);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_SHORT_GRASS_ITEM = ITEMS.registerSimpleBlockItem(VERY_SHORT_GRASS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_TALL_GRASS_ITEM = ITEMS.registerSimpleBlockItem(VERY_TALL_GRASS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BIG_BUSH_ITEM = ITEMS.register("big_bush",
+            () -> new com.craisinlord.antarchy.content.item.BigBushBlockItem(BIG_BUSH.get(), new Item.Properties()));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ORANGE_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(ORANGE_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> PINK_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(PINK_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TORCHFLOWER_BUSH_ITEM = ITEMS.registerSimpleBlockItem(TORCHFLOWER_BUSH);
@@ -2080,7 +2105,7 @@ public final class AntarchyFabricContent {
                  "smooth_dream_sandstone_stairs", "smooth_dream_sandstone_slab",
                  "cut_dream_sandstone_slab" -> 4;
             case "umbral_moss_block", "umbral_moss_carpet" -> 4;
-            case "torchflower_bush", "hushweed", "orange_milkweed", "pink_milkweed", "amber_lichen", "creepvine" -> 6;
+            case "torchflower_bush", "big_bush", "very_short_grass", "very_tall_grass", "hushweed", "orange_milkweed", "pink_milkweed", "amber_lichen", "creepvine" -> 6;
             case "blood_crystal_block", "budding_blood_crystal",
                  "small_blood_crystal_bud", "medium_blood_crystal_bud",
                  "large_blood_crystal_bud", "blood_crystal_cluster" -> 7;
