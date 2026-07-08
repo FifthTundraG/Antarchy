@@ -25,6 +25,12 @@ public final class AntarchyMiscConfig {
     private static final ModConfigSpec.BooleanValue DISABLE_INFINITY_BOOK_PORTAL_CREATION;
     private static final ModConfigSpec.BooleanValue RAINBOW_ANTS_LEAD_TO_INFINITY_DIMENSIONS;
 
+    // Permanent portals
+    private static final ModConfigSpec.BooleanValue PERMANENT_PORTALS_ENABLED;
+    private static final ModConfigSpec.BooleanValue ELYTHIA_PORTAL_ENABLED;
+    private static final ModConfigSpec.BooleanValue THORAXIS_PORTAL_ENABLED;
+    private static final ModConfigSpec.BooleanValue CAVARYN_PORTAL_ENABLED;
+
     // Diamond Minecart
     private static final ModConfigSpec.BooleanValue DIAMOND_MINECART_ENABLED;
     private static final ModConfigSpec.BooleanValue DIAMOND_MINECART_PLACES_RAILS;
@@ -100,6 +106,16 @@ public final class AntarchyMiscConfig {
         b.pop();
 
 
+        // Permanent Portals
+
+        b.push("permanentPortals");
+        PERMANENT_PORTALS_ENABLED = b.comment("Master toggle for sacrifice-activated permanent portals.").define("permanentPortalsEnabled", true);
+        ELYTHIA_PORTAL_ENABLED = b.comment("Whether mossy ouranwood wood portals to Elythia can activate and function.").define("elythiaPortalEnabled", true);
+        THORAXIS_PORTAL_ENABLED = b.comment("Whether Nyxite portals to Thoraxis can activate and function.").define("thoraxisPortalEnabled", true);
+        CAVARYN_PORTAL_ENABLED = b.comment("Whether Myrmite portals to Cavaryn can activate and function.").define("cavarynPortalEnabled", true);
+        b.pop();
+
+
         // Diamond Minecart
 
         b.push("diamondMinecart");
@@ -150,6 +166,10 @@ public final class AntarchyMiscConfig {
 
     static boolean disableInfinityBookPortalCreation()   { return DISABLE_INFINITY_BOOK_PORTAL_CREATION.get(); }
     static boolean rainbowAntsLeadToInfinityDimensions() { return RAINBOW_ANTS_LEAD_TO_INFINITY_DIMENSIONS.get(); }
+    public static boolean permanentPortalsEnabled()      { return PERMANENT_PORTALS_ENABLED.get(); }
+    public static boolean elythiaPortalEnabled()         { return ELYTHIA_PORTAL_ENABLED.get(); }
+    public static boolean thoraxisPortalEnabled()        { return THORAXIS_PORTAL_ENABLED.get(); }
+    public static boolean cavarynPortalEnabled()         { return CAVARYN_PORTAL_ENABLED.get(); }
 
     static boolean diamondMinecartEnabled()              { return DIAMOND_MINECART_ENABLED.get(); }
     static boolean diamondMinecartPlacesRails()          { return DIAMOND_MINECART_PLACES_RAILS.get(); }

@@ -163,7 +163,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:book",
           "weight": 10,
           "functions": [
             {
@@ -200,14 +200,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:uranium_nugget",
-          "weight": 4,
+          "weight": 56,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 4.0,
+                "max": 9.0
               }
             }
           ]
@@ -215,14 +215,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:titanium_nugget",
-          "weight": 4,
+          "weight": 56,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 4.0,
+                "max": 9.0
               }
             }
           ]
@@ -292,7 +292,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:book",
           "weight": 10,
           "functions": [
             {

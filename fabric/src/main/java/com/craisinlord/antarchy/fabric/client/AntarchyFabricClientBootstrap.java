@@ -223,6 +223,8 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_DOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_TRAPDOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_ACORN_BLOCK.get(), RenderType.cutout());
+        // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE.get(), RenderType.cutout());
+        // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE_PLANT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DUPLICATOR_SAPLING.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ORANGE_MILKWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PINK_MILKWEED.get(), RenderType.cutout());
@@ -253,6 +255,9 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_CEILING_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ANTIWATER_BLOCK.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ELYTHIA_PORTAL.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.THORAXIS_PORTAL.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CAVARYN_PORTAL.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TRIFFID_GOO_BLOCK.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.URANIUM_DOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TITANIUM_DOOR.get(), RenderType.cutout());

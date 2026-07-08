@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:taiga",
+    "minecraft:snowy_taiga",
+    "minecraft:dark_forest",
+    { "id": "#c:is_taiga", "required": false },
+    { "id": "#c:is_dark_forest", "required": false }
+  ]
+}

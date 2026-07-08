@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#antarchy:big_bush_2x2_spawn_biomes",
+  "features": [
+    "antarchy:big_bush_2x2"
+  ],
+  "step": "vegetal_decoration"
+}

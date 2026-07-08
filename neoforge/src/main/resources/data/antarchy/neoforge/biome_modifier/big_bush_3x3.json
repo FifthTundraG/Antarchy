@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#antarchy:mega_taiga_spawn_biomes",
+  "features": [
+    "antarchy:big_bush_3x3"
+  ],
+  "step": "vegetal_decoration"
+}

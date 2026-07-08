@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.BreathAirGoal;
@@ -30,8 +31,10 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -39,6 +42,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -59,18 +63,29 @@ public class DorrieEntity extends Animal implements GeoEntity {
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> JUMP_CHARGE =
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> QUIRK_TICKS =
+            SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.INT);
 
     private static final int MAX_CHARGE_TICKS = 40;
     private static final float WATER_RIDE_SPEED = 1.26F;
     private static final float LAND_BEACH_SPEED = 0.04F;
+    private static final int QUIRK_DURATION_TICKS = 65;
+    private static final int MIN_QUIRK_COOLDOWN_TICKS = 180;
+    private static final int MAX_QUIRK_COOLDOWN_TICKS = 320;
+    private static final double MOVING_ANIM_THRESHOLD_SQ = 0.0025D;
 
-    private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation IDLE_GROUND_ANIM = RawAnimation.begin().thenLoop("idle_ground");
+    private static final RawAnimation IDLE_WATER_ANIM = RawAnimation.begin().thenLoop("idle_water");
+    private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation SWIM_ANIM = RawAnimation.begin().thenLoop("swim");
-    private static final RawAnimation JUMP_START_ANIM = RawAnimation.begin().thenPlay("jump_1");
-    private static final RawAnimation JUMP_LOOP_ANIM = RawAnimation.begin().thenLoop("jump_2");
-    private static final RawAnimation JUMP_LAND_ANIM = RawAnimation.begin().thenPlay("jump_3");
+    private static final RawAnimation JUMP_START_ANIM = RawAnimation.begin().thenPlay("jump_start");
+    private static final RawAnimation JUMP_LOOP_ANIM = RawAnimation.begin().thenLoop("jump_idle");
+    private static final RawAnimation JUMP_LAND_ANIM = RawAnimation.begin().thenPlay("jump_end");
+    private static final RawAnimation QUIRK_ANIM = RawAnimation.begin().thenPlay("quirk");
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+    private final MoveControl landMoveControl;
+    private final MoveControl waterMoveControl;
 
     private static final int RIDES_TO_TAME = 4;
     private static final int BUCK_DELAY_TICKS = 60;
@@ -83,11 +98,17 @@ public class DorrieEntity extends Animal implements GeoEntity {
     private int rideAttempts = 0;
     private int buckTimer = 0;
     private int swimForwardTicks = 0;
+    private int quirkCooldownTicks = MIN_QUIRK_COOLDOWN_TICKS;
+    private boolean usingLandNavigation = true;
 
     public DorrieEntity(EntityType<? extends DorrieEntity> entityType, Level level) {
         super(entityType, level);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 1.0F, true);
+        this.landMoveControl = new MoveControl(this);
+        this.waterMoveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 1.0F, true);
+        this.moveControl = this.landMoveControl;
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WATER_BORDER, 0.0F);
     }
 
     @Override
@@ -96,11 +117,12 @@ public class DorrieEntity extends Animal implements GeoEntity {
         builder.define(HAS_SADDLE, false);
         builder.define(TAMED, false);
         builder.define(JUMP_CHARGE, 0);
+        builder.define(QUIRK_TICKS, 0);
     }
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        return new WaterBoundPathNavigation(this, level);
+        return this.createLandNavigation(level);
     }
 
     @Override
@@ -110,8 +132,9 @@ public class DorrieEntity extends Animal implements GeoEntity {
         this.goalSelector.addGoal(2, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(3, new HuntCheepGoal(this));
         this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.45D, 60));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -146,6 +169,14 @@ public class DorrieEntity extends Animal implements GeoEntity {
         this.entityData.set(JUMP_CHARGE, charge);
     }
 
+    public int getQuirkTicks() {
+        return this.entityData.get(QUIRK_TICKS);
+    }
+
+    private void setQuirkTicks(int ticks) {
+        this.entityData.set(QUIRK_TICKS, ticks);
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -173,7 +204,18 @@ public class DorrieEntity extends Animal implements GeoEntity {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        if (this.hasSaddle() && stack.isEmpty() && !player.isPassengerOfSameVehicle(this)) {
+        if (this.hasSaddle() && !player.isPassengerOfSameVehicle(this)) {
+            if (!stack.isEmpty()) {
+                return super.mobInteract(player, hand);
+            }
+
+            if (!player.isShiftKeyDown()) {
+                if (!this.level().isClientSide) {
+                    player.startRiding(this);
+                }
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
+            }
+
             if (!this.level().isClientSide) {
                 this.setSaddle(false);
                 this.spawnAtLocation(new ItemStack(Items.SADDLE));
@@ -189,13 +231,6 @@ public class DorrieEntity extends Animal implements GeoEntity {
                     stack.shrink(1);
                 }
                 this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.0F);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-
-        if (this.hasSaddle() && !player.isPassengerOfSameVehicle(this)) {
-            if (!this.level().isClientSide) {
-                player.startRiding(this);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -234,6 +269,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        this.updateNavigationMode();
 
         if (this.getControllingPassenger() instanceof Player player) {
             this.setYRot(player.getYRot());
@@ -273,6 +309,10 @@ public class DorrieEntity extends Animal implements GeoEntity {
         if (!this.level().isClientSide && this.getControllingPassenger() instanceof Player && isCharging) {
             chargeTicks = Math.min(chargeTicks + 1, MAX_CHARGE_TICKS);
             setJumpCharge((int) ((chargeTicks / (float) MAX_CHARGE_TICKS) * 100));
+        }
+
+        if (!this.level().isClientSide) {
+            this.tickQuirkAnimation();
         }
 
         if (this.isInWater() && !isLeaping) {
@@ -384,13 +424,29 @@ public class DorrieEntity extends Animal implements GeoEntity {
     }
 
     private PlayState mainAnimController(AnimationState<DorrieEntity> state) {
+        state.getController().setAnimationSpeed(1.0D);
+
         if (landAnimTicks > 0) {
             return state.setAndContinue(JUMP_LAND_ANIM);
         }
         if (isLeaping) {
             return state.setAndContinue(wasInAir ? JUMP_LOOP_ANIM : JUMP_START_ANIM);
         }
-        return state.setAndContinue(state.isMoving() ? SWIM_ANIM : IDLE_ANIM);
+        if (this.getQuirkTicks() > 0) {
+            return state.setAndContinue(QUIRK_ANIM);
+        }
+
+        boolean moving = this.isMovingForAnimation(state);
+        if (this.isInWater() || this.isInLava()) {
+            return state.setAndContinue(moving ? SWIM_ANIM : IDLE_WATER_ANIM);
+        }
+
+        if (moving) {
+            state.getController().setAnimationSpeed(0.75D);
+            return state.setAndContinue(WALK_ANIM);
+        }
+
+        return state.setAndContinue(IDLE_GROUND_ANIM);
     }
 
     @Override
@@ -405,6 +461,78 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
     private boolean isCheepItem(ItemStack stack) {
         return !stack.isEmpty() && stack.is(BuiltInRegistries.ITEM.getOptional(CHEEP_ITEM_ID).orElse(Items.AIR));
+    }
+
+    private PathNavigation createLandNavigation(Level level) {
+        GroundPathNavigation navigation = new GroundPathNavigation(this, level);
+        navigation.setCanFloat(true);
+        navigation.setCanOpenDoors(false);
+        navigation.setCanPassDoors(true);
+        return navigation;
+    }
+
+    private PathNavigation createWaterNavigation(Level level) {
+        return new WaterBoundPathNavigation(this, level);
+    }
+
+    private void updateNavigationMode() {
+        boolean shouldUseLandNavigation = !this.isInWater() && !this.isUnderWater() && !this.isInLava();
+        if (this.navigation == null || this.usingLandNavigation != shouldUseLandNavigation) {
+            this.usingLandNavigation = shouldUseLandNavigation;
+            if (this.navigation != null) {
+                this.navigation.stop();
+            }
+            this.navigation = shouldUseLandNavigation
+                    ? this.createLandNavigation(this.level())
+                    : this.createWaterNavigation(this.level());
+            this.moveControl = shouldUseLandNavigation ? this.landMoveControl : this.waterMoveControl;
+        }
+    }
+
+    private void tickQuirkAnimation() {
+        if (this.getQuirkTicks() > 0) {
+            if (this.canUseQuirkAnimation()) {
+                this.setQuirkTicks(this.getQuirkTicks() - 1);
+            } else {
+                this.setQuirkTicks(0);
+                this.quirkCooldownTicks = this.nextQuirkCooldown();
+            }
+            return;
+        }
+
+        if (this.quirkCooldownTicks > 0) {
+            this.quirkCooldownTicks--;
+            return;
+        }
+
+        if (this.canUseQuirkAnimation()) {
+            this.setQuirkTicks(QUIRK_DURATION_TICKS);
+            this.quirkCooldownTicks = this.nextQuirkCooldown();
+        }
+    }
+
+    private int nextQuirkCooldown() {
+        return MIN_QUIRK_COOLDOWN_TICKS + this.random.nextInt(MAX_QUIRK_COOLDOWN_TICKS - MIN_QUIRK_COOLDOWN_TICKS + 1);
+    }
+
+    private boolean canUseQuirkAnimation() {
+        return this.isInWater()
+                && this.getControllingPassenger() == null
+                && !this.isLeaping
+                && this.landAnimTicks <= 0
+                && !this.isCharging
+                && !this.isMovingForAnimation(null);
+    }
+
+    private boolean isMovingForAnimation(@Nullable AnimationState<DorrieEntity> state) {
+        if (state != null && state.isMoving()) {
+            return true;
+        }
+        if (this.getControllingPassenger() instanceof Player player) {
+            return Math.abs(player.zza) > 0.05F || Math.abs(player.xxa) > 0.05F;
+        }
+        return this.getDeltaMovement().horizontalDistanceSqr() > MOVING_ANIM_THRESHOLD_SQ
+                || this.getNavigation().isInProgress();
     }
 
     private static class HuntCheepGoal extends Goal {

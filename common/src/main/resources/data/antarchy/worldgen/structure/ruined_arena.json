@@ -5,7 +5,7 @@
   "terrain_height_radius_check": 4,
   "allowed_terrain_height_range": 14,
   "valid_biome_radius_check": 1,
-  "biomes": "#antarchy:has_structure/ruined_anrea_biomes",
+  "biomes": "#antarchy:has_structure/ruined_arena_biomes",
   "step": "surface_structures",
   "enhanced_terrain_adaptation": {
     "type": "integrated_api:none"

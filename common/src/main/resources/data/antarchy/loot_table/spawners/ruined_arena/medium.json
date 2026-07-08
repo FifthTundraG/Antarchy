@@ -53,11 +53,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "antarchy:battle_axe",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:shield",
           "weight": 10
         },
@@ -199,14 +194,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:uranium_nugget",
-          "weight": 4,
+          "weight": 48,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 3.0,
+                "max": 7.0
               }
             }
           ]
@@ -214,14 +209,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:titanium_nugget",
-          "weight": 4,
+          "weight": 48,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 3.0,
+                "max": 7.0
               }
             }
           ]
@@ -253,7 +248,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:book",
           "weight": 6,
           "functions": [
             {
