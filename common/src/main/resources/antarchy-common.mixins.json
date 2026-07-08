@@ -13,6 +13,7 @@
     "DreamSandLowGravityMixin",
     "FireVisualBaseFireBlockMixin",
     "FireVisualEntityMixin",
+    "FlintAndSteelPortalIgnitionMixin",
     "GlowVinesUnderLeavesMixin",
     "NightmareSwordDamageMixin",
     "ServerPlayerGameModeMixin",

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -18,6 +19,7 @@ public final class PermanentPortalShape {
     public static final int MIN_WIDTH = 2;
     public static final int MIN_HEIGHT = 3;
     public static final int MAX_SIZE = 21;
+    public static final int ACTIVE_SEARCH_RADIUS = 8;
 
     private final PermanentPortalType type;
     private final Direction.Axis axis;
@@ -39,9 +41,49 @@ public final class PermanentPortalShape {
     }
 
     @Nullable
+    public static PermanentPortalShape findInactiveNear(BlockGetter level, BlockPos center, PermanentPortalType type) {
+        for (int x = center.getX() - 2; x <= center.getX() + 2; x++) {
+            for (int y = center.getY() - 2; y <= center.getY() + 2; y++) {
+                for (int z = center.getZ() - 2; z <= center.getZ() + 2; z++) {
+                    BlockPos candidate = new BlockPos(x, y, z);
+                    PermanentPortalShape xShape = findInactive(level, candidate, type, Direction.Axis.X);
+                    if (xShape != null) {
+                        return xShape;
+                    }
+                    PermanentPortalShape zShape = findInactive(level, candidate, type, Direction.Axis.Z);
+                    if (zShape != null) {
+                        return zShape;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     public static PermanentPortalShape findActive(BlockGetter level, BlockPos interiorPos, PermanentPortalType type, Direction.Axis axis) {
         Block portalBlock = type.portalBlock();
         return find(level, interiorPos, type, axis, state -> state.is(portalBlock));
+    }
+
+    @Nullable
+    public static PermanentPortalShape findActiveNear(BlockGetter level, BlockPos center, PermanentPortalType type) {
+        for (int x = center.getX() - ACTIVE_SEARCH_RADIUS; x <= center.getX() + ACTIVE_SEARCH_RADIUS; x++) {
+            for (int y = center.getY() - ACTIVE_SEARCH_RADIUS; y <= center.getY() + ACTIVE_SEARCH_RADIUS; y++) {
+                for (int z = center.getZ() - ACTIVE_SEARCH_RADIUS; z <= center.getZ() + ACTIVE_SEARCH_RADIUS; z++) {
+                    BlockPos candidate = new BlockPos(x, y, z);
+                    PermanentPortalShape xShape = findActive(level, candidate, type, Direction.Axis.X);
+                    if (xShape != null) {
+                        return xShape;
+                    }
+                    PermanentPortalShape zShape = findActive(level, candidate, type, Direction.Axis.Z);
+                    if (zShape != null) {
+                        return zShape;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Nullable
@@ -157,6 +199,50 @@ public final class PermanentPortalShape {
     public void fill(ServerLevel level) {
         BlockState portalState = this.type.portalBlock().defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_AXIS, this.axis);
         this.forEachInterior(pos -> level.setBlock(pos, portalState, Block.UPDATE_ALL));
+    }
+
+    @Nullable
+    public static PermanentPortalShape create(ServerLevel level, BlockPos bottomLeft, PermanentPortalType type, Direction.Axis axis) {
+        if (axis == Direction.Axis.Y || !canCreate(level, bottomLeft, type, axis)) {
+            return null;
+        }
+
+        BlockState frameState = type.platformBlock().defaultBlockState();
+        BlockState portalState = type.portalBlock().defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_AXIS, axis);
+        Direction widthDirection = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+
+        for (int y = -1; y <= 3; y++) {
+            for (int x = -1; x <= 2; x++) {
+                BlockPos pos = bottomLeft.relative(widthDirection, x).above(y);
+                if (x == -1 || x == 2 || y == -1 || y == 3) {
+                    level.setBlock(pos, frameState, Block.UPDATE_ALL);
+                } else {
+                    level.setBlock(pos, portalState, Block.UPDATE_ALL);
+                }
+            }
+        }
+
+        return new PermanentPortalShape(type, axis, bottomLeft.immutable(), 2, 3);
+    }
+
+    private static boolean canCreate(BlockGetter level, BlockPos bottomLeft, PermanentPortalType type, Direction.Axis axis) {
+        Direction widthDirection = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+        Block frameBlock = type.platformBlock();
+        for (int y = -1; y <= 3; y++) {
+            for (int x = -1; x <= 2; x++) {
+                BlockPos pos = bottomLeft.relative(widthDirection, x).above(y);
+                BlockState state = level.getBlockState(pos);
+                boolean frameSpot = x == -1 || x == 2 || y == -1 || y == 3;
+                if (frameSpot) {
+                    if (!state.isAir() && !state.is(frameBlock) && !state.canBeReplaced()) {
+                        return false;
+                    }
+                } else if (!state.isAir() && !state.canBeReplaced() && !state.is(Blocks.AIR)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean contains(BlockPos pos) {

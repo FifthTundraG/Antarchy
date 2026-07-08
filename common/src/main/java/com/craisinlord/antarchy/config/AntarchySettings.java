@@ -448,6 +448,7 @@ public final class AntarchySettings {
     private static int fallenKingCrownArmorValue = 2;
     private static double fallenKingCrownArmorToughness = 0.0D;
     private static boolean permanentPortalsEnabled = true;
+    private static boolean permanentPortalsFlintAndSteelEnabled = false;
     private static boolean elythiaPortalEnabled = true;
     private static boolean thoraxisPortalEnabled = true;
     private static boolean cavarynPortalEnabled = true;
@@ -965,6 +966,10 @@ public final class AntarchySettings {
         permanentPortalsEnabled = value;
     }
 
+    public static void setPermanentPortalsFlintAndSteelEnabled(boolean value) {
+        permanentPortalsFlintAndSteelEnabled = value;
+    }
+
     public static void setElythiaPortalEnabled(boolean value) {
         elythiaPortalEnabled = value;
     }
@@ -976,6 +981,12 @@ public final class AntarchySettings {
     public static void setCavarynPortalEnabled(boolean value) {
         cavarynPortalEnabled = value;
     }
+
+    public static boolean permanentPortalsEnabled() { return permanentPortalsEnabled; }
+    public static boolean permanentPortalsFlintAndSteelEnabled() { return permanentPortalsFlintAndSteelEnabled; }
+    public static boolean elythiaPortalEnabled() { return elythiaPortalEnabled; }
+    public static boolean thoraxisPortalEnabled() { return thoraxisPortalEnabled; }
+    public static boolean cavarynPortalEnabled() { return cavarynPortalEnabled; }
 
     public static void setBrownAntRequiresReagent(boolean value) {
         brownAntRequiresReagent = value;
@@ -2453,11 +2464,6 @@ public final class AntarchySettings {
 
     public static double fallenKingCrownArmorToughness() { return fallenKingCrownArmorToughness; }
     public static void setFallenKingCrownArmorToughness(double value) { fallenKingCrownArmorToughness = value; }
-
-    public static boolean permanentPortalsEnabled() { return permanentPortalsEnabled; }
-    public static boolean elythiaPortalEnabled() { return elythiaPortalEnabled; }
-    public static boolean thoraxisPortalEnabled() { return thoraxisPortalEnabled; }
-    public static boolean cavarynPortalEnabled() { return cavarynPortalEnabled; }
 
     public static boolean elythiaFireflyParticlesEnabled() { return elythiaFireflyParticlesEnabled; }
     public static void setElythiaFireflyParticlesEnabled(boolean value) { elythiaFireflyParticlesEnabled = value; }

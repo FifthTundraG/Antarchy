@@ -108,6 +108,15 @@ public class EmperorScorpionEntity extends Monster implements GeoEntity {
                 .add(Attributes.FOLLOW_RANGE, AntarchySettings.emperorScorpionFollowRange());
     }
 
+    @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
+    public void lavaHurt() {
+    }
+
     public static boolean canSpawn(EntityType<EmperorScorpionEntity> entityType, ServerLevelAccessor level,
                                    MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
         if (spawnReason == MobSpawnType.SPAWN_EGG

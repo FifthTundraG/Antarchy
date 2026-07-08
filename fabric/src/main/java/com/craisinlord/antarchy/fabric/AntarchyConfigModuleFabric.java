@@ -170,6 +170,7 @@ public final class AntarchyConfigModuleFabric {
             return name.equals("disableInfinityBookPortalCreation")
                     || name.equals("rainbowAntsLeadToInfinityDimensions")
                     || name.equals("permanentPortalsEnabled")
+                    || name.equals("permanentPortalsFlintAndSteelEnabled")
                     || name.equals("elythiaPortalEnabled")
                     || name.equals("thoraxisPortalEnabled")
                     || name.equals("cavarynPortalEnabled")

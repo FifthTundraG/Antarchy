@@ -27,6 +27,7 @@ public final class AntarchyMiscConfig {
 
     // Permanent portals
     private static final ModConfigSpec.BooleanValue PERMANENT_PORTALS_ENABLED;
+    private static final ModConfigSpec.BooleanValue PERMANENT_PORTALS_FLINT_AND_STEEL_ENABLED;
     private static final ModConfigSpec.BooleanValue ELYTHIA_PORTAL_ENABLED;
     private static final ModConfigSpec.BooleanValue THORAXIS_PORTAL_ENABLED;
     private static final ModConfigSpec.BooleanValue CAVARYN_PORTAL_ENABLED;
@@ -110,6 +111,7 @@ public final class AntarchyMiscConfig {
 
         b.push("permanentPortals");
         PERMANENT_PORTALS_ENABLED = b.comment("Master toggle for sacrifice-activated permanent portals.").define("permanentPortalsEnabled", true);
+        PERMANENT_PORTALS_FLINT_AND_STEEL_ENABLED = b.comment("Whether flint and steel can ignite permanent portal frames.").define("permanentPortalsFlintAndSteelEnabled", false);
         ELYTHIA_PORTAL_ENABLED = b.comment("Whether mossy ouranwood wood portals to Elythia can activate and function.").define("elythiaPortalEnabled", true);
         THORAXIS_PORTAL_ENABLED = b.comment("Whether Nyxite portals to Thoraxis can activate and function.").define("thoraxisPortalEnabled", true);
         CAVARYN_PORTAL_ENABLED = b.comment("Whether Myrmite portals to Cavaryn can activate and function.").define("cavarynPortalEnabled", true);
@@ -167,6 +169,7 @@ public final class AntarchyMiscConfig {
     static boolean disableInfinityBookPortalCreation()   { return DISABLE_INFINITY_BOOK_PORTAL_CREATION.get(); }
     static boolean rainbowAntsLeadToInfinityDimensions() { return RAINBOW_ANTS_LEAD_TO_INFINITY_DIMENSIONS.get(); }
     public static boolean permanentPortalsEnabled()      { return PERMANENT_PORTALS_ENABLED.get(); }
+    public static boolean permanentPortalsFlintAndSteelEnabled() { return PERMANENT_PORTALS_FLINT_AND_STEEL_ENABLED.get(); }
     public static boolean elythiaPortalEnabled()         { return ELYTHIA_PORTAL_ENABLED.get(); }
     public static boolean thoraxisPortalEnabled()        { return THORAXIS_PORTAL_ENABLED.get(); }
     public static boolean cavarynPortalEnabled()         { return CAVARYN_PORTAL_ENABLED.get(); }
