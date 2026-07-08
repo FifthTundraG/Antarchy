@@ -334,6 +334,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setDiamondMinecartMobDamageEnabled(AntarchyMiscConfig.diamondMinecartMobDamageEnabled());
         AntarchySettings.setDiamondMinecartMaxMobDamage(AntarchyMiscConfig.diamondMinecartMaxMobDamage());
         AntarchySettings.setPermanentPortalsEnabled(AntarchyMiscConfig.permanentPortalsEnabled());
+        AntarchySettings.setPermanentPortalsFlintAndSteelEnabled(AntarchyMiscConfig.permanentPortalsFlintAndSteelEnabled());
         AntarchySettings.setElythiaPortalEnabled(AntarchyMiscConfig.elythiaPortalEnabled());
         AntarchySettings.setThoraxisPortalEnabled(AntarchyMiscConfig.thoraxisPortalEnabled());
         AntarchySettings.setCavarynPortalEnabled(AntarchyMiscConfig.cavarynPortalEnabled());

@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -34,10 +35,19 @@ public final class PermanentPortalManager {
             return;
         }
 
-        shape.fill(serverLevel);
-        Vec3 center = shape.center();
-        serverLevel.playSound(null, center.x, center.y, center.z, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 0.9F, 0.9F);
-        spawnActivationParticles(serverLevel, type, center);
+        activatePortal(serverLevel, type, shape, SoundEvents.END_PORTAL_SPAWN, 0.9F, 0.9F);
+    }
+
+    public static boolean tryIgnitePortal(Level level, BlockPos triggerPos, PermanentPortalType type) {
+        PermanentPortalShape shape = PermanentPortalShape.findInactiveNear(level, triggerPos, type);
+        if (shape == null) {
+            return false;
+        }
+
+        if (level instanceof ServerLevel serverLevel) {
+            activatePortal(serverLevel, type, shape, SoundEvents.FLINTANDSTEEL_USE, 0.9F, 1.0F);
+        }
+        return true;
     }
 
     public static void handleEntityInsidePortal(Entity entity, PermanentPortalType type) {
@@ -67,7 +77,7 @@ public final class PermanentPortalManager {
         WARMUPS.remove(entity.getUUID());
         PermanentPortalTeleporter.teleport(entity, type);
         if (entity.level() instanceof ServerLevel currentLevel) {
-            currentLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.8F, 1.0F);
+            currentLevel.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PORTAL_TRAVEL, SoundSource.PLAYERS, 0.8F, 1.0F);
         }
     }
 
@@ -119,6 +129,13 @@ public final class PermanentPortalManager {
                 level.sendParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, center.x, center.y, center.z, 16, 0.6D, 1.0D, 0.6D, 0.01D);
             }
         }
+    }
+
+    private static void activatePortal(ServerLevel level, PermanentPortalType type, PermanentPortalShape shape, net.minecraft.sounds.SoundEvent sound, float volume, float pitch) {
+        shape.fill(level);
+        Vec3 center = shape.center();
+        level.playSound(null, center.x, center.y, center.z, sound, SoundSource.BLOCKS, volume, pitch);
+        spawnActivationParticles(level, type, center);
     }
 
     private static final class PortalWarmup {
