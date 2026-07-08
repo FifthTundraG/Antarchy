@@ -7,6 +7,7 @@ import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
 import com.craisinlord.antarchy.content.network.BloodCrystalKatanaTrailPayload;
+import com.craisinlord.antarchy.content.portal.PermanentPortalType;
 import com.craisinlord.antarchy.neoforge.registry.*;
 import com.craisinlord.antarchy.neoforge.network.AntarchyGravityNetworking;
 import net.neoforged.bus.api.IEventBus;
@@ -183,6 +184,14 @@ public class AntarchyNeoforge {
     }
 
     private static void bindCommonObjects() {
+        PermanentPortalType.bindBlocks(
+                () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
+                () -> AntarchyNeoforgeBlocks.ELYTHIA_PORTAL.get(),
+                () -> AntarchyNeoforgeBlocks.NYXITE.get(),
+                () -> AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get(),
+                () -> AntarchyNeoforgeBlocks.MYRMITE.get(),
+                () -> AntarchyNeoforgeBlocks.CAVARYN_PORTAL.get()
+        );
         AntarchyObjects.bind(
                 AntarchyNeoforgeEntites.EASTER_BUNNY,
                 AntarchyNeoforgeEntites.FLYING_SQUIRREL,

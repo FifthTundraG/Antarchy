@@ -91,6 +91,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_ACORN.get());
+            // event.accept(AntarchyNeoforgeItems.OURANWOOD_VINE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_LOG_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_SAPLING_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ORANGE_MILKWEED_ITEM.get());

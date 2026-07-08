@@ -22,6 +22,8 @@ import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguratio
 import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.*;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.*;
+import com.craisinlord.antarchy.content.worldgen.VeryTallGrassWorldgenFeature;
+import com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluid;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluidType;
 import com.mojang.serialization.MapCodec;
@@ -213,6 +215,12 @@ public final class AntarchyNeoforgeMisc {
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.TORCHFLOWER_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaSurfaceCoverFeature> ELYTHIA_SURFACE_COVER = FEATURES.register("elythia_surface_cover",
             () -> new ElythiaSurfaceCoverFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, VeryTallGrassWorldgenFeature> VERY_TALL_GRASS_FEATURE = FEATURES.register("very_tall_grass",
+            () -> new VeryTallGrassWorldgenFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, BigBushWorldgenFeature> BIG_BUSH_2X2_FEATURE = FEATURES.register("big_bush_2x2",
+            () -> new BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 1));
+    public static final DeferredHolder<Feature<?>, BigBushWorldgenFeature> BIG_BUSH_3X3_FEATURE = FEATURES.register("big_bush_3x3",
+            () -> new BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 2));
     public static final DeferredHolder<Feature<?>, ElythiaUndergroundFeature> ELYTHIA_UNDERGROUND = FEATURES.register("elythia_underground",
             () -> new ElythiaUndergroundFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, BrutalflyCocoonFeature> BRUTALFLY_COCOON = FEATURES.register("brutalfly_cocoon",

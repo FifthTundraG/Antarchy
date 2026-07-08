@@ -8,6 +8,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -22,6 +27,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -250,5 +256,36 @@ public class BigBushBlock extends BushBlock implements BonemealableBlock {
             level.removeBlock(pos, false);
         }
         placeStage(level, target.origin(), target.state());
+    }
+
+    /** Pops a bonus item when bone meal is used on a fully-grown (age 2) bush; shared with {@link BigBushPartBlock}. */
+    public static boolean grantBonemealBonus(Level level, BlockPos originPos, BlockState originState, Player player, ItemStack stack) {
+        if (!(originState.getBlock() instanceof BigBushBlock bigBush) || originState.getValue(AGE) != 2) {
+            return false;
+        }
+        if (!level.isClientSide) {
+            bigBush.popResource(level, originPos, new ItemStack(bigBush, 1));
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            level.levelEvent(1505, originPos, 15);
+        }
+        return true;
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult
+    ) {
+        if (stack.is(Items.BONE_MEAL) && grantBonemealBonus(level, pos, state, player, stack)) {
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 }

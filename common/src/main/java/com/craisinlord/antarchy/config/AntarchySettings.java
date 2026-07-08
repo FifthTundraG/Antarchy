@@ -447,6 +447,10 @@ public final class AntarchySettings {
     private static double primordialArmorKnockbackPerPiece = 0.5D;
     private static int fallenKingCrownArmorValue = 2;
     private static double fallenKingCrownArmorToughness = 0.0D;
+    private static boolean permanentPortalsEnabled = true;
+    private static boolean elythiaPortalEnabled = true;
+    private static boolean thoraxisPortalEnabled = true;
+    private static boolean cavarynPortalEnabled = true;
     private static boolean elythiaFireflyParticlesEnabled = true;
     private static int bloodCrystalArmorShieldRechargeTicks = 600;
     private static int bloodCrystalAppleShieldCount = 2;
@@ -955,6 +959,22 @@ public final class AntarchySettings {
 
     public static void setRainbowAntsLeadToInfinityDimensions(boolean value) {
         rainbowAntsLeadToInfinityDimensions = value;
+    }
+
+    public static void setPermanentPortalsEnabled(boolean value) {
+        permanentPortalsEnabled = value;
+    }
+
+    public static void setElythiaPortalEnabled(boolean value) {
+        elythiaPortalEnabled = value;
+    }
+
+    public static void setThoraxisPortalEnabled(boolean value) {
+        thoraxisPortalEnabled = value;
+    }
+
+    public static void setCavarynPortalEnabled(boolean value) {
+        cavarynPortalEnabled = value;
     }
 
     public static void setBrownAntRequiresReagent(boolean value) {
@@ -2433,6 +2453,11 @@ public final class AntarchySettings {
 
     public static double fallenKingCrownArmorToughness() { return fallenKingCrownArmorToughness; }
     public static void setFallenKingCrownArmorToughness(double value) { fallenKingCrownArmorToughness = value; }
+
+    public static boolean permanentPortalsEnabled() { return permanentPortalsEnabled; }
+    public static boolean elythiaPortalEnabled() { return elythiaPortalEnabled; }
+    public static boolean thoraxisPortalEnabled() { return thoraxisPortalEnabled; }
+    public static boolean cavarynPortalEnabled() { return cavarynPortalEnabled; }
 
     public static boolean elythiaFireflyParticlesEnabled() { return elythiaFireflyParticlesEnabled; }
     public static void setElythiaFireflyParticlesEnabled(boolean value) { elythiaFireflyParticlesEnabled = value; }

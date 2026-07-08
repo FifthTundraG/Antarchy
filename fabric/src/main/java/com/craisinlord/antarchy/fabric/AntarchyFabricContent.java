@@ -168,6 +168,7 @@ import com.craisinlord.antarchy.content.worldgen.thoraxis.ThoraxisSpikeConfigura
 import com.craisinlord.antarchy.content.worldgen.thoraxis.ThoraxisSpikeFeature;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserBaseParticleOptions;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserParticleOptions;
+import com.craisinlord.antarchy.content.portal.PermanentPortalType;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -519,6 +520,10 @@ public final class AntarchyFabricContent {
             () -> new OuranwoodLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LEAVES).randomTicks()));
     public static final DeferredBlock<OuranwoodAcornBlock> OURANWOOD_ACORN_BLOCK = BLOCKS.register("ouranwood_acorn",
             () -> new OuranwoodAcornBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
+    // public static final DeferredBlock<OuranwoodVineBlock> OURANWOOD_VINE = BLOCKS.register("ouranwood_vine",
+    //         () -> OURANWOOD_VINE_INSTANCE);
+    // public static final DeferredBlock<OuranwoodVinePlantBlock> OURANWOOD_VINE_PLANT = BLOCKS.register("ouranwood_vine_plant",
+    //         () -> OURANWOOD_VINE_PLANT_INSTANCE);
     public static final DeferredBlock<MilkweedBlock> ORANGE_MILKWEED = BLOCKS.register("orange_milkweed",
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
     public static final DeferredBlock<MilkweedBlock> PINK_MILKWEED = BLOCKS.register("pink_milkweed",
@@ -636,6 +641,12 @@ public final class AntarchyFabricContent {
                     AntarchyFabricContent::cloudBucketItem,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.POWDER_SNOW).noLootTable().noOcclusion()
             ));
+    public static final DeferredBlock<AntDimensionPortalBlock> ELYTHIA_PORTAL = BLOCKS.register("elythia_portal",
+            () -> new AntDimensionPortalBlock(PermanentPortalType.ELYTHIA, portalProperties()));
+    public static final DeferredBlock<AntDimensionPortalBlock> THORAXIS_PORTAL = BLOCKS.register("thoraxis_portal",
+            () -> new AntDimensionPortalBlock(PermanentPortalType.THORAXIS, portalProperties()));
+    public static final DeferredBlock<AntDimensionPortalBlock> CAVARYN_PORTAL = BLOCKS.register("cavaryn_portal",
+            () -> new AntDimensionPortalBlock(PermanentPortalType.CAVARYN, portalProperties()));
     public static final DeferredBlock<Block> PALE_NYXITE = BLOCKS.register("pale_nyxite",
             () -> new Block(nyxiteProperties()));
     public static final DeferredBlock<NyxiteSpikeBlock> NYXITE_SPIKE = BLOCKS.register("nyxite_spike",
@@ -1103,6 +1114,12 @@ public final class AntarchyFabricContent {
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.TORCHFLOWER_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaSurfaceCoverFeature> ELYTHIA_SURFACE_COVER = FEATURES.register("elythia_surface_cover",
             () -> new ElythiaSurfaceCoverFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.VeryTallGrassWorldgenFeature> VERY_TALL_GRASS_FEATURE = FEATURES.register("very_tall_grass",
+            () -> new com.craisinlord.antarchy.content.worldgen.VeryTallGrassWorldgenFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature> BIG_BUSH_2X2_FEATURE = FEATURES.register("big_bush_2x2",
+            () -> new com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 1));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature> BIG_BUSH_3X3_FEATURE = FEATURES.register("big_bush_3x3",
+            () -> new com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 2));
     public static final DeferredHolder<Feature<?>, ElythiaUndergroundFeature> ELYTHIA_UNDERGROUND = FEATURES.register("elythia_underground",
             () -> new ElythiaUndergroundFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, BrutalflyCocoonFeature> BRUTALFLY_COCOON = FEATURES.register("brutalfly_cocoon",
@@ -1192,6 +1209,7 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_BUTTON);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_LEAVES);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_ACORN = ITEMS.registerSimpleBlockItem(OURANWOOD_ACORN_BLOCK);
+    // public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_VINE_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_VINE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_SHORT_GRASS_ITEM = ITEMS.registerSimpleBlockItem(VERY_SHORT_GRASS);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> VERY_TALL_GRASS_ITEM = ITEMS.registerSimpleBlockItem(VERY_TALL_GRASS);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BIG_BUSH_ITEM = ITEMS.register("big_bush",
@@ -2173,6 +2191,13 @@ public final class AntarchyFabricContent {
         return BLOOD_CRYSTAL_CRYSTAL.get();
     }
 
+    // private static OuranwoodVinePlantBlock createOuranwoodVinePlant() {
+    //     OuranwoodVinePlantBlock.bindHeadBlock(OURANWOOD_VINE_INSTANCE);
+    //     OuranwoodVinePlantBlock block = new OuranwoodVinePlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WEEPING_VINES_PLANT));
+    //     OuranwoodVineBlock.bindBodyBlock(block);
+    //     return block;
+    // }
+
     private static Block createDirtOre(Block copyFrom) {
         return new Block(dirtOreProperties());
     }
@@ -2190,6 +2215,17 @@ public final class AntarchyFabricContent {
 
     private static BlockBehaviour.Properties nyxiteProperties() {
         return BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK);
+    }
+
+    private static BlockBehaviour.Properties portalProperties() {
+        return BlockBehaviour.Properties.of()
+                .strength(-1.0F)
+                .noCollission()
+                .noOcclusion()
+                .lightLevel(state -> 11)
+                .noLootTable()
+                .isSuffocating((state, level, pos) -> false)
+                .isViewBlocking((state, level, pos) -> false);
     }
 
     private static Block createOre(Block copyFrom) {
@@ -2419,6 +2455,14 @@ public final class AntarchyFabricContent {
 
         // Wire common-module accessors after all registrations are complete.
         AntarchyObjects.setHerculesBeetle(() -> HERCULES_BEETLE.get());
+        PermanentPortalType.bindBlocks(
+                () -> MOSSY_OURANWOOD_WOOD.get(),
+                () -> ELYTHIA_PORTAL.get(),
+                () -> NYXITE.get(),
+                () -> THORAXIS_PORTAL.get(),
+                () -> MYRMITE.get(),
+                () -> CAVARYN_PORTAL.get()
+        );
 
         AntarchySoundEvents.bind(
                 SQUIDZOOKA_FIRE,

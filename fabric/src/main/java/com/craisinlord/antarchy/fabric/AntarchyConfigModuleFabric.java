@@ -169,6 +169,10 @@ public final class AntarchyConfigModuleFabric {
         private static boolean isMiscSetting(String name) {
             return name.equals("disableInfinityBookPortalCreation")
                     || name.equals("rainbowAntsLeadToInfinityDimensions")
+                    || name.equals("permanentPortalsEnabled")
+                    || name.equals("elythiaPortalEnabled")
+                    || name.equals("thoraxisPortalEnabled")
+                    || name.equals("cavarynPortalEnabled")
                     || name.equals("hushweedSporeLifetimeSeconds")
                     || name.equals("elythiaFireflyParticlesEnabled")
                     || name.equals("duplicatorTreeEnabled")

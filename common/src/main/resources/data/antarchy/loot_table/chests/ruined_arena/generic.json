@@ -153,7 +153,7 @@
               "function": "minecraft:set_components",
               "components": {
                 "minecraft:potion_contents": {
-                  "potion": "antarchy:inverted"
+                  "potion": "minecraft:slow_falling"
                 }
               }
             }
@@ -161,7 +161,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:book",
           "weight": 5,
           "functions": [
             {
@@ -198,14 +198,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:uranium_nugget",
-          "weight": 3,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 2.0,
+                "max": 5.0
               }
             }
           ]
@@ -213,14 +213,14 @@
         {
           "type": "minecraft:item",
           "name": "antarchy:titanium_nugget",
-          "weight": 3,
+          "weight": 40,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "min": 2.0,
+                "max": 5.0
               }
             }
           ]
@@ -283,7 +283,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:enchanted_book",
+          "name": "minecraft:book",
           "weight": 6,
           "functions": [
             {
