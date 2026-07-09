@@ -1,8 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": "#antarchy:very_short_grass_spawn_biomes",
-  "features": [
-    "antarchy:very_short_grass"
-  ],
-  "step": "vegetal_decoration"
-}

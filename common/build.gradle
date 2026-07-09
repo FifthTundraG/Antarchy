@@ -27,7 +27,12 @@ dependencies {
 //    compileOnly(files("$rootDir/infinite_dimensions_jars/soul-fire-d-neoforge-1.21-6.1.0.jar"))
 //    compileOnly(files("$rootDir/infinite_dimensions_jars/prometheus-neoforge-1.21-1.2.5.jar"))
     compileOnly(files("$rootDir/infinite_dimensions_jars/sable-neoforge-1.21.1-2.0.3.jar"))
-    compileOnly(files("$rootDir/infinite_dimensions_jars/antarchy-1.0.0+1.21.1-neoforge.jar"))
+//    compileOnly(files("$rootDir/infinite_dimensions_jars/antarchy-1.0.0+1.21.1-neoforge.jar"))
+    // NeoForge jar (not fabric) — sizeable_foliage's fabric jar is intermediary-mapped
+    // (Fabric remaps to intermediary for shipping, not official names), which common's
+    // official-Mojang-mapped compile can't resolve directly. NeoForge jars use official
+    // names throughout, so this is the one common can safely compile against.
+    compileOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-neoforge-1.21.1-1.0.0.jar"))
     compileOnly("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
 //
 //    compileOnly group: 'org.ow2.asm', name: 'asm-tree', version: '9.4'

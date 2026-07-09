@@ -33,6 +33,7 @@
     "java": ">=21",
     "fabric-api": "*",
     "integrated_api": "*",
-    "geckolib": "*"
+    "geckolib": "*",
+    "sizeable_foliage": "*"
   }
 }

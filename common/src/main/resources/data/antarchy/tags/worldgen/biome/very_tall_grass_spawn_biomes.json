@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "minecraft:plains",
-    "minecraft:savanna",
-    "minecraft:forest",
-    { "id": "#c:is_jungle", "required": false }
-  ]
-}

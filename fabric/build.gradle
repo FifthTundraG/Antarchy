@@ -42,6 +42,13 @@ dependencies {
     compileOnly(files("$rootDir/infinite_dimensions_jars/cloth-config-15.0.140-fabric.jar"))
     compileOnly(files("$rootDir/infinite_dimensions_jars/sable-neoforge-1.21.1-2.0.3.jar"))
 
+    // Compile against the NeoForge jar (official Mojang mappings, matches this module's compile
+    // space) but load the real Fabric jar at runtime — sizeable_foliage's Fabric jar ships
+    // intermediary-mapped (Fabric's normal shipping format) which this compileOnly classpath
+    // can't resolve directly.
+    compileOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-neoforge-1.21.1-1.0.0.jar"))
+    runtimeOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-fabric-1.21.1-1.0.0.jar"))
+
     annotationProcessor "org.spongepowered:mixin:0.8.7:processor"
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'namedElements')) { transitive false }

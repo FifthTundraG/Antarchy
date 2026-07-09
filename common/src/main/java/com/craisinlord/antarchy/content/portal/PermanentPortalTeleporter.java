@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public final class PermanentPortalTeleporter {
-    private static final int SEARCH_RADIUS = 8;
+    private static final int SEARCH_RADIUS = 24;
     private static final int VERTICAL_SEARCH = 24;
 
     private PermanentPortalTeleporter() {
