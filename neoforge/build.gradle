@@ -34,8 +34,8 @@ dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
     modLocalRuntime("curse.maven:intapi-${project.intapi_curseforge_id}:${project.intapi_curseforge_file_id_neoforge}")
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    compileOnly(files(rootProject.file("infinite_dimensions_jars/infinity-2.7.1+1.21.1-neoforge.jar")))
-    modLocalRuntime(files(rootProject.file("infinite_dimensions_jars/infinity-2.7.1+1.21.1-neoforge.jar")))
+//    compileOnly(files(rootProject.file("infinite_dimensions_jars/infinity-2.7.1+1.21.1-neoforge.jar")))
+//    modLocalRuntime(files(rootProject.file("infinite_dimensions_jars/infinity-2.7.1+1.21.1-neoforge.jar")))
 
     modLocalRuntime("com.telepathicgrunt:CommandStructures-Neoforge:${project.commandstructures_neoforge}")
     modLocalRuntime("com.telepathicgrunt:StructureVoidToggle-Neoforge:${project.structurevoidtoggle_neoforge}")

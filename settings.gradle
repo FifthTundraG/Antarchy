@@ -14,4 +14,4 @@ include("common")
 include("neoforge")
 include("fabric")
 
-rootProject.name = "Antarchy"
+rootProject.name = "Apple Cows"

@@ -1,38 +1,21 @@
-modLoader="javafml" #mandatory
-loaderVersion="[2,)" #mandatory
+modLoader="javafml"
+loaderVersion="[2,)"
 license="All rights reserved"
 
-[[mods]] #mandatory
-modId="antarchy" #mandatory
-logoFile="../assets/antarchy_/antarchy_logo.png"
-    logoBlur=false
-    version="${version}" #mandatory
-    displayName="Antarchy" #mandatory
-displayURL="https://www.curseforge.com/minecraft/mc-mods/antarchy"
-    authors="CraisinLord"
-    description='''
-    ANTS! ANTS! ANTS! ANTS!
-    '''
+[[mods]]
+modId="apple_cows"
+version="${version}"
+displayName="Apple Cows"
+authors="CraisinLord"
+description= "Adds cute little apple cows!! Standalone from the Antarchy mod."
+logoFile="../assets/antarchy_/apple_cows_logo.png"
 
-[[mixins]]
-    config = "antarchy-common.mixins.json"
-
-[[mixins]]
-    config = "antarchy-neoforge.mixins.json"
-
-[[dependencies.antarchy]]
+[[dependencies.apple_cows]]
     modId="minecraft"
     type="required"
     versionRange="[1.21.1,)"
 
-[[dependencies.antarchy]]
-    modId="integrated_api"
-    type="required"
-    versionRange="[1.6.2,)"
-    ordering="AFTER"
-    side="BOTH"
-
-[[dependencies.antarchy]]
+[[dependencies.apple_cows]]
     modId="geckolib"
     type="required"
     versionRange="*"

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "antarchy:block/dream_sandstone_top",
-    "side": "antarchy:block/cut_dream_sandstone",
-    "top": "antarchy:block/dream_sandstone_top"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "multipart": [
-    { "when": { "bottom": "false" }, "apply": { "model": "antarchy:block/antimetal_scaffolding_stable" } },
-    { "when": { "bottom": "true"  }, "apply": { "model": "antarchy:block/antimetal_scaffolding_unstable" } }
-  ]
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "antarchy:block/dream_sandstone_bottom",
-    "side": "antarchy:block/dream_sandstone",
-    "top": "antarchy:block/dream_sandstone_top"
-  }
-}

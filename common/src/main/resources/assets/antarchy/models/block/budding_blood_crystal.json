@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "antarchy:block/budding_blood_crystal_block"
-  }
-}
-
-

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "antarchy:block/blood_crystal_bud_stage1"
-  }
-}
-
-

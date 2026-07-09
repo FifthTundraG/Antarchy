@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "antarchy:block/nyxite",
-    "side": "antarchy:block/nyxite",
-    "top": "antarchy:block/nyxite"
-  }
-}

@@ -1,7 +1,6 @@
 {
     "pack": {
-        "description": "Antarchy mod resources",
-        "pack_format": 15,
-        "_comment": "ANTS"
+        "description": "Apple Cows mod resources",
+        "pack_format": 15
     }
 }

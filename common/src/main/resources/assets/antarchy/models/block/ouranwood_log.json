@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/jungle_log",
-  "textures": {
-    "end": "antarchy:block/ouranwood/ouranwood_log_top",
-    "side": "antarchy:block/ouranwood/ouranwood_log"
-  }
-}

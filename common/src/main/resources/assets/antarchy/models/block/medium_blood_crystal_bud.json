@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "antarchy:block/blood_crystal_bud_stage1"
-  }
-}
-
-
