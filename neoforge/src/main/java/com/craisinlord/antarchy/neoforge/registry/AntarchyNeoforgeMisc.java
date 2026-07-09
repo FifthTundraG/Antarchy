@@ -4,6 +4,7 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserBaseParticleOptions;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserParticleOptions;
 import com.craisinlord.antarchy.content.effect.DreadMobEffect;
+import com.craisinlord.antarchy.content.effect.GlimmersGraceMobEffect;
 import com.craisinlord.antarchy.content.effect.GrowthMobEffect;
 import com.craisinlord.antarchy.content.effect.InvertedMobEffect;
 import com.craisinlord.antarchy.content.effect.ParalyzedMobEffect;
@@ -12,18 +13,8 @@ import com.craisinlord.antarchy.content.effect.StinkyMobEffect;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
-import com.craisinlord.antarchy.content.worldgen.ants.TermiteNestFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.*;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.*;
-import com.craisinlord.antarchy.content.worldgen.VeryTallGrassWorldgenFeature;
-import com.craisinlord.antarchy.content.worldgen.BigBushWorldgenFeature;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluid;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluidType;
 import com.mojang.serialization.MapCodec;
@@ -83,6 +74,7 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.BloodglassWardEffect> BLOODGLASS_WARD = MOB_EFFECTS.register("bloodglass_ward", com.craisinlord.antarchy.content.effect.BloodglassWardEffect::new);
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
+    // public static final DeferredHolder<MobEffect, GlimmersGraceMobEffect> GLIMMERS_GRACE = MOB_EFFECTS.register("glimmers_grace", GlimmersGraceMobEffect::new);
 
     // Potions
     public static final DeferredHolder<Potion, Potion> INVERSION = POTIONS.register("inversion",
@@ -193,8 +185,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new BrownAntNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, RainbowAntNestFeature> RAINBOW_ANT_NEST_FEATURE = FEATURES.register("rainbow_ant_nest",
             () -> new RainbowAntNestFeature(SimpleBlockConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, TermiteNestFeature> TERMITE_NEST_FEATURE = FEATURES.register("termite_nest",
-            () -> new TermiteNestFeature(SimpleBlockConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_LARGE_TREE = FEATURES.register("ouranwood_large_tree",
             () -> new OuranwoodTreeFeature(OuranwoodTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_YOUNG_TREE = FEATURES.register("ouranwood_young_tree",
@@ -215,12 +205,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.TORCHFLOWER_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaSurfaceCoverFeature> ELYTHIA_SURFACE_COVER = FEATURES.register("elythia_surface_cover",
             () -> new ElythiaSurfaceCoverFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, VeryTallGrassWorldgenFeature> VERY_TALL_GRASS_FEATURE = FEATURES.register("very_tall_grass",
-            () -> new VeryTallGrassWorldgenFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, BigBushWorldgenFeature> BIG_BUSH_2X2_FEATURE = FEATURES.register("big_bush_2x2",
-            () -> new BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 1));
-    public static final DeferredHolder<Feature<?>, BigBushWorldgenFeature> BIG_BUSH_3X3_FEATURE = FEATURES.register("big_bush_3x3",
-            () -> new BigBushWorldgenFeature(NoneFeatureConfiguration.CODEC, 2));
     public static final DeferredHolder<Feature<?>, ElythiaUndergroundFeature> ELYTHIA_UNDERGROUND = FEATURES.register("elythia_underground",
             () -> new ElythiaUndergroundFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, BrutalflyCocoonFeature> BRUTALFLY_COCOON = FEATURES.register("brutalfly_cocoon",
@@ -255,16 +239,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new ThoraxisSpikeFeature(ThoraxisSpikeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, NyxiteSpikeFeature> NYXITE_SPIKES = FEATURES.register("nyxite_spikes",
             () -> new NyxiteSpikeFeature(NyxiteSpikeConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, ChitenSpikeFeature> CAVARYN_CHITEN_SPIKES = FEATURES.register("cavaryn_chiten_spikes",
-            () -> new ChitenSpikeFeature(ChitenSpikeConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, CavarynBileVeinFeature> CAVARYN_BILE_VEINS = FEATURES.register("cavaryn_bile_veins",
-            () -> new CavarynBileVeinFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, CavarynBileCystFeature> CAVARYN_BILE_CYSTS = FEATURES.register("cavaryn_bile_cysts",
-            () -> new CavarynBileCystFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, CavarynCreepvineFeature> CAVARYN_CREEPVINE = FEATURES.register("cavaryn_creepvine",
-            () -> new CavarynCreepvineFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, CavarynWallAmberMossFeature> CAVARYN_WALL_AMBER_MOSS = FEATURES.register("cavaryn_wall_amber_moss",
-            () -> new CavarynWallAmberMossFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, AntiwaterSpringsFeature> ANTIWATER_SPRINGS = FEATURES.register("antiwater_springs",
             () -> new AntiwaterSpringsFeature(AntiwaterSpringsConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, PotentNyxiteFeature> POTENT_NYXITE_FEATURE = FEATURES.register("potent_nyxite",
@@ -277,8 +251,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new BedBugNestFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, BedBugSurfaceClusterFeature> BED_BUG_SURFACE_CLUSTER = FEATURES.register("bed_bug_surface_cluster",
             () -> new BedBugSurfaceClusterFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, CavarynEggPatchFeature> CAVARYN_TERROR_EGG_PATCH = FEATURES.register("cavaryn_terror_egg_patch",
-            () -> new CavarynEggPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisAntiwaterPoolFeature> THORAXIS_ANTIWATER_POOL = FEATURES.register("thoraxis_antiwater_pool",
             () -> new ThoraxisAntiwaterPoolFeature(ThoraxisAntiwaterPoolConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, LucidAntiwaterPoolFeature> LUCID_ANTIWATER_POOL = FEATURES.register("lucid_antiwater_pool",

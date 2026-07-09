@@ -99,6 +99,10 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> GLIMMER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Holder<MobEffect>> GLIMMERS_GRACE = (Supplier<Holder<MobEffect>>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_LOG = (Supplier<Block>) UNBOUND;
@@ -211,8 +215,6 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> PINK_MILKWEED = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<Block> TORCHFLOWER_BUSH = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
     public static Supplier<Block> BED_BUG_EGG = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> CREEPING_HORROR_EGGS = (Supplier<Block>) UNBOUND;
@@ -319,7 +321,6 @@ public final class AntarchyObjects {
             Supplier<Block> mossyOuranwoodWood,
             Supplier<Block> orangeMilkweed,
             Supplier<Block> pinkMilkweed,
-            Supplier<Block> torchflowerBush,
             Supplier<Block> bedBugEggs,
             Supplier<Block> creepingHorrorEggs,
             Supplier<Block> lurkingTerrorEggs,
@@ -413,7 +414,6 @@ public final class AntarchyObjects {
         MOSSY_OURANWOOD_WOOD = mossyOuranwoodWood;
         ORANGE_MILKWEED = orangeMilkweed;
         PINK_MILKWEED = pinkMilkweed;
-        TORCHFLOWER_BUSH = torchflowerBush;
         BED_BUG_EGG = bedBugEggs;
         CREEPING_HORROR_EGGS = creepingHorrorEggs;
         LURKING_TERROR_EGGS = lurkingTerrorEggs;
@@ -442,6 +442,14 @@ public final class AntarchyObjects {
 
     public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
         HERCULES_BEETLE = supplier;
+    }
+
+    public static void setGlimmer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> supplier) {
+        GLIMMER = supplier;
+    }
+
+    public static void setGlimmersGrace(Supplier<Holder<MobEffect>> supplier) {
+        GLIMMERS_GRACE = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

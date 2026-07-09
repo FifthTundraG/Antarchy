@@ -68,7 +68,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.INT);
 
     private static final int MAX_CHARGE_TICKS = 40;
-    private static final float WATER_RIDE_SPEED = 1.84F;
+    private static final float WATER_RIDE_SPEED = 0.78F;
     private static final float LAND_BEACH_SPEED = 0.10F;
     private static final int QUIRK_DURATION_TICKS = 65;
     private static final int MIN_QUIRK_COOLDOWN_TICKS = 140;
@@ -277,13 +277,16 @@ public class DorrieEntity extends Animal implements GeoEntity {
     public void tick() {
         super.tick();
         this.updateNavigationMode();
-        this.setNoGravity(this.isInWater() || this.isInLava());
+        this.setNoGravity(false);
 
         if (this.getControllingPassenger() instanceof Player player) {
             this.setYRot(player.getYRot());
             this.yRotO = this.getYRot();
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
+            if (this.getQuirkTicks() > 0) {
+                this.setQuirkTicks(0);
+            }
             if (this.isInWater() || this.isInLava()) {
                 if (player.zza > 0.05F) {
                     this.swimForwardTicks = Math.min(this.swimForwardTicks + 1, 60);
@@ -365,7 +368,14 @@ public class DorrieEntity extends Animal implements GeoEntity {
             if (this.isInWater() || this.isInLava()) {
                 this.moveRelative(this.getSpeed(), new Vec3(riddenInput.x, 0.0D, riddenInput.z));
                 Vec3 motion = this.getDeltaMovement();
-                double vertical = this.isLeaping ? 0.0D : riddenInput.y * 0.09D;
+                double vertical = 0.0D;
+                if (!this.isLeaping) {
+                    if (this.isUnderWater()) {
+                        vertical = riddenInput.y * 0.025D;
+                    } else if (riddenInput.y < 0.0D) {
+                        vertical = riddenInput.y * 0.02D;
+                    }
+                }
                 this.setDeltaMovement(
                         motion.x * 0.92D,
                         motion.y * 0.90D + vertical,
@@ -374,10 +384,6 @@ public class DorrieEntity extends Animal implements GeoEntity {
                 this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
                 return;
             }
-
-            this.moveRelative(this.getSpeed(), new Vec3(riddenInput.x, 0.0D, riddenInput.z));
-            this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
-            return;
         }
 
         super.travel(travelVector);
@@ -410,9 +416,9 @@ public class DorrieEntity extends Animal implements GeoEntity {
         if (this.hasPassenger(passenger)) {
             Vec3 forward = this.getLookAngle().multiply(1.0D, 0.0D, 1.0D);
             moveFunction.accept(passenger,
-                    this.getX() - forward.x * 0.25D,
+                    this.getX() - forward.x * 0.65D,
                     this.getY() + 0.5D,
-                    this.getZ() - forward.z * 0.25D);
+                    this.getZ() - forward.z * 0.65D);
         }
     }
 
@@ -478,16 +484,18 @@ public class DorrieEntity extends Animal implements GeoEntity {
         }
 
         boolean moving = this.isMovingForAnimation(state);
+        if (this.onGround()) {
+            if (moving) {
+                state.getController().setAnimationSpeed(0.75D);
+                return state.setAndContinue(WALK_ANIM);
+            }
+            return state.setAndContinue(IDLE_GROUND_ANIM);
+        }
+
         if (this.isInWater() || this.isInLava()) {
             return state.setAndContinue(moving ? SWIM_ANIM : IDLE_WATER_ANIM);
         }
-
-        if (moving) {
-            state.getController().setAnimationSpeed(0.75D);
-            return state.setAndContinue(WALK_ANIM);
-        }
-
-        return state.setAndContinue(IDLE_GROUND_ANIM);
+        return state.setAndContinue(moving ? SWIM_ANIM : IDLE_GROUND_ANIM);
     }
 
     @Override

@@ -19,7 +19,7 @@ public final class PermanentPortalShape {
     public static final int MIN_WIDTH = 2;
     public static final int MIN_HEIGHT = 3;
     public static final int MAX_SIZE = 21;
-    public static final int ACTIVE_SEARCH_RADIUS = 8;
+    public static final int ACTIVE_SEARCH_RADIUS = 24;
 
     private final PermanentPortalType type;
     private final Direction.Axis axis;

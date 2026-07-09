@@ -6,6 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 public class EmperorScorpionModel extends GeoModel<EmperorScorpionEntity> {
+    public static final ResourceLocation NORMAL_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/emperor_scorpion/emperor_scorpion.png");
+    public static final ResourceLocation HARDEN_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/emperor_scorpion/emperor_scorpion_harden.png");
 
     public static final ResourceLocation EMISSIVE_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/emperor_scorpion/emperor_scorpion_emissive.png");
@@ -17,7 +21,7 @@ public class EmperorScorpionModel extends GeoModel<EmperorScorpionEntity> {
 
     @Override
     public ResourceLocation getTextureResource(EmperorScorpionEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/emperor_scorpion/emperor_scorpion.png");
+        return NORMAL_TEXTURE;
     }
 
     @Override

@@ -7,6 +7,7 @@ public final class AntarchyFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         AntarchyFabricClientNetworking.register();
+        AntarchyFabricClientNetworking.bootstrapMultipartClient();
         AntarchyFabricClientBootstrap.register();
     }
 }

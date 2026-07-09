@@ -162,7 +162,7 @@ public final class AntarchySettings {
     private static int basiliskSpawnMaxLightLevel = 5;
     private static double basiliskHealth = 150.0D;
     private static double basiliskAttackDamage = 36.0D;
-    private static double basiliskMovementSpeed = 0.225D;
+    private static double basiliskMovementSpeed = 0.18D;
     private static double basiliskArmor = 6.0D;
     private static double basiliskKnockbackResistance = 0.5D;
     private static double basiliskFollowRange = 28.0D;
@@ -239,10 +239,10 @@ public final class AntarchySettings {
     private static final int     reverieAmbientTargetMaxAgeTicks  = 40;
     private static final int     reverieAmbientPulseIntervalMinTicks = 12;
     private static final int     reverieAmbientPulseIntervalMaxTicks = 19;
-    private static double emperorScorpionHealth = 400.0D;
+    private static double emperorScorpionHealth = 300.0D;
     private static double emperorScorpionAttackDamage = 28.0D;
     private static double emperorScorpionMovementSpeed = 0.384D;
-    private static double emperorScorpionArmor = 25.0D;
+    private static double emperorScorpionArmor = 22.0D;
     private static double emperorScorpionKnockbackResistance = 0.8D;
     private static double emperorScorpionFollowRange = 40.0D;
     private static int emperorScorpionXpReward = 25;
@@ -490,6 +490,7 @@ public final class AntarchySettings {
     private static double herculesBeetleHealth = 500.0D;
     private static double herculesBeetleAttackDamage = 30.0D;
     private static double herculesBeetleChargeDamage = 40.0D;
+    private static double glimmerHealth = 20.0D;
 
     private AntarchySettings() {
     }
@@ -2547,4 +2548,6 @@ public final class AntarchySettings {
     public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
     public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
     public static void setDorrieHealth(double v) { dorrieHealth = v; }
+    public static double glimmerHealth() { return glimmerHealth; }
+    public static void setGlimmerHealth(double v) { glimmerHealth = v; }
 }

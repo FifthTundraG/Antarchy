@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
  * part directly two above the origin of a stage-3 bush renders the top slice of
  * the oversized cross model
  */
-public class BigBushPartBlock extends Block {
+public class BigBushPartBlock extends Block implements BonemealableBlock {
     public static final MapCodec<BigBushPartBlock> CODEC = Block.simpleCodec(BigBushPartBlock::new);
 
     public static final BooleanProperty CAP = BooleanProperty.create("cap");
@@ -120,6 +121,29 @@ public class BigBushPartBlock extends Block {
         BlockState originState = level.getBlockState(origin);
         if (!originState.canSurvive(level, origin)) {
             level.destroyBlock(origin, true);
+        }
+    }
+
+    /** Bonemeal applied to any part of a growing bush grows the whole thing, same as clicking the origin. */
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        BlockPos origin = findOrigin(level, pos);
+        return origin != null && level.getBlockState(origin).getBlock() instanceof BigBushBlock bigBush
+                && bigBush.isValidBonemealTarget(level, origin, level.getBlockState(origin));
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        BlockPos origin = findOrigin(level, pos);
+        return origin != null && level.getBlockState(origin).getBlock() instanceof BigBushBlock bigBush
+                && bigBush.isBonemealSuccess(level, random, origin, level.getBlockState(origin));
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        BlockPos origin = findOrigin(level, pos);
+        if (origin != null && level.getBlockState(origin).getBlock() instanceof BigBushBlock bigBush) {
+            bigBush.performBonemeal(level, random, origin, level.getBlockState(origin));
         }
     }
 

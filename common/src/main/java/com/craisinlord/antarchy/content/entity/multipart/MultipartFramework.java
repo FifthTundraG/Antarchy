@@ -33,7 +33,6 @@ public final class MultipartFramework {
     @Nullable
     private static PartFactory partFactory;
     private static NetworkBridge networkBridge = NOOP_BRIDGE;
-
     private MultipartFramework() {
     }
 

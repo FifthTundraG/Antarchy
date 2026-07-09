@@ -76,8 +76,6 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
     private static final String AGGRO_TRIGGERED_KEY = "AggroTriggered";
     private static final String GRAB_TARGET_KEY = "GrabTarget";
 
-    private static final double BOSS_BAR_RANGE = 40.0D;
-
     private static final int ATTACK_NONE = 0;
     private static final int ATTACK_GRAB = 1;
     private static final int ATTACK_SWING_LEFT = 2;
@@ -263,8 +261,19 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
 
         LivingEntity target = this.getTarget();
         if ((target == null || !target.isAlive()) && this.tickCount % 10 == 0) {
-            Player nearbyPlayer = this.level().getNearestPlayer(this, BOSS_BAR_RANGE);
-            if (nearbyPlayer != null && this.canAttack(nearbyPlayer)) {
+            Player nearbyPlayer = null;
+            double nearestHorizontalDistanceSqr = Double.MAX_VALUE;
+            for (Player player : this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(this.getBossBarRange(), 192.0D, this.getBossBarRange()))) {
+                if (!player.isAlive() || !this.canAttack(player) || !this.isWithinBossBarRange(player)) {
+                    continue;
+                }
+                double horizontalDistanceSqr = this.horizontalDistanceToSqr(player);
+                if (horizontalDistanceSqr < nearestHorizontalDistanceSqr) {
+                    nearestHorizontalDistanceSqr = horizontalDistanceSqr;
+                    nearbyPlayer = player;
+                }
+            }
+            if (nearbyPlayer != null) {
                 this.setTarget(nearbyPlayer);
                 target = nearbyPlayer;
             }
@@ -943,11 +952,12 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
             return;
         }
 
-        AABB bossBarArea = this.getBoundingBox().inflate(BOSS_BAR_RANGE, 16.0D, BOSS_BAR_RANGE);
+        double bossBarRange = this.getBossBarRange();
+        AABB bossBarArea = this.getBoundingBox().inflate(bossBarRange, 192.0D, bossBarRange);
         List<ServerPlayer> nearbyPlayers = serverLevel.getEntitiesOfClass(
                 ServerPlayer.class,
                 bossBarArea,
-                player -> player.isAlive() && this.distanceToSqr(player) <= BOSS_BAR_RANGE * BOSS_BAR_RANGE
+                player -> player.isAlive() && this.isWithinBossBarRange(player)
         );
 
         for (ServerPlayer player : List.copyOf(this.bossEvent.getPlayers())) {
@@ -963,6 +973,21 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
         }
 
         this.setKrakenStormActive(!nearbyPlayers.isEmpty());
+    }
+
+    private double getBossBarRange() {
+        return Math.max(40.0D, com.craisinlord.antarchy.config.AntarchySettings.krakenBossBarRange());
+    }
+
+    private boolean isWithinBossBarRange(Entity entity) {
+        double bossBarRange = this.getBossBarRange();
+        return this.horizontalDistanceToSqr(entity) <= bossBarRange * bossBarRange;
+    }
+
+    private double horizontalDistanceToSqr(Entity entity) {
+        double dx = this.getX() - entity.getX();
+        double dz = this.getZ() - entity.getZ();
+        return dx * dx + dz * dz;
     }
 
     private void applyPhaseTwoBuffs() {

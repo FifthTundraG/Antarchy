@@ -4,6 +4,9 @@ import com.craisinlord.antarchy.content.client.BloodglassClientState;
 import com.craisinlord.antarchy.content.client.BrutalflyElytraClientState;
 import com.craisinlord.antarchy.content.client.ScorpionWhipTetherClientState;
 import com.craisinlord.antarchy.content.client.ThoraxisWeatherClientState;
+import com.craisinlord.antarchy.content.entity.multipart.MultipartFramework;
+import com.craisinlord.antarchy.content.entity.multipart.network.MultipartAttackPayload;
+import com.craisinlord.antarchy.content.entity.multipart.network.MultipartInteractPayload;
 import com.craisinlord.antarchy.content.network.*;
 import com.craisinlord.antarchy.content.weather.ThoraxisWeatherKind;
 import com.craisinlord.antarchy.fabric.client.BloodCrystalKatanaTrailClientState;
@@ -12,6 +15,23 @@ import net.minecraft.resources.ResourceLocation;
 
 public final class AntarchyFabricClientNetworking {
     private AntarchyFabricClientNetworking() {
+    }
+
+    public static void bootstrapMultipartClient() {
+        MultipartFramework.bootstrap(
+                AntarchyFabricNetworking::createMultipartPart,
+                new MultipartFramework.NetworkBridge() {
+                    @Override
+                    public void sendAttack(java.util.UUID parentId, int partIndex, float damage) {
+                        ClientPlayNetworking.send(new MultipartAttackPayload(parentId, partIndex, damage));
+                    }
+
+                    @Override
+                    public void sendInteract(java.util.UUID parentId, int partIndex, int handId) {
+                        ClientPlayNetworking.send(new MultipartInteractPayload(parentId, partIndex, handId));
+                    }
+                }
+        );
     }
 
     public static void register() {

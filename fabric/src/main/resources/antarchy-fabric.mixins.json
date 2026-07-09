@@ -15,6 +15,7 @@
     "BloodglassRespawnMixin",
     "DreamCampfireBlockEntityMixin",
     "JumpyBootsFallDamageMixin",
+    "entity.MultipartEntityLevelRegistryMixin",
     "WoodTypeInvoker",
     "infinity.RandomSpringMixin",
     "infinity.PortalCreatorMixin"
@@ -24,7 +25,9 @@
     "client.DuctTapeInputMixin",
     "client.AntiwaterFogMixin",
     "client.GravityGunMouseScrollMixin",
-    "client.CrossbowArmPoseMixin"
+    "client.CrossbowArmPoseMixin",
+    "client.MultipartClientSpawnMixin",
+    "client.MultipartEntityLevelRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

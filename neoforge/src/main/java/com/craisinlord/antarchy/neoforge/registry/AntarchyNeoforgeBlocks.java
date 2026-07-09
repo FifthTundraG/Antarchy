@@ -4,8 +4,6 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.block.*;
-import com.craisinlord.antarchy.content.block.CreepingHorrorEggBlock;
-import com.craisinlord.antarchy.content.block.LurkingTerrorEggBlock;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
@@ -85,30 +83,6 @@ public final class AntarchyNeoforgeBlocks {
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
     public static final DeferredBlock<MilkweedBlock> PINK_MILKWEED = BLOCKS.register("pink_milkweed",
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
-    public static final DeferredBlock<TorchflowerBushBlock> TORCHFLOWER_BUSH = BLOCKS.register("torchflower_bush",
-            () -> new TorchflowerBushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)
-                    .lightLevel(state -> AntarchySettings.glowingTorchflowers() ? 15 : 0)));
-    public static final DeferredBlock<VeryShortGrassBlock> VERY_SHORT_GRASS = BLOCKS.register("very_short_grass",
-            () -> new VeryShortGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)));
-    public static final DeferredBlock<VeryTallGrassBlock> VERY_TALL_GRASS = BLOCKS.register("very_tall_grass",
-            () -> new VeryTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS)));
-    public static final DeferredBlock<BigBushBlock> BIG_BUSH = BLOCKS.register("big_bush",
-            () -> new BigBushBlock(BlockBehaviour.Properties.of()
-                    .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .ignitedByLava()
-                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
-    public static final DeferredBlock<BigBushPartBlock> BIG_BUSH_PART = BLOCKS.register("big_bush_part",
-            () -> new BigBushPartBlock(BlockBehaviour.Properties.of()
-                    .mapColor(net.minecraft.world.level.material.MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .ignitedByLava()
-                    .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
-                    .noLootTable()));
     public static final DeferredBlock<StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
             () -> new StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
@@ -202,39 +176,19 @@ public final class AntarchyNeoforgeBlocks {
             () -> new AntDimensionPortalBlock(PermanentPortalType.ELYTHIA, portalProperties()));
     public static final DeferredBlock<AntDimensionPortalBlock> THORAXIS_PORTAL = BLOCKS.register("thoraxis_portal",
             () -> new AntDimensionPortalBlock(PermanentPortalType.THORAXIS, portalProperties()));
-    public static final DeferredBlock<AntDimensionPortalBlock> CAVARYN_PORTAL = BLOCKS.register("cavaryn_portal",
-            () -> new AntDimensionPortalBlock(PermanentPortalType.CAVARYN, portalProperties()));
     public static final DeferredBlock<Block> PALE_NYXITE = BLOCKS.register("pale_nyxite",
             () -> new Block(nyxiteProperties()));
     public static final DeferredBlock<NyxiteSpikeBlock> NYXITE_SPIKE = BLOCKS.register("nyxite_spike",
             () -> new NyxiteSpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POINTED_DRIPSTONE)));
-    public static final DeferredBlock<ChitenSpikeBlock> CHITEN_SPIKE = BLOCKS.register("chiten_spike",
-            () -> new ChitenSpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POINTED_DRIPSTONE)));
     public static final DeferredBlock<PotentNyxiteBlock> POTENT_NYXITE = BLOCKS.register("potent_nyxite",
             () -> new PotentNyxiteBlock(
                     AntarchyNeoforgeItems::potentNyxiteBlockEntityType,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK).lightLevel(state -> 3)
             ));
-    public static final DeferredBlock<Block> MYRMITE = BLOCKS.register("myrmite",
-            () -> new Block(nyxiteProperties()));
-    public static final DeferredBlock<Block> BROODSTONE = BLOCKS.register("broodstone",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<RotatedPillarBlock> CHITEN_BLOCK = BLOCKS.register("chiten_block",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BONE_BLOCK).requiresCorrectToolForDrops()));
     public static final DeferredBlock<UmbralMossBlock> UMBRAL_MOSS_BLOCK = BLOCKS.register("umbral_moss_block",
             () -> new UmbralMossBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK)));
     public static final DeferredBlock<UmbralMossCarpetBlock> UMBRAL_MOSS_CARPET = BLOCKS.register("umbral_moss_carpet",
             () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
-    public static final DeferredBlock<AmberMossBlock> AMBER_MOSS_BLOCK = BLOCKS.register("amber_moss_block",
-            () -> new AmberMossBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK)));
-    public static final DeferredBlock<UmbralMossCarpetBlock> AMBER_MOSS_CARPET = BLOCKS.register("amber_moss_carpet",
-            () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
-    public static final DeferredBlock<GlowLichenBlock> AMBER_LICHEN = BLOCKS.register("amber_lichen",
-            () -> new GlowLichenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLOW_LICHEN).lightLevel(state -> 4)));
-    public static final DeferredBlock<Block> BILE_VEIN = BLOCKS.register("bile_vein",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK)));
-    public static final DeferredBlock<VineBlock> CREEPVINE = BLOCKS.register("creepvine",
-            () -> new VineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.VINE)));
     public static final DeferredBlock<DreamTorchBlock> DREAM_TORCH = BLOCKS.register("dream_torch",
             () -> new DreamTorchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_TORCH)));
     public static final DeferredBlock<DreamWallTorchBlock> DREAM_WALL_TORCH = BLOCKS.register("dream_wall_torch",
@@ -255,10 +209,6 @@ public final class AntarchyNeoforgeBlocks {
                     .noOcclusion()
                     .noCollission()
                     .replaceable()));
-    public static final DeferredBlock<CreepingHorrorEggBlock> CREEPING_HORROR_EGG = BLOCKS.register("creeping_horror_egg",
-            () -> new CreepingHorrorEggBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TURTLE_EGG)));
-    public static final DeferredBlock<LurkingTerrorEggBlock> LURKING_TERROR_EGG = BLOCKS.register("lurking_terror_egg",
-            () -> new LurkingTerrorEggBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TURTLE_EGG)));
     public static final DeferredBlock<WaspNestBlock> WASP_NEST = BLOCKS.register("wasp_nest",
             () -> new WaspNestBlock(AntarchyNeoforgeItems::waspNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.BEE_NEST)));
     public static final DeferredBlock<com.craisinlord.antarchy.content.block.OuranwoodSquirrelNestBlock> OURANWOOD_SQUIRREL_NEST = BLOCKS.register("ouranwood_squirrel_nest",
@@ -285,8 +235,6 @@ public final class AntarchyNeoforgeBlocks {
             () -> new AntNestBlock(AntarchyNeoforgeEntites.BROWN_ANT, AntarchyNeoforgeItems::antNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).noLootTable()));
     public static final DeferredBlock<AntNestBlock> RAINBOW_ANT_NEST = BLOCKS.register("rainbow_ant_nest",
             () -> new AntNestBlock(AntarchyNeoforgeEntites.RAINBOW_ANT, AntarchyNeoforgeItems::antNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).noLootTable()));
-    public static final DeferredBlock<AntNestBlock> TERMITE_NEST = BLOCKS.register("termite_nest",
-            () -> new AntNestBlock(AntarchyNeoforgeEntites.TERMITE, AntarchyNeoforgeItems::antNestBlockEntityType, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).noLootTable()));
     public static final DeferredBlock<Block> URANIUM_ORE = BLOCKS.register("uranium_ore",
             () -> createOre(Blocks.EMERALD_ORE, 4, 8));
     public static final DeferredBlock<Block> DEEPSLATE_URANIUM_ORE = BLOCKS.register("deepslate_uranium_ore",
@@ -397,8 +345,7 @@ public final class AntarchyNeoforgeBlocks {
                     AntNestBlockEntity::new,
                     RED_ANT_NEST.get(),
                     BROWN_ANT_NEST.get(),
-                    RAINBOW_ANT_NEST.get(),
-                    TERMITE_NEST.get()
+                    RAINBOW_ANT_NEST.get()
             ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DreamCampfireBlockEntity>> DREAM_CAMPFIRE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("dream_campfire",
             () -> BlockEntityType.Builder.of(

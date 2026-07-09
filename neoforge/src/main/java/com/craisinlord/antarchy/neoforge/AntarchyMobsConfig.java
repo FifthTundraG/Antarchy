@@ -212,6 +212,11 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
 
 
+    // Glimmer
+
+    private static final ModConfigSpec.DoubleValue GLIMMER_HEALTH;
+
+
     // Hercules Beetle
 
     private static final ModConfigSpec.DoubleValue HERCULES_BEETLE_HEALTH;
@@ -473,7 +478,7 @@ public final class AntarchyMobsConfig {
                 .defineInRange("spawnMaxLightLevel", 5, 0, 15);
         BASILISK_HEALTH = b.comment("Base max health.").defineInRange("health", 150.0D, 1.0D, 32768.0D);
         BASILISK_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 36.0D, 0.0D, 1024.0D);
-        BASILISK_MOVEMENT_SPEED = b.comment("Base movement speed.").defineInRange("movementSpeed", 0.35D, 0.0D, 10.0D);
+        BASILISK_MOVEMENT_SPEED = b.comment("Base movement speed.").defineInRange("movementSpeed", 0.28D, 0.0D, 10.0D);
         BASILISK_ARMOR = b.comment("Base armor value.").defineInRange("armor", 6.0D, 0.0D, 1024.0D);
         BASILISK_KNOCKBACK_RESISTANCE = b.comment("Base knockback resistance.").defineInRange("knockbackResistance", 0.5D, 0.0D, 1.0D);
         BASILISK_FOLLOW_RANGE = b.comment("Base follow range.").defineInRange("followRange", 28.0D, 1.0D, 128.0D);
@@ -540,6 +545,10 @@ public final class AntarchyMobsConfig {
 
         b.push("dorrie");
         DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
+        b.pop();
+
+        b.push("glimmer");
+        GLIMMER_HEALTH = b.comment("Base max health.").defineInRange("health", 20.0D, 1.0D, 32768.0D);
         b.pop();
 
         b.push("herculesBeetle");
@@ -718,6 +727,7 @@ public final class AntarchyMobsConfig {
     static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
     static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
     static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
+    static double  glimmerHealth()                          { return GLIMMER_HEALTH.get(); }
     static double  herculesBeetleHealth()                   { return HERCULES_BEETLE_HEALTH.get(); }
     static double  herculesBeetleAttackDamage()             { return HERCULES_BEETLE_ATTACK_DAMAGE.get(); }
     static double  herculesBeetleChargeDamage()             { return HERCULES_BEETLE_CHARGE_DAMAGE.get(); }

@@ -1,9 +1,8 @@
 package com.craisinlord.antarchy.content.worldgen.elythia;
 
-import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.AntarchyObjects;
-import com.craisinlord.antarchy.content.block.BigBushBlock;
-import com.craisinlord.antarchy.content.block.VeryTallGrassBlock;
+import com.craisinlord.sizeablefoliage.content.block.BigBushBlock;
+import com.craisinlord.sizeablefoliage.content.block.VeryTallGrassBlock;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +22,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
+    private static final String SIZEABLE_FOLIAGE_MODID = "sizeable_foliage";
+
     private final Variant variant;
 
     public ElythiaFloraFeature(Codec<NoneFeatureConfiguration> codec, Variant variant) {
@@ -127,7 +128,7 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         if (this.variant == Variant.TORCHFLOWER_FIELDS) {
             float roll = random.nextFloat();
             if (roll < 0.14F) {
-                return placeDouble(level, plantPos, AntarchyObjects.TORCHFLOWER_BUSH.get().defaultBlockState());
+                return placeDouble(level, plantPos, torchflowerBush().defaultBlockState());
             }
             if (roll < 0.58F) {
                 return placeSingle(level, plantPos, Blocks.TORCHFLOWER);
@@ -201,17 +202,22 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     private static Block veryShortGrass() {
-        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_short_grass"));
+        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(SIZEABLE_FOLIAGE_MODID, "very_short_grass"));
         return block == Blocks.AIR ? Blocks.SHORT_GRASS : block;
     }
 
     private static Block veryTallGrass() {
-        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_tall_grass"));
+        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(SIZEABLE_FOLIAGE_MODID, "very_tall_grass"));
         return block == Blocks.AIR ? Blocks.TALL_GRASS : block;
     }
 
+    private static Block torchflowerBush() {
+        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(SIZEABLE_FOLIAGE_MODID, "torchflower_bush"));
+        return block == Blocks.AIR ? Blocks.TORCHFLOWER : block;
+    }
+
     private boolean placeBigBushes(WorldGenLevel level, BlockPos origin, RandomSource random, int radius) {
-        Block bushBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush"));
+        Block bushBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(SIZEABLE_FOLIAGE_MODID, "big_bush"));
         if (!(bushBlock instanceof BigBushBlock)) {
             return false;
         }

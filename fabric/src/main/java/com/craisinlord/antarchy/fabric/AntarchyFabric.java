@@ -38,50 +38,10 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "mantis_overworld_spawn_biomes")
     );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> VERY_SHORT_GRASS_SPAWN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_short_grass_spawn_biomes")
-    );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> VERY_TALL_GRASS_SPAWN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_tall_grass_spawn_biomes")
-    );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> BIG_BUSH_SPAWN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush_spawn_biomes")
-    );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> BIG_BUSH_2X2_SPAWN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush_2x2_spawn_biomes")
-    );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> MEGA_TAIGA_SPAWN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "mega_taiga_spawn_biomes")
-    );
-    private static final ResourceKey<PlacedFeature> VERY_SHORT_GRASS_FEATURE = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_short_grass")
-    );
-    private static final ResourceKey<PlacedFeature> VERY_TALL_GRASS_FEATURE = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "very_tall_grass")
-    );
-    private static final ResourceKey<PlacedFeature> BIG_BUSH_FEATURE = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush")
-    );
-    private static final ResourceKey<PlacedFeature> BIG_BUSH_2X2_FEATURE = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush_2x2")
-    );
-    private static final ResourceKey<PlacedFeature> BIG_BUSH_3X3_FEATURE = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "big_bush_3x3")
-    );
-
     @Override
     public void onInitialize() {
         AntarchyFabricNetworking.register();
+        AntarchyFabricNetworking.bootstrapMultipartCommon();
         AntarchyConfigModuleFabric.init();
         AntarchyFabricContent.register();
         registerWorldgenFeatures();
@@ -130,31 +90,6 @@ public final class AntarchyFabric implements ModInitializer {
                 net.minecraft.world.entity.MobCategory.MONSTER,
                 AntarchyFabricContent.ALPHA_MANTIS.get(),
                 1, 1, 1
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(VERY_SHORT_GRASS_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                VERY_SHORT_GRASS_FEATURE
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(VERY_TALL_GRASS_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                VERY_TALL_GRASS_FEATURE
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(BIG_BUSH_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                BIG_BUSH_FEATURE
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(BIG_BUSH_2X2_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                BIG_BUSH_2X2_FEATURE
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(MEGA_TAIGA_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                BIG_BUSH_3X3_FEATURE
         );
     }
 }

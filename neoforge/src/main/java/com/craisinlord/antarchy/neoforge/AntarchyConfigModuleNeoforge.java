@@ -199,6 +199,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
         AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
         AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
+        AntarchySettings.setGlimmerHealth(AntarchyMobsConfig.glimmerHealth());
     }
 
     private static void bakeToolsConfig() {
