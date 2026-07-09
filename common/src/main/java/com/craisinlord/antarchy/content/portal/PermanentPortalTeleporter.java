@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 public final class PermanentPortalTeleporter {
     private static final int SEARCH_RADIUS = 24;
     private static final int VERTICAL_SEARCH = 24;
+    private static final int EXISTING_PORTAL_SEARCH_RADIUS = 48;
 
     private PermanentPortalTeleporter() {
     }
@@ -64,6 +65,11 @@ public final class PermanentPortalTeleporter {
 
         Vec3 safe = findSafeArrivalPosition(entity, destination, preferredPos);
         if (safe != null) {
+            PermanentPortalShape nearbyActive = findActiveNearby(destination, BlockPos.containing(safe), type);
+            if (nearbyActive != null) {
+                return nearbyActive.center();
+            }
+
             PermanentPortalShape created = createReturnPortal(destination, safe, type);
             if (created != null) {
                 return created.center();
@@ -72,6 +78,33 @@ public final class PermanentPortalTeleporter {
         }
 
         return createFallbackPlatform(destination, preferredPos, type.platformBlock().defaultBlockState());
+    }
+
+    @Nullable
+    private static PermanentPortalShape findActiveNearby(ServerLevel level, BlockPos center, PermanentPortalType type) {
+        for (int radius = 0; radius <= EXISTING_PORTAL_SEARCH_RADIUS; radius++) {
+            for (int xOff = -radius; xOff <= radius; xOff++) {
+                for (int yOff = -radius; yOff <= radius; yOff++) {
+                    for (int zOff = -radius; zOff <= radius; zOff++) {
+                        if (radius > 0 && Math.abs(xOff) != radius && Math.abs(yOff) != radius && Math.abs(zOff) != radius) {
+                            continue;
+                        }
+
+                        BlockPos candidate = center.offset(xOff, yOff, zOff);
+                        PermanentPortalShape xShape = PermanentPortalShape.findActive(level, candidate, type, Direction.Axis.X);
+                        if (xShape != null) {
+                            return xShape;
+                        }
+                        PermanentPortalShape zShape = PermanentPortalShape.findActive(level, candidate, type, Direction.Axis.Z);
+                        if (zShape != null) {
+                            return zShape;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     @Nullable

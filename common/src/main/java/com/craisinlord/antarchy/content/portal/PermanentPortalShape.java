@@ -214,6 +214,10 @@ public final class PermanentPortalShape {
         for (int y = -1; y <= 3; y++) {
             for (int x = -1; x <= 2; x++) {
                 BlockPos pos = bottomLeft.relative(widthDirection, x).above(y);
+                boolean cornerSpot = (x == -1 || x == 2) && (y == -1 || y == 3);
+                if (cornerSpot) {
+                    continue;
+                }
                 if (x == -1 || x == 2 || y == -1 || y == 3) {
                     level.setBlock(pos, frameState, Block.UPDATE_ALL);
                 } else {
@@ -233,6 +237,10 @@ public final class PermanentPortalShape {
                 BlockPos pos = bottomLeft.relative(widthDirection, x).above(y);
                 BlockState state = level.getBlockState(pos);
                 boolean frameSpot = x == -1 || x == 2 || y == -1 || y == 3;
+                boolean cornerSpot = (x == -1 || x == 2) && (y == -1 || y == 3);
+                if (cornerSpot) {
+                    continue;
+                }
                 if (frameSpot) {
                     if (!state.isAir() && !state.is(frameBlock) && !state.canBeReplaced()) {
                         return false;

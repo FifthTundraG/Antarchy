@@ -4,7 +4,6 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.AppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.EnchantedGoldenAppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.GoldenAppleCow;
-import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.HoneyedAppleCow;
 import com.craisinlord.antarchy.content.entity.cloud_shark.CloudSharkEntity;
 import com.craisinlord.antarchy.content.entity.BedBugEntity;
 import com.craisinlord.antarchy.content.entity.BomberEntity;
@@ -194,9 +193,6 @@ public final class AntarchyNeoforgeEntites {
             () -> buildCowType(GoldenAppleCow::new, "golden_apple_cow"));
     public static final DeferredHolder<EntityType<?>, EntityType<EnchantedGoldenAppleCow>> ENCHANTED_GOLDEN_APPLE_COW = ENTITY_TYPES.register("enchanted_golden_apple_cow",
             () -> buildCowType(EnchantedGoldenAppleCow::new, "enchanted_golden_apple_cow"));
-    public static final DeferredHolder<EntityType<?>, EntityType<HoneyedAppleCow>> HONEYED_APPLE_COW = CREATE_LOADED
-            ? ENTITY_TYPES.register("honeyed_apple_cow", () -> buildCowType(HoneyedAppleCow::new, "honeyed_apple_cow"))
-            : null;
     public static final DeferredHolder<EntityType<?>, EntityType<DrTrayaurusEntity>> DR_TRAYAURUS = ENTITY_TYPES.register("dr_trayaurus",
             () -> EntityType.Builder.of(DrTrayaurusEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.95F)
