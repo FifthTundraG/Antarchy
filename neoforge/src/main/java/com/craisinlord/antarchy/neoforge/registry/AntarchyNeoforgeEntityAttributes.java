@@ -40,6 +40,12 @@ public class AntarchyNeoforgeEntityAttributes {
         event.put(AntarchyNeoforgeEntites.APPLE_COW.get(), cowAttributes);
         event.put(AntarchyNeoforgeEntites.GOLDEN_APPLE_COW.get(), cowAttributes);
         event.put(AntarchyNeoforgeEntites.ENCHANTED_GOLDEN_APPLE_COW.get(), cowAttributes);
+        event.put(AntarchyNeoforgeEntites.TERMITE.get(), buildAntAttributes(
+                AntarchySettings.termiteHealth(),
+                AntarchySettings.termiteMovementSpeed(),
+                AntarchySettings.termiteAttackDamage()
+        ).build());
+        event.put(AntarchyNeoforgeEntites.ROLLY_POLLY.get(), RollyPollyEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.DR_TRAYAURUS.get(), Villager.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.CLOUD_SHARK.get(), CloudSharkEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.KRAKEN.get(), KrakenEntity.createAttributes().build());
