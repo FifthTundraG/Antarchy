@@ -128,6 +128,9 @@ public final class AntarchyNeoforgeSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_HURT = registerSoundEvent("toreterror_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_DEATH = registerSoundEvent("toreterror_death");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_BOMBER_FIRE = registerSoundEvent("toreterror_bomber_fire");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_SPIN = registerSoundEvent("toreterror_spin");
+    public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_RICOCHET = registerSoundEvent("toreterror_ricochet");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WATER_CANNON_FIRE = registerSoundEvent("water_cannon_fire");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_UP = registerSoundEvent("toreterror_jump_up");
     public static final DeferredHolder<SoundEvent, SoundEvent> TORETERROR_JUMP_LAND = registerSoundEvent("toreterror_jump_land");
     public static final DeferredHolder<SoundEvent, SoundEvent> STINKY_FLY = registerSoundEvent("stinky_fly");

@@ -7,6 +7,10 @@
     {
       "structure": "antarchy:fallen_kingdom_castle",
       "weight": 1
+    },
+    {
+      "structure": "antarchy:ruined_arena",
+      "weight": 1
     }
   ],
   "placement": {

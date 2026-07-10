@@ -4,14 +4,13 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.block.*;
-import com.craisinlord.antarchy.content.block.CreepingHorrorEggBlock;
-import com.craisinlord.antarchy.content.block.LurkingTerrorEggBlock;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
+import com.craisinlord.antarchy.content.portal.PermanentPortalType;
 import com.craisinlord.antarchy.neoforge.OuranwoodWoodTypes;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluidType;
 import com.mojang.serialization.MapCodec;
@@ -37,6 +36,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public final class AntarchyNeoforgeBlocks {
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Antarchy.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Antarchy.MODID);
+    // private static final OuranwoodVineBlock OURANWOOD_VINE_INSTANCE = new OuranwoodVineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WEEPING_VINES).lightLevel(state -> 12));
+    // private static final OuranwoodVinePlantBlock OURANWOOD_VINE_PLANT_INSTANCE = createOuranwoodVinePlant();
 
     public static final DeferredBlock<DuplicatorLogBlock> DUPLICATOR_LOG = BLOCKS.register("duplicator_log",
             () -> new DuplicatorLogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).randomTicks()));
@@ -74,13 +75,14 @@ public final class AntarchyNeoforgeBlocks {
             () -> new OuranwoodLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LEAVES).randomTicks()));
     public static final DeferredBlock<OuranwoodAcornBlock> OURANWOOD_ACORN_BLOCK = BLOCKS.register("ouranwood_acorn",
             () -> new OuranwoodAcornBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
+    // public static final DeferredBlock<OuranwoodVineBlock> OURANWOOD_VINE = BLOCKS.register("ouranwood_vine",
+    //         () -> OURANWOOD_VINE_INSTANCE);
+    // public static final DeferredBlock<OuranwoodVinePlantBlock> OURANWOOD_VINE_PLANT = BLOCKS.register("ouranwood_vine_plant",
+    //         () -> OURANWOOD_VINE_PLANT_INSTANCE);
     public static final DeferredBlock<MilkweedBlock> ORANGE_MILKWEED = BLOCKS.register("orange_milkweed",
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
     public static final DeferredBlock<MilkweedBlock> PINK_MILKWEED = BLOCKS.register("pink_milkweed",
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
-    public static final DeferredBlock<TorchflowerBushBlock> TORCHFLOWER_BUSH = BLOCKS.register("torchflower_bush",
-            () -> new TorchflowerBushBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)
-                    .lightLevel(state -> AntarchySettings.glowingTorchflowers() ? 15 : 0)));
     public static final DeferredBlock<StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
             () -> new StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
@@ -170,6 +172,10 @@ public final class AntarchyNeoforgeBlocks {
                     AntarchyNeoforgeItems::cloudBucketItem,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.POWDER_SNOW).noLootTable().noOcclusion()
             ));
+    public static final DeferredBlock<AntDimensionPortalBlock> ELYTHIA_PORTAL = BLOCKS.register("elythia_portal",
+            () -> new AntDimensionPortalBlock(PermanentPortalType.ELYTHIA, portalProperties()));
+    public static final DeferredBlock<AntDimensionPortalBlock> THORAXIS_PORTAL = BLOCKS.register("thoraxis_portal",
+            () -> new AntDimensionPortalBlock(PermanentPortalType.THORAXIS, portalProperties()));
     public static final DeferredBlock<Block> PALE_NYXITE = BLOCKS.register("pale_nyxite",
             () -> new Block(nyxiteProperties()));
     public static final DeferredBlock<NyxiteSpikeBlock> NYXITE_SPIKE = BLOCKS.register("nyxite_spike",
@@ -373,6 +379,17 @@ public final class AntarchyNeoforgeBlocks {
         return BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERRACK);
     }
 
+    private static BlockBehaviour.Properties portalProperties() {
+        return BlockBehaviour.Properties.of()
+                .strength(-1.0F)
+                .noCollission()
+                .noOcclusion()
+                .lightLevel(state -> 11)
+                .noLootTable()
+                .isSuffocating((state, level, pos) -> false)
+                .isViewBlocking((state, level, pos) -> false);
+    }
+
     private static Block createOre(Block copyFrom, int minExperience, int maxExperience) {
         return new DropExperienceBlock(UniformInt.of(minExperience, maxExperience), BlockBehaviour.Properties.ofFullCopy(copyFrom).requiresCorrectToolForDrops());
     }
@@ -406,6 +423,13 @@ public final class AntarchyNeoforgeBlocks {
     private static Block bloodCrystalCrystalBlock() {
         return BLOOD_CRYSTAL_CRYSTAL.get();
     }
+
+    // private static OuranwoodVinePlantBlock createOuranwoodVinePlant() {
+    //     OuranwoodVinePlantBlock.bindHeadBlock(OURANWOOD_VINE_INSTANCE);
+    //     OuranwoodVinePlantBlock block = new OuranwoodVinePlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WEEPING_VINES_PLANT));
+    //     OuranwoodVineBlock.bindBodyBlock(block);
+    //     return block;
+    // }
 
     private static final class SimpleHorizontalFacingBlock extends HorizontalDirectionalBlock {
         private static final MapCodec<SimpleHorizontalFacingBlock> CODEC = simpleCodec(SimpleHorizontalFacingBlock::new);

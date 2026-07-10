@@ -41,8 +41,8 @@ public abstract class MountedVehicleCameraMixin {
         }
 
         if (vehicle instanceof DorrieEntity) {
-            args.set(0, (Float) args.get(0) * 1.6F);
-            args.set(1, (Float) args.get(1) + 0.15F);
+            args.set(0, (Float) args.get(0) * 0.25F);
+            args.set(1, (Float) args.get(1) + 0.1F);
             args.set(2, (Float) args.get(2) + 0.55F);
         }
     }

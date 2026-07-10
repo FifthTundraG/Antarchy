@@ -10,6 +10,7 @@ import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityApi;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityDirection;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityTransition;
+import com.craisinlord.antarchy.content.portal.PermanentPortalManager;
 import com.craisinlord.antarchy.content.command.CaterpillarCommand;
 import com.craisinlord.antarchy.content.command.GravityCommand;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -58,6 +59,7 @@ public final class AntarchyFabricEvents {
             if (entity instanceof ServerPlayer sp) {
                 BloodglassManager.handleDeath(sp);
             }
+            PermanentPortalManager.handleSacrifice(entity);
             if (entity instanceof MissileSquidEntity missileSquid) {
                 if (missileSquid.isSpawnedByKraken()) {
                     return;

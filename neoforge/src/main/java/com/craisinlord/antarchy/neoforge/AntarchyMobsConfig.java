@@ -100,6 +100,15 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.IntValue    ALPHA_MANTIS_MAX_MINIONS;
 
 
+    // Rolly Polly
+
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_HEALTH;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_MOVEMENT_SPEED;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_ROLL_SPEED_MULTIPLIER;
+    private static final ModConfigSpec.DoubleValue ROLLY_POLLY_TUMBLE_DAMAGE;
+    private static final ModConfigSpec.IntValue    ROLLY_POLLY_TAME_CHANCE;
+
+
     // Triffid
 
     private static final ModConfigSpec.DoubleValue TRIFFID_HEALTH;
@@ -201,6 +210,11 @@ public final class AntarchyMobsConfig {
     // Dorrie
 
     private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
+
+
+    // Glimmer
+
+    private static final ModConfigSpec.DoubleValue GLIMMER_HEALTH;
 
 
     // Hercules Beetle
@@ -381,12 +395,23 @@ public final class AntarchyMobsConfig {
         // Alpha Mantis
 
         b.push("alphaMantis");
-        ALPHA_MANTIS_HEALTH                = b.comment("Base max health.")                                              .defineInRange("health",             500.0D, 1.0D, 32768.0D);
+        ALPHA_MANTIS_HEALTH                = b.comment("Base max health.")                                              .defineInRange("health",             250.0D, 1.0D, 32768.0D);
         ALPHA_MANTIS_ATTACK_DAMAGE         = b.comment("Base attack damage.")                                           .defineInRange("attackDamage",        18.0D, 0.0D, 1024.0D);
-        ALPHA_MANTIS_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                          .defineInRange("movementSpeed",       0.42D, 0.0D, 10.0D);
+        ALPHA_MANTIS_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                          .defineInRange("movementSpeed",       0.546D, 0.0D, 10.0D);
         ALPHA_MANTIS_FLYING_SPEED          = b.comment("Base flying speed.")                                            .defineInRange("flyingSpeed",         0.77D, 0.0D, 10.0D);
         ALPHA_MANTIS_SUMMON_INTERVAL_TICKS = b.comment("Ticks between mantis minion summons while in combat.")          .defineInRange("summonIntervalTicks",   300, 20, 72000);
         ALPHA_MANTIS_MAX_MINIONS           = b.comment("Maximum summoned mantises alive near the alpha at once.")       .defineInRange("maxMinions",              4, 0, 32);
+        b.pop();
+
+
+        // Rolly Polly
+
+        b.push("rollyPolly");
+        ROLLY_POLLY_HEALTH                = b.comment("Base max health.")                                                          .defineInRange("health",              12.0D, 1.0D, 32768.0D);
+        ROLLY_POLLY_MOVEMENT_SPEED        = b.comment("Base movement speed.")                                                      .defineInRange("movementSpeed",        0.3D, 0.0D, 10.0D);
+        ROLLY_POLLY_ROLL_SPEED_MULTIPLIER = b.comment("Speed multiplier while rolled up and ridden.")                              .defineInRange("rollSpeedMultiplier",  2.2D, 0.1D, 20.0D);
+        ROLLY_POLLY_TUMBLE_DAMAGE         = b.comment("Damage dealt to a helmetless rider while rolling. 0 disables.")             .defineInRange("tumbleDamage",         1.0D, 0.0D, 1024.0D);
+        ROLLY_POLLY_TAME_CHANCE           = b.comment("Taming succeeds with a 1-in-N chance per food item.")                       .defineInRange("tameChance",               3, 1, 100);
         b.pop();
 
 
@@ -453,7 +478,7 @@ public final class AntarchyMobsConfig {
                 .defineInRange("spawnMaxLightLevel", 5, 0, 15);
         BASILISK_HEALTH = b.comment("Base max health.").defineInRange("health", 150.0D, 1.0D, 32768.0D);
         BASILISK_ATTACK_DAMAGE = b.comment("Base attack damage.").defineInRange("attackDamage", 36.0D, 0.0D, 1024.0D);
-        BASILISK_MOVEMENT_SPEED = b.comment("Base movement speed.").defineInRange("movementSpeed", 0.35D, 0.0D, 10.0D);
+        BASILISK_MOVEMENT_SPEED = b.comment("Base movement speed.").defineInRange("movementSpeed", 0.28D, 0.0D, 10.0D);
         BASILISK_ARMOR = b.comment("Base armor value.").defineInRange("armor", 6.0D, 0.0D, 1024.0D);
         BASILISK_KNOCKBACK_RESISTANCE = b.comment("Base knockback resistance.").defineInRange("knockbackResistance", 0.5D, 0.0D, 1.0D);
         BASILISK_FOLLOW_RANGE = b.comment("Base follow range.").defineInRange("followRange", 28.0D, 1.0D, 128.0D);
@@ -520,6 +545,10 @@ public final class AntarchyMobsConfig {
 
         b.push("dorrie");
         DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
+        b.pop();
+
+        b.push("glimmer");
+        GLIMMER_HEALTH = b.comment("Base max health.").defineInRange("health", 20.0D, 1.0D, 32768.0D);
         b.pop();
 
         b.push("herculesBeetle");
@@ -617,6 +646,11 @@ public final class AntarchyMobsConfig {
     static double  alphaMantisFlyingSpeed()                 { return ALPHA_MANTIS_FLYING_SPEED.get(); }
     static int     alphaMantisSummonIntervalTicks()         { return ALPHA_MANTIS_SUMMON_INTERVAL_TICKS.get(); }
     static int     alphaMantisMaxMinions()                  { return ALPHA_MANTIS_MAX_MINIONS.get(); }
+    static double  rollyPollyHealth()                       { return ROLLY_POLLY_HEALTH.get(); }
+    static double  rollyPollyMovementSpeed()                { return ROLLY_POLLY_MOVEMENT_SPEED.get(); }
+    static double  rollyPollyRollSpeedMultiplier()          { return ROLLY_POLLY_ROLL_SPEED_MULTIPLIER.get(); }
+    static double  rollyPollyTumbleDamage()                 { return ROLLY_POLLY_TUMBLE_DAMAGE.get(); }
+    static int     rollyPollyTameChance()                   { return ROLLY_POLLY_TAME_CHANCE.get(); }
 
     static double  triffidHealth()                          { return TRIFFID_HEALTH.get(); }
     static double  triffidAttackDamage()                    { return TRIFFID_ATTACK_DAMAGE.get(); }
@@ -693,6 +727,7 @@ public final class AntarchyMobsConfig {
     static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
     static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
     static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
+    static double  glimmerHealth()                          { return GLIMMER_HEALTH.get(); }
     static double  herculesBeetleHealth()                   { return HERCULES_BEETLE_HEALTH.get(); }
     static double  herculesBeetleAttackDamage()             { return HERCULES_BEETLE_ATTACK_DAMAGE.get(); }
     static double  herculesBeetleChargeDamage()             { return HERCULES_BEETLE_CHARGE_DAMAGE.get(); }

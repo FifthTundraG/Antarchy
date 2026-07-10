@@ -67,7 +67,8 @@
     [
       "antarchy:ouranwood_trees",
       "antarchy:elythia_forest_flora",
-      "antarchy:elythia_brown_ant_nests"
+      "antarchy:elythia_brown_ant_nests",
+      "antarchy:elythia_rainbow_ant_nests"
     ],
     [
       "antarchy:triffid_patch"
@@ -95,7 +96,7 @@
         "weight": 4,
         "minCount": 1,
         "maxCount": 1
-      }
+      },
     ],
     "ambient": [
     ],

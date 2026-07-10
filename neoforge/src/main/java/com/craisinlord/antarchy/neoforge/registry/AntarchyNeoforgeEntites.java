@@ -4,7 +4,6 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.AppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.EnchantedGoldenAppleCow;
 import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.GoldenAppleCow;
-import com.craisinlord.antarchy.content.entity.AppleCowEntityVariants.HoneyedAppleCow;
 import com.craisinlord.antarchy.content.entity.cloud_shark.CloudSharkEntity;
 import com.craisinlord.antarchy.content.entity.BedBugEntity;
 import com.craisinlord.antarchy.content.entity.BomberEntity;
@@ -14,10 +13,12 @@ import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
 import com.craisinlord.antarchy.content.entity.DrTrayaurusEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
 import com.craisinlord.antarchy.content.entity.EmperorScorpionEntity;
+import com.craisinlord.antarchy.content.entity.GlimmerEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
 import com.craisinlord.antarchy.content.entity.AlphaMantisEntity;
+import com.craisinlord.antarchy.content.entity.RollyPollyEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
 import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
@@ -28,8 +29,6 @@ import com.craisinlord.antarchy.content.entity.OuranwoodChestBoatEntity;
 import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.content.entity.ScorpionEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
-import com.craisinlord.antarchy.content.entity.SpitBugEntity;
-import com.craisinlord.antarchy.content.entity.SpitBugProjectileEntity;
 import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
 import com.craisinlord.antarchy.content.entity.UpwardFallingBlockEntity;
@@ -82,6 +81,8 @@ public final class AntarchyNeoforgeEntites {
             () -> buildAntType(BrownAntEntity::new, MobCategory.CREATURE, "brown_ant"));
     public static final DeferredHolder<EntityType<?>, EntityType<RainbowAntEntity>> RAINBOW_ANT = ENTITY_TYPES.register("rainbow_ant",
             () -> buildAntType(RainbowAntEntity::new, MobCategory.CREATURE, "rainbow_ant"));
+    public static final DeferredHolder<EntityType<?>, EntityType<TermiteEntity>> TERMITE = ENTITY_TYPES.register("termite",
+            () -> buildAntType(TermiteEntity::new, MobCategory.CREATURE, "termite"));
     public static final DeferredHolder<EntityType<?>, EntityType<MolewormEntity>> MOLEWORM = ENTITY_TYPES.register("moleworm",
             () -> EntityType.Builder.of(MolewormEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.3F)
@@ -94,9 +95,14 @@ public final class AntarchyNeoforgeEntites {
                     .build("mantis"));
     public static final DeferredHolder<EntityType<?>, EntityType<AlphaMantisEntity>> ALPHA_MANTIS = ENTITY_TYPES.register("alpha_mantis",
             () -> EntityType.Builder.of(AlphaMantisEntity::new, MobCategory.MONSTER)
-                    .sized(4.0F, 3.25F)
+                    .sized(4.25F, 3.35F)
                     .clientTrackingRange(10)
                     .build("alpha_mantis"));
+    public static final DeferredHolder<EntityType<?>, EntityType<RollyPollyEntity>> ROLLY_POLLY = ENTITY_TYPES.register("rolly_polly",
+            () -> EntityType.Builder.of(RollyPollyEntity::new, MobCategory.CREATURE)
+                    .sized(0.95F, 0.85F)
+                    .clientTrackingRange(10)
+                    .build("rolly_polly"));
     public static final DeferredHolder<EntityType<?>, EntityType<OuranwoodBoatEntity>> OURANWOOD_BOAT_ENTITY = ENTITY_TYPES.register("ouranwood_boat",
             () -> EntityType.Builder.<OuranwoodBoatEntity>of(OuranwoodBoatEntity::new, MobCategory.MISC)
                     .sized(1.375F, 0.5625F)
@@ -187,9 +193,6 @@ public final class AntarchyNeoforgeEntites {
             () -> buildCowType(GoldenAppleCow::new, "golden_apple_cow"));
     public static final DeferredHolder<EntityType<?>, EntityType<EnchantedGoldenAppleCow>> ENCHANTED_GOLDEN_APPLE_COW = ENTITY_TYPES.register("enchanted_golden_apple_cow",
             () -> buildCowType(EnchantedGoldenAppleCow::new, "enchanted_golden_apple_cow"));
-    public static final DeferredHolder<EntityType<?>, EntityType<HoneyedAppleCow>> HONEYED_APPLE_COW = CREATE_LOADED
-            ? ENTITY_TYPES.register("honeyed_apple_cow", () -> buildCowType(HoneyedAppleCow::new, "honeyed_apple_cow"))
-            : null;
     public static final DeferredHolder<EntityType<?>, EntityType<DrTrayaurusEntity>> DR_TRAYAURUS = ENTITY_TYPES.register("dr_trayaurus",
             () -> EntityType.Builder.of(DrTrayaurusEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.95F)
@@ -280,6 +283,11 @@ public final class AntarchyNeoforgeEntites {
                     .sized(1.0F, 1.2F)
                     .clientTrackingRange(8)
                     .build("cheep"));
+    // public static final DeferredHolder<EntityType<?>, EntityType<GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",
+    //         () -> EntityType.Builder.of(GlimmerEntity::new, MobCategory.CREATURE)
+    //                 .sized(0.9F, 1.4F)
+    //                 .clientTrackingRange(8)
+    //                 .build("glimmer"));
     public static final DeferredHolder<EntityType<?>, EntityType<UpwardFallingBlockEntity>> UPWARD_FALLING_BLOCK = ENTITY_TYPES.register("upward_falling_block",
             () -> EntityType.Builder.<UpwardFallingBlockEntity>of(
                             UpwardFallingBlockEntity::new, MobCategory.MISC)

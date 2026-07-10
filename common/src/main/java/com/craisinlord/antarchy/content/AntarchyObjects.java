@@ -99,6 +99,10 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> GLIMMER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Holder<MobEffect>> GLIMMERS_GRACE = (Supplier<Holder<MobEffect>>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> DUPLICATOR_LOG = (Supplier<Block>) UNBOUND;
@@ -211,8 +215,6 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> PINK_MILKWEED = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<Block> TORCHFLOWER_BUSH = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
     public static Supplier<Block> BED_BUG_EGG = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> CREEPING_HORROR_EGGS = (Supplier<Block>) UNBOUND;
@@ -262,7 +264,11 @@ public final class AntarchyObjects {
             Supplier<EntityType<HushProjectileEntity>> hushProjectile,
             Supplier<EntityType<ToreterrorEntity>> toreterror,
             Supplier<EntityType<WaterBombEntity>> waterBomb,
+            Supplier<EntityType<CreepingHorrorEntity>> creepingHorror,
+            Supplier<EntityType<LurkingTerrorEntity>> lurkingTerror,
+            Supplier<EntityType<StinkBugEntity>> stinkBug,
             Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> cheep,
+            Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> dorrie,
             Supplier<Block> duplicatorLog,
             Supplier<Block> duplicatorSapling,
             Supplier<Block> ductTape,
@@ -291,6 +297,8 @@ public final class AntarchyObjects {
             Supplier<Block> triffidGooBlock,
             Supplier<Block> paleNyxite,
             Supplier<Block> nyxiteSpike,
+            Supplier<Block> chitenBlock,
+            Supplier<Block> chitenSpike,
             Supplier<Block> potentNyxite,
             Supplier<Block> antimetal,
             Supplier<Block> polishedAntimetal,
@@ -303,6 +311,7 @@ public final class AntarchyObjects {
             Supplier<Item> krakenTooth,
             Supplier<Item> moggles,
             Supplier<Item> reverieBottle,
+            Supplier<Item> stinkBugItem,
             Supplier<Holder<MobEffect>> dread,
             Supplier<Holder<MobEffect>> paralyzedEffect,
             Supplier<Holder<MobEffect>> invertedEffect,
@@ -312,8 +321,9 @@ public final class AntarchyObjects {
             Supplier<Block> mossyOuranwoodWood,
             Supplier<Block> orangeMilkweed,
             Supplier<Block> pinkMilkweed,
-            Supplier<Block> torchflowerBush,
             Supplier<Block> bedBugEggs,
+            Supplier<Block> creepingHorrorEggs,
+            Supplier<Block> lurkingTerrorEggs,
             Supplier<Block> waspNest,
             Supplier<Block> hushweed,
             Supplier<Block> squirrelNestBlock,
@@ -347,7 +357,11 @@ public final class AntarchyObjects {
         HUSH_PROJECTILE = hushProjectile;
         TORETERROR = toreterror;
         WATER_BOMB = waterBomb;
+        CREEPING_HORROR = creepingHorror;
+        LURKING_TERROR = lurkingTerror;
+        STINK_BUG = stinkBug;
         CHEEP = cheep;
+        DORRIE = dorrie;
         DUPLICATOR_LOG = duplicatorLog;
         DUPLICATOR_SAPLING = duplicatorSapling;
         DUCT_TAPE = ductTape;
@@ -376,6 +390,8 @@ public final class AntarchyObjects {
         TRIFFID_GOO_BLOCK = triffidGooBlock;
         PALE_NYXITE = paleNyxite;
         NYXITE_SPIKE = nyxiteSpike;
+        CHITEN_BLOCK = chitenBlock;
+        CHITEN_SPIKE = chitenSpike;
         POTENT_NYXITE = potentNyxite;
         ANTIMETAL = antimetal;
         POLISHED_ANTIMETAL = polishedAntimetal;
@@ -388,6 +404,7 @@ public final class AntarchyObjects {
         KRAKEN_TOOTH = krakenTooth;
         MOGGLES = moggles;
         REVERIE_BOTTLE = reverieBottle;
+        STINK_BUG_ITEM = stinkBugItem;
         DREAD = dread;
         PARALYZED_EFFECT = paralyzedEffect;
         INVERTED_EFFECT = invertedEffect;
@@ -397,8 +414,9 @@ public final class AntarchyObjects {
         MOSSY_OURANWOOD_WOOD = mossyOuranwoodWood;
         ORANGE_MILKWEED = orangeMilkweed;
         PINK_MILKWEED = pinkMilkweed;
-        TORCHFLOWER_BUSH = torchflowerBush;
         BED_BUG_EGG = bedBugEggs;
+        CREEPING_HORROR_EGGS = creepingHorrorEggs;
+        LURKING_TERROR_EGGS = lurkingTerrorEggs;
         WASP_NEST = waspNest;
         HUSHWEED = hushweed;
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
@@ -424,6 +442,14 @@ public final class AntarchyObjects {
 
     public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
         HERCULES_BEETLE = supplier;
+    }
+
+    public static void setGlimmer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> supplier) {
+        GLIMMER = supplier;
+    }
+
+    public static void setGlimmersGrace(Supplier<Holder<MobEffect>> supplier) {
+        GLIMMERS_GRACE = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

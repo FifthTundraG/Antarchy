@@ -4,6 +4,7 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserBaseParticleOptions;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserParticleOptions;
 import com.craisinlord.antarchy.content.effect.DreadMobEffect;
+import com.craisinlord.antarchy.content.effect.GlimmersGraceMobEffect;
 import com.craisinlord.antarchy.content.effect.GrowthMobEffect;
 import com.craisinlord.antarchy.content.effect.InvertedMobEffect;
 import com.craisinlord.antarchy.content.effect.ParalyzedMobEffect;
@@ -12,14 +13,6 @@ import com.craisinlord.antarchy.content.effect.StinkyMobEffect;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
-import com.craisinlord.antarchy.content.worldgen.ants.TermiteNestFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.*;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.*;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluid;
@@ -81,6 +74,7 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.BloodglassWardEffect> BLOODGLASS_WARD = MOB_EFFECTS.register("bloodglass_ward", com.craisinlord.antarchy.content.effect.BloodglassWardEffect::new);
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
+    // public static final DeferredHolder<MobEffect, GlimmersGraceMobEffect> GLIMMERS_GRACE = MOB_EFFECTS.register("glimmers_grace", GlimmersGraceMobEffect::new);
 
     // Potions
     public static final DeferredHolder<Potion, Potion> INVERSION = POTIONS.register("inversion",

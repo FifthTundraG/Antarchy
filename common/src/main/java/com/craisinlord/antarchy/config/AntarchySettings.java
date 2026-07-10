@@ -17,6 +17,7 @@ public final class AntarchySettings {
     private static boolean duplicatorTreeEnabled = true;
     private static boolean glowingTorchflowers = true;
     private static boolean glowVinesUnderLeaves = true;
+    private static boolean swingThroughGrassEnabled = true;
     private static boolean sizeChangingRaysEnabled = true;
     private static double sizeRayMinScale = 0.1D;
     private static double sizeRayMaxScale = 10.0D;
@@ -100,12 +101,17 @@ public final class AntarchySettings {
     private static double mantisMovementSpeed = 0.42D;
     private static double mantisFlyingSpeed = 0.77D;
     private static boolean mantisIgnoreLightLevel = false;
-    private static double alphaMantisHealth = 500.0D;
+    private static double alphaMantisHealth = 250.0D;
     private static double alphaMantisAttackDamage = 18.0D;
-    private static double alphaMantisMovementSpeed = 0.42D;
+    private static double alphaMantisMovementSpeed = 0.546D;
     private static double alphaMantisFlyingSpeed = 0.77D;
     private static int alphaMantisSummonIntervalTicks = 300;
     private static int alphaMantisMaxMinions = 4;
+    private static double rollyPollyHealth = 12.0D;
+    private static double rollyPollyMovementSpeed = 0.3D;
+    private static double rollyPollyRollSpeedMultiplier = 2.2D;
+    private static double rollyPollyTumbleDamage = 1.0D;
+    private static int rollyPollyTameChance = 3;
     private static double krakenProjectileDamageTakenMultiplier = 0.5D;
     private static boolean krakenSquidSpawnEnabled = true;
     private static boolean krakenMassSpawnEnabled = true;
@@ -156,7 +162,7 @@ public final class AntarchySettings {
     private static int basiliskSpawnMaxLightLevel = 5;
     private static double basiliskHealth = 150.0D;
     private static double basiliskAttackDamage = 36.0D;
-    private static double basiliskMovementSpeed = 0.225D;
+    private static double basiliskMovementSpeed = 0.18D;
     private static double basiliskArmor = 6.0D;
     private static double basiliskKnockbackResistance = 0.5D;
     private static double basiliskFollowRange = 28.0D;
@@ -233,10 +239,10 @@ public final class AntarchySettings {
     private static final int     reverieAmbientTargetMaxAgeTicks  = 40;
     private static final int     reverieAmbientPulseIntervalMinTicks = 12;
     private static final int     reverieAmbientPulseIntervalMaxTicks = 19;
-    private static double emperorScorpionHealth = 400.0D;
+    private static double emperorScorpionHealth = 300.0D;
     private static double emperorScorpionAttackDamage = 28.0D;
-    private static double emperorScorpionMovementSpeed = 0.32D;
-    private static double emperorScorpionArmor = 25.0D;
+    private static double emperorScorpionMovementSpeed = 0.384D;
+    private static double emperorScorpionArmor = 22.0D;
     private static double emperorScorpionKnockbackResistance = 0.8D;
     private static double emperorScorpionFollowRange = 40.0D;
     private static int emperorScorpionXpReward = 25;
@@ -441,6 +447,11 @@ public final class AntarchySettings {
     private static double primordialArmorKnockbackPerPiece = 0.5D;
     private static int fallenKingCrownArmorValue = 2;
     private static double fallenKingCrownArmorToughness = 0.0D;
+    private static boolean permanentPortalsEnabled = true;
+    private static boolean permanentPortalsFlintAndSteelEnabled = false;
+    private static boolean elythiaPortalEnabled = true;
+    private static boolean thoraxisPortalEnabled = true;
+    private static boolean cavarynPortalEnabled = true;
     private static boolean elythiaFireflyParticlesEnabled = true;
     private static int bloodCrystalArmorShieldRechargeTicks = 600;
     private static int bloodCrystalAppleShieldCount = 2;
@@ -479,6 +490,7 @@ public final class AntarchySettings {
     private static double herculesBeetleHealth = 500.0D;
     private static double herculesBeetleAttackDamage = 30.0D;
     private static double herculesBeetleChargeDamage = 40.0D;
+    private static double glimmerHealth = 20.0D;
 
     private AntarchySettings() {
     }
@@ -533,6 +545,10 @@ public final class AntarchySettings {
 
     public static boolean glowVinesUnderLeaves() {
         return glowVinesUnderLeaves;
+    }
+
+    public static boolean swingThroughGrassEnabled() {
+        return swingThroughGrassEnabled;
     }
 
     public static boolean sizeChangingRaysEnabled() {
@@ -819,6 +835,26 @@ public final class AntarchySettings {
         return alphaMantisMaxMinions;
     }
 
+    public static double rollyPollyHealth() {
+        return rollyPollyHealth;
+    }
+
+    public static double rollyPollyMovementSpeed() {
+        return rollyPollyMovementSpeed;
+    }
+
+    public static double rollyPollyRollSpeedMultiplier() {
+        return rollyPollyRollSpeedMultiplier;
+    }
+
+    public static double rollyPollyTumbleDamage() {
+        return rollyPollyTumbleDamage;
+    }
+
+    public static int rollyPollyTameChance() {
+        return rollyPollyTameChance;
+    }
+
     public static double waspHealth() {
         return waspHealth;
     }
@@ -927,6 +963,32 @@ public final class AntarchySettings {
         rainbowAntsLeadToInfinityDimensions = value;
     }
 
+    public static void setPermanentPortalsEnabled(boolean value) {
+        permanentPortalsEnabled = value;
+    }
+
+    public static void setPermanentPortalsFlintAndSteelEnabled(boolean value) {
+        permanentPortalsFlintAndSteelEnabled = value;
+    }
+
+    public static void setElythiaPortalEnabled(boolean value) {
+        elythiaPortalEnabled = value;
+    }
+
+    public static void setThoraxisPortalEnabled(boolean value) {
+        thoraxisPortalEnabled = value;
+    }
+
+    public static void setCavarynPortalEnabled(boolean value) {
+        cavarynPortalEnabled = value;
+    }
+
+    public static boolean permanentPortalsEnabled() { return permanentPortalsEnabled; }
+    public static boolean permanentPortalsFlintAndSteelEnabled() { return permanentPortalsFlintAndSteelEnabled; }
+    public static boolean elythiaPortalEnabled() { return elythiaPortalEnabled; }
+    public static boolean thoraxisPortalEnabled() { return thoraxisPortalEnabled; }
+    public static boolean cavarynPortalEnabled() { return cavarynPortalEnabled; }
+
     public static void setBrownAntRequiresReagent(boolean value) {
         brownAntRequiresReagent = value;
     }
@@ -957,6 +1019,10 @@ public final class AntarchySettings {
 
     public static void setGlowVinesUnderLeaves(boolean value) {
         glowVinesUnderLeaves = value;
+    }
+
+    public static void setSwingThroughGrassEnabled(boolean value) {
+        swingThroughGrassEnabled = value;
     }
 
     public static void setSizeChangingRaysEnabled(boolean value) {
@@ -1245,6 +1311,26 @@ public final class AntarchySettings {
 
     public static void setAlphaMantisMaxMinions(int value) {
         alphaMantisMaxMinions = value;
+    }
+
+    public static void setRollyPollyHealth(double value) {
+        rollyPollyHealth = value;
+    }
+
+    public static void setRollyPollyMovementSpeed(double value) {
+        rollyPollyMovementSpeed = value;
+    }
+
+    public static void setRollyPollyRollSpeedMultiplier(double value) {
+        rollyPollyRollSpeedMultiplier = value;
+    }
+
+    public static void setRollyPollyTumbleDamage(double value) {
+        rollyPollyTumbleDamage = value;
+    }
+
+    public static void setRollyPollyTameChance(int value) {
+        rollyPollyTameChance = value;
     }
 
     public static void setKrakenProjectileDamageTakenMultiplier(double value) {
@@ -2462,4 +2548,6 @@ public final class AntarchySettings {
     public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
     public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
     public static void setDorrieHealth(double v) { dorrieHealth = v; }
+    public static double glimmerHealth() { return glimmerHealth; }
+    public static void setGlimmerHealth(double v) { glimmerHealth = v; }
 }

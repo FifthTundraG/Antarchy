@@ -63,6 +63,7 @@
       "antarchy:ouranwood_trees_sparse",
       "antarchy:elythia_forest_flora",
       "antarchy:elythia_brown_ant_nests",
+      "antarchy:elythia_rainbow_ant_nests",
       "antarchy:fallen_ouranwood_tree",
       "antarchy:fungal_mushroom"
     ],
@@ -83,7 +84,7 @@
         "weight": 2,
         "minCount": 1,
         "maxCount": 2
-      }
+      },
     ],
     "ambient": [
       {

@@ -18,6 +18,7 @@ import com.craisinlord.antarchy.content.item.*;
 import com.craisinlord.antarchy.content.item.ultimate.UltimateGearHelper;
 import com.craisinlord.antarchy.content.movement.DreamSandLowGravityAccess;
 import com.craisinlord.antarchy.content.AntarchyTags;
+import com.craisinlord.antarchy.content.portal.PermanentPortalManager;
 import com.craisinlord.antarchy.neoforge.AntarchyNeoForgeFluidTypes;
 import com.craisinlord.antarchy.neoforge.entity.multipart.MultipartPartEntity;
 import com.craisinlord.antarchy.neoforge.network.AntarchyGravityNetworking;
@@ -65,6 +66,7 @@ public final class AntarchyNeoForgeEvents {
     public static void register(IEventBus modEventBus) {
         modEventBus.addListener(AntarchyNeoForgeEvents::onCommonSetup);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::onMissileSquidDeath);
+        NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::onPermanentPortalSacrifice);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::onLivingBreathe);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::registerBrewingRecipes);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNaturalRabbitReplacement);
@@ -130,6 +132,10 @@ public final class AntarchyNeoForgeEvents {
         if (AntarchySettings.krakenMassSpawnEnabled() && serverLevel.random.nextInt(100) == 0) {
             spawnKrakens(serverLevel, deathPos, 10);
         }
+    }
+
+    public static void onPermanentPortalSacrifice(LivingDeathEvent event) {
+        PermanentPortalManager.handleSacrifice(event.getEntity());
     }
 
     public static void onLivingBreathe(LivingBreatheEvent event) {

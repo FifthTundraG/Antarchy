@@ -40,6 +40,12 @@ public class AntarchyNeoforgeEntityAttributes {
         event.put(AntarchyNeoforgeEntites.APPLE_COW.get(), cowAttributes);
         event.put(AntarchyNeoforgeEntites.GOLDEN_APPLE_COW.get(), cowAttributes);
         event.put(AntarchyNeoforgeEntites.ENCHANTED_GOLDEN_APPLE_COW.get(), cowAttributes);
+        event.put(AntarchyNeoforgeEntites.TERMITE.get(), buildAntAttributes(
+                AntarchySettings.termiteHealth(),
+                AntarchySettings.termiteMovementSpeed(),
+                AntarchySettings.termiteAttackDamage()
+        ).build());
+        event.put(AntarchyNeoforgeEntites.ROLLY_POLLY.get(), RollyPollyEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.DR_TRAYAURUS.get(), Villager.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.CLOUD_SHARK.get(), CloudSharkEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.KRAKEN.get(), KrakenEntity.createAttributes().build());
@@ -61,13 +67,13 @@ public class AntarchyNeoforgeEntityAttributes {
         AttributeSupplier redAntAttributes = buildAntAttributes(AntarchySettings.redAntHealth(), AntarchySettings.redAntMovementSpeed(), AntarchySettings.redAntAttackDamage()).build();
         AttributeSupplier brownAntAttributes = buildAntAttributes(AntarchySettings.brownAntHealth(), AntarchySettings.brownAntMovementSpeed(), AntarchySettings.brownAntAttackDamage()).build();
         AttributeSupplier rainbowAntAttributes = buildAntAttributes(AntarchySettings.rainbowAntHealth(), AntarchySettings.rainbowAntMovementSpeed(), AntarchySettings.rainbowAntAttackDamage()).build();
-        AttributeSupplier termiteAttributes = buildAntAttributes(AntarchySettings.termiteHealth(), AntarchySettings.termiteMovementSpeed(), AntarchySettings.termiteAttackDamage()).build();
         event.put(AntarchyNeoforgeEntites.RED_ANT.get(), redAntAttributes);
         event.put(AntarchyNeoforgeEntites.BROWN_ANT.get(), brownAntAttributes);
         event.put(AntarchyNeoforgeEntites.RAINBOW_ANT.get(), rainbowAntAttributes);
         event.put(AntarchyNeoforgeEntites.MOLEWORM.get(), MolewormEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.MOLEVORE.get(), MolevoreEntity.createAttributes().build());
         event.put(AntarchyNeoforgeEntites.CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
+        // event.put(AntarchyNeoforgeEntites.GLIMMER.get(), com.craisinlord.antarchy.content.entity.GlimmerEntity.createAttributes().build());
     }
 
     private static AttributeSupplier.Builder buildAntAttributes(double health, double speed, double attackDamage) {

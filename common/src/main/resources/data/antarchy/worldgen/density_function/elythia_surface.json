@@ -1,6 +1,10 @@
 {
   "type": "minecraft:cache_once",
   "argument": {
+  "type": "minecraft:clamp",
+  "min": -10.0,
+  "max": 10.0,
+  "input": {
   "type": "minecraft:add",
   "argument1": {
     "type": "minecraft:y_clamped_gradient",
@@ -76,6 +80,7 @@
         }
       }
     }
+  }
   }
   }
 }

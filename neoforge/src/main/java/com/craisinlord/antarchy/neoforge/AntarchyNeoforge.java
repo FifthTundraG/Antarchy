@@ -7,6 +7,7 @@ import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
 import com.craisinlord.antarchy.content.network.BloodCrystalKatanaTrailPayload;
+import com.craisinlord.antarchy.content.portal.PermanentPortalType;
 import com.craisinlord.antarchy.neoforge.registry.*;
 import com.craisinlord.antarchy.neoforge.network.AntarchyGravityNetworking;
 import net.neoforged.bus.api.IEventBus;
@@ -14,6 +15,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.world.level.block.Blocks;
 
 
 @Mod(Antarchy.MODID)
@@ -141,6 +143,9 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeSounds.TORETERROR_HURT,
                 AntarchyNeoforgeSounds.TORETERROR_DEATH,
                 AntarchyNeoforgeSounds.TORETERROR_BOMBER_FIRE,
+                AntarchyNeoforgeSounds.TORETERROR_SPIN,
+                AntarchyNeoforgeSounds.TORETERROR_RICOCHET,
+                AntarchyNeoforgeSounds.WATER_CANNON_FIRE,
                 AntarchyNeoforgeSounds.TORETERROR_JUMP_UP,
                 AntarchyNeoforgeSounds.TORETERROR_JUMP_LAND,
                 AntarchyNeoforgeSounds.STINKY_FLY,
@@ -180,6 +185,14 @@ public class AntarchyNeoforge {
     }
 
     private static void bindCommonObjects() {
+        PermanentPortalType.bindBlocks(
+                () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
+                () -> AntarchyNeoforgeBlocks.ELYTHIA_PORTAL.get(),
+                () -> AntarchyNeoforgeBlocks.NYXITE.get(),
+                () -> AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get(),
+                () -> AntarchyNeoforgeBlocks.NYXITE.get(),
+                () -> AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get()
+        );
         AntarchyObjects.bind(
                 AntarchyNeoforgeEntites.EASTER_BUNNY,
                 AntarchyNeoforgeEntites.FLYING_SQUIRREL,
@@ -200,7 +213,11 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeEntites.HUSH_PROJECTILE,
                 AntarchyNeoforgeEntites.TORETERROR,
                 AntarchyNeoforgeEntites.WATER_BOMB,
+                (java.util.function.Supplier) AntarchyNeoforgeEntites.BOMBER,
+                (java.util.function.Supplier) AntarchyNeoforgeEntites.BOMBER,
+                (java.util.function.Supplier) AntarchyNeoforgeEntites.BED_BUG,
                 AntarchyNeoforgeEntites.CHEEP,
+                (java.util.function.Supplier) AntarchyNeoforgeEntites.CHEEP,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),
@@ -229,6 +246,8 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.TRIFFID_GOO_BLOCK.get(),
                 () -> AntarchyNeoforgeBlocks.PALE_NYXITE.get(),
                 () -> AntarchyNeoforgeBlocks.NYXITE_SPIKE.get(),
+                () -> AntarchyNeoforgeBlocks.NYXITE.get(),
+                () -> AntarchyNeoforgeBlocks.NYXITE_SPIKE.get(),
                 () -> AntarchyNeoforgeBlocks.POTENT_NYXITE.get(),
                 () -> AntarchyNeoforgeBlocks.ANTIMETAL.get(),
                 () -> AntarchyNeoforgeBlocks.POLISHED_ANTIMETAL.get(),
@@ -241,6 +260,7 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeItems.KRAKEN_TOOTH,
                 () -> AntarchyNeoforgeItems.MOGGLES.get(),
                 () -> AntarchyNeoforgeItems.REVERIE_BOTTLE.get(),
+                () -> AntarchyNeoforgeItems.STINK_BUG.get(),
                 () -> AntarchyNeoforgeMisc.DREAD,
                 () -> AntarchyNeoforgeMisc.PARALYZED,
                 () -> AntarchyNeoforgeMisc.INVERTED,
@@ -250,7 +270,8 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
                 () -> AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(),
                 () -> AntarchyNeoforgeBlocks.PINK_MILKWEED.get(),
-                () -> AntarchyNeoforgeBlocks.TORCHFLOWER_BUSH.get(),
+                () -> AntarchyNeoforgeBlocks.BED_BUG_EGG.get(),
+                () -> AntarchyNeoforgeBlocks.BED_BUG_EGG.get(),
                 () -> AntarchyNeoforgeBlocks.BED_BUG_EGG.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED.get(),
@@ -267,6 +288,8 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_WARD
         );
         AntarchyObjects.setOctopusBomb(AntarchyNeoforgeEntites.OCTOPUS_BOMB);
+        // AntarchyObjects.setGlimmer(AntarchyNeoforgeEntites.GLIMMER);
+        // AntarchyObjects.setGlimmersGrace(() -> AntarchyNeoforgeMisc.GLIMMERS_GRACE);
     }
 
     private static boolean isModLoaded(String modId) {

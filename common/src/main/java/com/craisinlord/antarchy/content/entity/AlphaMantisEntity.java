@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -51,7 +52,10 @@ public class AlphaMantisEntity extends MantisEntity {
     }
 
     public static boolean checkAlphaMantisSpawnRules(EntityType<AlphaMantisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnReason, BlockPos pos, RandomSource random) {
-        if (spawnReason == MobSpawnType.SPAWN_EGG || spawnReason == MobSpawnType.SPAWNER || spawnReason == MobSpawnType.COMMAND) {
+        if (spawnReason == MobSpawnType.SPAWN_EGG
+                || spawnReason == MobSpawnType.SPAWNER
+                || spawnReason == MobSpawnType.TRIAL_SPAWNER
+                || spawnReason == MobSpawnType.COMMAND) {
             return true;
         }
 
@@ -72,14 +76,12 @@ public class AlphaMantisEntity extends MantisEntity {
             return false;
         }
 
-        // Only one alpha at a time in the area
         if (!level.getLevel().getEntitiesOfClass(AlphaMantisEntity.class, new AABB(pos).inflate(128.0D), Entity::isAlive).isEmpty()) {
             return false;
         }
 
         boolean ignoreLightLevel = AntarchySettings.mantisIgnoreLightLevel();
 
-        // Daytime overworld spawns can't pass the vanilla darkness check, so no light gate here
         if (level.getLevel().isDay() && level.getBiome(pos).is(AntarchyTags.Biomes.MANTIS_OVERWORLD_SPAWN_BIOMES)) {
             return level.canSeeSky(pos);
         }
@@ -89,6 +91,16 @@ public class AlphaMantisEntity extends MantisEntity {
         }
 
         return false;
+    }
+
+    @Override
+    protected MeleeAttackGoal createCombatGoal() {
+        return new MeleeAttackGoal(this, this.getCombatSpeed(), true);
+    }
+
+    @Override
+    protected double getCombatSpeed() {
+        return 1.05D;
     }
 
     @Override
@@ -156,9 +168,20 @@ public class AlphaMantisEntity extends MantisEntity {
     }
 
     @Override
+    protected void onActiveTarget(LivingEntity target) {
+        if (this.flyBurstTicks > 0 || this.flyCooldownTicks > 0) {
+            this.stopFlightBurst();
+        }
+    }
+
+    @Override
+    protected boolean shouldStartFlightBurst() {
+        return false;
+    }
+
+    @Override
     public void setTarget(@Nullable LivingEntity target) {
         super.setTarget(target);
-        // A boss that despawns mid-fight is no boss — stay loaded once engaged
         if (target != null) {
             this.setPersistenceRequired();
         }

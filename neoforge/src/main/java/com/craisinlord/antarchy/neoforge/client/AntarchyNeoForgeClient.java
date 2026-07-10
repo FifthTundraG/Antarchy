@@ -125,6 +125,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.TORETERROR.get(), ToreterrorRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.WATER_BOMB.get(), WaterBombRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.CHEEP.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.CheepRenderer(context)));
+        // event.registerEntityRenderer(AntarchyNeoforgeEntites.GLIMMER.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.GlimmerRenderer(context)));
     }
 
     @SubscribeEvent
@@ -188,6 +189,11 @@ public final class AntarchyNeoForgeClient {
                 (state, level, pos, tintIndex) -> 0xFF4A0000,
                 AntarchyNeoforgeBlocks.ANTIWATER_BLOCK.get()
         );
+        event.register(
+                (state, level, pos, tintIndex) -> level != null && pos != null
+                        ? BiomeColors.getAverageGrassColor(level, pos)
+                        : net.minecraft.world.level.GrassColor.getDefaultColor()
+        );
     }
 
     @SubscribeEvent
@@ -195,6 +201,9 @@ public final class AntarchyNeoForgeClient {
         event.register(
                 (stack, tintIndex) -> FoliageColor.getDefaultColor(),
                 AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get()
+        );
+        event.register(
+                (stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor()
         );
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ICHOR_BUCKET.get());
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ANTIWATER_BUCKET.get());
@@ -408,10 +417,11 @@ public final class AntarchyNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.OURANWOOD_DOOR.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.OURANWOOD_TRAPDOOR.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.OURANWOOD_ACORN_BLOCK.get(), RenderType.cutout());
+            // ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.OURANWOOD_VINE.get(), RenderType.cutout());
+            // ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.OURANWOOD_VINE_PLANT.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.PINK_MILKWEED.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.TORCHFLOWER_BUSH.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.HUSHWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORNEA_STALK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ANTIMETAL_SCAFFOLDING.get(), RenderType.cutout());
@@ -428,6 +438,8 @@ public final class AntarchyNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.DREAM_FIRE.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.DREAM_CEILING_FIRE.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ANTIWATER_BLOCK.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ELYTHIA_PORTAL.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.TRIFFID_GOO_BLOCK.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.URANIUM_DOOR.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.TITANIUM_DOOR.get(), RenderType.cutout());

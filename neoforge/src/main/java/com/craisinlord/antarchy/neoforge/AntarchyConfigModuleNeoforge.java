@@ -116,6 +116,12 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setAlphaMantisSummonIntervalTicks(AntarchyMobsConfig.alphaMantisSummonIntervalTicks());
         AntarchySettings.setAlphaMantisMaxMinions(AntarchyMobsConfig.alphaMantisMaxMinions());
 
+        AntarchySettings.setRollyPollyHealth(AntarchyMobsConfig.rollyPollyHealth());
+        AntarchySettings.setRollyPollyMovementSpeed(AntarchyMobsConfig.rollyPollyMovementSpeed());
+        AntarchySettings.setRollyPollyRollSpeedMultiplier(AntarchyMobsConfig.rollyPollyRollSpeedMultiplier());
+        AntarchySettings.setRollyPollyTumbleDamage(AntarchyMobsConfig.rollyPollyTumbleDamage());
+        AntarchySettings.setRollyPollyTameChance(AntarchyMobsConfig.rollyPollyTameChance());
+
         AntarchySettings.setTriffidHealth(AntarchyMobsConfig.triffidHealth());
         AntarchySettings.setTriffidAttackDamage(AntarchyMobsConfig.triffidAttackDamage());
         AntarchySettings.setTriffidGrabDamage(AntarchyMobsConfig.triffidGrabDamage());
@@ -193,6 +199,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
         AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
         AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
+        AntarchySettings.setGlimmerHealth(AntarchyMobsConfig.glimmerHealth());
     }
 
     private static void bakeToolsConfig() {
@@ -327,6 +334,11 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setDiamondMinecartCoastDeceleration(AntarchyMiscConfig.diamondMinecartCoastDeceleration());
         AntarchySettings.setDiamondMinecartMobDamageEnabled(AntarchyMiscConfig.diamondMinecartMobDamageEnabled());
         AntarchySettings.setDiamondMinecartMaxMobDamage(AntarchyMiscConfig.diamondMinecartMaxMobDamage());
+        AntarchySettings.setPermanentPortalsEnabled(AntarchyMiscConfig.permanentPortalsEnabled());
+        AntarchySettings.setPermanentPortalsFlintAndSteelEnabled(AntarchyMiscConfig.permanentPortalsFlintAndSteelEnabled());
+        AntarchySettings.setElythiaPortalEnabled(AntarchyMiscConfig.elythiaPortalEnabled());
+        AntarchySettings.setThoraxisPortalEnabled(AntarchyMiscConfig.thoraxisPortalEnabled());
+        AntarchySettings.setCavarynPortalEnabled(AntarchyMiscConfig.cavarynPortalEnabled());
 
 
         // Misc
@@ -344,6 +356,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setDuplicatorTreeEnabled(AntarchyMiscConfig.duplicatorTreeEnabled());
         AntarchySettings.setGlowingTorchflowers(AntarchyMiscConfig.glowingTorchflowers());
         AntarchySettings.setGlowVinesUnderLeaves(AntarchyMiscConfig.glowVinesUnderLeaves());
+        AntarchySettings.setSwingThroughGrassEnabled(AntarchyMiscConfig.swingThroughGrassEnabled());
         AntarchySettings.setEntitySpecificFireOverlayEnabled(AntarchyMiscConfig.entitySpecificFireOverlayEnabled());
 
         AntarchySettings.setBloodCrystalArmorShieldRechargeTicks(AntarchyToolsConfig.bloodCrystalArmorShieldRechargeTicks());

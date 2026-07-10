@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "antarchy:block/very_tall_grass/very_tall_grass_bottom"
+  }
+}

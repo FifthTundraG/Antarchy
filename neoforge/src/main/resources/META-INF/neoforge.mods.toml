@@ -4,7 +4,7 @@ license="All rights reserved"
 
 [[mods]] #mandatory
 modId="antarchy" #mandatory
-logoFile="../assets/antarchy_/antarchy_logo.png"
+logoFile="../assets/antarchy/antarchy_logo.png"
     logoBlur=false
     version="${version}" #mandatory
     displayName="Antarchy" #mandatory
@@ -34,6 +34,13 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/antarchy"
 
 [[dependencies.antarchy]]
     modId="geckolib"
+    type="required"
+    versionRange="*"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.antarchy]]
+    modId="sizeable_foliage"
     type="required"
     versionRange="*"
     ordering="AFTER"

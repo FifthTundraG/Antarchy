@@ -84,18 +84,16 @@ public class AntarchyNeoforgeCreativeModeTabs {
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_ACORN.get());
+            // event.accept(AntarchyNeoforgeItems.OURANWOOD_VINE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_LOG_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_SAPLING_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ORANGE_MILKWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.PINK_MILKWEED_ITEM.get());
-            event.accept(AntarchyNeoforgeItems.TORCHFLOWER_BUSH_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_ROOTED_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_COARSE_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.TRIFFID_GOO_BLOCK_ITEM.get());
             event.accept(AntarchyNeoforgeItems.BED_BUG_EGG_ITEM.get());
-            event.accept(AntarchyNeoforgeItems.CREEPING_HORROR_EGG_ITEM.get());
-            event.accept(AntarchyNeoforgeItems.LURKING_TERROR_EGG_ITEM.get());
             event.accept(AntarchyNeoforgeItems.WASP_NEST_ITEM.get());
             event.accept(AntarchyNeoforgeItems.RED_ANT_NEST_ITEM.get());
             event.accept(AntarchyNeoforgeItems.BROWN_ANT_NEST_ITEM.get());
@@ -374,7 +372,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             case "duplicator_sapling", "ouranwood_acorn" -> 10;
 
             // 11 - Plants and flowers
-            case "orange_milkweed", "pink_milkweed", "torchflower_bush", "hushweed", "amber_lichen", "bile_vein", "creepvine",
+            case "orange_milkweed", "pink_milkweed", "hushweed", "amber_lichen", "creepvine",
                  "triffid_goo_block", "wasp_nest",
                  "red_ant_nest", "brown_ant_nest", "rainbow_ant_nest", "termite_nest" -> 11;
 

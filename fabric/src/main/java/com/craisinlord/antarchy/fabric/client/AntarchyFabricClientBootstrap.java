@@ -6,6 +6,7 @@ import com.craisinlord.antarchy.content.client.renderer.*;
 import com.craisinlord.antarchy.content.client.particle.*;
 import com.craisinlord.antarchy.content.client.renderer.AntiwaterFluidRenderer;
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
+import com.craisinlord.antarchy.fabric.client.renderer.MultipartPartRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.minecraft.world.entity.EntityType;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -89,6 +90,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.DR_TRAYAURUS.get(), context -> new DrTrayaurusRenderer(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/dr_trayaurus.png")));
         EntityRendererRegistry.register(AntarchyFabricContent.CLOUD_SHARK.get(), CloudSharkRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.KRAKEN.get(), KrakenRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.KRAKEN_PART.get(), MultipartPartRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.MISSILE_SQUID.get(), MissileSquidRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.OCTOPUS_BOMB.get(), OctopusBombRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.NIGHTMARE.get(), NightmareRenderer::new);
@@ -109,6 +111,7 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.TORETERROR.get(), ToreterrorRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.WATER_BOMB.get(), WaterBombRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.CHEEP.get(), com.craisinlord.antarchy.content.client.renderer.CheepRenderer::new);
+        // EntityRendererRegistry.register(AntarchyFabricContent.GLIMMER.get(), com.craisinlord.antarchy.content.client.renderer.GlimmerRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.boatLayer(), BoatModel::createBodyModel);
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
@@ -122,7 +125,15 @@ public final class AntarchyFabricClientBootstrap {
                 AntarchyFabricContent.OURANWOOD_LEAVES.get()
         );
         ColorProviderRegistry.BLOCK.register((state, level, pos, tintIndex) -> 0xFF4A0000, AntarchyFabricContent.ANTIWATER_BLOCK.get());
+        ColorProviderRegistry.BLOCK.register(
+                (state, level, pos, tintIndex) -> level != null && pos != null
+                        ? BiomeColors.getAverageGrassColor(level, pos)
+                        : net.minecraft.world.level.GrassColor.getDefaultColor()
+        );
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> FoliageColor.getDefaultColor(), AntarchyFabricContent.OURANWOOD_LEAVES_ITEM.get());
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor()
+        );
     }
 
     private static void registerFluids() {
@@ -198,10 +209,11 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_DOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_TRAPDOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_ACORN_BLOCK.get(), RenderType.cutout());
+        // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE.get(), RenderType.cutout());
+        // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE_PLANT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DUPLICATOR_SAPLING.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ORANGE_MILKWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PINK_MILKWEED.get(), RenderType.cutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TORCHFLOWER_BUSH.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.HUSHWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CORNEA_STALK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.FALLEN_KING_CROWN_BLOCK.get(), RenderType.cutout());
@@ -219,6 +231,8 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_CEILING_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ANTIWATER_BLOCK.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ELYTHIA_PORTAL.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.THORAXIS_PORTAL.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TRIFFID_GOO_BLOCK.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.URANIUM_DOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TITANIUM_DOOR.get(), RenderType.cutout());
@@ -319,6 +333,7 @@ public final class AntarchyFabricClientBootstrap {
             ScorpionWhipTetherRenderHandler.tick();
             DorrieJumpClientHandler.tick();
             HerculesBeetleClientHandler.tick();
+            RollyPollyClientHandler.tick();
         });
 
         BigBerthaClientHandler.register();
@@ -329,7 +344,6 @@ public final class AntarchyFabricClientBootstrap {
         MogglesClientRenderer.register();
         StinkySoundHandler.register();
         ReverieTrailHandler.register();
-
         HudRenderCallback.EVENT.register((guiGraphics, partialTick) -> {
             DreadHudRenderer.render(guiGraphics);
             ParalyzedHudRenderer.render(guiGraphics);

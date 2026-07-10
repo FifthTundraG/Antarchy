@@ -513,6 +513,45 @@
       }
     ]
   },
+  "toreterror_spin": {
+    "subtitle": "subtitles.antarchy.toreterror_spin",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/spin"
+      }
+    ]
+  },
+  "toreterror_ricochet": {
+    "subtitle": "subtitles.antarchy.toreterror_ricochet",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/richochet1"
+      },
+      {
+        "name": "antarchy:mob/toreterror/richochet2"
+      },
+      {
+        "name": "antarchy:mob/toreterror/richochet3"
+      }
+    ]
+  },
+  "water_cannon_fire": {
+    "subtitle": "subtitles.antarchy.water_cannon_fire",
+    "sounds": [
+      {
+        "name": "antarchy:mob/toreterror/water_cannon1"
+      },
+      {
+        "name": "antarchy:mob/toreterror/water_cannon2"
+      },
+      {
+        "name": "antarchy:mob/toreterror/water_cannon3"
+      },
+      {
+        "name": "antarchy:mob/toreterror/water_cannon4"
+      }
+    ]
+  },
   "toreterror_jump_up": {
     "subtitle": "subtitles.antarchy.toreterror_jump_up",
     "sounds": [
@@ -532,83 +571,6 @@
       },
       {
         "name": "antarchy:mob/toreterror/jump_land2"
-      }
-    ]
-  },
-  "creeping_horror_growl": {
-    "subtitle": "subtitles.antarchy.creeping_horror_growl",
-    "sounds": [
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_growl1"
-      },
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_growl2"
-      }
-    ]
-  },
-  "creeping_horror_hurt": {
-    "subtitle": "subtitles.antarchy.creeping_horror_hurt",
-    "sounds": [
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt1"
-      },
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt2"
-      }
-    ]
-  },
-  "creeping_horror_bite": {
-    "subtitle": "subtitles.antarchy.creeping_horror_bite",
-    "sounds": [
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_bite1"
-      },
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_bite2"
-      },
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_bite3"
-      },
-      {
-        "name": "antarchy:mob/creeping_horror/creeping_horror_bite4"
-      }
-    ]
-  },
-  "lurking_terror_snarl": {
-    "subtitle": "subtitles.antarchy.lurking_terror_snarl",
-    "sounds": [
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl1"
-      },
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl2"
-      }
-    ]
-  },
-  "lurking_terror_hurt": {
-    "subtitle": "subtitles.antarchy.lurking_terror_hurt",
-    "sounds": [
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt1"
-      },
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt2"
-      }
-    ]
-  },
-  "lurking_terror_bite": {
-    "subtitle": "subtitles.antarchy.lurking_terror_bite",
-    "sounds": [
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_bite1"
-      }
-    ]
-  },
-  "lurking_terror_fly_loop": {
-    "subtitle": "subtitles.antarchy.lurking_terror_fly_loop",
-    "sounds": [
-      {
-        "name": "antarchy:mob/lurking_terror/lurking_terror_fly_loop"
       }
     ]
   },
@@ -1837,6 +1799,83 @@
       },
       {
         "name": "antarchy:mob/triffid/triffid_growl2"
+      }
+    ]
+  },
+  "creeping_horror_bite": {
+    "subtitle": "subtitles.antarchy.creeping_horror_bite",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite2"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite3"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_bite4"
+      }
+    ]
+  },
+  "creeping_horror_growl": {
+    "subtitle": "subtitles.antarchy.creeping_horror_growl",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_growl1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_growl2"
+      }
+    ]
+  },
+  "creeping_horror_hurt": {
+    "subtitle": "subtitles.antarchy.creeping_horror_hurt",
+    "sounds": [
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt1"
+      },
+      {
+        "name": "antarchy:mob/creeping_horror/creeping_horror_hurt2"
+      }
+    ]
+  },
+  "lurking_terror_bite": {
+    "subtitle": "subtitles.antarchy.lurking_terror_bite",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_bite1"
+      }
+    ]
+  },
+  "lurking_terror_fly_loop": {
+    "subtitle": "subtitles.antarchy.lurking_terror_fly_loop",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_fly_loop"
+      }
+    ]
+  },
+  "lurking_terror_hurt": {
+    "subtitle": "subtitles.antarchy.lurking_terror_hurt",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt1"
+      },
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_hurt2"
+      }
+    ]
+  },
+  "lurking_terror_snarl": {
+    "subtitle": "subtitles.antarchy.lurking_terror_snarl",
+    "sounds": [
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl1"
+      },
+      {
+        "name": "antarchy:mob/lurking_terror/lurking_terror_snarl2"
       }
     ]
   }

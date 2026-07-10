@@ -38,10 +38,10 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "mantis_overworld_spawn_biomes")
     );
-
     @Override
     public void onInitialize() {
         AntarchyFabricNetworking.register();
+        AntarchyFabricNetworking.bootstrapMultipartCommon();
         AntarchyConfigModuleFabric.init();
         AntarchyFabricContent.register();
         registerWorldgenFeatures();

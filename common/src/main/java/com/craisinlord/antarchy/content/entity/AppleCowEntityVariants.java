@@ -25,10 +25,4 @@ public final class AppleCowEntityVariants {
             super(entityType, level);
         }
     }
-
-    public static class HoneyedAppleCow extends AppleCowEntity {
-        public HoneyedAppleCow(EntityType<? extends Cow> entityType, Level level) {
-            super(entityType, level);
-        }
-    }
 }
