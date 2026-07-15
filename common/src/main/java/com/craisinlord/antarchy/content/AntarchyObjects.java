@@ -34,12 +34,14 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 
 public final class AntarchyObjects {
     private static final Supplier<?> UNBOUND = () -> {
@@ -99,9 +101,34 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> GLIMMER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>>) UNBOUND;
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> OURANWOOD_DEER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<Holder<MobEffect>> GLIMMERS_GRACE = (Supplier<Holder<MobEffect>>) UNBOUND;
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity>> GLIMMER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> SPIRIT_APPLE = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.ElkaEntity>> ELKA = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.ElkaEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> PEACH = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> CORN = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> CORN_SEEDS = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> WILD_CORN = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> RAW_VENISON = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> COOKED_VENISON = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> COOKED_CORNDOG = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> GLIMMER_BOTTLE = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.core.component.DataComponentType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>> GLIMMER_VARIANT_COMPONENT =
+            (Supplier<net.minecraft.core.component.DataComponentType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<MenuType<com.craisinlord.antarchy.content.menu.DorrieInventoryMenu>> DORRIE_INVENTORY_MENU = (Supplier<MenuType<com.craisinlord.antarchy.content.menu.DorrieInventoryMenu>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<net.minecraft.world.item.Item> CHEEP_ITEM = (Supplier<net.minecraft.world.item.Item>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -205,6 +232,16 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Holder<MobEffect>> STINKY_EFFECT = (Supplier<Holder<MobEffect>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Fluid> LUMEN = (Supplier<Fluid>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Fluid> FLOWING_LUMEN = (Supplier<Fluid>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> LUMEN_BUCKET = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> LUMEN_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> LUMEN_FROGLIGHT = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> OURANWOOD_ACORN_BLOCK = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> MOSSY_OURANWOOD_LOG = (Supplier<Block>) UNBOUND;
@@ -223,6 +260,14 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> WASP_NEST = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> UMBRAL_MOSS_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> UMBRAL_MOSS_CARPET = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> BLUSH_MOSS_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> BLUSH_MOSS_CARPET = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Block> HUSHWEED = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> SQUIRREL_NEST_BLOCK = (Supplier<Block>) UNBOUND;
@@ -240,6 +285,11 @@ public final class AntarchyObjects {
     public static Supplier<SimpleParticleType> STINKY_GAS = (Supplier<SimpleParticleType>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<SimpleParticleType> STINKY_FLY = (Supplier<SimpleParticleType>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<SimpleParticleType> PEACH_LEAVES_PARTICLE = (Supplier<SimpleParticleType>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> AMERICAN_COMPONENT =
+            (Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>>) UNBOUND;
 
     private AntarchyObjects() {
     }
@@ -319,6 +369,10 @@ public final class AntarchyObjects {
             Supplier<Block> ouranwoodAcornBlock,
             Supplier<Block> mossyOuranwoodLog,
             Supplier<Block> mossyOuranwoodWood,
+            Supplier<Block> umbralMossBlock,
+            Supplier<Block> umbralMossCarpet,
+            Supplier<Block> blushMossBlock,
+            Supplier<Block> blushMossCarpet,
             Supplier<Block> orangeMilkweed,
             Supplier<Block> pinkMilkweed,
             Supplier<Block> bedBugEggs,
@@ -334,6 +388,7 @@ public final class AntarchyObjects {
             Supplier<BlockEntityType<HushweedBlockEntity>> hushweedBlockEntity,
             Supplier<SimpleParticleType> stinkyGas,
             Supplier<SimpleParticleType> stinkyFly,
+            Supplier<SimpleParticleType> peachLeaves,
             Supplier<Holder<Attribute>> doubleDamageChance,
             Supplier<Holder<Attribute>> bloodglassMaxHearts,
             Supplier<Holder<MobEffect>> bloodglassWard
@@ -412,6 +467,10 @@ public final class AntarchyObjects {
         OURANWOOD_ACORN_BLOCK = ouranwoodAcornBlock;
         MOSSY_OURANWOOD_LOG = mossyOuranwoodLog;
         MOSSY_OURANWOOD_WOOD = mossyOuranwoodWood;
+        UMBRAL_MOSS_BLOCK = umbralMossBlock;
+        UMBRAL_MOSS_CARPET = umbralMossCarpet;
+        BLUSH_MOSS_BLOCK = blushMossBlock;
+        BLUSH_MOSS_CARPET = blushMossCarpet;
         ORANGE_MILKWEED = orangeMilkweed;
         PINK_MILKWEED = pinkMilkweed;
         BED_BUG_EGG = bedBugEggs;
@@ -427,6 +486,7 @@ public final class AntarchyObjects {
         HUSHWEED_BLOCK_ENTITY = hushweedBlockEntity;
         STINKY_GAS = stinkyGas;
         STINKY_FLY = stinkyFly;
+        PEACH_LEAVES_PARTICLE = peachLeaves;
         DOUBLE_DAMAGE_CHANCE = doubleDamageChance;
         BLOODGLASS_MAX_HEARTS = bloodglassMaxHearts;
         BLOODGLASS_WARD = bloodglassWard;
@@ -444,12 +504,88 @@ public final class AntarchyObjects {
         HERCULES_BEETLE = supplier;
     }
 
-    public static void setGlimmer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> supplier) {
+    public static void setOuranwoodDeer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> supplier) {
+        OURANWOOD_DEER = supplier;
+    }
+
+    public static void setGlimmer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity>> supplier) {
         GLIMMER = supplier;
     }
 
-    public static void setGlimmersGrace(Supplier<Holder<MobEffect>> supplier) {
-        GLIMMERS_GRACE = supplier;
+    public static void setLumen(Supplier<Fluid> supplier) {
+        LUMEN = supplier;
+    }
+
+    public static void setFlowingLumen(Supplier<Fluid> supplier) {
+        FLOWING_LUMEN = supplier;
+    }
+
+    public static void setLumenBucket(Supplier<Item> supplier) {
+        LUMEN_BUCKET = supplier;
+    }
+
+    public static void setLumenBlock(Supplier<Block> supplier) {
+        LUMEN_BLOCK = supplier;
+    }
+
+    public static void setLumenFroglight(Supplier<Block> supplier) {
+        LUMEN_FROGLIGHT = supplier;
+    }
+
+    public static void setSpiritApple(Supplier<Item> supplier) {
+        SPIRIT_APPLE = supplier;
+    }
+
+    public static void setElka(Supplier<EntityType<com.craisinlord.antarchy.content.entity.ElkaEntity>> supplier) {
+        ELKA = supplier;
+    }
+
+    public static void setPeach(Supplier<Item> supplier) {
+        PEACH = supplier;
+    }
+
+    public static void setCorn(Supplier<Item> supplier) {
+        CORN = supplier;
+    }
+
+    public static void setCornSeeds(Supplier<Item> supplier) {
+        CORN_SEEDS = supplier;
+    }
+
+    public static void setWildCorn(Supplier<Block> supplier) {
+        WILD_CORN = supplier;
+    }
+
+    public static void setRawVenison(Supplier<Item> supplier) {
+        RAW_VENISON = supplier;
+    }
+
+    public static void setCookedVenison(Supplier<Item> supplier) {
+        COOKED_VENISON = supplier;
+    }
+
+    public static void setCookedCorndog(Supplier<Item> supplier) {
+        COOKED_CORNDOG = supplier;
+    }
+
+    public static void setGlimmerBottle(Supplier<Item> supplier) {
+        GLIMMER_BOTTLE = supplier;
+    }
+
+    public static void setPeachLeavesParticle(Supplier<SimpleParticleType> supplier) {
+        PEACH_LEAVES_PARTICLE = supplier;
+    }
+
+    public static void setGlimmerVariantComponent(Supplier<net.minecraft.core.component.DataComponentType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>> supplier) {
+        GLIMMER_VARIANT_COMPONENT = supplier;
+    }
+
+    public static void setDorrieInventoryMenu(Supplier<MenuType<com.craisinlord.antarchy.content.menu.DorrieInventoryMenu>> supplier) {
+        DORRIE_INVENTORY_MENU = supplier;
+    }
+
+    public static void setAmericanComponent(Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> supplier) {
+        AMERICAN_COMPONENT = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

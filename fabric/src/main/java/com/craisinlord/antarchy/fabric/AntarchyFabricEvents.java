@@ -13,6 +13,7 @@ import com.craisinlord.antarchy.content.gravity.AntarchyGravityTransition;
 import com.craisinlord.antarchy.content.portal.PermanentPortalManager;
 import com.craisinlord.antarchy.content.command.CaterpillarCommand;
 import com.craisinlord.antarchy.content.command.GravityCommand;
+import com.craisinlord.antarchy.content.item.MinersDreamExcavationManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -52,8 +53,15 @@ public final class AntarchyFabricEvents {
 
         ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.UMBRAL_MOSS_BLOCK.get().asItem(), 0.65f);
         ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.UMBRAL_MOSS_CARPET.get().asItem(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.BLUSH_MOSS_BLOCK.get().asItem(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.BLUSH_MOSS_CARPET.get().asItem(), 0.3f);
         ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.HUSHWEED.get().asItem(), 0.65f);
         ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORNEA_EAR.get(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH_LEAVES.get().asItem(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH_SAPLING_ITEM.get(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORN.get(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORN_SEEDS.get(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH.get(), 0.65f);
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayer sp) {
@@ -87,6 +95,7 @@ public final class AntarchyFabricEvents {
                 tickDuctTapePlayers(level);
                 tickIchorPlayers(level);
                 tickBloodglassRecharge(level);
+                MinersDreamExcavationManager.tick(level);
             }
             invertedPlayers.retainAll(activeThisTick);
         });

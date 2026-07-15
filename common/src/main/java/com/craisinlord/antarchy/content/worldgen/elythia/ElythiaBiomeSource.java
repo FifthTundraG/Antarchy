@@ -37,6 +37,26 @@ public class ElythiaBiomeSource extends BiomeSource {
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "elythia_beach")
     );
+    private static final ResourceKey<Biome> OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> SPARSE_OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "sparse_ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> PEACH_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "peach_forest")
+    );
+    private static final ResourceKey<Biome> FUNGAL_OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "fungal_ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> GLIMMERING_POOLS = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "glimmering_pools")
+    );
     private static final int[] SURFACE_FALLBACK_BLOCK_YS = new int[]{192, 160, 128, 96, 64, 32, 0};
 
     public static final MapCodec<ElythiaBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -58,6 +78,7 @@ public class ElythiaBiomeSource extends BiomeSource {
     private final int seaLevelQuartY;
     private final Holder<Biome> oceanHolder;
     private final Holder<Biome> defaultLandHolder;
+    private final Holder<Biome> glimmeringPoolsHolder;
 
     public ElythiaBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, int molewormCavesMaxY, int surfaceBiomeSampleY, int oceanMaxY, int seaLevel) {
         this.parameters = parameters;
@@ -74,10 +95,16 @@ public class ElythiaBiomeSource extends BiomeSource {
                 .filter(h -> h.is(ELYTHIA_OCEAN))
                 .findFirst()
                 .orElse(null);
+        this.glimmeringPoolsHolder = parameters.values().stream()
+                .map(Pair::getSecond)
+                .filter(h -> h.is(GLIMMERING_POOLS))
+                .findFirst()
+                .orElse(null);
         this.defaultLandHolder = parameters.values().stream()
                 .map(Pair::getSecond)
                 .filter(h -> !isOceanBiome(h) && !h.is(ELYTHIA_BEACH)
-                          && !h.is(MOLEWORM_CAVES) && !h.is(ELYTHIA_LUSH_CAVES))
+                          && !h.is(MOLEWORM_CAVES) && !h.is(ELYTHIA_LUSH_CAVES)
+                          && !h.is(GLIMMERING_POOLS))
                 .findFirst()
                 .orElse(null);
     }
@@ -110,7 +137,7 @@ public class ElythiaBiomeSource extends BiomeSource {
 
         // Cap moleworm caves below their max Y — replace with surface biome above it
         if (biome.is(MOLEWORM_CAVES) && y > this.molewormCavesMaxQuartY) {
-            return resolveSurfaceFallback(x, y, z, sampler, MOLEWORM_CAVES);
+            return resolveSurfaceFallback(x, y, z, sampler, MOLEWORM_CAVES, GLIMMERING_POOLS);
         }
 
         // Use continentalness (XZ-only noise) to classify the column.
@@ -138,6 +165,10 @@ public class ElythiaBiomeSource extends BiomeSource {
             return resolveLandFallback(x, z, sampler);
         }
 
+        if (isGlimmeringPoolsCandidate(biome, target, x, z)) {
+            return this.glimmeringPoolsHolder != null ? this.glimmeringPoolsHolder : biome;
+        }
+
         return biome;
     }
 
@@ -148,6 +179,44 @@ public class ElythiaBiomeSource extends BiomeSource {
 
     private static boolean isOceanBiome(Holder<Biome> biome) {
         return biome.is(ELYTHIA_OCEAN) || biome.is(ELYTHIA_CORAL_SPIKES);
+    }
+
+    private static boolean isOuranwoodBiome(Holder<Biome> biome) {
+        return biome.is(OURANWOOD_FOREST) || biome.is(SPARSE_OURANWOOD_FOREST)
+                || biome.is(PEACH_FOREST) || biome.is(FUNGAL_OURANWOOD_FOREST);
+    }
+
+    private static boolean isGlimmeringPoolsCandidate(Holder<Biome> biome, Climate.TargetPoint target, int x, int z) {
+        if (!isOuranwoodBiome(biome)) {
+            return false;
+        }
+
+        long humidity = target.humidity();
+        long continentalness = target.continentalness();
+        long weirdness = target.weirdness();
+        long depth = target.depth();
+
+        if (humidity < Climate.quantizeCoord(0.68F) || humidity > Climate.quantizeCoord(1.0F)) {
+            return false;
+        }
+        if (continentalness < Climate.quantizeCoord(0.32F) || continentalness > Climate.quantizeCoord(0.88F)) {
+            return false;
+        }
+        if (weirdness < Climate.quantizeCoord(-0.84F) || weirdness > Climate.quantizeCoord(0.29F)) {
+            return false;
+        }
+        if (depth < Climate.quantizeCoord(0.0F) || depth > Climate.quantizeCoord(0.80F)) {
+            return false;
+        }
+
+        // Hash on coarse cells (not raw per-quart coords) so eligible columns
+        // clump into contiguous patches instead of speckling per-quart.
+        // Cell size bumped from 6 to 8 blocks so patches (and the pools/streams
+        // they host) run slightly larger than before.
+        long cellX = Math.floorDiv(x, 8);
+        long cellZ = Math.floorDiv(z, 8);
+        long gate = Math.floorMod(cellX * 73428767L + cellZ * 912931L, 5L);
+        return gate <= 2L;
     }
 
     // Used for moleworm caves — returns best Y-sample, falls back to whatever the delegate gives
@@ -191,7 +260,8 @@ public class ElythiaBiomeSource extends BiomeSource {
 
     private static boolean isOceanOrCave(Holder<Biome> biome) {
         return isOceanBiome(biome) || biome.is(ELYTHIA_BEACH)
-                || biome.is(MOLEWORM_CAVES) || biome.is(ELYTHIA_LUSH_CAVES);
+                || biome.is(MOLEWORM_CAVES) || biome.is(ELYTHIA_LUSH_CAVES)
+                || biome.is(GLIMMERING_POOLS);
     }
 
     @Override

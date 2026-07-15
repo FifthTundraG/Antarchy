@@ -4,6 +4,7 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.AntarchySoundEvents;
+import com.craisinlord.antarchy.content.CustomBrewingRecipes;
 import com.craisinlord.antarchy.content.block.DuctTapeBlock;
 import com.craisinlord.antarchy.content.block.PotentNyxiteBlock;
 import com.craisinlord.antarchy.content.bloodglass.BloodglassAccess;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potions;
+import net.neoforged.neoforge.common.brewing.BrewingRecipe;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -57,6 +59,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import com.craisinlord.antarchy.content.item.MinersDreamExcavationManager;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -91,6 +95,7 @@ public final class AntarchyNeoForgeEvents {
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::tickDreadAndIchor);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::tickScorpionWhips);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::tickDreamSandLowGravity);
+        NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::tickMinersDreamExcavations);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleAntiwaterDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleAntiwaterFall);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleDreamSandFall);
@@ -859,6 +864,12 @@ public final class AntarchyNeoForgeEvents {
         }
     }
 
+    static void tickMinersDreamExcavations(ServerTickEvent.Post event) {
+        for (ServerLevel level : event.getServer().getAllLevels()) {
+            MinersDreamExcavationManager.tick(level);
+        }
+    }
+
     static void tickDreamSandLowGravity(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof LivingEntity livingEntity)) {
             return;
@@ -971,6 +982,50 @@ public final class AntarchyNeoForgeEvents {
     }
 
     static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        net.minecraft.tags.TagKey<net.minecraft.world.item.Item> rootsTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.ITEM,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "roots")
+        );
+        event.getBuilder().addRecipe(new BrewingRecipe(
+                net.minecraft.world.item.crafting.Ingredient.of(Items.POTION),
+                net.minecraft.world.item.crafting.Ingredient.of(AntarchyNeoforgeItems.CORN.get()),
+                new ItemStack(AntarchyNeoforgeItems.HIGH_FRUCTOSE_CORN_SYRUP.get())
+        ) {
+            @Override
+            public boolean isInput(ItemStack stack) {
+                return stack.is(Items.POTION) && stack.getOrDefault(net.minecraft.core.component.DataComponents.POTION_CONTENTS, net.minecraft.world.item.alchemy.PotionContents.EMPTY).is(net.minecraft.world.item.alchemy.Potions.WATER);
+            }
+
+            @Override
+            public boolean isIngredient(ItemStack stack) {
+                return stack.is(AntarchyNeoforgeItems.CORN.get());
+            }
+
+            @Override
+            public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
+                return CustomBrewingRecipes.getOutput(input, ingredient);
+            }
+        });
+        event.getBuilder().addRecipe(new BrewingRecipe(
+                net.minecraft.world.item.crafting.Ingredient.of(AntarchyNeoforgeItems.HIGH_FRUCTOSE_CORN_SYRUP.get()),
+                net.minecraft.world.item.crafting.Ingredient.of(rootsTag),
+                new ItemStack(AntarchyNeoforgeItems.ROOT_BEER.get())
+        ) {
+            @Override
+            public boolean isInput(ItemStack stack) {
+                return stack.is(AntarchyNeoforgeItems.HIGH_FRUCTOSE_CORN_SYRUP.get());
+            }
+
+            @Override
+            public boolean isIngredient(ItemStack stack) {
+                return stack.is(rootsTag);
+            }
+
+            @Override
+            public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
+                return CustomBrewingRecipes.getOutput(input, ingredient);
+            }
+        });
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.LUCID_EYE.get(), AntarchyNeoforgeMisc.INVERSION);
         event.getBuilder().addMix(AntarchyNeoforgeMisc.INVERSION, Items.REDSTONE, AntarchyNeoforgeMisc.LONG_INVERSION);
         event.getBuilder().addMix(Potions.AWKWARD, AntarchyNeoforgeItems.STINK_BUG.get(), AntarchyNeoforgeMisc.STINKY_POTION);
@@ -1075,6 +1130,16 @@ public final class AntarchyNeoForgeEvents {
 
         if (state.is(AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get())) {
             event.setFinalState(AntarchyNeoforgeBlocks.STRIPPED_OURANWOOD_WOOD.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
+            return;
+        }
+
+        if (state.is(AntarchyNeoforgeBlocks.PEACH_LOG.get())) {
+            event.setFinalState(AntarchyNeoforgeBlocks.STRIPPED_PEACH_LOG.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
+            return;
+        }
+
+        if (state.is(AntarchyNeoforgeBlocks.PEACH_WOOD.get())) {
+            event.setFinalState(AntarchyNeoforgeBlocks.STRIPPED_PEACH_WOOD.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
         }
     }
 
@@ -1119,8 +1184,15 @@ public final class AntarchyNeoForgeEvents {
             );
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.UMBRAL_MOSS_BLOCK.get().asItem(), 0.65f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.UMBRAL_MOSS_CARPET.get().asItem(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.BLUSH_MOSS_BLOCK.get().asItem(), 0.65f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.BLUSH_MOSS_CARPET.get().asItem(), 0.3f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.HUSHWEED.get().asItem(), 0.65f);
             ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.CORNEA_EAR.get(), 0.65f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeBlocks.PEACH_LEAVES.get().asItem(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.PEACH_SAPLING_ITEM.get(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.CORN.get(), 0.65f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.CORN_SEEDS.get(), 0.3f);
+            ComposterBlock.COMPOSTABLES.put(AntarchyNeoforgeItems.PEACH.get(), 0.65f);
         });
     }
 }

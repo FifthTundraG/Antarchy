@@ -107,6 +107,12 @@
                                           "minCount":  1,
                                           "maxCount":  2
                                       },
+                                      {
+                                          "type":  "antarchy:ouranwood_deer",
+                                          "weight":  4,
+                                          "minCount":  1,
+                                          "maxCount":  1
+                                      }
                                   ],
                      "ambient":  [
                                      {

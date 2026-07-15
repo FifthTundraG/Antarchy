@@ -80,6 +80,7 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
     private static final int ATTACK_GRAB = 1;
     private static final int ATTACK_SWING_LEFT = 2;
     private static final int ATTACK_SWING_RIGHT = 3;
+    private static final int ATTACK_SLAM = 4;
 
     // Synced animation state values
     private static final int ANIM_NONE = 0;
@@ -87,7 +88,8 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
     private static final int ANIM_GRAB = 2;
     private static final int ANIM_SWING_LEFT = 3;
     private static final int ANIM_SWING_RIGHT = 4;
-    private static final int ANIM_DEATH = 5;
+    private static final int ANIM_SLAM = 5;
+    private static final int ANIM_DEATH = 6;
 
     private static final int DEATH_ANIM_TICKS = 60;
 
@@ -105,7 +107,10 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
     private static final RawAnimation GRAB_ANIM = RawAnimation.begin().thenPlay("grab");
     private static final RawAnimation SWING_LEFT_ANIM = RawAnimation.begin().thenPlay("swing_left");
     private static final RawAnimation SWING_RIGHT_ANIM = RawAnimation.begin().thenPlay("swing_right");
+    private static final RawAnimation SLAM_ANIM = RawAnimation.begin().thenPlay("attack");
     private static final RawAnimation DEATH_ANIM = RawAnimation.begin().thenPlay("death");
+
+    private static final Vec3 GRAB_ANCHOR_LOCAL = new Vec3(22.0D / 16.0D, 223.5D / 16.0D, -12.5D / 16.0D);
 
     private final ServerBossEvent bossEvent = new ServerBossEvent(Component.literal("The Kraken"), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
@@ -208,6 +213,7 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
             case ANIM_GRAB -> state.setAndContinue(GRAB_ANIM);
             case ANIM_SWING_LEFT -> state.setAndContinue(SWING_LEFT_ANIM);
             case ANIM_SWING_RIGHT -> state.setAndContinue(SWING_RIGHT_ANIM);
+            case ANIM_SLAM -> state.setAndContinue(SLAM_ANIM);
             case ANIM_DEATH -> state.setAndContinue(DEATH_ANIM);
             default -> PlayState.STOP;
         };
@@ -551,6 +557,7 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
             case ATTACK_GRAB -> this.tickGrabAttack(target);
             case ATTACK_SWING_LEFT -> this.tickSwingAttack(false);
             case ATTACK_SWING_RIGHT -> this.tickSwingAttack(true);
+            case ATTACK_SLAM -> this.tickSlamAttack();
             default -> this.finishAttack();
         }
     }
@@ -562,6 +569,9 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
         if (attackState == ATTACK_GRAB) {
             this.actionTicks = 55;
             this.playSound(AntarchySoundEvents.KRAKEN_ATTACK.get(), 1.45F, 0.9F);
+        } else if (attackState == ATTACK_SLAM) {
+            this.actionTicks = 40;
+            this.playSound(AntarchySoundEvents.KRAKEN_ATTACK.get(), 1.55F, this.isPhaseTwo() ? 0.78F : 0.84F);
         } else if (attackState == ATTACK_SWING_LEFT || attackState == ATTACK_SWING_RIGHT) {
             this.actionTicks = 40;
             this.playSound(AntarchySoundEvents.KRAKEN_SPIN.get(), 1.3F, 0.95F);
@@ -596,6 +606,16 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
     private void tickSwingAttack(boolean swingRight) {
         if (this.actionTicks == 10) {
             this.performSwing(swingRight);
+        }
+
+        if (--this.actionTicks <= 0) {
+            this.finishAttack();
+        }
+    }
+
+    private void tickSlamAttack() {
+        if (this.actionTicks == 20) {
+            this.performSlam();
         }
 
         if (--this.actionTicks <= 0) {
@@ -652,14 +672,16 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
         double distSqr = this.distanceToSqr(target);
         boolean canGrab = distSqr <= 64.0D;
         boolean canSwing = distSqr <= 81.0D;
+        boolean canSlam = distSqr <= 121.0D;
 
-        if (!canGrab && !canSwing) {
+        if (!canGrab && !canSwing && !canSlam) {
             return ATTACK_NONE;
         }
 
         int grabWeight = canGrab ? (this.lastAttackState == ATTACK_GRAB ? 1 : 4) : 0;
         int swingWeight = canSwing ? (this.isSwingAttack(this.lastAttackState) ? 1 : 5) : 0;
-        int total = grabWeight + swingWeight;
+        int slamWeight = canSlam ? (this.lastAttackState == ATTACK_SLAM ? 1 : 3) : 0;
+        int total = grabWeight + swingWeight + slamWeight;
         if (total == 0) {
             return ATTACK_NONE;
         }
@@ -668,11 +690,19 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
         if (roll < grabWeight) {
             return ATTACK_GRAB;
         }
+        roll -= grabWeight;
+        if (roll < slamWeight) {
+            return ATTACK_SLAM;
+        }
         return this.resolveSwingDirection(target);
     }
 
     private boolean isSwingAttack(int attackState) {
         return attackState == ATTACK_SWING_LEFT || attackState == ATTACK_SWING_RIGHT;
+    }
+
+    private boolean isSlamAttack(int attackState) {
+        return attackState == ATTACK_SLAM;
     }
 
     // Determines left vs right based on which side the target is on relative to the Kraken.
@@ -707,10 +737,28 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
         }
     }
 
+    private void performSlam() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        AABB hitBox = this.getBoundingBox().inflate(9.0D, 4.0D, 9.0D);
+        List<Player> players = this.level().getEntitiesOfClass(Player.class, hitBox, LivingEntity::isAlive);
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.4F;
+
+        for (Player player : players) {
+            if (!player.hurt(AntarchyDamageSources.krakenMauling(serverLevel, this), damage)) {
+                continue;
+            }
+            this.knockAway(player, 3.2D, 0.75D);
+        }
+
+        serverLevel.sendParticles(ParticleTypes.SPLASH, this.getX(), this.getY() + 0.8D, this.getZ(), 40, 2.0D, 0.8D, 2.0D, 0.12D);
+        serverLevel.sendParticles(ParticleTypes.BUBBLE, this.getX(), this.getY() + 0.6D, this.getZ(), 30, 1.8D, 0.6D, 1.8D, 0.05D);
+    }
+
     private void holdGrabbedTarget(LivingEntity target) {
-        Vec3 anchor = this.position()
-                .add(this.getViewVector(1.0F).normalize().scale(this.getBbWidth() * 0.65D))
-                .add(0.0D, this.getBbHeight() * 0.28D, 0.0D);
+        Vec3 anchor = this.getGrabAnchorWorldPos();
         target.setDeltaMovement(anchor.subtract(target.position()).scale(0.35D));
         target.resetFallDistance();
         if (target instanceof ServerPlayer serverPlayer) {
@@ -719,6 +767,33 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
             target.moveTo(anchor.x, anchor.y, anchor.z, target.getYRot(), target.getXRot());
         }
         target.hurtMarked = true;
+    }
+
+    private Vec3 getGrabAnchorWorldPos() {
+        Vec3 localAnchor = this.getGrabAnchorOffset();
+        Vec3 rotatedAnchor = localToWorldOffset(localAnchor);
+        return this.position().add(rotatedAnchor);
+    }
+
+    private Vec3 getGrabAnchorOffset() {
+        if (this.getAttackState() != ATTACK_GRAB) {
+            return new Vec3(this.getBbWidth() * 0.65D, this.getBbHeight() * 0.28D, 0.0D);
+        }
+
+        double progress = 1.0D - (this.actionTicks / 55.0D);
+        double forward = Mth.lerp(progress, this.getBbWidth() * 0.45D, GRAB_ANCHOR_LOCAL.z);
+        double vertical = Mth.lerp(progress, this.getBbHeight() * 0.18D, GRAB_ANCHOR_LOCAL.y);
+        double lateral = Mth.lerp(progress, this.getBbWidth() * 0.18D, GRAB_ANCHOR_LOCAL.x);
+        return new Vec3(lateral, vertical, forward);
+    }
+
+    private Vec3 localToWorldOffset(Vec3 localOffset) {
+        float bodyYawRadians = this.yBodyRot * Mth.DEG_TO_RAD;
+        double cos = Math.cos(bodyYawRadians);
+        double sin = Math.sin(bodyYawRadians);
+        double worldX = localOffset.x * cos - localOffset.z * sin;
+        double worldZ = localOffset.z * cos + localOffset.x * sin;
+        return new Vec3(worldX, localOffset.y, worldZ);
     }
 
     private void knockAway(LivingEntity target, double horizontalStrength, double verticalStrength) {
@@ -1121,6 +1196,10 @@ public class KrakenEntity extends Monster implements GeoEntity, MultipartEntityO
             }
             case ATTACK_SWING_RIGHT -> {
                 this.setAnimationState(ANIM_SWING_RIGHT);
+                return;
+            }
+            case ATTACK_SLAM -> {
+                this.setAnimationState(ANIM_SLAM);
                 return;
             }
             default -> {

@@ -158,6 +158,21 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.OURANWOOD_BUTTON);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.OURANWOOD_LEAVES);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_ACORN = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.OURANWOOD_ACORN_BLOCK);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_LOG_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_LOG);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_WOOD_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_WOOD);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> STRIPPED_PEACH_LOG_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.STRIPPED_PEACH_LOG);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> STRIPPED_PEACH_WOOD_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.STRIPPED_PEACH_WOOD);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_PLANKS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_PLANKS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_STAIRS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_STAIRS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_SLAB_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_SLAB);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_FENCE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_FENCE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_FENCE_GATE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_FENCE_GATE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_DOOR_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_DOOR);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_TRAPDOOR_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_TRAPDOOR);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_PRESSURE_PLATE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_PRESSURE_PLATE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_BUTTON);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_LEAVES);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PEACH_SAPLING);
     // public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_VINE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.OURANWOOD_VINE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ORANGE_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.ORANGE_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> PINK_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PINK_MILKWEED);
@@ -169,6 +184,14 @@ public final class AntarchyNeoforgeItems {
             () -> new OuranwoodBoatOnlyItem(AntarchyNeoforgeEntites.OURANWOOD_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> OURANWOOD_CHEST_BOAT = ITEMS.register("ouranwood_chest_boat",
             () -> new OuranwoodChestBoatItem(AntarchyNeoforgeEntites.OURANWOOD_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<net.minecraft.world.item.SignItem> PEACH_SIGN_ITEM = ITEMS.register("peach_sign",
+            () -> new net.minecraft.world.item.SignItem(new Item.Properties().stacksTo(16), AntarchyNeoforgeBlocks.PEACH_SIGN.get(), AntarchyNeoforgeBlocks.PEACH_WALL_SIGN.get()));
+    public static final DeferredItem<net.minecraft.world.item.HangingSignItem> PEACH_HANGING_SIGN_ITEM = ITEMS.register("peach_hanging_sign",
+            () -> new net.minecraft.world.item.HangingSignItem(AntarchyNeoforgeBlocks.PEACH_HANGING_SIGN.get(), AntarchyNeoforgeBlocks.PEACH_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<Item> PEACH_BOAT = ITEMS.register("peach_boat",
+            () -> new PeachBoatOnlyItem(AntarchyNeoforgeEntites.PEACH_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> PEACH_CHEST_BOAT = ITEMS.register("peach_chest_boat",
+            () -> new PeachChestBoatItem(AntarchyNeoforgeEntites.PEACH_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DUPLICATOR_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> RED_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.RED_ANT_NEST);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BROWN_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.BROWN_ANT_NEST);
@@ -265,10 +288,14 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> POTENT_NYXITE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.POTENT_NYXITE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UMBRAL_MOSS_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.UMBRAL_MOSS_BLOCK);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UMBRAL_MOSS_CARPET_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.UMBRAL_MOSS_CARPET);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BLUSH_MOSS_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.BLUSH_MOSS_BLOCK);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BLUSH_MOSS_CARPET_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.BLUSH_MOSS_CARPET);
     public static final DeferredItem<StandingAndWallBlockItem> DREAM_TORCH_ITEM = ITEMS.register("dream_torch",
             () -> new StandingAndWallBlockItem(AntarchyNeoforgeBlocks.DREAM_TORCH.get(), AntarchyNeoforgeBlocks.DREAM_WALL_TORCH.get(), new Item.Properties(), net.minecraft.core.Direction.UP));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DREAM_LANTERN_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.DREAM_LANTERN);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DREAM_CAMPFIRE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.DREAM_CAMPFIRE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> LUMEN_FROGLIGHT_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.LUMEN_FROGLIGHT);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ROSEATE_FROGLIGHT_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.ROSEATE_FROGLIGHT);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BED_BUG_EGG_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.BED_BUG_EGG);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> WASP_NEST_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.WASP_NEST);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> HUSHWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.HUSHWEED);
@@ -278,6 +305,8 @@ public final class AntarchyNeoforgeItems {
             () -> new BucketItem(AntarchyNeoforgeMisc.ICHOR.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<BucketItem> ANTIWATER_BUCKET = ITEMS.register("antiwater_bucket",
             () -> new BucketItem(AntarchyNeoforgeMisc.ANTIWATER.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final DeferredItem<BucketItem> LUMEN_BUCKET = ITEMS.register("lumen_bucket",
+            () -> new BucketItem(AntarchyNeoforgeMisc.LUMEN.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<com.craisinlord.antarchy.content.item.CloudBucketItem> CLOUD_BUCKET = ITEMS.register("cloud_bucket",
             () -> new com.craisinlord.antarchy.content.item.CloudBucketItem(AntarchyNeoforgeBlocks.CLOUD_BLOCK.get(), new Item.Properties().craftRemainder(Items.BUCKET)));
     public static final DeferredItem<BloodCrystalShardItem> BLOOD_CRYSTAL_SHARD = ITEMS.register("blood_crystal_shard",
@@ -326,6 +355,59 @@ public final class AntarchyNeoforgeItems {
                     .food(new FoodProperties.Builder()
                             .nutrition(2)
                             .saturationModifier(0.4F)
+                            .build())));
+    public static final DeferredItem<Item> CORN = ITEMS.register("corn",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.6F)
+                            .build())));
+    public static final DeferredItem<ItemNameBlockItem> CORN_SEEDS = ITEMS.register("corn_seeds",
+            () -> new ItemNameBlockItem(AntarchyNeoforgeBlocks.CORN_CROP.get(), new Item.Properties()));
+    public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.3F)
+                            .build())));
+    public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.8F)
+                            .build())));
+    public static final DeferredItem<Item> PEACH = ITEMS.register("peach",
+            () -> new PeachItem());
+    public static final DeferredItem<Item> RAW_CORNDOG = ITEMS.register("raw_corndog",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.7F)
+                            .build())));
+    public static final DeferredItem<Item> COOKED_CORNDOG = ITEMS.register("cooked_corndog",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(14)
+                            .saturationModifier(1.1F)
+                            .build())));
+    public static final DeferredItem<Item> HIGH_FRUCTOSE_CORN_SYRUP = ITEMS.register("high_fructose_corn_syrup",
+            () -> new HighFructoseCornSyrupItem(new Item.Properties()
+                    .stacksTo(16)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(0)
+                            .saturationModifier(0.0F)
+                            .alwaysEdible()
+                            .build())));
+    public static final DeferredItem<RootBeerItem> ROOT_BEER = ITEMS.register("root_beer",
+            () -> new RootBeerItem(new Item.Properties()
+                    .stacksTo(16)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.4F)
+                            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
+                            .alwaysEdible()
                             .build())));
     public static final DeferredItem<Item> TRIFFID_GOO = ITEMS.registerSimpleItem("triffid_goo",
             new Item.Properties().rarity(Rarity.UNCOMMON));
@@ -457,6 +539,8 @@ public final class AntarchyNeoforgeItems {
             ));
     public static final DeferredItem<GravityGunItem> GRAVITY_GUN = ITEMS.register("gravity_gun",
             () -> new GravityGunItem(new Item.Properties().stacksTo(1).durability(512).rarity(Rarity.RARE).fireResistant()));
+    public static final DeferredItem<MinersDreamItem> MINERS_DREAM = ITEMS.register("miners_dream",
+            () -> new MinersDreamItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
     public static final DeferredItem<SquidzookaItem> SQUIDZOOKA = ITEMS.register("squidzooka",
             () -> new SquidzookaItem(new Item.Properties().stacksTo(1).durability(384).rarity(Rarity.RARE)));
     public static final DeferredItem<BattleAxeItem> BATTLE_AXE = ITEMS.register("battle_axe",
@@ -480,8 +564,22 @@ public final class AntarchyNeoforgeItems {
     // Spawn eggs
     public static final DeferredItem<DeferredSpawnEggItem> EASTER_BUNNY_SPAWN_EGG = ITEMS.register("easter_bunny_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.EASTER_BUNNY, 0xFFF2B2, 0xFF85B5, new Item.Properties()));
-    // public static final DeferredItem<DeferredSpawnEggItem> GLIMMER_SPAWN_EGG = ITEMS.register("glimmer_spawn_egg",
-    //         () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.GLIMMER, 0xBEEFFF, 0x6FD8FF, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.DORRIE, 0x6F8CFF, 0xD2F2FF, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> OURANWOOD_DEER_SPAWN_EGG = ITEMS.register("ouranwood_deer_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.OURANWOOD_DEER, 0x8A6D4B, 0xE8D9B5, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> GLIMMER_SPAWN_EGG = ITEMS.register("glimmer_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.GLIMMER, 0x7DFFFF, 0x2AC7D0, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ELKA_SPAWN_EGG = ITEMS.register("elka_spawn_egg",
+            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.ELKA, 0x6B2FA0, 0xFFFFFF, new Item.Properties()));
+    public static final DeferredItem<net.minecraft.world.item.Item> SPIRIT_APPLE = ITEMS.register("spirit_apple",
+            () -> new com.craisinlord.antarchy.content.item.SpiritAppleItem(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.3F)
+                            .build())));
+    public static final DeferredItem<com.craisinlord.antarchy.content.item.GlimmerBottleItem> GLIMMER_BOTTLE = ITEMS.register("glimmer_bottle",
+            com.craisinlord.antarchy.content.item.GlimmerBottleItem::new);
     public static final DeferredItem<DeferredSpawnEggItem> FLYING_SQUIRREL_SPAWN_EGG = ITEMS.register("flying_squirrel_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.FLYING_SQUIRREL, 0x7D6649, 0xDCC59C, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> CATERPILLAR_SPAWN_EGG = ITEMS.register("caterpillar_spawn_egg",

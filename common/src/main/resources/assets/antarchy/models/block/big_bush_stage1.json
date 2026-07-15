@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/tinted_cross",
-  "textures": {
-    "cross": "antarchy:block/big_bush/big_bush_stage1"
-  }
-}

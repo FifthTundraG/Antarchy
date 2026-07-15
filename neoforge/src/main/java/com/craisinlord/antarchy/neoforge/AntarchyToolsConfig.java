@@ -170,12 +170,26 @@ public final class AntarchyToolsConfig {
     private static final ModConfigSpec.DoubleValue  GRAVITY_GUN_MAX_HOLD_DISTANCE;
 
 
+    // Miner's Dream
+
+    private static final ModConfigSpec.BooleanValue MINERS_DREAM_ENABLED;
+    private static final ModConfigSpec.IntValue      MINERS_DREAM_MINIMUM_RANGE;
+    private static final ModConfigSpec.IntValue      MINERS_DREAM_MAXIMUM_RANGE;
+    private static final ModConfigSpec.IntValue      MINERS_DREAM_TORCH_SPACING;
+    private static final ModConfigSpec.IntValue      MINERS_DREAM_BLOCKS_PER_TICK;
+
+
     // Miscellaneous items / consumables
 
     private static final ModConfigSpec.DoubleValue  DUCT_TAPE_REPAIR_PERCENT_PER_USE;
     private static final ModConfigSpec.DoubleValue  POTENT_NYXITE_INVERTED_DURATION_SECONDS;
     private static final ModConfigSpec.BooleanValue INVERT_PROJECTILES_FROM_INVERTED_PLAYERS;
     private static final ModConfigSpec.IntValue     CORNEA_EAR_NIGHT_VISION_SECONDS;
+    private static final ModConfigSpec.BooleanValue AMERICAN_ENABLED;
+    private static final ModConfigSpec.IntValue     AMERICAN_BONUS_NUTRITION;
+    private static final ModConfigSpec.DoubleValue  AMERICAN_BONUS_SATURATION;
+    private static final ModConfigSpec.IntValue     AMERICAN_REGENERATION_DURATION_TICKS;
+    private static final ModConfigSpec.IntValue     AMERICAN_REGENERATION_AMPLIFIER;
 
     // Moggles
 
@@ -424,6 +438,17 @@ public final class AntarchyToolsConfig {
         b.pop();
 
 
+        // Miner's Dream
+
+        b.push("minersDream");
+        MINERS_DREAM_ENABLED         = b.comment("Master toggle. If false, the item remains craftable but cannot be used.").define("enabled", true);
+        MINERS_DREAM_MINIMUM_RANGE   = b.comment("Minimum cave length in blocks. Clamped to [8, 256].")                    .defineInRange("minimumRange", 48, 8, 256);
+        MINERS_DREAM_MAXIMUM_RANGE   = b.comment("Maximum cave length in blocks. Clamped to [8, 256].")                    .defineInRange("maximumRange", 96, 8, 256);
+        MINERS_DREAM_TORCH_SPACING   = b.comment("Approximate blocks between torch placements along the cave.")           .defineInRange("torchSpacing", 10, 4, 64);
+        MINERS_DREAM_BLOCKS_PER_TICK = b.comment("Maximum blocks removed per server tick while excavating.")              .defineInRange("blocksPerTick", 150, 1, 2000);
+        b.pop();
+
+
         // Miscellaneous items / consumables
 
         b.push("ductTape");
@@ -442,6 +467,14 @@ public final class AntarchyToolsConfig {
         CORNEA_EAR_NIGHT_VISION_SECONDS = b
                 .comment("How long Cornea Ear grants Night Vision after being eaten, in seconds.")
                 .defineInRange("nightVisionSeconds", 15, 0, 600);
+        b.pop();
+
+        b.push("american");
+        AMERICAN_ENABLED = b.comment("If false, foods cannot be Americanized with High Fructose Corn Syrup.").define("enabled", true);
+        AMERICAN_BONUS_NUTRITION = b.comment("Extra hunger points restored when eating an Americanized food.").defineInRange("bonusNutrition", 2, 0, 100);
+        AMERICAN_BONUS_SATURATION = b.comment("Extra saturation restored when eating an Americanized food.").defineInRange("bonusSaturation", 1.0D, 0.0D, 100.0D);
+        AMERICAN_REGENERATION_DURATION_TICKS = b.comment("Duration of the Regeneration effect granted when eating an Americanized food, in ticks.").defineInRange("regenerationDurationTicks", 60, 0, 72000);
+        AMERICAN_REGENERATION_AMPLIFIER = b.comment("Amplifier of the Regeneration effect granted when eating an Americanized food (0 = I).").defineInRange("regenerationAmplifier", 0, 0, 10);
         b.pop();
 
         b.push("moggles");
@@ -579,9 +612,20 @@ public final class AntarchyToolsConfig {
     static double  gravityGunCooldownSeconds()               { return GRAVITY_GUN_COOLDOWN_SECONDS.get(); }
     static double  gravityGunMaxHoldDistance()               { return GRAVITY_GUN_MAX_HOLD_DISTANCE.get(); }
 
+    static boolean minersDreamEnabled()                      { return MINERS_DREAM_ENABLED.get(); }
+    static int     minersDreamMinimumRange()                 { return MINERS_DREAM_MINIMUM_RANGE.get(); }
+    static int     minersDreamMaximumRange()                 { return MINERS_DREAM_MAXIMUM_RANGE.get(); }
+    static int     minersDreamTorchSpacing()                 { return MINERS_DREAM_TORCH_SPACING.get(); }
+    static int     minersDreamBlocksPerTick()                { return MINERS_DREAM_BLOCKS_PER_TICK.get(); }
+
     static double  ductTapeRepairPercentPerUse()             { return DUCT_TAPE_REPAIR_PERCENT_PER_USE.get(); }
     static double  potentNyxiteInvertedDurationSeconds()     { return POTENT_NYXITE_INVERTED_DURATION_SECONDS.get(); }
     static int     corneaEarNightVisionSeconds()             { return CORNEA_EAR_NIGHT_VISION_SECONDS.get(); }
+    static boolean americanizingEnabled()                     { return AMERICAN_ENABLED.get(); }
+    static int     americanBonusNutrition()                  { return AMERICAN_BONUS_NUTRITION.get(); }
+    static double  americanBonusSaturation()                 { return AMERICAN_BONUS_SATURATION.get(); }
+    static int     americanRegenerationDurationTicks()       { return AMERICAN_REGENERATION_DURATION_TICKS.get(); }
+    static int     americanRegenerationAmplifier()            { return AMERICAN_REGENERATION_AMPLIFIER.get(); }
 
     static int     mogglesVisionRadius()                     { return MOGGLES_VISION_RADIUS.get(); }
     static int     mogglesVisionMaxLight()                   { return MOGGLES_VISION_MAX_LIGHT.get(); }

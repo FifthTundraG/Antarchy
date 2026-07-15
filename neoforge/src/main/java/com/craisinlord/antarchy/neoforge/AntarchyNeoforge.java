@@ -2,6 +2,7 @@ package com.craisinlord.antarchy.neoforge;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.compat.infinity.InfinityCompat;
+import com.craisinlord.antarchy.compat.infinity.InfinityCompatVersion;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
@@ -168,7 +169,7 @@ public class AntarchyNeoforge {
                 new BloodCrystalKatanaTrailPayload(player.getId(), durationTicks)
         ));
         com.craisinlord.antarchy.content.gravity.AntarchyGravityApi.setSyncDispatcher(AntarchyGravityNetworking::syncEntity);
-        if (isModLoaded("infinity")) {
+        if (isSupportedInfinityLoaded()) {
             InfinityCompat.bind(new NeoForgeInfinityCompat());
         }
         AntarchyNeoForgeEvents.register(modEventBus);
@@ -176,6 +177,7 @@ public class AntarchyNeoforge {
         AntarchyNeoforgeEntites.register(modEventBus);
         AntarchyNeoforgeBlocks.register(modEventBus);
         AntarchyNeoforgeItems.register(modEventBus);
+        AntarchyNeoForgeFluidTypes.register(modEventBus);
         AntarchyNeoforgeMisc.register(modEventBus);
         AntarchyNeoforgeSpawnPlacements.register(modEventBus);
         AntarchyNeoforgeCreativeModeTabs.register(modEventBus);
@@ -217,7 +219,7 @@ public class AntarchyNeoforge {
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BOMBER,
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BED_BUG,
                 AntarchyNeoforgeEntites.CHEEP,
-                (java.util.function.Supplier) AntarchyNeoforgeEntites.CHEEP,
+                AntarchyNeoforgeEntites.DORRIE,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),
@@ -268,6 +270,10 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_ACORN_BLOCK.get(),
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
+                () -> AntarchyNeoforgeBlocks.UMBRAL_MOSS_BLOCK.get(),
+                () -> AntarchyNeoforgeBlocks.UMBRAL_MOSS_CARPET.get(),
+                () -> AntarchyNeoforgeBlocks.BLUSH_MOSS_BLOCK.get(),
+                () -> AntarchyNeoforgeBlocks.BLUSH_MOSS_CARPET.get(),
                 () -> AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(),
                 () -> AntarchyNeoforgeBlocks.PINK_MILKWEED.get(),
                 () -> AntarchyNeoforgeBlocks.BED_BUG_EGG.get(),
@@ -283,13 +289,30 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.HUSHWEED_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeMisc.STINKY_GAS.get(),
                 () -> AntarchyNeoforgeMisc.STINKY_FLY.get(),
+                () -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get(),
                 () -> AntarchyNeoforgeMisc.DOUBLE_DAMAGE_CHANCE,
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_MAX_HEARTS,
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_WARD
         );
         AntarchyObjects.setOctopusBomb(AntarchyNeoforgeEntites.OCTOPUS_BOMB);
-        // AntarchyObjects.setGlimmer(AntarchyNeoforgeEntites.GLIMMER);
-        // AntarchyObjects.setGlimmersGrace(() -> AntarchyNeoforgeMisc.GLIMMERS_GRACE);
+        AntarchyObjects.setOuranwoodDeer(AntarchyNeoforgeEntites.OURANWOOD_DEER);
+        AntarchyObjects.setGlimmer(AntarchyNeoforgeEntites.GLIMMER);
+        AntarchyObjects.setSpiritApple(() -> AntarchyNeoforgeItems.SPIRIT_APPLE.get());
+        AntarchyObjects.setElka(AntarchyNeoforgeEntites.ELKA);
+        AntarchyObjects.setPeach(() -> AntarchyNeoforgeItems.PEACH.get());
+        AntarchyObjects.setCorn(() -> AntarchyNeoforgeItems.CORN.get());
+        AntarchyObjects.setCornSeeds(() -> AntarchyNeoforgeItems.CORN_SEEDS.get());
+        AntarchyObjects.setCookedCorndog(() -> AntarchyNeoforgeItems.COOKED_CORNDOG.get());
+        AntarchyObjects.setGlimmerBottle(() -> AntarchyNeoforgeItems.GLIMMER_BOTTLE.get());
+        AntarchyObjects.setGlimmerVariantComponent(() -> AntarchyNeoforgeMisc.GLIMMER_VARIANT.get());
+        AntarchyObjects.setAmericanComponent(() -> AntarchyNeoforgeMisc.AMERICAN.get());
+        AntarchyObjects.setLumen(() -> AntarchyNeoforgeMisc.LUMEN.get());
+        AntarchyObjects.setFlowingLumen(() -> AntarchyNeoforgeMisc.FLOWING_LUMEN.get());
+        AntarchyObjects.setLumenBucket(() -> AntarchyNeoforgeItems.LUMEN_BUCKET.get());
+        AntarchyObjects.setLumenBlock(() -> AntarchyNeoforgeBlocks.LUMEN_BLOCK.get());
+        AntarchyObjects.setLumenFroglight(() -> AntarchyNeoforgeBlocks.LUMEN_FROGLIGHT.get());
+        AntarchyObjects.setPeachLeavesParticle(() -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get());
+        AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
     }
 
     private static boolean isModLoaded(String modId) {
@@ -298,5 +321,30 @@ public class AntarchyNeoforge {
         } catch (Throwable ignored) {
             return false;
         }
+    }
+
+    private static boolean isSupportedInfinityLoaded() {
+        if (!isModLoaded("infinity")) {
+            return false;
+        }
+
+        try {
+            String version = ModList.get()
+                    .getModContainerById("infinity")
+                    .map(container -> container.getModInfo().getVersion().toString())
+                    .orElse(null);
+            if (InfinityCompatVersion.isSupported(version)) {
+                return true;
+            }
+
+            Antarchy.LOGGER.warn(
+                    "Skipping Infinity integration because version {} is below the supported minimum {}",
+                    version,
+                    InfinityCompatVersion.requiredVersion()
+            );
+        } catch (Throwable throwable) {
+            Antarchy.LOGGER.warn("Skipping Infinity integration because the installed Infinity version could not be verified", throwable);
+        }
+        return false;
     }
 }

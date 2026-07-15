@@ -95,13 +95,37 @@
           }
         },
         {
-          "biome": "antarchy:ouranwood_forest",
+          "biome": "antarchy:peach_forest",
           "parameters": {
             "temperature": 0.67,
             "humidity": 0.93,
             "continentalness": 0.54,
             "erosion": 0.25,
             "weirdness": -0.50,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:peach_forest",
+          "parameters": {
+            "temperature": 0.66,
+            "humidity": 0.89,
+            "continentalness": 0.54,
+            "erosion": 0.29,
+            "weirdness": -0.58,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:glimmering_pools",
+          "parameters": {
+            "temperature": 0.67,
+            "humidity": 0.95,
+            "continentalness": 0.54,
+            "erosion": 0.23,
+            "weirdness": -0.46,
             "depth": 0.45,
             "offset": 0.0
           }
@@ -115,18 +139,6 @@
             "erosion": 0.25,
             "weirdness": -0.50,
             "depth": 0.45,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:ouranwood_forest",
-          "parameters": {
-            "temperature": 0.45,
-            "humidity": 0.85,
-            "continentalness": 0.55,
-            "erosion": -0.15,
-            "weirdness": -0.75,
-            "depth": 0.3,
             "offset": 0.0
           }
         },
@@ -163,30 +175,6 @@
             "erosion": 0.05,
             "weirdness": 0.5,
             "depth": 0.3,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:ouranwood_forest",
-          "parameters": {
-            "temperature": 0.45,
-            "humidity": 0.85,
-            "continentalness": 0.55,
-            "erosion": -0.15,
-            "weirdness": -0.75,
-            "depth": 0.0,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:ouranwood_forest",
-          "parameters": {
-            "temperature": 0.45,
-            "humidity": 0.85,
-            "continentalness": 0.75,
-            "erosion": 0.0,
-            "weirdness": 0.7,
-            "depth": 0.0,
             "offset": 0.0
           }
         },
@@ -315,18 +303,6 @@
           "parameters": {
             "temperature": 0.45,
             "humidity": 0.85,
-            "continentalness": 0.55,
-            "erosion": -0.15,
-            "weirdness": -0.75,
-            "depth": 0.5,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:ouranwood_forest",
-          "parameters": {
-            "temperature": 0.45,
-            "humidity": 0.85,
             "continentalness": 0.75,
             "erosion": 0.0,
             "weirdness": 0.7,
@@ -343,18 +319,6 @@
             "erosion": 0.12,
             "weirdness": -0.2,
             "depth": 0.5,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:ouranwood_forest",
-          "parameters": {
-            "temperature": 0.50,
-            "humidity": 0.87,
-            "continentalness": 0.70,
-            "erosion": -0.05,
-            "weirdness": 0.0,
-            "depth": 0.85,
             "offset": 0.0
           }
         },

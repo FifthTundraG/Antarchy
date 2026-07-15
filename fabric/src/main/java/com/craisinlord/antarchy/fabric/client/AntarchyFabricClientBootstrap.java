@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -51,6 +52,7 @@ public final class AntarchyFabricClientBootstrap {
 
     public static void register() {
         AntarchyKeyBindings.register();
+        MenuScreens.register(AntarchyFabricContent.DORRIE_INVENTORY_MENU.get(), com.craisinlord.antarchy.content.client.screen.DorrieInventoryScreen::new);
         registerRenderers();
         registerEntityLayers();
         registerColors();
@@ -83,6 +85,8 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.TRIFFID.get(), TriffidRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.OURANWOOD_BOAT_ENTITY.get(), context -> new OuranwoodBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/boat/ouranwood.png"), false));
         EntityRendererRegistry.register(AntarchyFabricContent.OURANWOOD_CHEST_BOAT_ENTITY.get(), context -> new OuranwoodBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/chest_boat/ouranwood.png"), true));
+        EntityRendererRegistry.register(AntarchyFabricContent.PEACH_BOAT_ENTITY.get(), context -> new PeachBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/boat/peach.png"), false));
+        EntityRendererRegistry.register(AntarchyFabricContent.PEACH_CHEST_BOAT_ENTITY.get(), context -> new PeachBoatRenderer<>(context, ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "textures/entity/chest_boat/peach.png"), true));
         EntityRendererRegistry.register(AntarchyFabricContent.APPLE_COW.get(), AppleCowRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.GOLDEN_APPLE_COW.get(), AppleCowRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.ENCHANTED_GOLDEN_APPLE_COW.get(), AppleCowRenderer::new);
@@ -111,10 +115,15 @@ public final class AntarchyFabricClientBootstrap {
         EntityRendererRegistry.register(AntarchyFabricContent.TORETERROR.get(), ToreterrorRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.WATER_BOMB.get(), WaterBombRenderer::new);
         EntityRendererRegistry.register(AntarchyFabricContent.CHEEP.get(), com.craisinlord.antarchy.content.client.renderer.CheepRenderer::new);
-        // EntityRendererRegistry.register(AntarchyFabricContent.GLIMMER.get(), com.craisinlord.antarchy.content.client.renderer.GlimmerRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.DORRIE.get(), com.craisinlord.antarchy.content.client.renderer.DorrieRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.OURANWOOD_DEER.get(), com.craisinlord.antarchy.content.client.renderer.OuranwoodDeerRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.GLIMMER.get(), com.craisinlord.antarchy.content.client.renderer.glimmer.GlimmerRenderer::new);
+        EntityRendererRegistry.register(AntarchyFabricContent.ELKA.get(), com.craisinlord.antarchy.content.client.renderer.ElkaRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.boatLayer(), BoatModel::createBodyModel);
         EntityModelLayerRegistry.registerModelLayer(OuranwoodBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
+        EntityModelLayerRegistry.registerModelLayer(PeachBoatRenderer.boatLayer(), BoatModel::createBodyModel);
+        EntityModelLayerRegistry.registerModelLayer(PeachBoatRenderer.chestBoatLayer(), ChestBoatModel::createBodyModel);
     }
 
     private static void registerColors() {
@@ -185,6 +194,17 @@ public final class AntarchyFabricClientBootstrap {
                     }
                 }
         );
+
+        FluidRenderHandlerRegistry.INSTANCE.register(
+                AntarchyFabricContent.LUMEN.get(),
+                AntarchyFabricContent.FLOWING_LUMEN.get(),
+                new SimpleFluidRenderHandler(
+                        ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/lumen_still"),
+                        ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "block/lumen_flow"),
+                        ResourceLocation.withDefaultNamespace("block/water_overlay"),
+                        0xFFFFFFFF
+                )
+        );
     }
 
     private static void registerParticles() {
@@ -192,6 +212,7 @@ public final class AntarchyFabricClientBootstrap {
         registry.register(AntarchyFabricContent.DREAM_FIRE_FLAME.get(), DreamFlameParticle.Provider::new);
         registry.register(AntarchyFabricContent.STINKY_GAS.get(), HypnoticGasParticle.Provider::new);
         registry.register(AntarchyFabricContent.STINKY_FLY.get(), FireflyParticle.Provider::new);
+        registry.register(AntarchyFabricContent.PEACH_LEAVES_PARTICLE.get(), PeachLeavesParticle.Provider::new);
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS.get(), HypnoticGasParticle.Provider::new);
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS_DOWN.get(), sprites -> new HypnoticGasParticle.Provider(sprites, true));
         registry.register(AntarchyFabricContent.HYPNOTIC_GAS_CLOUD.get(), new HypnoticGasCloudParticle.Provider());
@@ -209,6 +230,11 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_DOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_TRAPDOOR.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_ACORN_BLOCK.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PEACH_LEAVES.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PEACH_HANGING_PEACH.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PEACH_DOOR.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PEACH_TRAPDOOR.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PEACH_SAPLING.get(), RenderType.cutout());
         // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE.get(), RenderType.cutout());
         // BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.OURANWOOD_VINE_PLANT.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DUPLICATOR_SAPLING.get(), RenderType.cutout());
@@ -216,6 +242,8 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.PINK_MILKWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.HUSHWEED.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CORNEA_STALK.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.CORN_CROP.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.WILD_CORN.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.FALLEN_KING_CROWN_BLOCK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ANTIMETAL_SCAFFOLDING.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.UMBRAL_MOSS_CARPET.get(), RenderType.cutout());
@@ -231,6 +259,7 @@ public final class AntarchyFabricClientBootstrap {
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.DREAM_CEILING_FIRE.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ANTIWATER_BLOCK.get(), RenderType.translucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.LUMEN_BLOCK.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.ELYTHIA_PORTAL.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.THORAXIS_PORTAL.get(), RenderType.translucent());
         BlockRenderLayerMap.INSTANCE.putBlock(AntarchyFabricContent.TRIFFID_GOO_BLOCK.get(), RenderType.translucent());
@@ -247,6 +276,8 @@ public final class AntarchyFabricClientBootstrap {
                 AntarchyFabricContent.FLOWING_BILE.get(),
                 AntarchyFabricContent.ICHOR.get(),
                 AntarchyFabricContent.FLOWING_ICHOR.get(),
+                AntarchyFabricContent.LUMEN.get(),
+                AntarchyFabricContent.FLOWING_LUMEN.get(),
                 AntarchyFabricContent.ANTIWATER.get(),
                 AntarchyFabricContent.FLOWING_ANTIWATER.get()
         );
