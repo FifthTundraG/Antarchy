@@ -176,6 +176,8 @@ public final class AntarchyNeoforgeItems {
     // public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_VINE_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.OURANWOOD_VINE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ORANGE_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.ORANGE_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> PINK_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.PINK_MILKWEED);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> CAMELLIA_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.CAMELLIA);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> SPIDER_LILY_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.SPIDER_LILY);
     public static final DeferredItem<net.minecraft.world.item.SignItem> OURANWOOD_SIGN_ITEM = ITEMS.register("ouranwood_sign",
             () -> new net.minecraft.world.item.SignItem(new Item.Properties().stacksTo(16), AntarchyNeoforgeBlocks.OURANWOOD_SIGN.get(), AntarchyNeoforgeBlocks.OURANWOOD_WALL_SIGN.get()));
     public static final DeferredItem<net.minecraft.world.item.HangingSignItem> OURANWOOD_HANGING_SIGN_ITEM = ITEMS.register("ouranwood_hanging_sign",
@@ -378,6 +380,27 @@ public final class AntarchyNeoforgeItems {
                             .build())));
     public static final DeferredItem<Item> PEACH = ITEMS.register("peach",
             () -> new PeachItem());
+    public static final DeferredItem<Item> PEACH_PIE = ITEMS.register("peach_pie",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.3F)
+                            .build())));
+    public static final DeferredItem<Item> CORNBREAD = ITEMS.register("cornbread",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.9F)
+                            .build())));
+    public static final DeferredItem<Item> POPCORN = ITEMS.register("popcorn",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1F)
+                            .build())));
     public static final DeferredItem<Item> RAW_CORNDOG = ITEMS.register("raw_corndog",
             () -> new Item(new Item.Properties()
                     .stacksTo(64)
@@ -539,8 +562,9 @@ public final class AntarchyNeoforgeItems {
             ));
     public static final DeferredItem<GravityGunItem> GRAVITY_GUN = ITEMS.register("gravity_gun",
             () -> new GravityGunItem(new Item.Properties().stacksTo(1).durability(512).rarity(Rarity.RARE).fireResistant()));
-    public static final DeferredItem<MinersDreamItem> MINERS_DREAM = ITEMS.register("miners_dream",
-            () -> new MinersDreamItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    // Temporarily disabled: keeping the code but not registering the item for now.
+    // public static final DeferredItem<MinersDreamItem> MINERS_DREAM = ITEMS.register("miners_dream",
+    //         () -> new MinersDreamItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
     public static final DeferredItem<SquidzookaItem> SQUIDZOOKA = ITEMS.register("squidzooka",
             () -> new SquidzookaItem(new Item.Properties().stacksTo(1).durability(384).rarity(Rarity.RARE)));
     public static final DeferredItem<BattleAxeItem> BATTLE_AXE = ITEMS.register("battle_axe",
@@ -564,8 +588,9 @@ public final class AntarchyNeoforgeItems {
     // Spawn eggs
     public static final DeferredItem<DeferredSpawnEggItem> EASTER_BUNNY_SPAWN_EGG = ITEMS.register("easter_bunny_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.EASTER_BUNNY, 0xFFF2B2, 0xFF85B5, new Item.Properties()));
-    public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
-            () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.DORRIE, 0x6F8CFF, 0xD2F2FF, new Item.Properties()));
+    // Dorrie is not part of this update yet.
+    // public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
+    //         () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.DORRIE, 0x6F8CFF, 0xD2F2FF, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> OURANWOOD_DEER_SPAWN_EGG = ITEMS.register("ouranwood_deer_spawn_egg",
             () -> new DeferredSpawnEggItem(AntarchyNeoforgeEntites.OURANWOOD_DEER, 0x8A6D4B, 0xE8D9B5, new Item.Properties()));
     public static final DeferredItem<DeferredSpawnEggItem> GLIMMER_SPAWN_EGG = ITEMS.register("glimmer_spawn_egg",

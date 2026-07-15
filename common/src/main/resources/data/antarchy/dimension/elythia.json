@@ -98,10 +98,10 @@
           "biome": "antarchy:peach_forest",
           "parameters": {
             "temperature": 0.67,
-            "humidity": 0.93,
+            "humidity": 0.91,
             "continentalness": 0.54,
-            "erosion": 0.25,
-            "weirdness": -0.50,
+            "erosion": 0.16,
+            "weirdness": -0.42,
             "depth": 0.45,
             "offset": 0.0
           }
@@ -112,8 +112,32 @@
             "temperature": 0.66,
             "humidity": 0.89,
             "continentalness": 0.54,
-            "erosion": 0.29,
-            "weirdness": -0.58,
+            "erosion": 0.38,
+            "weirdness": -0.42,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:peach_forest",
+          "parameters": {
+            "temperature": 0.68,
+            "humidity": 0.93,
+            "continentalness": 0.54,
+            "erosion": 0.16,
+            "weirdness": -0.74,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:peach_forest",
+          "parameters": {
+            "temperature": 0.65,
+            "humidity": 0.87,
+            "continentalness": 0.55,
+            "erosion": 0.38,
+            "weirdness": -0.74,
             "depth": 0.45,
             "offset": 0.0
           }
@@ -131,13 +155,25 @@
           }
         },
         {
-          "biome": "antarchy:sparse_ouranwood_forest",
+          "biome": "antarchy:ouranwood_forest",
           "parameters": {
             "temperature": 0.67,
             "humidity": 0.93,
             "continentalness": 0.54,
             "erosion": 0.25,
             "weirdness": -0.50,
+            "depth": 0.45,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "antarchy:ouranwood_forest",
+          "parameters": {
+            "temperature": 0.67,
+            "humidity": 0.93,
+            "continentalness": 0.54,
+            "erosion": 0.20,
+            "weirdness": -0.40,
             "depth": 0.45,
             "offset": 0.0
           }
@@ -193,17 +229,17 @@
         {
           "biome": "antarchy:sparse_ouranwood_forest",
           "parameters": {
-            "temperature": 0.45,
-            "humidity": 0.85,
-            "continentalness": 0.75,
-            "erosion": 0.0,
-            "weirdness": 0.7,
+            "temperature": 0.20,
+            "humidity": 0.62,
+            "continentalness": 0.95,
+            "erosion": -0.35,
+            "weirdness": 0.98,
             "depth": 0.0,
             "offset": 0.0
           }
         },
         {
-          "biome": "antarchy:sparse_ouranwood_forest",
+          "biome": "antarchy:ouranwood_forest",
           "parameters": {
             "temperature": 0.55,
             "humidity": 0.9,
@@ -234,18 +270,6 @@
             "continentalness": 0.75,
             "erosion": 0.0,
             "weirdness": 0.85,
-            "depth": 0.0,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:torchflower_fields",
-          "parameters": {
-            "temperature": 0.76,
-            "humidity": 0.98,
-            "continentalness": 0.62,
-            "erosion": 0.18,
-            "weirdness": 0.32,
             "depth": 0.0,
             "offset": 0.0
           }
@@ -355,18 +379,6 @@
             "erosion": 0.14,
             "weirdness": 0.32,
             "depth": 0.0,
-            "offset": 0.0
-          }
-        },
-        {
-          "biome": "antarchy:torchflower_fields",
-          "parameters": {
-            "temperature": 0.74,
-            "humidity": 0.985,
-            "continentalness": 0.58,
-            "erosion": 0.16,
-            "weirdness": 0.24,
-            "depth": 0.5,
             "offset": 0.0
           }
         },

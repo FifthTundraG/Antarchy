@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricSounds;
 
 import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
@@ -104,13 +105,13 @@ public final class LucidSoundHandler {
             playAttackSoundIfNeeded(mc, entity);
 
             if (ambient == null || !mc.getSoundManager().isActive(ambient)) {
-                ambient = new LucidLoopSound(entity, AntarchyFabricContent.LUCID_AMBIENT.get(),
+                ambient = new LucidLoopSound(entity, AntarchyFabricSounds.LUCID_AMBIENT.get(),
                         SoundSource.HOSTILE, 0.14F, 0.97F, true);
                 mc.getSoundManager().play(ambient);
             }
 
             if (entity.shouldPlayFlyingLoop() && (flying == null || !mc.getSoundManager().isActive(flying))) {
-                flying = new LucidLoopSound(entity, AntarchyFabricContent.LUCID_FLYING.get(),
+                flying = new LucidLoopSound(entity, AntarchyFabricSounds.LUCID_FLYING.get(),
                         SoundSource.HOSTILE, 0.18F, 1.0F, false);
                 mc.getSoundManager().play(flying);
             }
@@ -121,7 +122,7 @@ public final class LucidSoundHandler {
             playAttackSoundIfNeeded(mc, entity);
 
             if (ambient == null || !mc.getSoundManager().isActive(ambient)) {
-                ambient = new LucidLoopSound(entity, AntarchyFabricContent.LUCID_AMBIENT.get(),
+                ambient = new LucidLoopSound(entity, AntarchyFabricSounds.LUCID_AMBIENT.get(),
                         SoundSource.HOSTILE, 0.14F, 0.97F, true);
                 mc.getSoundManager().play(ambient);
             } else {
@@ -130,7 +131,7 @@ public final class LucidSoundHandler {
 
             if (entity.shouldPlayFlyingLoop()) {
                 if (flying == null || !mc.getSoundManager().isActive(flying)) {
-                    flying = new LucidLoopSound(entity, AntarchyFabricContent.LUCID_FLYING.get(),
+                    flying = new LucidLoopSound(entity, AntarchyFabricSounds.LUCID_FLYING.get(),
                             SoundSource.HOSTILE, 0.18F, 1.0F, false);
                     mc.getSoundManager().play(flying);
                 } else {
@@ -151,7 +152,7 @@ public final class LucidSoundHandler {
         private void playAttackSoundIfNeeded(Minecraft mc, LucidEntity entity) {
             int currentState = entity.getAnimationState();
             if (currentState == ANIM_ATTACK && lastAnimationState != ANIM_ATTACK) {
-                mc.getSoundManager().play(new LucidOneShotSound(entity, AntarchyFabricContent.LUCID_ATTACK.get(),
+                mc.getSoundManager().play(new LucidOneShotSound(entity, AntarchyFabricSounds.LUCID_ATTACK.get(),
                         SoundSource.HOSTILE, 1.0F, 1.02F + entity.getRandom().nextFloat() * 0.08F));
             }
             lastAnimationState = currentState;

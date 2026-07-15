@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_sign",
+  "textures": {
+    "texture": "antarchy:models/ouranwood/ouranwood_sign"
+  }
+}

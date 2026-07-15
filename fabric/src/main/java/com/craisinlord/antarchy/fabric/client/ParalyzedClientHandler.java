@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.core.Holder;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public final class ParalyzedClientHandler {
     private static final Holder<net.minecraft.world.effect.MobEffect> PARALYZED_EFFECT =
-            BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricContent.PARALYZED.get());
+            BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricMisc.PARALYZED.get());
 
     
     private static final int PARTICLE_INTERVAL = 3;

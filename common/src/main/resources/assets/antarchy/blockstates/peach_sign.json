@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/jungle_sign"
+      "model": "antarchy:block/peach_sign"
     }
   }
 }

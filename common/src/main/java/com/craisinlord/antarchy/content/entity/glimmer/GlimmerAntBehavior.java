@@ -23,7 +23,7 @@ import net.minecraft.world.entity.player.Player;
 public class GlimmerAntBehavior implements GlimmerVariantBehavior {
     private static final ResourceLocation REACH_BOOST_ID =
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "glimmer_ant_reach_boost");
-    private static final double REACH_BOOST_AMOUNT = 0.5D;
+    private static final double REACH_BOOST_AMOUNT = 1.5D;
     private static final float LARGE_ENEMY_MIN_HEALTH = 40.0F;
     private static final int ABILITY_COOLDOWN_TICKS = 20 * 120;
     private static final int STRENGTH_BURST_DURATION = 20 * 12;

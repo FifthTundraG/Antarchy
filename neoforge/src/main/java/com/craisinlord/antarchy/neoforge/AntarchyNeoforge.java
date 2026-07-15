@@ -219,7 +219,7 @@ public class AntarchyNeoforge {
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BOMBER,
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BED_BUG,
                 AntarchyNeoforgeEntites.CHEEP,
-                AntarchyNeoforgeEntites.DORRIE,
+                () -> { throw new IllegalStateException("Dorrie is not part of this update yet."); },
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),
@@ -312,7 +312,8 @@ public class AntarchyNeoforge {
         AntarchyObjects.setLumenBlock(() -> AntarchyNeoforgeBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyNeoforgeBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get());
-        AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
+        // Dorrie is not part of this update yet.
+        // AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
     }
 
     private static boolean isModLoaded(String modId) {

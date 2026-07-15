@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricBlocks;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.client.Minecraft;
@@ -23,7 +24,7 @@ public final class TriffidGooHudRenderer {
             fadeProgress = Math.max(0f, fadeProgress - FADE_SPEED);
             if (fadeProgress <= 0f) return;
         } else {
-            Block goo = AntarchyFabricContent.TRIFFID_GOO_BLOCK.get();
+            Block goo = AntarchyFabricBlocks.TRIFFID_GOO_BLOCK.get();
             BlockPos feet = player.blockPosition();
             boolean inGoo = player.level().getBlockState(feet).is(goo)
                          || player.level().getBlockState(feet.above()).is(goo);

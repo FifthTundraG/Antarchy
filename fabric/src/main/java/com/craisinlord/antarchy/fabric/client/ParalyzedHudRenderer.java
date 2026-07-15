@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.client.Minecraft;
@@ -11,7 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 
 public final class ParalyzedHudRenderer {
-    private static final Holder<MobEffect> PARALYZED_EFFECT = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricContent.PARALYZED.get());
+    private static final Holder<MobEffect> PARALYZED_EFFECT = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricMisc.PARALYZED.get());
 
     private ParalyzedHudRenderer() {
     }

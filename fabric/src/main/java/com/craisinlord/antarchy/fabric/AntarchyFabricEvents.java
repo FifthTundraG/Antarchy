@@ -1,4 +1,6 @@
 package com.craisinlord.antarchy.fabric;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricBlocks;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricItems;
 
 import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.config.AntarchySettings;
@@ -48,20 +50,20 @@ public final class AntarchyFabricEvents {
             CaterpillarCommand.register(dispatcher);
         });
 
-        DispenserBlock.registerBehavior(AntarchyFabricContent.SQUIDZOOKA.get(), new SquidzookaDispenseBehavior());
-        DispenserBlock.registerBehavior(AntarchyFabricContent.WATER_CANNON.get(), new WaterCannonDispenseBehavior());
+        DispenserBlock.registerBehavior(AntarchyFabricItems.SQUIDZOOKA.get(), new SquidzookaDispenseBehavior());
+        DispenserBlock.registerBehavior(AntarchyFabricItems.WATER_CANNON.get(), new WaterCannonDispenseBehavior());
 
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.UMBRAL_MOSS_BLOCK.get().asItem(), 0.65f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.UMBRAL_MOSS_CARPET.get().asItem(), 0.3f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.BLUSH_MOSS_BLOCK.get().asItem(), 0.65f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.BLUSH_MOSS_CARPET.get().asItem(), 0.3f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.HUSHWEED.get().asItem(), 0.65f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORNEA_EAR.get(), 0.65f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH_LEAVES.get().asItem(), 0.3f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH_SAPLING_ITEM.get(), 0.3f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORN.get(), 0.65f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.CORN_SEEDS.get(), 0.3f);
-        ComposterBlock.COMPOSTABLES.put(AntarchyFabricContent.PEACH.get(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.UMBRAL_MOSS_BLOCK.get().asItem(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.UMBRAL_MOSS_CARPET.get().asItem(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.BLUSH_MOSS_BLOCK.get().asItem(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.BLUSH_MOSS_CARPET.get().asItem(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.HUSHWEED.get().asItem(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricItems.CORNEA_EAR.get(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricBlocks.PEACH_LEAVES.get().asItem(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricItems.PEACH_SAPLING_ITEM.get(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricItems.CORN.get(), 0.65f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricItems.CORN_SEEDS.get(), 0.3f);
+        ComposterBlock.COMPOSTABLES.put(AntarchyFabricItems.PEACH.get(), 0.65f);
 
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
             if (entity instanceof ServerPlayer sp) {

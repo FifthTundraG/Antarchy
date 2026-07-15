@@ -9,20 +9,45 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public final class PeachLeavesParticle extends TextureSheetParticle {
+    private static final float ACCELERATION_SCALE = 0.0025F;
+    private static final int INITIAL_LIFETIME = 300;
+    private static final float WIND_BIG = 2.0F;
+    private static final boolean SWIRL = false;
+    private static final boolean FLOW_AWAY = true;
+    private static final float GRAVITY_SCALE = 1.0F;
+    private static final float INITIAL_Y_SPEED = 0.0F;
+
+    private float rotSpeed;
+    private final float spinAcceleration;
+    private final double xaFlowScale;
+    private final double zaFlowScale;
+    private final double swirlPeriod;
+    private final boolean swirl;
+    private final boolean flowAway;
     private final SpriteSet sprites;
-    private final float gravity;
 
     private PeachLeavesParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.sprites = sprites;
-        this.gravity = 0.02F + this.random.nextFloat() * 0.01F;
-        this.lifetime = 28 + this.random.nextInt(26);
-        this.quadSize = 0.14F + this.random.nextFloat() * 0.05F;
-        this.xd = (this.random.nextDouble() - 0.5D) * 0.04D;
-        this.yd = -0.015D - this.random.nextDouble() * 0.02D;
-        this.zd = (this.random.nextDouble() - 0.5D) * 0.04D;
-        this.hasPhysics = true;
-        this.setSpriteFromAge(sprites);
+        this.setSprite(sprites.get(level.random));
+        this.rotSpeed = (float) Math.toRadians(this.random.nextBoolean() ? -30.0D : 30.0D);
+        this.spinAcceleration = (float) Math.toRadians(this.random.nextBoolean() ? -5.0D : 5.0D);
+        this.swirl = SWIRL;
+        this.flowAway = FLOW_AWAY;
+        this.lifetime = INITIAL_LIFETIME;
+        this.gravity = GRAVITY_SCALE * 1.2F * ACCELERATION_SCALE;
+
+        float size = this.random.nextBoolean() ? 0.05F : 0.075F;
+        this.quadSize = size;
+        this.setSize(size, size);
+        this.friction = 1.0F;
+        this.yd = -INITIAL_Y_SPEED;
+
+        float randomAngle = this.random.nextFloat();
+        double flowAngle = Math.toRadians(randomAngle * 60.0F);
+        this.xaFlowScale = Math.cos(flowAngle) * WIND_BIG;
+        this.zaFlowScale = Math.sin(flowAngle) * WIND_BIG;
+        this.swirlPeriod = Math.toRadians(1000.0F + randomAngle * 3000.0F);
     }
 
     @Override
@@ -31,27 +56,50 @@ public final class PeachLeavesParticle extends TextureSheetParticle {
         this.yo = this.y;
         this.zo = this.z;
 
-        if (this.age++ >= this.lifetime) {
+        if (this.lifetime-- <= 0) {
             this.remove();
             return;
         }
 
-        double sway = Math.sin((this.age + this.x) * 0.22D) * 0.0035D;
-        this.xd += sway;
-        this.zd -= sway;
-        this.yd -= this.gravity * 0.015D;
+        float ageProgress = Math.min((INITIAL_LIFETIME - this.lifetime) / (float) INITIAL_LIFETIME, 1.0F);
+        double windX = 0.0D;
+        double windZ = 0.0D;
 
-        this.xd *= 0.91D;
-        this.yd *= 0.92D;
-        this.zd *= 0.91D;
+        if (this.flowAway) {
+            double flowScale = Math.pow(ageProgress, 1.25D);
+            windX += this.xaFlowScale * flowScale;
+            windZ += this.zaFlowScale * flowScale;
+        }
+
+        if (this.swirl) {
+            double swirlScale = ageProgress * ageProgress;
+            windX += swirlScale * Math.cos(swirlScale * this.swirlPeriod) * WIND_BIG;
+            windZ += swirlScale * Math.sin(swirlScale * this.swirlPeriod) * WIND_BIG;
+        }
+
+        this.xd += windX * ACCELERATION_SCALE;
+        this.zd += windZ * ACCELERATION_SCALE;
+        this.yd -= this.gravity;
+
+        this.rotSpeed += this.spinAcceleration / 20.0F;
+        this.oRoll = this.roll;
+        this.roll += this.rotSpeed / 20.0F;
 
         this.move(this.xd, this.yd, this.zd);
-        this.setSpriteFromAge(this.sprites);
+        if (this.onGround || this.lifetime < INITIAL_LIFETIME - 1 && this.xd == 0.0D && this.zd == 0.0D) {
+            this.remove();
+            return;
+        }
+
+        this.xd *= this.friction;
+        this.yd *= this.friction;
+        this.zd *= this.friction;
+        this.setSprite(this.sprites.get(INITIAL_LIFETIME - this.lifetime, INITIAL_LIFETIME));
     }
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     public static final class Provider implements ParticleProvider<SimpleParticleType> {

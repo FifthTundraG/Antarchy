@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyTags;
@@ -56,7 +57,7 @@ public final class ElythiaFireflyManager {
                         if (!level.getBlockState(candidate).isAir()) continue;
 
                         level.addParticle(
-                                AntarchyFabricContent.FIREFLY.get(),
+                                AntarchyFabricMisc.FIREFLY.get(),
                                 candidate.getX() + level.random.nextDouble(),
                                 candidate.getY() + level.random.nextDouble(),
                                 candidate.getZ() + level.random.nextDouble(),

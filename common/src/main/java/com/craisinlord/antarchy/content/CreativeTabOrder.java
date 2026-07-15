@@ -14,7 +14,6 @@ public final class CreativeTabOrder {
     public static int group(Item item) {
         String path = BuiltInRegistries.ITEM.getKey(item).getPath();
         return switch (path) {
-            case "glimmer_bottle" -> -1;
             case "ouranwood_log", "ouranwood_wood", "mossy_ouranwood_log", "mossy_ouranwood_wood",
                  "stripped_ouranwood_log", "stripped_ouranwood_wood", "duplicator_log",
                  "ouranwood_planks", "ouranwood_stairs", "ouranwood_slab",
@@ -60,7 +59,7 @@ public final class CreativeTabOrder {
                  "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
             case "ouranwood_leaves", "peach_leaves" -> 9;
             case "duplicator_sapling", "ouranwood_acorn", "peach_sapling", "corn_seeds" -> 10;
-            case "orange_milkweed", "pink_milkweed", "hushweed", "amber_lichen", "creepvine",
+            case "orange_milkweed", "pink_milkweed", "camellia", "spider_lily", "hushweed", "amber_lichen", "creepvine",
                  "triffid_goo_block", "cloud_block", "wasp_nest",
                  "red_ant_nest", "brown_ant_nest", "rainbow_ant_nest", "termite_nest" -> 11;
             case "dream_torch", "dream_lantern", "dream_campfire", "dream_fire", "dream_fire_ceiling",
@@ -85,7 +84,7 @@ public final class CreativeTabOrder {
                  "ultimate_helmet", "ultimate_chestplate",
                  "ultimate_leggings", "ultimate_boots" -> 19;
             case "ultimate_bow", "ultimate_crossbow" -> 20;
-            case "cloud_shark_fin_soup", "mud_pie", "rainbow_sugar",
+            case "cloud_shark_fin_soup", "mud_pie", "peach_pie", "cornbread", "popcorn", "rainbow_sugar",
                  "blood_crystal_apple", "spirit_apple", "peach", "raw_corndog", "cooked_corndog",
                  "raw_venison", "cooked_venison" -> 21;
             case "blood_crystal_shard", "cloud_shark_fin", "basilisk_fang", "kraken_tooth",
@@ -95,7 +94,7 @@ public final class CreativeTabOrder {
                  "mantis_claw", "jumpy_bug_leg", "brutalfly_wing", "cornea_ear",
                  "primordial_scute", "triffid_goo", "vortex_eye",
                  "king_scale", "queen_scale", "chiten", "stink_bug", "corn", "high_fructose_corn_syrup" -> 22;
-            case "reverie_bottle", "root_beer" -> 24;
+            case "reverie_bottle", "glimmer_bottle", "root_beer" -> 24;
             case "easter_bunny_spawn_egg", "flying_squirrel_spawn_egg", "caterpillar_spawn_egg",
                  "butterfly_spawn_egg", "reverie_spawn_egg", "brutalfly_spawn_egg",
                  "red_ant_spawn_egg", "brown_ant_spawn_egg", "rainbow_ant_spawn_egg", "termite_spawn_egg",
@@ -160,16 +159,18 @@ public final class CreativeTabOrder {
             case "corn_seeds" -> 3;
             case "orange_milkweed" -> 0;
             case "pink_milkweed" -> 1;
-            case "hushweed" -> 2;
-            case "amber_lichen" -> 3;
-            case "creepvine" -> 4;
-            case "triffid_goo_block" -> 5;
-            case "cloud_block" -> 6;
-            case "wasp_nest" -> 7;
-            case "red_ant_nest" -> 8;
-            case "brown_ant_nest" -> 9;
-            case "rainbow_ant_nest" -> 10;
-            case "termite_nest" -> 11;
+            case "camellia" -> 2;
+            case "spider_lily" -> 3;
+            case "hushweed" -> 4;
+            case "amber_lichen" -> 5;
+            case "creepvine" -> 6;
+            case "triffid_goo_block" -> 7;
+            case "cloud_block" -> 8;
+            case "wasp_nest" -> 9;
+            case "red_ant_nest" -> 10;
+            case "brown_ant_nest" -> 11;
+            case "rainbow_ant_nest" -> 12;
+            case "termite_nest" -> 13;
             case "blood_crystal_block" -> 0;
             case "small_blood_crystal_bud" -> 1;
             case "medium_blood_crystal_bud" -> 2;
@@ -274,15 +275,22 @@ public final class CreativeTabOrder {
             case "ultimate_boots" -> 15;
             case "ultimate_bow" -> 0;
             case "ultimate_crossbow" -> 1;
-            case "blood_crystal_apple" -> 0;
-            case "spirit_apple" -> 1;
-            case "peach" -> 2;
-            case "raw_corndog" -> 3;
-            case "cooked_corndog" -> 4;
-            case "raw_venison" -> 5;
-            case "cooked_venison" -> 6;
+            case "cloud_shark_fin_soup" -> 0;
+            case "mud_pie" -> 1;
+            case "peach_pie" -> 2;
+            case "cornbread" -> 3;
+            case "popcorn" -> 4;
+            case "rainbow_sugar" -> 5;
+            case "raw_corndog" -> 6;
+            case "cooked_corndog" -> 7;
+            case "raw_venison" -> 8;
+            case "cooked_venison" -> 9;
+            case "blood_crystal_apple" -> 10;
+            case "spirit_apple" -> 11;
+            case "peach" -> 12;
             case "reverie_bottle" -> 0;
-            case "root_beer" -> 1;
+            case "glimmer_bottle" -> 1;
+            case "root_beer" -> 2;
             case "blood_crystal_shard" -> 0;
             case "cloud_shark_fin" -> 1;
             case "basilisk_fang" -> 2;

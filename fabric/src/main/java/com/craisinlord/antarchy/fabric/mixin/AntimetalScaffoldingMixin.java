@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.mixin;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricBlocks;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.core.BlockPos;
@@ -69,7 +70,7 @@ public abstract class AntimetalScaffoldingMixin {
     }
 
     private boolean antarchy$isAntimetalScaffolding() {
-        return ((ScaffoldingBlock) (Object) this).asItem() == AntarchyFabricContent.ANTIMETAL_SCAFFOLDING.get().asItem();
+        return ((ScaffoldingBlock) (Object) this).asItem() == AntarchyFabricBlocks.ANTIMETAL_SCAFFOLDING.get().asItem();
     }
 
     private int antarchy$getDistance(BlockGetter level, BlockPos pos) {

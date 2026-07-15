@@ -23,6 +23,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
     private static final String SIZEABLE_FOLIAGE_MODID = "sizeable_foliage";
+    private static final ResourceLocation CAMELLIA_ID = ResourceLocation.fromNamespaceAndPath("antarchy", "camellia");
+    private static final ResourceLocation SPIDER_LILY_ID = ResourceLocation.fromNamespaceAndPath("antarchy", "spider_lily");
 
     private final Variant variant;
 
@@ -40,20 +42,18 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
             case FOREST -> 185;
             case MEADOW -> 95;
             case PEACH_FOREST -> 120;
-            case TORCHFLOWER_FIELDS -> 60;
             case BUTTERFLY_FIELDS -> 150;
             case FLOWER_FOREST_MILKWEED -> 14;
         };
         int radius = switch (this.variant) {
             case FOREST -> 8;
-            case MEADOW, PEACH_FOREST, TORCHFLOWER_FIELDS -> 14;
+            case MEADOW, PEACH_FOREST -> 14;
             case BUTTERFLY_FIELDS -> 18;
             case FLOWER_FOREST_MILKWEED -> 8;
         };
         boolean placedAny = false;
 
         int torchflowerPatchRolls = switch (this.variant) {
-            case TORCHFLOWER_FIELDS -> 3 + random.nextInt(3);
             case BUTTERFLY_FIELDS -> 2 + random.nextInt(3);
             case PEACH_FOREST -> 1;
             case FLOWER_FOREST_MILKWEED -> 0;
@@ -64,7 +64,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
                 case FOREST -> 0.24F;
                 case MEADOW -> 0.42F;
                 case PEACH_FOREST -> 0.08F;
-                case TORCHFLOWER_FIELDS -> 0.95F;
                 case BUTTERFLY_FIELDS -> 0.24F;
                 case FLOWER_FOREST_MILKWEED -> 0.0F;
             };
@@ -76,7 +75,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         if (random.nextFloat() < switch (this.variant) {
             case MEADOW -> 0.1F;
             case PEACH_FOREST -> 0.0F;
-            case TORCHFLOWER_FIELDS -> 0.04F;
             case BUTTERFLY_FIELDS -> 0.12F;
             case FOREST -> 0.05F;
             case FLOWER_FOREST_MILKWEED -> 0.0F;
@@ -86,7 +84,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         if (random.nextFloat() < switch (this.variant) {
             case MEADOW -> 0.16F;
             case PEACH_FOREST -> 0.0F;
-            case TORCHFLOWER_FIELDS -> 0.08F;
             case BUTTERFLY_FIELDS -> 0.95F;
             case FOREST -> 0.06F;
             case FLOWER_FOREST_MILKWEED -> 0.18F;
@@ -96,12 +93,14 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         if (random.nextFloat() < switch (this.variant) {
             case MEADOW -> 0.16F;
             case PEACH_FOREST -> 0.0F;
-            case TORCHFLOWER_FIELDS -> 0.08F;
             case BUTTERFLY_FIELDS -> 0.95F;
             case FOREST -> 0.06F;
             case FLOWER_FOREST_MILKWEED -> 0.18F;
         }) {
             placedAny |= this.placeMilkweedPatch(level, origin, random, AntarchyObjects.PINK_MILKWEED.get());
+        }
+        if (this.variant == Variant.PEACH_FOREST && random.nextFloat() < 0.025F) {
+            placedAny |= this.placeMilkweedPatch(level, origin, random, antarchyBlock(CAMELLIA_ID));
         }
 
         if (this.variant == Variant.FOREST || this.variant == Variant.PEACH_FOREST) {
@@ -132,20 +131,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     private boolean placeSelectedPlant(WorldGenLevel level, BlockPos plantPos, BlockPos groundPos, RandomSource random) {
-        if (this.variant == Variant.TORCHFLOWER_FIELDS) {
-            float roll = random.nextFloat();
-            if (roll < 0.14F) {
-                return placeDouble(level, plantPos, torchflowerBush().defaultBlockState());
-            }
-            if (roll < 0.58F) {
-                return placeSingle(level, plantPos, Blocks.TORCHFLOWER);
-            }
-            if (roll < 0.94F) {
-                return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
-            }
-            return placeDouble(level, plantPos, Blocks.TALL_GRASS.defaultBlockState());
-        }
-
         if (this.variant == Variant.BUTTERFLY_FIELDS) {
             float roll = random.nextFloat();
             if (roll < 0.18F) {
@@ -179,6 +164,9 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
 
         if (this.variant == Variant.PEACH_FOREST) {
             float roll = random.nextFloat();
+            if (roll < 0.01F) {
+                return placeSingle(level, plantPos, antarchyBlock(SPIDER_LILY_ID));
+            }
             if (roll < 0.58F) {
                 return placeSingle(level, plantPos, Blocks.SHORT_GRASS);
             }
@@ -229,6 +217,14 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
     private static Block torchflowerBush() {
         Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(SIZEABLE_FOLIAGE_MODID, "torchflower_bush"));
         return block == Blocks.AIR ? Blocks.TORCHFLOWER : block;
+    }
+
+    private static Block antarchyBlock(ResourceLocation id) {
+        Block block = BuiltInRegistries.BLOCK.get(id);
+        if (block == Blocks.AIR) {
+            throw new IllegalStateException("Missing block: " + id);
+        }
+        return block;
     }
 
     private boolean placeBigBushes(WorldGenLevel level, BlockPos origin, RandomSource random, int radius) {
@@ -343,16 +339,21 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        int radius = this.variant == Variant.TORCHFLOWER_FIELDS ? 4 : this.variant == Variant.MEADOW ? 3 : this.variant == Variant.BUTTERFLY_FIELDS ? 3 : 2;
-        int plants = this.variant == Variant.TORCHFLOWER_FIELDS
-                ? 8 + random.nextInt(8)
-                : this.variant == Variant.BUTTERFLY_FIELDS
+        int radius = this.variant == Variant.MEADOW ? 3 : this.variant == Variant.BUTTERFLY_FIELDS ? 3 : 2;
+        int plants = this.variant == Variant.BUTTERFLY_FIELDS
                 ? 4 + random.nextInt(5)
                 : 3 + random.nextInt(this.variant == Variant.MEADOW ? 4 : 3);
+        boolean bushEligible = this.variant == Variant.FOREST || this.variant == Variant.MEADOW;
         boolean placed = false;
         for (int i = 0; i < plants; i++) {
             BlockPos plantPos = samplePatchPos(level, patchCenter, radius, random);
             if (plantPos == null) {
+                continue;
+            }
+            if (bushEligible && random.nextFloat() < 0.12F) {
+                if (placeDouble(level, plantPos, torchflowerBush().defaultBlockState())) {
+                    placed = true;
+                }
                 continue;
             }
             if (placeSingle(level, plantPos, Blocks.TORCHFLOWER)) {
@@ -421,7 +422,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
             case FOREST -> 3;
             case MEADOW -> 5;
             case PEACH_FOREST -> 3;
-            case TORCHFLOWER_FIELDS -> 2;
             case BUTTERFLY_FIELDS -> 3;
             case FLOWER_FOREST_MILKWEED -> 2;
         };
@@ -581,7 +581,6 @@ public class ElythiaFloraFeature extends Feature<NoneFeatureConfiguration> {
         FOREST,
         MEADOW,
         PEACH_FOREST,
-        TORCHFLOWER_FIELDS,
         BUTTERFLY_FIELDS,
         FLOWER_FOREST_MILKWEED
     }
