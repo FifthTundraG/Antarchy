@@ -48,6 +48,9 @@ public class AntarchyNeoforgeSpawnPlacements {
         event.register(AntarchyNeoforgeEntites.BASILISK.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BasiliskEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.EMPEROR_SCORPION.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EmperorScorpionEntity::canSpawn, RegisterSpawnPlacementsEvent.Operation.OR);
         event.register(AntarchyNeoforgeEntites.CHEEP.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractFish::checkSurfaceWaterAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
-        // event.register(AntarchyNeoforgeEntites.GLIMMER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(AntarchyNeoforgeEntites.DORRIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(AntarchyNeoforgeEntites.OURANWOOD_DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(AntarchyNeoforgeEntites.GLIMMER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
+        event.register(AntarchyNeoforgeEntites.ELKA.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }

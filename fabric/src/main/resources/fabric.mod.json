@@ -35,5 +35,8 @@
     "integrated_api": "*",
     "geckolib": "*",
     "sizeable_foliage": "*"
+  },
+  "breaks": {
+    "infinity": "<2.7.2"
   }
 }

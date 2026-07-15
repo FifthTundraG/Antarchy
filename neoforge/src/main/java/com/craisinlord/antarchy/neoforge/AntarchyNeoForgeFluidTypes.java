@@ -45,6 +45,17 @@ public final class AntarchyNeoForgeFluidTypes {
                     .density(1200)
                     .viscosity(1400)));
 
+    public static final DeferredHolder<FluidType, FluidType> LUMEN_TYPE = FLUID_TYPES.register("lumen",
+            () -> new FluidType(FluidType.Properties.create()
+                    .descriptionId("block.antarchy.lumen")
+                    .fallDistanceModifier(0.0F)
+                    .canSwim(true)
+                    .supportsBoating(true)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .density(1000)
+                    .viscosity(1000)));
+
     private AntarchyNeoForgeFluidTypes() {
     }
 

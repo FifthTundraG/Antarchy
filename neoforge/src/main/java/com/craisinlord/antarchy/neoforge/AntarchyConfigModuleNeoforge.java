@@ -199,6 +199,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
         AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
         AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
+        AntarchySettings.setOuranwoodDeerHealth(AntarchyMobsConfig.ouranwoodDeerHealth());
         AntarchySettings.setGlimmerHealth(AntarchyMobsConfig.glimmerHealth());
     }
 
@@ -311,9 +312,20 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setGravityGunCooldownSeconds(AntarchyToolsConfig.gravityGunCooldownSeconds());
         AntarchySettings.setGravityGunMaxHoldDistance(AntarchyToolsConfig.gravityGunMaxHoldDistance());
 
+        AntarchySettings.setMinersDreamEnabled(AntarchyToolsConfig.minersDreamEnabled());
+        AntarchySettings.setMinersDreamMinimumRange(AntarchyToolsConfig.minersDreamMinimumRange());
+        AntarchySettings.setMinersDreamMaximumRange(AntarchyToolsConfig.minersDreamMaximumRange());
+        AntarchySettings.setMinersDreamTorchSpacing(AntarchyToolsConfig.minersDreamTorchSpacing());
+        AntarchySettings.setMinersDreamBlocksPerTick(AntarchyToolsConfig.minersDreamBlocksPerTick());
+
         AntarchySettings.setDuctTapeRepairPercentPerUse(AntarchyToolsConfig.ductTapeRepairPercentPerUse());
         AntarchySettings.setPotentNyxiteInvertedDurationSeconds(AntarchyToolsConfig.potentNyxiteInvertedDurationSeconds());
         AntarchySettings.setCorneaEarNightVisionSeconds(AntarchyToolsConfig.corneaEarNightVisionSeconds());
+        AntarchySettings.setAmericanizingEnabled(AntarchyToolsConfig.americanizingEnabled());
+        AntarchySettings.setAmericanBonusNutrition(AntarchyToolsConfig.americanBonusNutrition());
+        AntarchySettings.setAmericanBonusSaturation(AntarchyToolsConfig.americanBonusSaturation());
+        AntarchySettings.setAmericanRegenerationDurationTicks(AntarchyToolsConfig.americanRegenerationDurationTicks());
+        AntarchySettings.setAmericanRegenerationAmplifier(AntarchyToolsConfig.americanRegenerationAmplifier());
         AntarchySettings.setAntDanceRadius(AntarchyMobsConfig.antDanceRadius());
 
         AntarchySettings.setMogglesVisionRadius(AntarchyToolsConfig.mogglesVisionRadius());

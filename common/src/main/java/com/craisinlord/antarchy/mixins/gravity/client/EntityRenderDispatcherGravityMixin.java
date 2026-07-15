@@ -1,5 +1,6 @@
 package com.craisinlord.antarchy.mixins.gravity.client;
 
+import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityApi;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityRotationUtil;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -22,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Rotates entity rendering for inverted gravity.
  */
 public abstract class EntityRenderDispatcherGravityMixin {
+    @org.spongepowered.asm.mixin.Unique
+    private static boolean antarchy$loggedGravityRenderFailure;
 
     @Inject(
             method = "render",
@@ -39,12 +42,16 @@ public abstract class EntityRenderDispatcherGravityMixin {
             int packedLight,
             CallbackInfo ci
     ) {
-        float flipProgress = AntarchyGravityApi.getGravityFlipProgress(entity, partialTick);
-        if (!AntarchyGravityApi.isGravityInverted(entity) && flipProgress <= 0.0F) {
-            return;
-        }
+        try {
+            float flipProgress = AntarchyGravityApi.getGravityFlipProgress(entity, partialTick);
+            if (!AntarchyGravityApi.isGravityInverted(entity) && flipProgress <= 0.0F) {
+                return;
+            }
 
-        poseStack.mulPose(AntarchyGravityRotationUtil.getCameraRotationQuaternion(entity, partialTick));
+            poseStack.mulPose(AntarchyGravityRotationUtil.getCameraRotationQuaternion(entity, partialTick));
+        } catch (Throwable throwable) {
+            antarchy$logGravityRenderFailure(entity, throwable);
+        }
     }
 
     @ModifyVariable(
@@ -62,14 +69,19 @@ public abstract class EntityRenderDispatcherGravityMixin {
             float blue,
             float partialTick
     ) {
-        if (!AntarchyGravityApi.isGravityInverted(entity)) {
+        try {
+            if (!AntarchyGravityApi.isGravityInverted(entity)) {
+                return box;
+            }
+
+            return AntarchyGravityRotationUtil.boxWorldToPlayer(
+                    box,
+                    AntarchyGravityApi.getGravityDirection(entity)
+            );
+        } catch (Throwable throwable) {
+            antarchy$logGravityRenderFailure(entity, throwable);
             return box;
         }
-
-        return AntarchyGravityRotationUtil.boxWorldToPlayer(
-                box,
-                AntarchyGravityApi.getGravityDirection(entity)
-        );
     }
 
     @WrapOperation(
@@ -78,13 +90,28 @@ public abstract class EntityRenderDispatcherGravityMixin {
     )
     private static Vec3 antarchy$rotateRenderedHitboxViewVector(Entity entity, float partialTick, Operation<Vec3> original) {
         Vec3 viewVector = original.call(entity, partialTick);
-        if (!AntarchyGravityApi.isGravityInverted(entity)) {
+        try {
+            if (!AntarchyGravityApi.isGravityInverted(entity)) {
+                return viewVector;
+            }
+
+            return AntarchyGravityRotationUtil.vecWorldToPlayer(
+                    viewVector,
+                    AntarchyGravityApi.getGravityDirection(entity)
+            );
+        } catch (Throwable throwable) {
+            antarchy$logGravityRenderFailure(entity, throwable);
             return viewVector;
         }
+    }
 
-        return AntarchyGravityRotationUtil.vecWorldToPlayer(
-                viewVector,
-                AntarchyGravityApi.getGravityDirection(entity)
-        );
+    @org.spongepowered.asm.mixin.Unique
+    private static void antarchy$logGravityRenderFailure(Entity entity, Throwable throwable) {
+        if (antarchy$loggedGravityRenderFailure) {
+            return;
+        }
+
+        antarchy$loggedGravityRenderFailure = true;
+        Antarchy.LOGGER.error("Disabling Antarchy gravity render adjustments after a client render failure on entity {}", entity, throwable);
     }
 }

@@ -2,8 +2,10 @@ package com.craisinlord.antarchy.fabric;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.compat.infinity.InfinityCompat;
+import com.craisinlord.antarchy.compat.infinity.InfinityCompatVersion;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
+import com.craisinlord.antarchy.content.CreativeTabOrder;
 import com.craisinlord.antarchy.content.block.*;
 import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.item.BloodCrystalArmorItem;
@@ -15,6 +17,7 @@ import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
+import com.craisinlord.antarchy.content.fluid.LumenLiquidBlock;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
@@ -23,6 +26,7 @@ import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
 import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
 import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
 import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
+import com.craisinlord.antarchy.content.worldgen.overworld.CornPatchFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.NyxiteSpikeConfiguration;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.AntiwaterSpringsConfiguration;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.AntiwaterSpringsFeature;
@@ -98,6 +102,7 @@ import com.craisinlord.antarchy.fabric.item.AntimetalScaffoldingItem;
 import com.craisinlord.antarchy.content.item.CloudSharkFinSoupItem;
 import com.craisinlord.antarchy.content.item.CorneaEarItem;
 import com.craisinlord.antarchy.content.item.GravityGunItem;
+import com.craisinlord.antarchy.content.item.MinersDreamItem;
 import com.craisinlord.antarchy.content.item.DuctTapeBlockItem;
 import com.craisinlord.antarchy.content.item.BrutalflyElytraItem;
 import com.craisinlord.antarchy.content.item.MobComingSoonTooltipItem;
@@ -128,6 +133,9 @@ import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaBiomeSource;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaRiverCarveFunction;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaFloraFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaLargeTuffBoulderFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.PeachForestMossyBoulderFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.PeachForestPondConfiguration;
+import com.craisinlord.antarchy.content.worldgen.elythia.PeachForestPondFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaPondFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaSurfaceCoverFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaTuffBoulderFeature;
@@ -135,11 +143,16 @@ import com.craisinlord.antarchy.content.worldgen.elythia.ElythiaUndergroundFeatu
 import com.craisinlord.antarchy.content.worldgen.elythia.MolewormCaveEntranceFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.MolewormSurfaceMoundsFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.BrutalflyCocoonFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.LumenPoolFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.LumenLilyPadFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.LumenStreamFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.MolewormTunnelsFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.MolewormWarrensFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodCocoonTreeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodTreeConfiguration;
 import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodTreeFeature;
+import com.craisinlord.antarchy.content.worldgen.elythia.PeachTreeConfiguration;
+import com.craisinlord.antarchy.content.worldgen.elythia.PeachTreeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.TriffidPatchFeature;
 import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
 import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
@@ -210,6 +223,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -264,6 +278,26 @@ public final class AntarchyFabricContent {
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Antarchy.MODID);
     private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Antarchy.MODID);
     private static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, Antarchy.MODID);
+    public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.craisinlord.antarchy.content.menu.DorrieInventoryMenu>> DORRIE_INVENTORY_MENU =
+            MENUS.register("dorrie_inventory", () -> new net.minecraft.world.inventory.MenuType<>(com.craisinlord.antarchy.content.menu.DorrieInventoryMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    private static final DeferredRegister<net.minecraft.core.component.DataComponentType<?>> DATA_COMPONENT_TYPES =
+            DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Antarchy.MODID);
+    private static final DeferredRegister<net.minecraft.world.item.crafting.RecipeSerializer<?>> RECIPE_SERIALIZERS =
+            DeferredRegister.create(Registries.RECIPE_SERIALIZER, Antarchy.MODID);
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>> GLIMMER_VARIANT =
+            DATA_COMPONENT_TYPES.register("glimmer_variant",
+                    () -> net.minecraft.core.component.DataComponentType.<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>builder()
+                            .persistent(com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.CODEC)
+                            .networkSynchronized(com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.STREAM_CODEC)
+                            .build());
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> AMERICAN =
+            DATA_COMPONENT_TYPES.register("american",
+                    () -> net.minecraft.core.component.DataComponentType.<net.minecraft.util.Unit>builder()
+                            .persistent(net.minecraft.util.Unit.CODEC)
+                            .networkSynchronized(net.minecraft.network.codec.StreamCodec.unit(net.minecraft.util.Unit.INSTANCE))
+                            .build());
+    public static final DeferredHolder<net.minecraft.world.item.crafting.RecipeSerializer<?>, net.minecraft.world.item.crafting.RecipeSerializer<com.craisinlord.antarchy.content.AmericanizeRecipe>> AMERICANIZE_SERIALIZER =
+            RECIPE_SERIALIZERS.register("americanize", () -> com.craisinlord.antarchy.content.AmericanizeRecipe.SERIALIZER);
     private static final Tier ULTIMATE_TIER = new SimpleToolTier(
             3072,
             10.5F,
@@ -524,13 +558,53 @@ public final class AntarchyFabricContent {
     public static final DeferredBlock<MilkweedBlock> PINK_MILKWEED = BLOCKS.register("pink_milkweed",
             () -> new MilkweedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY)));
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
-            () -> new net.minecraft.world.level.block.StandingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
+            () -> new net.minecraft.world.level.block.StandingSignBlock(AntarchyWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
-            () -> new net.minecraft.world.level.block.WallSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
+            () -> new net.minecraft.world.level.block.WallSignBlock(AntarchyWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.CeilingHangingSignBlock> OURANWOOD_HANGING_SIGN = BLOCKS.register("ouranwood_hanging_sign",
-            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(AntarchyWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
     public static final DeferredBlock<net.minecraft.world.level.block.WallHangingSignBlock> OURANWOOD_WALL_HANGING_SIGN = BLOCKS.register("ouranwood_wall_hanging_sign",
-            () -> new net.minecraft.world.level.block.WallHangingSignBlock(OuranwoodWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
+            () -> new net.minecraft.world.level.block.WallHangingSignBlock(AntarchyWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
+    public static final DeferredBlock<RotatedPillarBlock> PEACH_LOG = BLOCKS.register("peach_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LOG)));
+    public static final DeferredBlock<RotatedPillarBlock> PEACH_WOOD = BLOCKS.register("peach_wood",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WOOD)));
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_PEACH_LOG = BLOCKS.register("stripped_peach_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_JUNGLE_LOG)));
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_PEACH_WOOD = BLOCKS.register("stripped_peach_wood",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_JUNGLE_WOOD)));
+    public static final DeferredBlock<Block> PEACH_PLANKS = BLOCKS.register("peach_planks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS)));
+    public static final DeferredBlock<net.minecraft.world.level.block.StairBlock> PEACH_STAIRS = BLOCKS.register("peach_stairs",
+            () -> new net.minecraft.world.level.block.StairBlock(PEACH_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_STAIRS)));
+    public static final DeferredBlock<net.minecraft.world.level.block.SlabBlock> PEACH_SLAB = BLOCKS.register("peach_slab",
+            () -> new net.minecraft.world.level.block.SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SLAB)));
+    public static final DeferredBlock<net.minecraft.world.level.block.FenceBlock> PEACH_FENCE = BLOCKS.register("peach_fence",
+            () -> new net.minecraft.world.level.block.FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_FENCE)));
+    public static final DeferredBlock<net.minecraft.world.level.block.FenceGateBlock> PEACH_FENCE_GATE = BLOCKS.register("peach_fence_gate",
+            () -> new net.minecraft.world.level.block.FenceGateBlock(net.minecraft.world.level.block.state.properties.WoodType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_FENCE_GATE)));
+    public static final DeferredBlock<net.minecraft.world.level.block.DoorBlock> PEACH_DOOR = BLOCKS.register("peach_door",
+            () -> new net.minecraft.world.level.block.DoorBlock(net.minecraft.world.level.block.state.properties.BlockSetType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_DOOR)));
+    public static final DeferredBlock<net.minecraft.world.level.block.TrapDoorBlock> PEACH_TRAPDOOR = BLOCKS.register("peach_trapdoor",
+            () -> new net.minecraft.world.level.block.TrapDoorBlock(net.minecraft.world.level.block.state.properties.BlockSetType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_TRAPDOOR)));
+    public static final DeferredBlock<net.minecraft.world.level.block.PressurePlateBlock> PEACH_PRESSURE_PLATE = BLOCKS.register("peach_pressure_plate",
+            () -> new net.minecraft.world.level.block.PressurePlateBlock(net.minecraft.world.level.block.state.properties.BlockSetType.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PRESSURE_PLATE)));
+    public static final DeferredBlock<net.minecraft.world.level.block.ButtonBlock> PEACH_BUTTON = BLOCKS.register("peach_button",
+            () -> new net.minecraft.world.level.block.ButtonBlock(net.minecraft.world.level.block.state.properties.BlockSetType.JUNGLE, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_BUTTON)));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.PeachLeavesBlock> PEACH_LEAVES = BLOCKS.register("peach_leaves",
+            () -> new com.craisinlord.antarchy.content.block.PeachLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_LEAVES).randomTicks()));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.HangingPeachBlock> PEACH_HANGING_PEACH = BLOCKS.register("hanging_peach",
+            () -> new com.craisinlord.antarchy.content.block.HangingPeachBlock(BlockBehaviour.Properties.of().noOcclusion().instabreak()));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.PeachSaplingBlock> PEACH_SAPLING = BLOCKS.register("peach_sapling",
+            () -> new com.craisinlord.antarchy.content.block.PeachSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
+    public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> PEACH_SIGN = BLOCKS.register("peach_sign",
+            () -> new net.minecraft.world.level.block.StandingSignBlock(AntarchyWoodTypes.PEACH, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
+    public static final DeferredBlock<net.minecraft.world.level.block.WallSignBlock> PEACH_WALL_SIGN = BLOCKS.register("peach_wall_sign",
+            () -> new net.minecraft.world.level.block.WallSignBlock(AntarchyWoodTypes.PEACH, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_SIGN)));
+    public static final DeferredBlock<net.minecraft.world.level.block.CeilingHangingSignBlock> PEACH_HANGING_SIGN = BLOCKS.register("peach_hanging_sign",
+            () -> new net.minecraft.world.level.block.CeilingHangingSignBlock(AntarchyWoodTypes.PEACH, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_HANGING_SIGN)));
+    public static final DeferredBlock<net.minecraft.world.level.block.WallHangingSignBlock> PEACH_WALL_HANGING_SIGN = BLOCKS.register("peach_wall_hanging_sign",
+            () -> new net.minecraft.world.level.block.WallHangingSignBlock(AntarchyWoodTypes.PEACH, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_WALL_HANGING_SIGN)));
     public static final DeferredBlock<DuplicatorSaplingBlock> DUPLICATOR_SAPLING = BLOCKS.register("duplicator_sapling",
             () -> new DuplicatorSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).randomTicks().noCollission()));
     public static final DeferredBlock<DuctTapeBlock> DUCT_TAPE = BLOCKS.register("duct_tape",
@@ -629,11 +703,17 @@ public final class AntarchyFabricContent {
             () -> new UmbralMossBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK)));
     public static final DeferredBlock<UmbralMossCarpetBlock> UMBRAL_MOSS_CARPET = BLOCKS.register("umbral_moss_carpet",
             () -> new UmbralMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
+    public static final DeferredBlock<BlushMossBlock> BLUSH_MOSS_BLOCK = BLOCKS.register("blush_moss_block",
+            () -> new BlushMossBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK)));
+    public static final DeferredBlock<BlushMossCarpetBlock> BLUSH_MOSS_CARPET = BLOCKS.register("blush_moss_carpet",
+            () -> new BlushMossCarpetBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_CARPET).noOcclusion()));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DREAM_FIRE_FLAME = PARTICLE_TYPES.register("dream_fire_flame",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_GAS = PARTICLE_TYPES.register("stinky_gas",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_FLY = PARTICLE_TYPES.register("stinky_fly",
+            () -> simpleParticleType());
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PEACH_LEAVES_PARTICLE = PARTICLE_TYPES.register("peach_leaves_particle",
             () -> simpleParticleType());
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS = PARTICLE_TYPES.register("hypnotic_gas",
             () -> simpleParticleType());
@@ -706,7 +786,6 @@ public final class AntarchyFabricContent {
             () -> new Potion("stinky", new MobEffectInstance(mobEffectHolder(STINKY), 2400)));
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
-    // public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.GlimmersGraceMobEffect> GLIMMERS_GRACE = MOB_EFFECTS.register("glimmers_grace", com.craisinlord.antarchy.content.effect.GlimmersGraceMobEffect::new);
     public static final DeferredHolder<Potion, Potion> PARALYSIS = POTIONS.register("paralysis",
             () -> new Potion(new MobEffectInstance(mobEffectHolder(PARALYZED), 200)));
     public static final DeferredHolder<Potion, Potion> LONG_PARALYSIS = POTIONS.register("long_paralysis",
@@ -780,6 +859,33 @@ public final class AntarchyFabricContent {
     public static final DeferredBlock<LiquidBlock> ANTIWATER_BLOCK = BLOCKS.register("antiwater",
             () -> new AntiwaterLiquidBlock((net.minecraft.world.level.material.FlowingFluid) ANTIWATER.get(),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static final DeferredHolder<Fluid, Fluid> LUMEN = FLUIDS.register("lumen",
+            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Source(
+                    () -> lookupFlowingFluid("lumen"),
+                    () -> lookupFlowingFluid("flowing_lumen"),
+                    () -> lookupItem("lumen_bucket"),
+                    "lumen",
+                    4,
+                    1,
+                    5
+            ));
+    public static final DeferredHolder<Fluid, Fluid> FLOWING_LUMEN = FLUIDS.register("flowing_lumen",
+            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Flowing(
+                    () -> lookupFlowingFluid("lumen"),
+                    () -> lookupFlowingFluid("flowing_lumen"),
+                    () -> lookupItem("lumen_bucket"),
+                    "lumen",
+                    4,
+                    1,
+                    5
+            ));
+    public static final DeferredBlock<LiquidBlock> LUMEN_BLOCK = BLOCKS.register("lumen",
+            () -> new LumenLiquidBlock((net.minecraft.world.level.material.FlowingFluid) LUMEN.get(),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).lightLevel(state -> 9).noLootTable()));
+    public static final DeferredBlock<Block> LUMEN_FROGLIGHT = BLOCKS.register("lumen_froglight",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OCHRE_FROGLIGHT)));
+    public static final DeferredBlock<Block> ROSEATE_FROGLIGHT = BLOCKS.register("roseate_froglight",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OCHRE_FROGLIGHT)));
     public static final DeferredHolder<EntityType<?>, EntityType<RedAntEntity>> RED_ANT = ENTITY_TYPES.register("red_ant",
             () -> buildAntType(RedAntEntity::new, MobCategory.CREATURE, "red_ant"));
     public static final DeferredHolder<EntityType<?>, EntityType<BrownAntEntity>> BROWN_ANT = ENTITY_TYPES.register("brown_ant",
@@ -813,6 +919,18 @@ public final class AntarchyFabricContent {
                     .clientTrackingRange(10)
                     .updateInterval(10)
                     .build("ouranwood_chest_boat"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.PeachBoatEntity>> PEACH_BOAT_ENTITY = ENTITY_TYPES.register("peach_boat",
+            () -> EntityType.Builder.<com.craisinlord.antarchy.content.entity.PeachBoatEntity>of(com.craisinlord.antarchy.content.entity.PeachBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .updateInterval(10)
+                    .build("peach_boat"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.PeachChestBoatEntity>> PEACH_CHEST_BOAT_ENTITY = ENTITY_TYPES.register("peach_chest_boat",
+            () -> EntityType.Builder.<com.craisinlord.antarchy.content.entity.PeachChestBoatEntity>of(com.craisinlord.antarchy.content.entity.PeachChestBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .updateInterval(10)
+                    .build("peach_chest_boat"));
     public static final DeferredHolder<EntityType<?>, EntityType<MolevoreEntity>> MOLEVORE = ENTITY_TYPES.register("molevore",
             () -> EntityType.Builder.of(MolevoreEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 1.1F)
@@ -917,6 +1035,10 @@ public final class AntarchyFabricContent {
             () -> new com.craisinlord.antarchy.content.block.AntimetalScaffoldingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SCAFFOLDING)));
     public static final DeferredBlock<CorneaStalkBlock> CORNEA_STALK = BLOCKS.register("cornea_stalk",
             () -> new CorneaStalkBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH).randomTicks()));
+    public static final DeferredBlock<CornCropBlock> CORN_CROP = BLOCKS.register("corn_crop",
+            () -> new CornCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).randomTicks().noCollission().noOcclusion()));
+    public static final DeferredBlock<WildCornBlock> WILD_CORN = BLOCKS.register("wild_corn",
+            () -> new WildCornBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).noCollission().noOcclusion()));
     public static final DeferredBlock<Block> FALLEN_KING_CROWN_BLOCK = BLOCKS.register("fallen_king_crown",
             () -> new Block(BlockBehaviour.Properties.of()
                     .strength(0.2F)
@@ -1005,12 +1127,20 @@ public final class AntarchyFabricContent {
             () -> new OuranwoodTreeFeature(OuranwoodTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodCocoonTreeFeature> OURANWOOD_COCOON_TREE = FEATURES.register("ouranwood_cocoon_tree",
             () -> new OuranwoodCocoonTreeFeature(OuranwoodTreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachTreeFeature> PEACH_TREE_FEATURE = FEATURES.register("peach_tree",
+            () -> new PeachTreeFeature(PeachTreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachTreeFeature> PEACH_LARGE_TREE_FEATURE = FEATURES.register("peach_large_tree",
+            () -> new PeachTreeFeature(PeachTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_FOREST_FLORA = FEATURES.register("elythia_forest_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.FOREST));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_MEADOW_FLORA = FEATURES.register("elythia_meadow_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.MEADOW));
+    public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> PEACH_FOREST_FLORA = FEATURES.register("peach_forest_flora",
+            () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.PEACH_FOREST));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> FLOWER_FOREST_MILKWEED = FEATURES.register("flower_forest_milkweed",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.FLOWER_FOREST_MILKWEED));
+    public static final DeferredHolder<Feature<?>, CornPatchFeature> CORN_PATCH = FEATURES.register("corn_patch",
+            () -> new CornPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_BUTTERFLY_FIELDS_FLORA = FEATURES.register("butterfly_fields_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.BUTTERFLY_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_TORCHFLOWER_FIELDS_FLORA = FEATURES.register("elythia_torchflower_fields_flora",
@@ -1037,10 +1167,20 @@ public final class AntarchyFabricContent {
             () -> ElythiaRiverCarveFunction.CODEC);
     public static final DeferredHolder<Feature<?>, ElythiaPondFeature> ELYTHIA_POND = FEATURES.register("elythia_pond",
             () -> new ElythiaPondFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenPoolFeature> LUMEN_POOL = FEATURES.register("lumen_pools",
+            () -> new LumenPoolFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenLilyPadFeature> LUMEN_LILY_PADS = FEATURES.register("lumen_lily_pads",
+            () -> new LumenLilyPadFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenStreamFeature> LUMEN_STREAM = FEATURES.register("lumen_streams",
+            () -> new LumenStreamFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaTuffBoulderFeature> ELYTHIA_TUFF_BOULDER = FEATURES.register("elythia_tuff_boulder",
             () -> new ElythiaTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaLargeTuffBoulderFeature> ELYTHIA_LARGE_TUFF_BOULDER = FEATURES.register("elythia_large_tuff_boulder",
             () -> new ElythiaLargeTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachForestMossyBoulderFeature> PEACH_FOREST_MOSSY_BOULDER = FEATURES.register("peach_forest_mossy_boulder",
+            () -> new PeachForestMossyBoulderFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachForestPondFeature> PEACH_FOREST_POND = FEATURES.register("peach_forest_pond",
+            () -> new PeachForestPondFeature(PeachForestPondConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisFissureFeature> THORAXIS_FISSURE = FEATURES.register("thoraxis_fissure",
             () -> new ThoraxisFissureFeature(ThoraxisFissureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ThoraxisRibColumnsFeature> THORAXIS_RIB_COLUMNS = FEATURES.register("thoraxis_rib_columns",
@@ -1094,6 +1234,21 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_BUTTON);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_LEAVES);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_ACORN = ITEMS.registerSimpleBlockItem(OURANWOOD_ACORN_BLOCK);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_LOG_ITEM = ITEMS.registerSimpleBlockItem(PEACH_LOG);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_WOOD_ITEM = ITEMS.registerSimpleBlockItem(PEACH_WOOD);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> STRIPPED_PEACH_LOG_ITEM = ITEMS.registerSimpleBlockItem(STRIPPED_PEACH_LOG);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> STRIPPED_PEACH_WOOD_ITEM = ITEMS.registerSimpleBlockItem(STRIPPED_PEACH_WOOD);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_PLANKS_ITEM = ITEMS.registerSimpleBlockItem(PEACH_PLANKS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_STAIRS_ITEM = ITEMS.registerSimpleBlockItem(PEACH_STAIRS);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_SLAB_ITEM = ITEMS.registerSimpleBlockItem(PEACH_SLAB);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_FENCE_ITEM = ITEMS.registerSimpleBlockItem(PEACH_FENCE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_FENCE_GATE_ITEM = ITEMS.registerSimpleBlockItem(PEACH_FENCE_GATE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_DOOR_ITEM = ITEMS.registerSimpleBlockItem(PEACH_DOOR);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_TRAPDOOR_ITEM = ITEMS.registerSimpleBlockItem(PEACH_TRAPDOOR);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_PRESSURE_PLATE_ITEM = ITEMS.registerSimpleBlockItem(PEACH_PRESSURE_PLATE);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_BUTTON_ITEM = ITEMS.registerSimpleBlockItem(PEACH_BUTTON);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_LEAVES_ITEM = ITEMS.registerSimpleBlockItem(PEACH_LEAVES);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> PEACH_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(PEACH_SAPLING);
     // public static final DeferredItem<net.minecraft.world.item.BlockItem> OURANWOOD_VINE_ITEM = ITEMS.registerSimpleBlockItem(OURANWOOD_VINE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ORANGE_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(ORANGE_MILKWEED);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> PINK_MILKWEED_ITEM = ITEMS.registerSimpleBlockItem(PINK_MILKWEED);
@@ -1105,6 +1260,14 @@ public final class AntarchyFabricContent {
             () -> new OuranwoodBoatOnlyItem(OURANWOOD_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> OURANWOOD_CHEST_BOAT = ITEMS.register("ouranwood_chest_boat",
             () -> new OuranwoodChestBoatItem(OURANWOOD_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<net.minecraft.world.item.SignItem> PEACH_SIGN_ITEM = ITEMS.register("peach_sign",
+            () -> new net.minecraft.world.item.SignItem(new Item.Properties().stacksTo(16), PEACH_SIGN.get(), PEACH_WALL_SIGN.get()));
+    public static final DeferredItem<net.minecraft.world.item.HangingSignItem> PEACH_HANGING_SIGN_ITEM = ITEMS.register("peach_hanging_sign",
+            () -> new net.minecraft.world.item.HangingSignItem(PEACH_HANGING_SIGN.get(), PEACH_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<Item> PEACH_BOAT = ITEMS.register("peach_boat",
+            () -> new com.craisinlord.antarchy.content.item.PeachBoatOnlyItem(PEACH_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> PEACH_CHEST_BOAT = ITEMS.register("peach_chest_boat",
+            () -> new com.craisinlord.antarchy.content.item.PeachChestBoatItem(PEACH_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DUPLICATOR_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(DUPLICATOR_SAPLING);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> RED_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(RED_ANT_NEST);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BROWN_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(BROWN_ANT_NEST);
@@ -1201,6 +1364,8 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> POTENT_NYXITE_ITEM = ITEMS.registerSimpleBlockItem(POTENT_NYXITE);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UMBRAL_MOSS_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(UMBRAL_MOSS_BLOCK);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> UMBRAL_MOSS_CARPET_ITEM = ITEMS.registerSimpleBlockItem(UMBRAL_MOSS_CARPET);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BLUSH_MOSS_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(BLUSH_MOSS_BLOCK);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> BLUSH_MOSS_CARPET_ITEM = ITEMS.registerSimpleBlockItem(BLUSH_MOSS_CARPET);
     public static final DeferredItem<StandingAndWallBlockItem> DREAM_TORCH_ITEM = ITEMS.register("dream_torch",
             () -> new StandingAndWallBlockItem(DREAM_TORCH.get(), DREAM_WALL_TORCH.get(), new Item.Properties(), Direction.UP));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DREAM_LANTERN_ITEM = ITEMS.registerSimpleBlockItem(DREAM_LANTERN);
@@ -1214,6 +1379,10 @@ public final class AntarchyFabricContent {
             () -> new BucketItem(ICHOR.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final DeferredItem<BucketItem> ANTIWATER_BUCKET = ITEMS.register("antiwater_bucket",
             () -> new BucketItem(ANTIWATER.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final DeferredItem<BucketItem> LUMEN_BUCKET = ITEMS.register("lumen_bucket",
+            () -> new BucketItem(LUMEN.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> LUMEN_FROGLIGHT_ITEM = ITEMS.registerSimpleBlockItem(LUMEN_FROGLIGHT);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ROSEATE_FROGLIGHT_ITEM = ITEMS.registerSimpleBlockItem(ROSEATE_FROGLIGHT);
     public static final DeferredItem<com.craisinlord.antarchy.content.item.CloudBucketItem> CLOUD_BUCKET = ITEMS.register("cloud_bucket",
             () -> new com.craisinlord.antarchy.content.item.CloudBucketItem(CLOUD_BLOCK.get(), new Item.Properties().craftRemainder(Items.BUCKET)));
     public static final DeferredItem<com.craisinlord.antarchy.content.item.BloodCrystalShardItem> BLOOD_CRYSTAL_SHARD = ITEMS.register("blood_crystal_shard",
@@ -1275,6 +1444,59 @@ public final class AntarchyFabricContent {
                     .food(new FoodProperties.Builder()
                             .nutrition(2)
                             .saturationModifier(0.4F)
+                            .build())));
+    public static final DeferredItem<Item> CORN = ITEMS.register("corn",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.6F)
+                            .build())));
+    public static final DeferredItem<net.minecraft.world.item.ItemNameBlockItem> CORN_SEEDS = ITEMS.register("corn_seeds",
+            () -> new net.minecraft.world.item.ItemNameBlockItem(CORN_CROP.get(), new Item.Properties()));
+    public static final DeferredItem<Item> RAW_VENISON = ITEMS.register("raw_venison",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.3F)
+                            .build())));
+    public static final DeferredItem<Item> COOKED_VENISON = ITEMS.register("cooked_venison",
+            () -> new Item(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.8F)
+                            .build())));
+    public static final DeferredItem<Item> PEACH = ITEMS.register("peach",
+            () -> new com.craisinlord.antarchy.content.item.PeachItem());
+    public static final DeferredItem<Item> RAW_CORNDOG = ITEMS.register("raw_corndog",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.7F)
+                            .build())));
+    public static final DeferredItem<Item> COOKED_CORNDOG = ITEMS.register("cooked_corndog",
+            () -> new Item(new Item.Properties()
+                    .stacksTo(64)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(14)
+                            .saturationModifier(1.1F)
+                            .build())));
+    public static final DeferredItem<Item> HIGH_FRUCTOSE_CORN_SYRUP = ITEMS.register("high_fructose_corn_syrup",
+            () -> new com.craisinlord.antarchy.content.item.HighFructoseCornSyrupItem(new Item.Properties()
+                    .stacksTo(16)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(0)
+                            .saturationModifier(0.0F)
+                            .alwaysEdible()
+                            .build())));
+    public static final DeferredItem<com.craisinlord.antarchy.content.item.RootBeerItem> ROOT_BEER = ITEMS.register("root_beer",
+            () -> new com.craisinlord.antarchy.content.item.RootBeerItem(new Item.Properties()
+                    .stacksTo(16)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.4F)
+                            .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
+                            .alwaysEdible()
                             .build())));
     public static final DeferredItem<Item> TRIFFID_GOO = ITEMS.registerSimpleItem("triffid_goo",
             new Item.Properties().rarity(Rarity.UNCOMMON));
@@ -1474,6 +1696,8 @@ public final class AntarchyFabricContent {
             ));
     public static final DeferredItem<GravityGunItem> GRAVITY_GUN = ITEMS.register("gravity_gun",
             () -> new GravityGunItem(new Item.Properties().stacksTo(1).durability(512).rarity(Rarity.RARE).fireResistant()));
+    public static final DeferredItem<MinersDreamItem> MINERS_DREAM = ITEMS.register("miners_dream",
+            () -> new MinersDreamItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
     public static final DeferredItem<SquidzookaItem> SQUIDZOOKA = ITEMS.register("squidzooka",
             () -> new SquidzookaItem(new Item.Properties().stacksTo(1).durability(384).rarity(Rarity.RARE)));
     public static final DeferredItem<BattleAxeItem> BATTLE_AXE = ITEMS.register("battle_axe",
@@ -1743,13 +1967,42 @@ public final class AntarchyFabricContent {
     public static final DeferredItem<DeferredSpawnEggItem> CHEEP_SPAWN_EGG = ITEMS.register("cheep_spawn_egg",
             () -> new DeferredSpawnEggItem(CHEEP, 0xFF00AA, 0x00FF44, new Item.Properties()));
 
-    // public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",
-    //         () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.GlimmerEntity::new, MobCategory.CREATURE)
-    //                 .sized(0.9F, 1.4F)
-    //                 .clientTrackingRange(8)
-    //                 .build("glimmer"));
-    // public static final DeferredItem<DeferredSpawnEggItem> GLIMMER_SPAWN_EGG = ITEMS.register("glimmer_spawn_egg",
-    //         () -> new DeferredSpawnEggItem(GLIMMER, 0xBEEFFF, 0x6FD8FF, new Item.Properties()));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.DorrieEntity::new, MobCategory.CREATURE)
+                    .sized(1.6F, 1.4F)
+                    .clientTrackingRange(10)
+                    .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.4F)
+                    .clientTrackingRange(8)
+                    .build("ouranwood_deer"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.4F)
+                    .clientTrackingRange(8)
+                    .build("glimmer"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.ElkaEntity>> ELKA = ENTITY_TYPES.register("elka",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.ElkaEntity::new, MobCategory.CREATURE)
+                    .sized(2.2F, 3.5F)
+                    .clientTrackingRange(10)
+                    .build("elka"));
+    public static final DeferredItem<DeferredSpawnEggItem> DORRIE_SPAWN_EGG = ITEMS.register("dorrie_spawn_egg",
+            () -> new DeferredSpawnEggItem(DORRIE, 0x6F8CFF, 0xD2F2FF, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> OURANWOOD_DEER_SPAWN_EGG = ITEMS.register("ouranwood_deer_spawn_egg",
+            () -> new DeferredSpawnEggItem(OURANWOOD_DEER, 0x8A6D4B, 0xE8D9B5, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> GLIMMER_SPAWN_EGG = ITEMS.register("glimmer_spawn_egg",
+            () -> new DeferredSpawnEggItem(GLIMMER, 0x7DFFFF, 0x2AC7D0, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> ELKA_SPAWN_EGG = ITEMS.register("elka_spawn_egg",
+            () -> new DeferredSpawnEggItem(ELKA, 0x6B2FA0, 0xFFFFFF, new Item.Properties()));
+    public static final DeferredItem<net.minecraft.world.item.Item> SPIRIT_APPLE = ITEMS.register("spirit_apple",
+            () -> new com.craisinlord.antarchy.content.item.SpiritAppleItem(new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.3F)
+                            .build())));
+    public static final DeferredItem<com.craisinlord.antarchy.content.item.GlimmerBottleItem> GLIMMER_BOTTLE = ITEMS.register("glimmer_bottle",
+            com.craisinlord.antarchy.content.item.GlimmerBottleItem::new);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ANTARCHY_TAB = CREATIVE_MODE_TABS.register("antarchy",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -1834,7 +2087,10 @@ public final class AntarchyFabricContent {
         FabricDefaultAttributeRegistry.register(EMPEROR_SCORPION.get(), EmperorScorpionEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(TORETERROR.get(), ToreterrorEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(CHEEP.get(), com.craisinlord.antarchy.content.entity.CheepEntity.createAttributes().build());
-        // FabricDefaultAttributeRegistry.register(GLIMMER.get(), com.craisinlord.antarchy.content.entity.GlimmerEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(DORRIE.get(), com.craisinlord.antarchy.content.entity.DorrieEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(OURANWOOD_DEER.get(), com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(GLIMMER.get(), com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(ELKA.get(), com.craisinlord.antarchy.content.entity.ElkaEntity.createAttributes().build());
 
         FabricDefaultAttributeRegistry.register(RED_ANT.get(), buildAntAttributes(
                 AntarchySettings.redAntHealth(),
@@ -1871,7 +2127,10 @@ public final class AntarchyFabricContent {
         SpawnPlacements.register(MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn);
         SpawnPlacements.register(OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn);
         SpawnPlacements.register(CHEEP.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.AbstractFish::checkSurfaceWaterAnimalSpawnRules);
-        // SpawnPlacements.register(GLIMMER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(DORRIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(OURANWOOD_DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(GLIMMER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(ELKA.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(NIGHTMARE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, NightmareEntity::canSpawn);
         SpawnPlacements.register(MOLEWORM.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MolewormEntity::canSpawn);
         SpawnPlacements.register(MANTIS.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MantisEntity::canSpawn);
@@ -1889,13 +2148,20 @@ public final class AntarchyFabricContent {
         ArrayList<Item> sortedItems = new ArrayList<>();
         for (var holder : ITEMS.getEntries()) {
             Item item = holder.get();
-            if (item != Items.AIR) {
+            if (item != Items.AIR && item != GLIMMER_BOTTLE.get()) {
                 sortedItems.add(item);
             }
         }
-        sortedItems.sort(Comparator.comparingInt(AntarchyFabricContent::creativeTabGroup));
+        sortedItems.sort(CreativeTabOrder.COMPARATOR);
+        addGlimmerBottleVariants(output);
         sortedItems.forEach(output::accept);
         addPotionVariants(output);
+    }
+
+    private static void addGlimmerBottleVariants(CreativeModeTab.Output output) {
+        for (com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant variant : com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.values()) {
+            output.accept(com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(variant));
+        }
     }
 
     private static void addPotionVariants(CreativeModeTab.Output output) {
@@ -1926,67 +2192,11 @@ public final class AntarchyFabricContent {
     }
 
     private static int creativeTabGroup(Item item) {
-        String path = BuiltInRegistries.ITEM.getKey(item).getPath();
-        return switch (path) {
-            case "ouranwood_log", "ouranwood_wood", "mossy_ouranwood_log", "mossy_ouranwood_wood",
-                 "stripped_ouranwood_log", "stripped_ouranwood_wood", "duplicator_log",
-                 "ouranwood_planks", "ouranwood_stairs", "ouranwood_slab",
-                 "ouranwood_fence", "ouranwood_fence_gate",
-                 "ouranwood_door", "ouranwood_trapdoor",
-                 "ouranwood_pressure_plate", "ouranwood_button",
-                 "ouranwood_sign", "ouranwood_hanging_sign",
-                 "ouranwood_boat", "ouranwood_chest_boat" -> 0;
-            case "nyxite", "polished_nyxite", "chiseled_nyxite", "nyxite_bricks",
-                 "nyxite_stairs", "nyxite_slab", "nyxite_wall",
-                 "polished_nyxite_stairs", "polished_nyxite_slab", "polished_nyxite_wall",
-                 "nyxite_brick_stairs", "nyxite_brick_slab", "nyxite_brick_wall",
-                 "pale_nyxite", "nyxite_spike", "potent_nyxite" -> 1;
-            case "shellstone", "polished_shellstone", "shellstone_bricks", "chiseled_shellstone",
-                 "mossy_shellstone_bricks", "cracked_shellstone_bricks",
-                 "shellstone_stairs", "shellstone_slab", "shellstone_wall",
-                 "polished_shellstone_stairs", "polished_shellstone_slab", "polished_shellstone_wall",
-                 "shellstone_brick_stairs", "shellstone_brick_slab", "shellstone_brick_wall",
-                 "mossy_shellstone_brick_stairs", "mossy_shellstone_brick_slab", "mossy_shellstone_brick_wall" -> 2;
-            case "antimetal", "polished_antimetal" -> 3;
-            case "dream_sand", "dream_sandstone", "chiseled_dream_sandstone",
-                 "cut_dream_sandstone", "smooth_dream_sandstone",
-                 "dream_sandstone_stairs", "dream_sandstone_slab", "dream_sandstone_wall",
-                 "smooth_dream_sandstone_stairs", "smooth_dream_sandstone_slab",
-                 "cut_dream_sandstone_slab" -> 4;
-            case "umbral_moss_block", "umbral_moss_carpet" -> 4;
-            case "hushweed", "orange_milkweed", "pink_milkweed", "amber_lichen", "creepvine" -> 6;
-            case "blood_crystal_block", "budding_blood_crystal",
-                 "small_blood_crystal_bud", "medium_blood_crystal_bud",
-                 "large_blood_crystal_bud", "blood_crystal_cluster" -> 7;
-            case "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
-            case "uranium_ore", "deepslate_uranium_ore", "titanium_ore", "deepslate_titanium_ore",
-                 "uranium_block", "titanium_block", "raw_uranium_block", "raw_titanium_block",
-                 "cut_uranium", "cut_titanium", "cut_uranium_slab", "cut_titanium_slab",
-                 "cut_uranium_stairs", "cut_titanium_stairs", "chiseled_uranium",
-                 "chiseled_titanium", "uranium_bulb", "titanium_bulb",
-                 "uranium_door", "titanium_door", "uranium_trapdoor", "titanium_trapdoor",
-                 "uranium_bars", "titanium_bars" -> 8;
-            case "infested_rooted_dirt", "infested_coarse_dirt", "triffid_goo_block",
-                 "cloud_block", "creeping_horror_egg", "lurking_terror_egg" -> 9;
-            case "dream_torch", "dream_lantern", "dream_campfire", "dream_fire", "dream_fire_ceiling" -> 10;
-            case "easter_bunny_spawn_egg", "flying_squirrel_spawn_egg", "caterpillar_spawn_egg",
-                 "butterfly_spawn_egg", "reverie_spawn_egg", "brutalfly_spawn_egg",
-                 "red_ant_spawn_egg", "brown_ant_spawn_egg", "rainbow_ant_spawn_egg", "termite_spawn_egg",
-                 "moleworm_spawn_egg", "mantis_spawn_egg", "alpha_mantis_spawn_egg", "rolly_polly_spawn_egg", "molevore_spawn_egg", "triffid_spawn_egg",
-                 "apple_cow_spawn_egg", "golden_apple_cow_spawn_egg", "enchanted_golden_apple_cow_spawn_egg",
-                 "dr_trayaurus_spawn_egg", "wasp_spawn_egg",
-                 "bomber_spawn_egg", "jumpy_bug_spawn_egg", "stink_bug_spawn_egg", "cloud_shark_spawn_egg", "kraken_spawn_egg", "missile_squid_spawn_egg", "octopus_bomb_spawn_egg",
-                 "nightmare_spawn_egg", "bed_bug_spawn_egg", "lucid_spawn_egg", "scorpion_spawn_egg",
-                 "basilisk_spawn_egg", "emperor_scorpion_spawn_egg", "toreterror_spawn_egg",
-                 "hercules_beetle_spawn_egg",
-                 "creeping_horror_spawn_egg", "lurking_terror_spawn_egg" -> 90;
-            case "stink_bug", "chiten" -> 22;
-            case "water_cannon" -> 52;
-            case "primordial_helmet", "primordial_chestplate", "primordial_leggings", "primordial_boots" -> 53;
-            case "jumpy_boots" -> 54;
-            case "king_scale", "queen_scale" -> 22;
-            default -> 50;
-        };
+        return CreativeTabOrder.group(item);
+    }
+
+    private static int creativeTabSubOrder(Item item) {
+        return CreativeTabOrder.subOrder(item);
     }
 
     private static BlockEntityType<AntNestBlockEntity> antNestBlockEntityType() {
@@ -2281,6 +2491,8 @@ public final class AntarchyFabricContent {
         POTIONS.register();
         ITEMS.register();
         MENUS.register();
+        DATA_COMPONENT_TYPES.register();
+        RECIPE_SERIALIZERS.register();
         CREATIVE_MODE_TABS.register();
 
         // Wire common-module accessors after all registrations are complete.
@@ -2428,8 +2640,25 @@ public final class AntarchyFabricContent {
         );
 
         AntarchyObjects.setOctopusBomb(OCTOPUS_BOMB);
-        // AntarchyObjects.setGlimmer(GLIMMER);
-        // AntarchyObjects.setGlimmersGrace(() -> mobEffectHolder(GLIMMERS_GRACE));
+        AntarchyObjects.setOuranwoodDeer(OURANWOOD_DEER);
+        AntarchyObjects.setGlimmer(GLIMMER);
+        AntarchyObjects.setSpiritApple(() -> SPIRIT_APPLE.get());
+        AntarchyObjects.setElka(ELKA);
+        AntarchyObjects.setPeach(() -> PEACH.get());
+        AntarchyObjects.setCorn(() -> CORN.get());
+        AntarchyObjects.setCornSeeds(() -> CORN_SEEDS.get());
+        AntarchyObjects.setWildCorn(() -> WILD_CORN.get());
+        AntarchyObjects.setCookedCorndog(() -> COOKED_CORNDOG.get());
+        AntarchyObjects.setGlimmerBottle(() -> GLIMMER_BOTTLE.get());
+        AntarchyObjects.setGlimmerVariantComponent(() -> GLIMMER_VARIANT.get());
+        AntarchyObjects.setAmericanComponent(() -> AMERICAN.get());
+        AntarchyObjects.setLumen(() -> LUMEN.get());
+        AntarchyObjects.setFlowingLumen(() -> FLOWING_LUMEN.get());
+        AntarchyObjects.setLumenBucket(() -> LUMEN_BUCKET.get());
+        AntarchyObjects.setLumenBlock(() -> LUMEN_BLOCK.get());
+        AntarchyObjects.setLumenFroglight(() -> LUMEN_FROGLIGHT.get());
+        AntarchyObjects.setPeachLeavesParticle(() -> PEACH_LEAVES_PARTICLE.get());
+        AntarchyObjects.setDorrieInventoryMenu(DORRIE_INVENTORY_MENU);
         AntarchyObjects.bind(
                 EASTER_BUNNY,
                 FLYING_SQUIRREL,
@@ -2454,7 +2683,7 @@ public final class AntarchyFabricContent {
                 (java.util.function.Supplier) BOMBER,
                 (java.util.function.Supplier) BED_BUG,
                 CHEEP,
-                (java.util.function.Supplier) CHEEP,
+                DORRIE,
                 () -> DUPLICATOR_LOG.get(),
                 () -> DUPLICATOR_SAPLING.get(),
                 () -> DUCT_TAPE.get(),
@@ -2505,6 +2734,10 @@ public final class AntarchyFabricContent {
                 () -> OURANWOOD_ACORN_BLOCK.get(),
                 () -> MOSSY_OURANWOOD_LOG.get(),
                 () -> MOSSY_OURANWOOD_WOOD.get(),
+                () -> UMBRAL_MOSS_BLOCK.get(),
+                () -> UMBRAL_MOSS_CARPET.get(),
+                () -> BLUSH_MOSS_BLOCK.get(),
+                () -> BLUSH_MOSS_CARPET.get(),
                 () -> ORANGE_MILKWEED.get(),
                 () -> PINK_MILKWEED.get(),
                 () -> BED_BUG_EGG.get(),
@@ -2520,6 +2753,7 @@ public final class AntarchyFabricContent {
                 () -> HUSHWEED_BLOCK_ENTITY.get(),
                 () -> STINKY_GAS.get(),
                 () -> STINKY_FLY.get(),
+                () -> PEACH_LEAVES_PARTICLE.get(),
                 () -> attributeHolder(DOUBLE_DAMAGE_CHANCE),
                 () -> attributeHolder(BLOODGLASS_MAX_HEARTS),
                 () -> mobEffectHolder(BLOODGLASS_WARD)
@@ -2537,9 +2771,34 @@ public final class AntarchyFabricContent {
         com.craisinlord.antarchy.content.gravity.AntarchyGravityApi.setSyncDispatcher(AntarchyFabricNetworking::syncGravityEntity);
         AntarchyFabricEvents.register();
 
-        if (FabricInfinityCompat.isAvailableOnClasspath()) {
+        if (isSupportedInfinityLoaded()) {
             InfinityCompat.bind(new FabricInfinityCompat());
         }
+    }
+
+    private static boolean isSupportedInfinityLoaded() {
+        if (!FabricInfinityCompat.isAvailableOnClasspath()) {
+            return false;
+        }
+
+        try {
+            String version = FabricLoader.getInstance()
+                    .getModContainer("infinity")
+                    .map(container -> container.getMetadata().getVersion().getFriendlyString())
+                    .orElse(null);
+            if (InfinityCompatVersion.isSupported(version)) {
+                return true;
+            }
+
+            Antarchy.LOGGER.warn(
+                    "Skipping Infinity integration because version {} is below the supported minimum {}",
+                    version,
+                    InfinityCompatVersion.requiredVersion()
+            );
+        } catch (Throwable throwable) {
+            Antarchy.LOGGER.warn("Skipping Infinity integration because the installed Infinity version could not be verified", throwable);
+        }
+        return false;
     }
 }
 

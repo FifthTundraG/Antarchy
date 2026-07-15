@@ -45,3 +45,11 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/antarchy"
     versionRange="*"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.antarchy]]
+    modId="infinity"
+    type="incompatible"
+    versionRange="(,2.7.2)"
+    ordering="NONE"
+    side="BOTH"
+    reason="Infinite Dimensions versions below 2.7.2 are no longer supported"

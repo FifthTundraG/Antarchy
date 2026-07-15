@@ -1,5 +1,6 @@
 package com.craisinlord.antarchy.fabric;
 
+import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.compat.infinity.InfinityCompatBridge;
 import net.lerariemann.infinity.util.InfinityMethods;
 import net.lerariemann.infinity.util.teleport.WarpLogic;
@@ -28,6 +29,7 @@ public final class FabricInfinityCompat implements InfinityCompatBridge {
         try {
             return InfinityMethods.getRandomId(random);
         } catch (Throwable throwable) {
+            Antarchy.LOGGER.error("[Antarchy] Failed to get a random Infinity dimension id", throwable);
             return null;
         }
     }
@@ -38,6 +40,7 @@ public final class FabricInfinityCompat implements InfinityCompatBridge {
             WarpLogic.requestWarp(player, dimensionId, false);
             return true;
         } catch (Throwable throwable) {
+            Antarchy.LOGGER.error("[Antarchy] Failed to request an Infinity warp to {}", dimensionId, throwable);
             return false;
         }
     }

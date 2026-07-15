@@ -127,9 +127,19 @@ public final class AntarchySettings {
     private static double gravityGunBlastStrength = 1.4D;
     private static double gravityGunCooldownSeconds = 0.35D;
     private static double gravityGunMaxHoldDistance = 10.0D;
+    private static boolean minersDreamEnabled = true;
+    private static int minersDreamMinimumRange = 48;
+    private static int minersDreamMaximumRange = 96;
+    private static int minersDreamTorchSpacing = 10;
+    private static int minersDreamBlocksPerTick = 150;
     private static double lucidAttackRange = 9.0D;
     private static double lucidPearlInvertedDurationSeconds = 6.0D;
     private static int corneaEarNightVisionSeconds = 15;
+    private static boolean americanizingEnabled = true;
+    private static int americanBonusNutrition = 2;
+    private static double americanBonusSaturation = 1.0D;
+    private static int americanRegenerationDurationTicks = 60;
+    private static int americanRegenerationAmplifier = 0;
     private static int mogglesVisionRadius = 2;
     private static int mogglesVisionMaxLight = 7;
     private static float mogglesVisionAlpha = 0.35f;
@@ -490,6 +500,7 @@ public final class AntarchySettings {
     private static double herculesBeetleHealth = 500.0D;
     private static double herculesBeetleAttackDamage = 30.0D;
     private static double herculesBeetleChargeDamage = 40.0D;
+    private static double ouranwoodDeerHealth = 20.0D;
     private static double glimmerHealth = 20.0D;
 
     private AntarchySettings() {
@@ -947,6 +958,26 @@ public final class AntarchySettings {
         return gravityGunMaxHoldDistance;
     }
 
+    public static boolean minersDreamEnabled() {
+        return minersDreamEnabled;
+    }
+
+    public static int minersDreamMinimumRange() {
+        return minersDreamMinimumRange;
+    }
+
+    public static int minersDreamMaximumRange() {
+        return minersDreamMaximumRange;
+    }
+
+    public static int minersDreamTorchSpacing() {
+        return minersDreamTorchSpacing;
+    }
+
+    public static int minersDreamBlocksPerTick() {
+        return minersDreamBlocksPerTick;
+    }
+
     public static void setDisableInfinityBookPortalCreation(boolean value) {
         disableInfinityBookPortalCreation = value;
     }
@@ -1393,6 +1424,26 @@ public final class AntarchySettings {
         gravityGunMaxHoldDistance = value;
     }
 
+    public static void setMinersDreamEnabled(boolean value) {
+        minersDreamEnabled = value;
+    }
+
+    public static void setMinersDreamMinimumRange(int value) {
+        minersDreamMinimumRange = value;
+    }
+
+    public static void setMinersDreamMaximumRange(int value) {
+        minersDreamMaximumRange = value;
+    }
+
+    public static void setMinersDreamTorchSpacing(int value) {
+        minersDreamTorchSpacing = value;
+    }
+
+    public static void setMinersDreamBlocksPerTick(int value) {
+        minersDreamBlocksPerTick = value;
+    }
+
     public static double lucidAttackRange() {
         return lucidAttackRange;
     }
@@ -1415,6 +1466,46 @@ public final class AntarchySettings {
 
     public static void setCorneaEarNightVisionSeconds(int value) {
         corneaEarNightVisionSeconds = value;
+    }
+
+    public static boolean americanizingEnabled() {
+        return americanizingEnabled;
+    }
+
+    public static void setAmericanizingEnabled(boolean value) {
+        americanizingEnabled = value;
+    }
+
+    public static int americanBonusNutrition() {
+        return americanBonusNutrition;
+    }
+
+    public static void setAmericanBonusNutrition(int value) {
+        americanBonusNutrition = value;
+    }
+
+    public static double americanBonusSaturation() {
+        return americanBonusSaturation;
+    }
+
+    public static void setAmericanBonusSaturation(double value) {
+        americanBonusSaturation = value;
+    }
+
+    public static int americanRegenerationDurationTicks() {
+        return americanRegenerationDurationTicks;
+    }
+
+    public static void setAmericanRegenerationDurationTicks(int value) {
+        americanRegenerationDurationTicks = value;
+    }
+
+    public static int americanRegenerationAmplifier() {
+        return americanRegenerationAmplifier;
+    }
+
+    public static void setAmericanRegenerationAmplifier(int value) {
+        americanRegenerationAmplifier = value;
     }
 
     public static int mogglesVisionRadius() {
@@ -2548,6 +2639,8 @@ public final class AntarchySettings {
     public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
     public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
     public static void setDorrieHealth(double v) { dorrieHealth = v; }
+    public static double ouranwoodDeerHealth() { return ouranwoodDeerHealth; }
+    public static void setOuranwoodDeerHealth(double v) { ouranwoodDeerHealth = v; }
     public static double glimmerHealth() { return glimmerHealth; }
     public static void setGlimmerHealth(double v) { glimmerHealth = v; }
 }

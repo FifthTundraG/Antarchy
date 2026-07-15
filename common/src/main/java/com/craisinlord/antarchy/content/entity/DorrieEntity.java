@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -42,6 +43,8 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
@@ -57,6 +60,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class DorrieEntity extends Animal implements GeoEntity {
     private static final ResourceLocation CHEEP_ITEM_ID = ResourceLocation.fromNamespaceAndPath("antarchy", "cheep");
+    private static final String INVENTORY_TAG = "Inventory";
+    private static final int SADDLE_SLOT = 0;
+    private static final int INVENTORY_SIZE = 17;
 
     private static final EntityDataAccessor<Boolean> HAS_SADDLE =
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.BOOLEAN);
@@ -67,12 +73,13 @@ public class DorrieEntity extends Animal implements GeoEntity {
     private static final EntityDataAccessor<Integer> QUIRK_TICKS =
             SynchedEntityData.defineId(DorrieEntity.class, EntityDataSerializers.INT);
 
-    private static final int MAX_CHARGE_TICKS = 40;
-    private static final float WATER_RIDE_SPEED = 0.78F;
-    private static final float LAND_BEACH_SPEED = 0.10F;
+    private static final int MAX_CHARGE_TICKS = 90;
+    private static final float WATER_RIDE_SPEED = 0.42F;
+    private static final float LAND_BEACH_SPEED = 0.07F;
+    private static final double ASCEND_SPEED = 0.06D;
     private static final int QUIRK_DURATION_TICKS = 65;
-    private static final int MIN_QUIRK_COOLDOWN_TICKS = 140;
-    private static final int MAX_QUIRK_COOLDOWN_TICKS = 260;
+    private static final int MIN_QUIRK_COOLDOWN_TICKS = 260;
+    private static final int MAX_QUIRK_COOLDOWN_TICKS = 420;
     private static final double MOVING_ANIM_THRESHOLD_SQ = 0.0025D;
 
     private static final RawAnimation IDLE_GROUND_ANIM = RawAnimation.begin().thenLoop("idle_ground");
@@ -87,6 +94,13 @@ public class DorrieEntity extends Animal implements GeoEntity {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private final MoveControl landMoveControl;
     private final MoveControl waterMoveControl;
+    private final SimpleContainer inventory = new SimpleContainer(INVENTORY_SIZE) {
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            DorrieEntity.this.onInventoryChanged();
+        }
+    };
 
     private static final int RIDES_TO_TAME = 4;
     private static final int BUCK_DELAY_TICKS = 60;
@@ -101,6 +115,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
     private int swimForwardTicks = 0;
     private int quirkCooldownTicks = MIN_QUIRK_COOLDOWN_TICKS;
     private boolean usingLandNavigation = true;
+    private boolean pressingJump = false;
 
     public DorrieEntity(EntityType<? extends DorrieEntity> entityType, Level level) {
         super(entityType, level);
@@ -131,8 +146,8 @@ public class DorrieEntity extends Animal implements GeoEntity {
         this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(1, new HuntCheepGoal(this));
         this.goalSelector.addGoal(2, new DolphinSwimGoal());
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.35D, 8));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.72D, 40));
+        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 1.45D, 4));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.9D, 10));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
@@ -151,6 +166,10 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
     public void setSaddle(boolean saddle) {
         this.entityData.set(HAS_SADDLE, saddle);
+    }
+
+    public SimpleContainer inventory() {
+        return this.inventory;
     }
 
     public boolean isTamed() {
@@ -181,16 +200,38 @@ public class DorrieEntity extends Animal implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Tamed", this.isTamed());
-        tag.putBoolean("HasSaddle", this.hasSaddle());
         tag.putInt("RideAttempts", this.rideAttempts);
+        ListTag inventoryTag = new ListTag();
+        for (int slot = 0; slot < this.inventory.getContainerSize(); slot++) {
+            ItemStack stack = this.inventory.getItem(slot);
+            if (stack.isEmpty()) {
+                continue;
+            }
+
+            CompoundTag stackTag = new CompoundTag();
+            stackTag.putByte("Slot", (byte) slot);
+            stackTag.put("Item", stack.save(this.registryAccess()));
+            inventoryTag.add(stackTag);
+        }
+        tag.put(INVENTORY_TAG, inventoryTag);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setTamed(tag.getBoolean("Tamed"));
-        this.setSaddle(tag.getBoolean("HasSaddle"));
         this.rideAttempts = tag.getInt("RideAttempts");
+        this.inventory.clearContent();
+        ListTag inventoryTag = tag.getList(INVENTORY_TAG, 10);
+        for (int i = 0; i < inventoryTag.size(); i++) {
+            CompoundTag stackTag = inventoryTag.getCompound(i);
+            int slot = stackTag.getByte("Slot") & 255;
+            if (slot < 0 || slot >= this.inventory.getContainerSize()) {
+                continue;
+            }
+            this.inventory.setItem(slot, ItemStack.parseOptional(this.registryAccess(), stackTag.getCompound("Item")));
+        }
+        this.syncSaddleState();
     }
 
     @Override
@@ -204,38 +245,24 @@ public class DorrieEntity extends Animal implements GeoEntity {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        if (this.hasSaddle() && !player.isPassengerOfSameVehicle(this)) {
-            if (!stack.isEmpty()) {
-                return super.mobInteract(player, hand);
-            }
+        if (player.isSecondaryUseActive()) {
+            this.openInventory(player);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
 
-            if (!player.isShiftKeyDown()) {
-                if (!this.level().isClientSide) {
-                    player.startRiding(this);
-                }
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-
+        if (this.hasSaddle() && stack.isEmpty() && !player.isPassengerOfSameVehicle(this)) {
             if (!this.level().isClientSide) {
-                this.setSaddle(false);
-                this.spawnAtLocation(new ItemStack(Items.SADDLE));
-                this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.0F);
+                player.startRiding(this);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        if (!this.hasSaddle() && stack.is(Items.SADDLE)) {
-            if (!this.level().isClientSide) {
-                this.setSaddle(true);
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-                this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.0F);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        if (!stack.isEmpty() && this.isFood(stack)) {
+            return super.mobInteract(player, hand);
         }
 
-        return super.mobInteract(player, hand);
+        this.openInventory(player);
+        return InteractionResult.sidedSuccess(this.level().isClientSide);
     }
 
     @Override
@@ -268,7 +295,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
     @Override
     protected float getRiddenSpeed(Player player) {
         float speed = (this.isInWater() || this.isInLava())
-                ? WATER_RIDE_SPEED * (1.0F + Math.min(this.swimForwardTicks, 60) * 0.03F)
+                ? WATER_RIDE_SPEED * (1.0F + Math.min(this.swimForwardTicks, 60) * 0.0125F)
                 : LAND_BEACH_SPEED;
         return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * speed;
     }
@@ -298,6 +325,10 @@ public class DorrieEntity extends Animal implements GeoEntity {
             }
         } else {
             this.swimForwardTicks = 0;
+        }
+
+        if (this.isVehicle() && this.getQuirkTicks() > 0) {
+            this.setQuirkTicks(0);
         }
 
         if (!this.level().isClientSide && !this.isTamed() && this.getFirstPassenger() instanceof Player rider) {
@@ -338,7 +369,9 @@ public class DorrieEntity extends Animal implements GeoEntity {
         wasInAir = inAirNow;
     }
 
-    public void setPressingJump(boolean pressing) {}
+    public void setPressingJump(boolean pressing) {
+        this.pressingJump = pressing;
+    }
 
     public void startJumpCharge() {
         if (!this.level().isClientSide) {
@@ -365,16 +398,22 @@ public class DorrieEntity extends Animal implements GeoEntity {
             Vec3 riddenInput = this.getRiddenInput(rider, travelVector);
             this.setSpeed(this.getRiddenSpeed(rider));
 
+            if (this.isLeaping) {
+                super.travel(travelVector);
+                return;
+            }
+
             if (this.isInWater() || this.isInLava()) {
                 this.moveRelative(this.getSpeed(), new Vec3(riddenInput.x, 0.0D, riddenInput.z));
                 Vec3 motion = this.getDeltaMovement();
                 double vertical = 0.0D;
-                if (!this.isLeaping) {
-                    if (this.isUnderWater()) {
-                        vertical = riddenInput.y * 0.025D;
-                    } else if (riddenInput.y < 0.0D) {
-                        vertical = riddenInput.y * 0.02D;
-                    }
+                if (this.isUnderWater()) {
+                    vertical = riddenInput.y * 0.025D;
+                } else if (riddenInput.y < 0.0D) {
+                    vertical = riddenInput.y * 0.02D;
+                }
+                if (this.pressingJump) {
+                    vertical += ASCEND_SPEED;
                 }
                 this.setDeltaMovement(
                         motion.x * 0.92D,
@@ -396,7 +435,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
                 Vec3 look = this.getLookAngle();
                 Vec3 current = this.getDeltaMovement();
                 double forwardAdd = 0.18D + power * 0.42D;
-                double vertical = 0.28D + power * 0.62D;
+                double vertical = 0.85D + power * 1.35D;
                 this.setDeltaMovement(
                         current.x + look.x * forwardAdd,
                         current.y + vertical,
@@ -429,9 +468,34 @@ public class DorrieEntity extends Animal implements GeoEntity {
     @Override
     protected void dropEquipment() {
         super.dropEquipment();
-        if (this.hasSaddle()) {
-            this.spawnAtLocation(new ItemStack(Items.SADDLE));
+        if (this.level().isClientSide) {
+            return;
         }
+        for (int slot = 0; slot < this.inventory.getContainerSize(); slot++) {
+            ItemStack stack = this.inventory.removeItemNoUpdate(slot);
+            if (!stack.isEmpty()) {
+                this.spawnAtLocation(stack);
+            }
+        }
+    }
+
+    private void onInventoryChanged() {
+        this.syncSaddleState();
+    }
+
+    private void syncSaddleState() {
+        ItemStack saddleStack = this.inventory.getItem(SADDLE_SLOT);
+        this.setSaddle(!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE));
+    }
+
+    private void openInventory(Player player) {
+        if (this.level().isClientSide) {
+            return;
+        }
+        player.openMenu(new SimpleMenuProvider(
+                (containerId, playerInventory, ignored) -> new com.craisinlord.antarchy.content.menu.DorrieInventoryMenu(containerId, playerInventory, this.inventory, this),
+                this.getDisplayName()
+        ));
     }
 
     @Override
@@ -567,7 +631,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
     private boolean canUseQuirkAnimation() {
         return this.isInWater()
                 && !this.isUnderWater()
-                && this.getControllingPassenger() == null
+                && !this.isVehicle()
                 && !this.isLeaping
                 && this.landAnimTicks <= 0
                 && !this.isCharging
@@ -653,7 +717,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
 
     private class DolphinSwimGoal extends Goal {
         private static final int COOLDOWN_MIN_TICKS = 120;
-        private static final int COOLDOWN_MAX_TICKS = 240;
+        private static final int COOLDOWN_MAX_TICKS = 180;
         private static final int DIVE_MIN_TICKS = 50;
         private static final int DIVE_MAX_TICKS = 110;
         private static final int ROAM_MIN_TICKS = 70;
@@ -691,7 +755,7 @@ public class DorrieEntity extends Animal implements GeoEntity {
                 this.cooldownTicks--;
                 return false;
             }
-            if (DorrieEntity.this.random.nextInt(6) != 0) {
+            if (DorrieEntity.this.random.nextInt(3) != 0) {
                 return false;
             }
             this.targetPos = DorrieEntity.this.isUnderWater()

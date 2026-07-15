@@ -370,7 +370,7 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
                 Player shoulderPlayer = this.shoulderPlayerId != null
                         ? this.level().getPlayerByUUID(this.shoulderPlayerId)
                         : null;
-                if (shoulderPlayer == null || !shoulderPlayer.isAlive()) {
+                if (shoulderPlayer == null || !shoulderPlayer.isAlive() || shoulderPlayer.isSpectator()) {
                     this.dismountShoulder();
                 } else {
                     this.tickClimbingToShoulder(shoulderPlayer);
@@ -381,7 +381,7 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
 
             if (this.isOnShoulder()) {
                 Player shoulderPlayer = this.getShoulderPlayer();
-                if (shoulderPlayer == null || !shoulderPlayer.isAlive()) {
+                if (shoulderPlayer == null || !shoulderPlayer.isAlive() || shoulderPlayer.isSpectator()) {
                     this.dismountShoulder();
                 } else if (this.shoulderSneakGraceTicks <= 0 && shoulderPlayer.isShiftKeyDown()) {
                     this.glideOffShoulder();
@@ -555,6 +555,10 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
             return false;
         }
 
+        if (player.isSpectator()) {
+            return true;
+        }
+
         if (this.isOnShoulder()) {
             if (!this.level().isClientSide) {
                 this.glideOffShoulder();
@@ -629,6 +633,12 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
         this.pickupAnimTicks = 0;
         return finalized;
     }
+
+    @Override
+    public boolean shouldBeSaved() {
+        return super.shouldBeSaved() && !this.isOnShoulder() && !this.isClimbingToShoulder();
+    }
+
     @Override
     protected SoundEvent getAmbientSound() {
         return AntarchySoundEvents.FLYING_SQUIRREL_IDLE.get();
@@ -731,6 +741,9 @@ public class FlyingSquirrelEntity extends TamableAnimal implements GeoEntity {
     }
 
     private void startShoulderMountSequence(Player player) {
+        if (player.isSpectator()) {
+            return;
+        }
         this.shoulderPlayerId = player.getUUID();
         this.shoulderClimbStartPos = this.position();
         this.climbingToShoulderTicks = SHOULDER_CLIMB_TICKS;

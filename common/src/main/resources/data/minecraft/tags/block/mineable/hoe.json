@@ -2,7 +2,12 @@
     "replace":  false,
     "values":  [
                    "antarchy:ouranwood_leaves",
+                   "antarchy:peach_leaves",
+                   "antarchy:corn_crop",
+                   "antarchy:wild_corn",
                    "antarchy:umbral_moss_block",
-                   "antarchy:umbral_moss_carpet"
+                   "antarchy:umbral_moss_carpet",
+                   "antarchy:blush_moss_block",
+                   "antarchy:blush_moss_carpet"
                ]
 }

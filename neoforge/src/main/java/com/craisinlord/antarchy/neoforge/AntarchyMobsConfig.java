@@ -212,6 +212,11 @@ public final class AntarchyMobsConfig {
     private static final ModConfigSpec.DoubleValue DORRIE_HEALTH;
 
 
+    // Ouranwood Deer
+
+    private static final ModConfigSpec.DoubleValue OURANWOOD_DEER_HEALTH;
+
+
     // Glimmer
 
     private static final ModConfigSpec.DoubleValue GLIMMER_HEALTH;
@@ -547,6 +552,10 @@ public final class AntarchyMobsConfig {
         DORRIE_HEALTH = b.comment("Base max health.").defineInRange("health", 60.0D, 1.0D, 32768.0D);
         b.pop();
 
+        b.push("ouranwood_deer");
+        OURANWOOD_DEER_HEALTH = b.comment("Base max health.").defineInRange("health", 20.0D, 1.0D, 32768.0D);
+        b.pop();
+
         b.push("glimmer");
         GLIMMER_HEALTH = b.comment("Base max health.").defineInRange("health", 20.0D, 1.0D, 32768.0D);
         b.pop();
@@ -727,6 +736,7 @@ public final class AntarchyMobsConfig {
     static double  cheepHealth()                            { return CHEEP_HEALTH.get(); }
     static double  cheepAttackDamage()                      { return CHEEP_ATTACK_DAMAGE.get(); }
     static double  dorrieHealth()                           { return DORRIE_HEALTH.get(); }
+    static double  ouranwoodDeerHealth()                    { return OURANWOOD_DEER_HEALTH.get(); }
     static double  glimmerHealth()                          { return GLIMMER_HEALTH.get(); }
     static double  herculesBeetleHealth()                   { return HERCULES_BEETLE_HEALTH.get(); }
     static double  herculesBeetleAttackDamage()             { return HERCULES_BEETLE_ATTACK_DAMAGE.get(); }
