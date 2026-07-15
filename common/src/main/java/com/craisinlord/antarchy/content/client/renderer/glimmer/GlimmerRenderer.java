@@ -45,14 +45,23 @@ public class GlimmerRenderer extends GeoEntityRenderer<GlimmerEntity> {
     private void renderVanillaModel(EntityModel<GlimmerEntity> model, GlimmerEntity entity, float entityYaw, float partialTick,
                                      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entityYaw));
+        float growth = entity.getGrowthScale();
+        poseStack.scale(growth, growth, growth);
+
+        // Compute body yaw directly from the entity's own tracked fields rather than trusting
+        // the ambient entityYaw parameter, so the body pose and the head-offset math below are
+        // always self-consistent (this is what caused the head to look "detached" from the body).
+        float bodyYaw = Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - bodyYaw));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.translate(0.0F, -1.501F, 0.0F);
 
         float limbSwing = entity.walkAnimation.position(partialTick);
         float limbSwingAmount = entity.walkAnimation.speed(partialTick);
         float ageInTicks = entity.tickCount + partialTick;
-        float netHeadYaw = Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot) - entityYaw;
+        float rawHeadYaw = Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot) - bodyYaw;
+        float maxHeadYaw = entity.getMaxHeadYRot();
+        float netHeadYaw = Mth.clamp(Mth.wrapDegrees(rawHeadYaw), -maxHeadYaw, maxHeadYaw);
         float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
 
         model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

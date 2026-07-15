@@ -65,7 +65,7 @@
     ],
     []
   ],
-  "creature_spawn_probability": 0.16,
+  "creature_spawn_probability": 0.4,
   "spawners": {
     "monster": [],
     "creature": [

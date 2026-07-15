@@ -15,9 +15,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public final class LumenStreamFeature extends Feature<NoneFeatureConfiguration> {
-    private static final int MAX_LENGTH = 160;
-    private static final int MIN_LENGTH = 60;
-    private static final int MAX_WIDTH = 4;
+    private static final int MAX_LENGTH = 36;
+    private static final int MIN_LENGTH = 12;
+    private static final int MAX_WIDTH = 2;
 
     public LumenStreamFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);

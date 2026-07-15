@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserBaseParticleOptions;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserParticleOptions;
@@ -33,9 +34,9 @@ public final class InvertedGeyserEruptionParticle extends NoRenderParticle {
         this.motionZ = zd;
         this.fluidBlocks = options.fluidBlocks();
         this.lifetime = 20;
-        this.plumeParticle = new InvertedGeyserParticleOptions(AntarchyFabricContent.INVERTED_GEYSER_PLUME.get(), this.fluidBlocks, options.direction());
-        this.baseParticle = new InvertedGeyserBaseParticleOptions(AntarchyFabricContent.INVERTED_GEYSER_BASE.get(), this.fluidBlocks, 1.5F, options.direction());
-        this.poofParticle = new InvertedGeyserBaseParticleOptions(AntarchyFabricContent.INVERTED_GEYSER_POOF.get(), this.fluidBlocks, 2.0F, options.direction());
+        this.plumeParticle = new InvertedGeyserParticleOptions(AntarchyFabricMisc.INVERTED_GEYSER_PLUME.get(), this.fluidBlocks, options.direction());
+        this.baseParticle = new InvertedGeyserBaseParticleOptions(AntarchyFabricMisc.INVERTED_GEYSER_BASE.get(), this.fluidBlocks, 1.5F, options.direction());
+        this.poofParticle = new InvertedGeyserBaseParticleOptions(AntarchyFabricMisc.INVERTED_GEYSER_POOF.get(), this.fluidBlocks, 2.0F, options.direction());
     }
 
     @Override

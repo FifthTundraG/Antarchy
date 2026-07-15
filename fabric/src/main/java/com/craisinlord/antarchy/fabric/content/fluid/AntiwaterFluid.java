@@ -1,4 +1,7 @@
 package com.craisinlord.antarchy.fabric.content.fluid;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricBlocks;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricItems;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import java.util.HashSet;
@@ -28,22 +31,22 @@ public abstract class AntiwaterFluid extends FlowingFluid {
 
     @Override
     public Fluid getFlowing() {
-        return AntarchyFabricContent.FLOWING_ANTIWATER.get();
+        return AntarchyFabricMisc.FLOWING_ANTIWATER.get();
     }
 
     @Override
     public Fluid getSource() {
-        return AntarchyFabricContent.ANTIWATER.get();
+        return AntarchyFabricMisc.ANTIWATER.get();
     }
 
     @Override
     public Item getBucket() {
-        return AntarchyFabricContent.ANTIWATER_BUCKET.get();
+        return AntarchyFabricItems.ANTIWATER_BUCKET.get();
     }
 
     @Override
     public boolean isSame(Fluid fluid) {
-        return fluid == AntarchyFabricContent.ANTIWATER.get() || fluid == AntarchyFabricContent.FLOWING_ANTIWATER.get();
+        return fluid == AntarchyFabricMisc.ANTIWATER.get() || fluid == AntarchyFabricMisc.FLOWING_ANTIWATER.get();
     }
 
     @Override
@@ -78,7 +81,7 @@ public abstract class AntiwaterFluid extends FlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState state) {
-        return AntarchyFabricContent.ANTIWATER_BLOCK.get()
+        return AntarchyFabricBlocks.ANTIWATER_BLOCK.get()
                 .defaultBlockState()
                 .setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
     }
@@ -341,8 +344,8 @@ public abstract class AntiwaterFluid extends FlowingFluid {
 
         if (aboveFluid.is(FluidTags.WATER)) {
             BlockState result = state.isSource()
-                    ? AntarchyFabricContent.ANTIMETAL.get().defaultBlockState()
-                    : AntarchyFabricContent.NYXITE.get().defaultBlockState();
+                    ? AntarchyFabricBlocks.ANTIMETAL.get().defaultBlockState()
+                    : AntarchyFabricBlocks.NYXITE.get().defaultBlockState();
             level.setBlockAndUpdate(pos, result);
             level.levelEvent(1501, pos, 0);
             return;

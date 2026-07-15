@@ -35,18 +35,18 @@ public class AntarchyNeoforgeCreativeModeTabs {
             java.util.ArrayList<Item> sortedItems = new java.util.ArrayList<>();
             for (var holder : AntarchyNeoforgeItems.ITEMS.getEntries()) {
                 Item item = holder.get();
-                if (item != Items.AIR && item != AntarchyNeoforgeItems.GLIMMER_BOTTLE.get()) sortedItems.add(item);
+                if (item != Items.AIR) sortedItems.add(item);
             }
             sortedItems.sort(CreativeTabOrder.COMPARATOR);
-            int n = sortedItems.size();
-            for (int i = Math.max(0, n - 20); i < n; i++) {
-                Item it = sortedItems.get(i);
-            }
-            for (com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant variant : com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.values()) {
-                event.accept(com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(variant));
-            }
-
-            sortedItems.forEach(event::accept);
+            sortedItems.forEach(item -> {
+                if (item == AntarchyNeoforgeItems.GLIMMER_BOTTLE.get()) {
+                    for (com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant variant : com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.values()) {
+                        event.accept(com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(variant));
+                    }
+                } else {
+                    event.accept(item);
+                }
+            });
         }
 
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
@@ -81,7 +81,8 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.BASILISK_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.EMPEROR_SCORPION_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.TORETERROR_SPAWN_EGG.get());
-            event.accept(AntarchyNeoforgeItems.DORRIE_SPAWN_EGG.get());
+            // Dorrie is not part of this update yet.
+            // event.accept(AntarchyNeoforgeItems.DORRIE_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_DEER_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.GLIMMER_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.ELKA_SPAWN_EGG.get());
@@ -97,6 +98,8 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_SAPLING_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ORANGE_MILKWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.PINK_MILKWEED_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.CAMELLIA_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_ROOTED_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_COARSE_DIRT_ITEM.get());
@@ -165,8 +168,13 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.CORN.get());
             event.accept(AntarchyNeoforgeItems.HIGH_FRUCTOSE_CORN_SYRUP.get());
             event.accept(AntarchyNeoforgeItems.PEACH.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_PIE.get());
+            event.accept(AntarchyNeoforgeItems.CORNBREAD.get());
+            event.accept(AntarchyNeoforgeItems.POPCORN.get());
             event.accept(AntarchyNeoforgeItems.RAW_CORNDOG.get());
             event.accept(AntarchyNeoforgeItems.COOKED_CORNDOG.get());
+            event.accept(AntarchyNeoforgeItems.RAW_VENISON.get());
+            event.accept(AntarchyNeoforgeItems.COOKED_VENISON.get());
             event.accept(AntarchyNeoforgeItems.ROOT_BEER.get());
             event.accept(AntarchyNeoforgeItems.RAINBOW_SUGAR.get());
             event.accept(AntarchyNeoforgeItems.BIG_BERTHA_BLADE.get());

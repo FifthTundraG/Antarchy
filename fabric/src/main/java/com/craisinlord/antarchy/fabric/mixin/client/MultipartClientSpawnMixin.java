@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.mixin.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricEntities;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MultipartClientSpawnMixin {
     @Inject(method = "handleAddEntity", at = @At("HEAD"), cancellable = true)
     private void antarchy$skipTrackedMultipartPlaceholders(ClientboundAddEntityPacket packet, CallbackInfo ci) {
-        if (packet.getType() == AntarchyFabricContent.KRAKEN_PART.get()) {
+        if (packet.getType() == AntarchyFabricEntities.KRAKEN_PART.get()) {
             ci.cancel();
         }
     }

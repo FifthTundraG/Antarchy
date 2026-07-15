@@ -28,6 +28,11 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class GlimmerFrogBehavior implements GlimmerVariantBehavior {
     private static final int SMALL_SLIME_SIZE = 1;
@@ -40,6 +45,10 @@ public class GlimmerFrogBehavior implements GlimmerVariantBehavior {
     private static final float GROWTH_PER_EAT_MAX = 0.6F;
     private static final float GROWTH_MAX_SCALE = 2.2F;
     private static final double GROWTH_DECAY_PER_TICK = 0.0006D;
+    private static final int TONGUE_ANIM_TICKS = 10;
+    private static final int TONGUE_GRAB_TICK = 6;
+
+    private final Map<UUID, PendingEat> pendingEats = new HashMap<>();
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, path);
@@ -123,9 +132,41 @@ public class GlimmerFrogBehavior implements GlimmerVariantBehavior {
 
     @Override
     public void tickAbilityCheck(GlimmerEntity entity, Player owner) {
+        if (this.pendingEats.containsKey(entity.getUUID())) {
+            return;
+        }
         LivingEntity target = findEdibleTarget(entity, owner);
         if (target != null) {
-            this.eatTarget(entity, owner, target);
+            this.startEat(entity, owner, target);
+        }
+    }
+
+    @Override
+    public void customTick(GlimmerEntity entity) {
+        PendingEat pending = this.pendingEats.get(entity.getUUID());
+        if (pending == null) {
+            return;
+        }
+
+        if (!pending.target.isAlive() || entity.distanceToSqr(pending.target) > EAT_RANGE * EAT_RANGE * 4.0D) {
+            this.pendingEats.remove(entity.getUUID());
+            return;
+        }
+
+        pending.ticksRemaining--;
+        if (pending.ticksRemaining == TONGUE_ANIM_TICKS - TONGUE_GRAB_TICK) {
+            // The tongue "catches" the target partway through the animation and reels it in.
+            entity.playSound(SoundEvents.FROG_TONGUE, 1.0F, 1.0F);
+        }
+        if (pending.ticksRemaining <= TONGUE_ANIM_TICKS - TONGUE_GRAB_TICK) {
+            Vec3 mouth = entity.position().add(0.0D, entity.getBbHeight() * 0.5D, 0.0D);
+            Vec3 pulled = pending.target.position().lerp(mouth, 0.55D);
+            pending.target.teleportTo(pulled.x, pulled.y, pulled.z);
+        }
+
+        if (pending.ticksRemaining <= 0) {
+            this.pendingEats.remove(entity.getUUID());
+            this.finishEat(entity, pending.owner, pending.target);
         }
     }
 
@@ -157,16 +198,32 @@ public class GlimmerFrogBehavior implements GlimmerVariantBehavior {
         return target.getType().is(NO_EAT_TAG);
     }
 
-    private void eatTarget(GlimmerEntity entity, Player owner, LivingEntity target) {
+    private void startEat(GlimmerEntity entity, Player owner, LivingEntity target) {
+        PendingEat pending = new PendingEat();
+        pending.target = target;
+        pending.owner = owner;
+        pending.ticksRemaining = TONGUE_ANIM_TICKS;
+        this.pendingEats.put(entity.getUUID(), pending);
+
+        entity.playAbilityAnimation(TONGUE_ANIM_TICKS);
+        entity.playSound(SoundEvents.FROG_LONG_JUMP, 0.8F, 1.4F);
+        entity.startAbilityCooldown();
+    }
+
+    private void finishEat(GlimmerEntity entity, Player owner, LivingEntity target) {
         float growthAdd = Mth.clamp(target.getMaxHealth() / 40.0F, GROWTH_PER_EAT_MIN, GROWTH_PER_EAT_MAX);
         entity.setGrowthScale(Math.min(GROWTH_MAX_SCALE, entity.getGrowthScale() + growthAdd));
 
         Component targetName = target.getDisplayName();
         entity.playSound(SoundEvents.FROG_EAT, 1.2F, 0.9F);
-        target.teleportTo(entity.getX(), entity.getY() + entity.getBbHeight() * 0.5D, entity.getZ());
         target.remove(Entity.RemovalReason.DISCARDED);
 
         this.sendAbilityMessage(owner, Component.translatable("entity.antarchy.glimmer.ability.frog", targetName));
-        entity.startAbilityCooldown();
+    }
+
+    private static final class PendingEat {
+        LivingEntity target;
+        Player owner;
+        int ticksRemaining;
     }
 }

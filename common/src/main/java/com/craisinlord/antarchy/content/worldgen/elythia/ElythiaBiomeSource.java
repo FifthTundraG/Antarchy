@@ -76,9 +76,11 @@ public class ElythiaBiomeSource extends BiomeSource {
     private final int molewormCavesMaxQuartY;
     private final int surfaceBiomeSampleQuartY;
     private final int seaLevelQuartY;
+    private final int undergroundGuardMaxQuartY;
     private final Holder<Biome> oceanHolder;
     private final Holder<Biome> defaultLandHolder;
     private final Holder<Biome> glimmeringPoolsHolder;
+    private final Holder<Biome> ouranwoodForestHolder;
 
     public ElythiaBiomeSource(Climate.ParameterList<Holder<Biome>> parameters, int molewormCavesMaxY, int surfaceBiomeSampleY, int oceanMaxY, int seaLevel) {
         this.parameters = parameters;
@@ -90,6 +92,11 @@ public class ElythiaBiomeSource extends BiomeSource {
         this.molewormCavesMaxQuartY = QuartPos.fromBlock(molewormCavesMaxY);
         this.surfaceBiomeSampleQuartY = QuartPos.fromBlock(surfaceBiomeSampleY);
         this.seaLevelQuartY = QuartPos.fromBlock(seaLevel);
+        // Cave pockets carved into hills/mountains above sea level have no other guard —
+        // they just resolve via raw climate matching, which can land on peach_forest/glimmering_pools
+        // even though those are meant to be surface-only. Anything at or below this Y gets
+        // treated as underground for those two biomes specifically.
+        this.undergroundGuardMaxQuartY = QuartPos.fromBlock(molewormCavesMaxY + 40);
         this.oceanHolder = parameters.values().stream()
                 .map(Pair::getSecond)
                 .filter(h -> h.is(ELYTHIA_OCEAN))
@@ -98,6 +105,11 @@ public class ElythiaBiomeSource extends BiomeSource {
         this.glimmeringPoolsHolder = parameters.values().stream()
                 .map(Pair::getSecond)
                 .filter(h -> h.is(GLIMMERING_POOLS))
+                .findFirst()
+                .orElse(null);
+        this.ouranwoodForestHolder = parameters.values().stream()
+                .map(Pair::getSecond)
+                .filter(h -> h.is(OURANWOOD_FOREST))
                 .findFirst()
                 .orElse(null);
         this.defaultLandHolder = parameters.values().stream()
@@ -124,11 +136,6 @@ public class ElythiaBiomeSource extends BiomeSource {
     protected Stream<Holder<Biome>> collectPossibleBiomes() {
         return this.delegate.possibleBiomes().stream();
     }
-
-    // Conservative threshold well inside the ocean entry range (-0.85 to -0.92).
-    // At continentalness < -0.80 the terrain is reliably below sea level.
-    // Transition-zone columns (-0.80 to -0.85) are treated as land to avoid
-    // ocean biome appearing over above-sea-level terrain.
     private static final long OCEAN_CONTINENTALNESS_THRESHOLD = Climate.quantizeCoord(-0.87f);
 
     @Override
@@ -140,7 +147,7 @@ public class ElythiaBiomeSource extends BiomeSource {
             return resolveSurfaceFallback(x, y, z, sampler, MOLEWORM_CAVES, GLIMMERING_POOLS);
         }
 
-        // Use continentalness (XZ-only noise) to classify the column.
+        // Use continentalness o classify the column.
         // Ocean columns get the ocean biome at every Y so structures, particles,
         // and ambient effects work correctly above the water surface.
         // Cave biomes are always preserved even in ocean columns.
@@ -160,13 +167,23 @@ public class ElythiaBiomeSource extends BiomeSource {
             return oceanHolder;
         }
 
-        // Land column: prevent ocean biomes from bleeding in at any Y
+        // Land column prevent ocean biomes from sneakin in
         if (isOceanBiome(biome)) {
             return resolveLandFallback(x, z, sampler);
         }
 
+        if (biome.is(SPARSE_OURANWOOD_FOREST) && !isSparseOuranwoodCandidate(target, x, z)) {
+            biome = this.ouranwoodForestHolder != null ? this.ouranwoodForestHolder : biome;
+        }
+
         if (isGlimmeringPoolsCandidate(biome, target, x, z)) {
-            return this.glimmeringPoolsHolder != null ? this.glimmeringPoolsHolder : biome;
+            biome = this.glimmeringPoolsHolder != null ? this.glimmeringPoolsHolder : biome;
+        }
+
+        // Neither peach_forest nor glimmering_pools should ever generate underground —
+        // fall back to whatever a nearby surface reference sample would give instead.
+        if ((biome.is(PEACH_FOREST) || biome.is(GLIMMERING_POOLS)) && y <= this.undergroundGuardMaxQuartY) {
+            return resolveSurfaceFallback(x, y, z, sampler, PEACH_FOREST, GLIMMERING_POOLS);
         }
 
         return biome;
@@ -182,8 +199,10 @@ public class ElythiaBiomeSource extends BiomeSource {
     }
 
     private static boolean isOuranwoodBiome(Holder<Biome> biome) {
+        // peach_forest is deliberately excluded here: letting glimmering_pools carve
+        // into it fragments its own (already modest) territory into tiny patches.
         return biome.is(OURANWOOD_FOREST) || biome.is(SPARSE_OURANWOOD_FOREST)
-                || biome.is(PEACH_FOREST) || biome.is(FUNGAL_OURANWOOD_FOREST);
+                || biome.is(FUNGAL_OURANWOOD_FOREST);
     }
 
     private static boolean isGlimmeringPoolsCandidate(Holder<Biome> biome, Climate.TargetPoint target, int x, int z) {
@@ -196,30 +215,48 @@ public class ElythiaBiomeSource extends BiomeSource {
         long weirdness = target.weirdness();
         long depth = target.depth();
 
-        if (humidity < Climate.quantizeCoord(0.68F) || humidity > Climate.quantizeCoord(1.0F)) {
+        if (humidity < Climate.quantizeCoord(0.64F) || humidity > Climate.quantizeCoord(1.0F)) {
             return false;
         }
-        if (continentalness < Climate.quantizeCoord(0.32F) || continentalness > Climate.quantizeCoord(0.88F)) {
+        if (continentalness < Climate.quantizeCoord(0.29F) || continentalness > Climate.quantizeCoord(0.90F)) {
             return false;
         }
-        if (weirdness < Climate.quantizeCoord(-0.84F) || weirdness > Climate.quantizeCoord(0.29F)) {
+        if (weirdness < Climate.quantizeCoord(-0.88F) || weirdness > Climate.quantizeCoord(0.33F)) {
             return false;
         }
         if (depth < Climate.quantizeCoord(0.0F) || depth > Climate.quantizeCoord(0.80F)) {
             return false;
         }
 
-        // Hash on coarse cells (not raw per-quart coords) so eligible columns
-        // clump into contiguous patches instead of speckling per-quart.
-        // Cell size bumped from 6 to 8 blocks so patches (and the pools/streams
-        // they host) run slightly larger than before.
-        long cellX = Math.floorDiv(x, 8);
-        long cellZ = Math.floorDiv(z, 8);
+        long cellX = Math.floorDiv(x, 11);
+        long cellZ = Math.floorDiv(z, 11);
         long gate = Math.floorMod(cellX * 73428767L + cellZ * 912931L, 5L);
-        return gate <= 2L;
+        return gate <= 3L;
     }
 
-    // Used for moleworm caves — returns best Y-sample, falls back to whatever the delegate gives
+    private static boolean isSparseOuranwoodCandidate(Climate.TargetPoint target, int x, int z) {
+        if (target.temperature() > Climate.quantizeCoord(0.24F)) {
+            return false;
+        }
+        if (target.humidity() > Climate.quantizeCoord(0.70F)) {
+            return false;
+        }
+        if (target.continentalness() < Climate.quantizeCoord(0.90F)) {
+            return false;
+        }
+        if (target.erosion() > Climate.quantizeCoord(-0.22F)) {
+            return false;
+        }
+        if (target.weirdness() < Climate.quantizeCoord(0.92F)) {
+            return false;
+        }
+
+        long cellX = Math.floorDiv(x, 24);
+        long cellZ = Math.floorDiv(z, 24);
+        long gate = Math.floorMod(cellX * 1103515245L + cellZ * 2147483647L, 12L);
+        return gate == 0L;
+    }
+
     @SafeVarargs
     private Holder<Biome> resolveSurfaceFallback(int x, int y, int z, Climate.Sampler sampler, ResourceKey<Biome>... excluded) {
         Holder<Biome> fallback = this.delegate.getNoiseBiome(x, this.surfaceBiomeSampleQuartY, z, sampler);
@@ -237,7 +274,6 @@ public class ElythiaBiomeSource extends BiomeSource {
         return fallback;
     }
 
-    // Used when ocean bleeds into a land column — guaranteed to never return an ocean/cave biome
     private Holder<Biome> resolveLandFallback(int x, int z, Climate.Sampler sampler) {
         Holder<Biome> fallback = this.delegate.getNoiseBiome(x, this.surfaceBiomeSampleQuartY, z, sampler);
         if (!isOceanOrCave(fallback)) return fallback;
@@ -269,9 +305,6 @@ public class ElythiaBiomeSource extends BiomeSource {
         try {
             this.delegate.addDebugInfo(debug, pos, sampler);
         } catch (NullPointerException ignored) {
-            // TerraBlender's MixinMultiNoiseBiomeSource.addDebugInfo reads an internal
-            // field (uniqueness) that it only injects into TerraBlender-registered sources.
-            // Our delegate is not one of those, so we swallow the NPE here.
         }
         debug.add("Elythia mole cave cap: y<=" + this.molewormCavesMaxY);
         debug.add("Elythia sea level: " + this.seaLevel);

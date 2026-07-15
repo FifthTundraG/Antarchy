@@ -29,6 +29,7 @@ public class GlimmerElkaBehavior implements GlimmerVariantBehavior {
     private static final int CRY_ANIM_TICKS = 40;
     private static final double SHOCKWAVE_RADIUS = 6.0D;
     private static final double SHOCKWAVE_KNOCKBACK = 1.3D;
+    private static final float SHOCKWAVE_DAMAGE = 8.0F;
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, path);
@@ -136,6 +137,9 @@ public class GlimmerElkaBehavior implements GlimmerVariantBehavior {
             }
 
             if (nearby instanceof LivingEntity living && (nearby instanceof Enemy || living.getLastHurtByMob() == owner)) {
+                if (nearby instanceof Enemy) {
+                    living.hurt(owner.damageSources().mobAttack(entity), SHOCKWAVE_DAMAGE);
+                }
                 Vec3 away = living.position().subtract(owner.position());
                 double horizontalDistance = Math.max(0.1D, away.horizontalDistance());
                 living.knockback(SHOCKWAVE_KNOCKBACK, -away.x / horizontalDistance, -away.z / horizontalDistance);

@@ -130,7 +130,8 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.TORETERROR.get(), ToreterrorRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.WATER_BOMB.get(), WaterBombRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.CHEEP.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.CheepRenderer(context)));
-        event.registerEntityRenderer(AntarchyNeoforgeEntites.DORRIE.get(), context -> new com.craisinlord.antarchy.content.client.renderer.DorrieRenderer(context));
+        // Dorrie is not part of this update yet.
+        // event.registerEntityRenderer(AntarchyNeoforgeEntites.DORRIE.get(), context -> new com.craisinlord.antarchy.content.client.renderer.DorrieRenderer(context));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.OURANWOOD_DEER.get(), context -> new com.craisinlord.antarchy.content.client.renderer.OuranwoodDeerRenderer(context));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.GLIMMER.get(), context -> withParalyzedGeoLayer(new com.craisinlord.antarchy.content.client.renderer.glimmer.GlimmerRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.ELKA.get(), context -> new com.craisinlord.antarchy.content.client.renderer.ElkaRenderer(context));
@@ -202,7 +203,8 @@ public final class AntarchyNeoForgeClient {
         event.register(
                 (state, level, pos, tintIndex) -> level != null && pos != null
                         ? BiomeColors.getAverageGrassColor(level, pos)
-                        : net.minecraft.world.level.GrassColor.getDefaultColor()
+                        : net.minecraft.world.level.GrassColor.getDefaultColor(),
+                AntarchyNeoforgeBlocks.SPIDER_LILY.get()
         );
     }
 
@@ -213,7 +215,8 @@ public final class AntarchyNeoForgeClient {
                 AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get()
         );
         event.register(
-                (stack, tintIndex) -> net.minecraft.world.level.GrassColor.getDefaultColor()
+                (stack, tintIndex) -> tintIndex == 0 ? net.minecraft.world.level.GrassColor.getDefaultColor() : -1,
+                AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get()
         );
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ICHOR_BUCKET.get());
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.LUMEN_BUCKET.get());
@@ -488,6 +491,8 @@ public final class AntarchyNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.PINK_MILKWEED.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CAMELLIA.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.SPIDER_LILY.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.HUSHWEED.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORNEA_STALK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORN_CROP.get(), RenderType.cutout());

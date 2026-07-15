@@ -19,8 +19,6 @@ public final class LumenPoolFeature extends Feature<NoneFeatureConfiguration> {
     private static final int SMALL_RADIUS_MAX = 4;
     private static final int LARGE_RADIUS_MIN = 5;
     private static final int LARGE_RADIUS_MAX = 6;
-    private static final int HUGE_RADIUS_MIN = 11;
-    private static final int HUGE_RADIUS_MAX = 17;
 
     public LumenPoolFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -37,18 +35,10 @@ public final class LumenPoolFeature extends Feature<NoneFeatureConfiguration> {
             return false;
         }
 
-        int radius;
-        int maxDepth;
-        if (random.nextInt(20) == 0) {
-            radius = randomBetween(random, HUGE_RADIUS_MIN, HUGE_RADIUS_MAX);
-            maxDepth = randomBetween(random, 9, 13);
-        } else if (random.nextInt(8) == 0) {
-            radius = randomBetween(random, LARGE_RADIUS_MIN, LARGE_RADIUS_MAX);
-            maxDepth = randomBetween(random, 4, 6);
-        } else {
-            radius = randomBetween(random, SMALL_RADIUS_MIN, SMALL_RADIUS_MAX);
-            maxDepth = randomBetween(random, 3, 4);
-        }
+        int radius = random.nextInt(8) == 0
+                ? randomBetween(random, LARGE_RADIUS_MIN, LARGE_RADIUS_MAX)
+                : randomBetween(random, SMALL_RADIUS_MIN, SMALL_RADIUS_MAX);
+        int maxDepth = radius >= LARGE_RADIUS_MIN ? randomBetween(random, 4, 6) : randomBetween(random, 3, 4);
         BlockState lumenBlockState = AntarchyObjects.LUMEN_BLOCK.get().defaultBlockState();
         BlockState shellstoneState = AntarchyObjects.SHELLSTONE.get().defaultBlockState();
         BlockState tuffState = Blocks.TUFF.defaultBlockState();
@@ -123,10 +113,24 @@ public final class LumenPoolFeature extends Feature<NoneFeatureConfiguration> {
                 BlockState floorState = pickFloorState(random, shellstoneState, tuffState, mossState, edge);
                 level.setBlock(mutable, floorState, 2);
                 placedAny = true;
+
+                clearFloatingVegetation(level, worldX, worldZ, localSurfaceY);
             }
         }
 
         return placedAny;
+    }
+
+    private static void clearFloatingVegetation(WorldGenLevel level, int x, int z, int surfaceY) {
+        int topOfDebris = Math.max(surfaceY, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1);
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int offset = 1; offset <= 32; offset++) {
+            mutable.set(x, topOfDebris + offset, z);
+            BlockState state = level.getBlockState(mutable);
+            if (!state.isAir() && state.canBeReplaced()) {
+                level.setBlock(mutable, Blocks.AIR.defaultBlockState(), 2);
+            }
+        }
     }
 
     private static BlockPos findSurfaceCenter(WorldGenLevel level, BlockPos origin) {

@@ -1,4 +1,6 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricBlocks;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricItems;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,7 +26,7 @@ public final class FallenKingCrownArmorStandLayer extends RenderLayer<ArmorStand
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, ArmorStand armorStand, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack headStack = armorStand.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD);
-        if (!headStack.is(AntarchyFabricContent.FALLEN_KING_CROWN.get()) || armorStand.isInvisible()) {
+        if (!headStack.is(AntarchyFabricItems.FALLEN_KING_CROWN.get()) || armorStand.isInvisible()) {
             return;
         }
 
@@ -34,7 +36,7 @@ public final class FallenKingCrownArmorStandLayer extends RenderLayer<ArmorStand
         poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         this.blockRenderer.renderSingleBlock(
-                AntarchyFabricContent.FALLEN_KING_CROWN_BLOCK.get().defaultBlockState(),
+                AntarchyFabricBlocks.FALLEN_KING_CROWN_BLOCK.get().defaultBlockState(),
                 poseStack,
                 buffer,
                 packedLight,

@@ -17,6 +17,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class PeachForestMossyBoulderFeature extends Feature<NoneFeatureConfiguration> {
+    private static final int ANGLE_SAMPLES = 16;
+
     public PeachForestMossyBoulderFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
@@ -36,20 +38,25 @@ public class PeachForestMossyBoulderFeature extends Feature<NoneFeatureConfigura
         int baseRadius = 2 * (2 + random.nextInt(2));
         boolean placed = false;
 
-        int driftX = 0;
-        int driftZ = 0;
+        double[] silhouetteNoise = generateSilhouetteNoise(random);
+        double leanMagnitude = random.nextDouble() * 1.6D;
+        double leanAngle = random.nextDouble() * Math.PI * 2.0D;
+        double wobbleAmplitude = 0.4D + random.nextDouble() * 0.4D;
+        double wobblePhase = random.nextDouble() * Math.PI * 2.0D;
+
         int topRadius = 1;
         BlockPos topCenter = base;
         for (int y = 0; y < height; y++) {
             double heightFraction = (double) y / (height - 1);
-            double taper = 1.0D - heightFraction * 0.7D;
+            double taper = Math.cos(heightFraction * Math.PI * 0.5D);
             int radius = Math.max(1, Math.round((float) (baseRadius * taper)));
 
-            driftX = Mth.clamp(driftX + random.nextInt(3) - 1, -1, 1);
-            driftZ = Mth.clamp(driftZ + random.nextInt(3) - 1, -1, 1);
+            double wobble = Math.sin(heightFraction * Math.PI * 1.5D + wobblePhase) * wobbleAmplitude;
+            int driftX = (int) Math.round(Math.cos(leanAngle) * leanMagnitude * heightFraction + Math.cos(leanAngle + Math.PI * 0.5D) * wobble);
+            int driftZ = (int) Math.round(Math.sin(leanAngle) * leanMagnitude * heightFraction + Math.sin(leanAngle + Math.PI * 0.5D) * wobble);
             BlockPos levelCenter = base.above(y).offset(driftX, 0, driftZ);
 
-            placed |= this.placeDisk(level, levelCenter, radius, heightFraction, random);
+            placed |= this.placeDisk(level, levelCenter, radius, heightFraction, silhouetteNoise, random);
             topCenter = levelCenter;
             topRadius = radius;
         }
@@ -61,13 +68,35 @@ public class PeachForestMossyBoulderFeature extends Feature<NoneFeatureConfigura
         return placed;
     }
 
-    private boolean placeDisk(WorldGenLevel level, BlockPos center, int radius, double heightFraction, RandomSource random) {
+    private static double[] generateSilhouetteNoise(RandomSource random) {
+        double[] noise = new double[ANGLE_SAMPLES];
+        for (int i = 0; i < ANGLE_SAMPLES; i++) {
+            noise[i] = 0.88D + random.nextDouble() * 0.24D;
+        }
+        return noise;
+    }
+
+    private static double sampleSilhouetteNoise(double[] noise, int x, int z) {
+        if (x == 0 && z == 0) {
+            return 1.0D;
+        }
+
+        double angle = Math.atan2(z, x);
+        double normalized = (angle / (Math.PI * 2.0D) + 1.0D) * ANGLE_SAMPLES;
+        int index0 = ((int) Math.floor(normalized)) % ANGLE_SAMPLES;
+        int index1 = (index0 + 1) % ANGLE_SAMPLES;
+        double t = normalized - Math.floor(normalized);
+        return Mth.lerp(t, noise[index0], noise[index1]);
+    }
+
+    private boolean placeDisk(WorldGenLevel level, BlockPos center, int radius, double heightFraction, double[] silhouetteNoise, RandomSource random) {
         boolean placed = false;
         double rr = radius * radius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                double distance = (x * x + z * z) / Math.max(1.0D, rr);
-                if (distance > 1.0D + random.nextDouble() * 0.3D) {
+                double noiseFactor = sampleSilhouetteNoise(silhouetteNoise, x, z);
+                double distance = (x * x + z * z) / (Math.max(1.0D, rr) * noiseFactor * noiseFactor);
+                if (distance > 1.0D) {
                     continue;
                 }
 

@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricEntities;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.item.BloodCrystalShardItem;
@@ -138,25 +139,25 @@ public final class AntarchyFabric implements ModInitializer {
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(MISSILE_SQUID_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.MONSTER,
-                AntarchyFabricContent.MISSILE_SQUID.get(),
+                AntarchyFabricEntities.MISSILE_SQUID.get(),
                 2, 1, 2
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(OCTOPUS_BOMB_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.MONSTER,
-                AntarchyFabricContent.OCTOPUS_BOMB.get(),
+                AntarchyFabricEntities.OCTOPUS_BOMB.get(),
                 2, 1, 2
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(MANTIS_OVERWORLD_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.MONSTER,
-                AntarchyFabricContent.MANTIS.get(),
+                AntarchyFabricEntities.MANTIS.get(),
                 8, 1, 1
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(MANTIS_OVERWORLD_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.MONSTER,
-                AntarchyFabricContent.ALPHA_MANTIS.get(),
+                AntarchyFabricEntities.ALPHA_MANTIS.get(),
                 1, 1, 1
         );
         BiomeModifications.addFeature(
@@ -207,31 +208,31 @@ public final class AntarchyFabric implements ModInitializer {
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(APPLE_COW_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.CREATURE,
-                AntarchyFabricContent.APPLE_COW.get(),
+                AntarchyFabricEntities.APPLE_COW.get(),
                 10, 2, 4
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(GOLDEN_APPLE_COW_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.CREATURE,
-                AntarchyFabricContent.GOLDEN_APPLE_COW.get(),
+                AntarchyFabricEntities.GOLDEN_APPLE_COW.get(),
                 3, 1, 3
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(FLYING_SQUIRREL_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.CREATURE,
-                AntarchyFabricContent.FLYING_SQUIRREL.get(),
+                AntarchyFabricEntities.FLYING_SQUIRREL.get(),
                 8, 1, 3
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(FLOWER_FOREST_BUTTERFLY_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.AMBIENT,
-                AntarchyFabricContent.BUTTERFLY.get(),
+                AntarchyFabricEntities.BUTTERFLY.get(),
                 28, 2, 5
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(FLOWER_FOREST_CATERPILLAR_SPAWN_BIOMES),
                 net.minecraft.world.entity.MobCategory.CREATURE,
-                AntarchyFabricContent.CATERPILLAR.get(),
+                AntarchyFabricEntities.CATERPILLAR.get(),
                 24, 2, 4
         );
     }

@@ -22,7 +22,7 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 public class GlimmerAppleCowBehavior implements GlimmerVariantBehavior {
-    private static final int SHEAR_REGROW_TICKS = 20 * 60 * 3;
+    private static final int SHEAR_REGROW_TICKS = 20 * 60 * 2;
     private static final float EXHAUSTION_REDUCTION = 0.25F;
     private static final int LOW_FOOD_THRESHOLD = 16;
     private static final int ABILITY_COOLDOWN_TICKS = 20 * 120;
@@ -87,7 +87,7 @@ public class GlimmerAppleCowBehavior implements GlimmerVariantBehavior {
     @Override
     @Nullable
     public InteractionResult onInteract(GlimmerEntity entity, Player player, ItemStack stack, InteractionHand hand) {
-        if (entity.isTame() || entity.isShearCooldownActive() || !stack.is(Items.SHEARS)) {
+        if ((entity.isTame() && !entity.isOwnedBy(player)) || entity.isShearCooldownActive() || !stack.is(Items.SHEARS)) {
             return null;
         }
 

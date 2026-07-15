@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
 
 import com.craisinlord.antarchy.fabric.AntarchyFabricContent;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 
 public final class DreadHudRenderer {
-    private static final Holder<MobEffect> DREAD_EFFECT = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricContent.DREAD.get());
+    private static final Holder<MobEffect> DREAD_EFFECT = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricMisc.DREAD.get());
 
     private DreadHudRenderer() {
     }

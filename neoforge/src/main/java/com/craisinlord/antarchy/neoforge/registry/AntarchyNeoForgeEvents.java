@@ -462,15 +462,19 @@ public final class AntarchyNeoForgeEvents {
         if (player.level().isClientSide()) return;
 
         BloodglassAccess access = (BloodglassAccess) player;
-        int shieldCount = Math.min(
+        int targetCap = Math.min(
                 event.getEffectInstance().getAmplifier() + 1,
                 Math.max(0, AntarchySettings.bloodCrystalHardMaxShields()
                         - access.antarchy$getArmorShieldsActive() - access.antarchy$getArmorShieldLostCount())
         );
-        access.antarchy$setAppleShieldsActive(shieldCount);
-        access.antarchy$setAppleShieldLostCount(0);
-        access.antarchy$setAppleRechargeTimer(0);
-        syncBloodglass((ServerPlayer) player);
+        int currentCap = access.antarchy$getAppleShieldsActive() + access.antarchy$getAppleShieldLostCount();
+        // Only grant newly-added capacity (e.g. first application, or a higher amplifier).
+        // A mere duration refresh of an already-active ward must not reset shields that are
+        // already lost, nor restart their recharge timer.
+        if (targetCap > currentCap) {
+            access.antarchy$setAppleShieldsActive(access.antarchy$getAppleShieldsActive() + (targetCap - currentCap));
+            syncBloodglass((ServerPlayer) player);
+        }
     }
 
     private static void clearAppleShields(Player player) {

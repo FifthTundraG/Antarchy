@@ -241,8 +241,6 @@ public final class AntarchyNeoforgeMisc {
             () -> new CornPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_BUTTERFLY_FIELDS_FLORA = FEATURES.register("butterfly_fields_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.BUTTERFLY_FIELDS));
-    public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_TORCHFLOWER_FIELDS_FLORA = FEATURES.register("elythia_torchflower_fields_flora",
-            () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.TORCHFLOWER_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaSurfaceCoverFeature> ELYTHIA_SURFACE_COVER = FEATURES.register("elythia_surface_cover",
             () -> new ElythiaSurfaceCoverFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaUndergroundFeature> ELYTHIA_UNDERGROUND = FEATURES.register("elythia_underground",
@@ -267,6 +265,8 @@ public final class AntarchyNeoforgeMisc {
             () -> new LumenLilyPadFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, LumenStreamFeature> LUMEN_STREAM = FEATURES.register("lumen_streams",
             () -> new LumenStreamFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenSpireFeature> LUMEN_SPIRE = FEATURES.register("lumen_spires",
+            () -> new LumenSpireFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaTuffBoulderFeature> ELYTHIA_TUFF_BOULDER = FEATURES.register("elythia_tuff_boulder",
             () -> new ElythiaTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaLargeTuffBoulderFeature> ELYTHIA_LARGE_TUFF_BOULDER = FEATURES.register("elythia_large_tuff_boulder",

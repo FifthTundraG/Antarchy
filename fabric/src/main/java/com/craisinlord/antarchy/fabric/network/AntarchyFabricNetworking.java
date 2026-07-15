@@ -1,4 +1,5 @@
 package com.craisinlord.antarchy.fabric.network;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricEntities;
 
 import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
 import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
@@ -61,7 +62,7 @@ public final class AntarchyFabricNetworking {
     }
 
     public static MultipartPartEntity createMultipartPart(MultipartEntityOwner owner, int partIndex, com.craisinlord.antarchy.content.entity.multipart.MultipartPartDefinition spec) {
-        return new MultipartPartEntity(AntarchyFabricContent.KRAKEN_PART.get(), ((Entity) owner).level())
+        return new MultipartPartEntity(AntarchyFabricEntities.KRAKEN_PART.get(), ((Entity) owner).level())
                 .antarchy$configure(owner, partIndex, spec);
     }
 

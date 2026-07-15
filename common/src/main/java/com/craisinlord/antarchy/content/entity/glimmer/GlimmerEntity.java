@@ -54,6 +54,26 @@ public class GlimmerEntity extends TamableAnimal implements GeoEntity {
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "glimmering_pools")
     );
+    private static final ResourceKey<Biome> OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> SPARSE_OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "sparse_ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> FUNGAL_OURANWOOD_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "fungal_ouranwood_forest")
+    );
+    private static final ResourceKey<Biome> ELYTHIA_MEADOW = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "elythia_meadow")
+    );
+    private static final ResourceKey<Biome> PEACH_FOREST = ResourceKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "peach_forest")
+    );
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
 
@@ -162,6 +182,10 @@ public class GlimmerEntity extends TamableAnimal implements GeoEntity {
 
     public void startAbilityCooldown() {
         this.entityData.set(ABILITY_COOLDOWN, this.getVariant().getBehavior().abilityCooldownTicks());
+    }
+
+    public void setAbilityCooldown(int ticks) {
+        this.entityData.set(ABILITY_COOLDOWN, Math.max(0, ticks));
     }
 
     public float getAbilityCooldownFraction(float partialTick) {
@@ -351,7 +375,7 @@ public class GlimmerEntity extends TamableAnimal implements GeoEntity {
             return InteractionResult.CONSUME;
         }
 
-        ItemStack filled = com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(this.getVariant());
+        ItemStack filled = com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(this.getVariant(), this.entityData.get(ABILITY_COOLDOWN));
         ItemStack result = net.minecraft.world.item.ItemUtils.createFilledResult(stack, player, filled);
         player.setItemInHand(hand, result);
         this.playSound(net.minecraft.sounds.SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
@@ -385,18 +409,48 @@ public class GlimmerEntity extends TamableAnimal implements GeoEntity {
             };
             return poolVariants[this.random.nextInt(poolVariants.length)];
         }
+        if (biome.is(OURANWOOD_FOREST) || biome.is(SPARSE_OURANWOOD_FOREST) || biome.is(FUNGAL_OURANWOOD_FOREST)) {
+            GlimmerVariant[] forestVariants = new GlimmerVariant[] {
+                    GlimmerVariant.FROG,
+                    GlimmerVariant.OURANWOOD_DEER
+            };
+            return forestVariants[this.random.nextInt(forestVariants.length)];
+        }
+        if (biome.is(ELYTHIA_MEADOW)) {
+            return GlimmerVariant.APPLE_COW;
+        }
+        if (biome.is(PEACH_FOREST)) {
+            return GlimmerVariant.ELKA;
+        }
         return GlimmerVariant.random(this.random);
+    }
+
+    /**
+     * Wild Glimmers are common in Glimmering Pools, but only rarely (and only at night)
+     * turn up in Ouranwood Forest, the Elythia Meadow, and the Peach Forest.
+     */
+    public static boolean checkGlimmerSpawnRules(EntityType<GlimmerEntity> type, ServerLevelAccessor level,
+                                                   MobSpawnType spawnType, BlockPos pos, net.minecraft.util.RandomSource random) {
+        if (!net.minecraft.world.entity.animal.Animal.checkAnimalSpawnRules(type, level, spawnType, pos, random)) {
+            return false;
+        }
+        Holder<Biome> biome = level.getBiome(pos);
+        if (biome.is(GLIMMERING_POOLS)) {
+            return true;
+        }
+        return level.getLevel().isNight();
     }
 
     @Override
     public void tick() {
         super.tick();
 
+        this.clampBodyToHeadRotation();
         GlimmerParticles.tickAmbient(this, this.getDeltaMovement().horizontalDistanceSqr() > 0.01D);
 
         if (!this.level().isClientSide) {
             int fadeTicks = this.entityData.get(FADE_TICKS);
-            if (this.isTame()) {
+            if (this.isTame() || this.level().getBiome(this.blockPosition()).is(GLIMMERING_POOLS)) {
                 if (fadeTicks > 0) {
                     this.entityData.set(FADE_TICKS, 0);
                 }
@@ -470,6 +524,20 @@ public class GlimmerEntity extends TamableAnimal implements GeoEntity {
                 : (float) Math.min(1.0D, scale + decayPerTick);
         if (next != scale) {
             this.setGrowthScale(next);
+        }
+    }
+
+    /**
+     * With {@code noPhysics} true, Glimmers never travel through vanilla's normal movement path,
+     * so the usual body-follows-head catch-up never runs and a stationary Glimmer looking around
+     * (LookAtPlayerGoal/RandomLookAroundGoal only move the head) ends up with its head rendered
+     * far past the model's body — this keeps the body snapped within {@link #getMaxHeadYRot()} of it.
+     */
+    private void clampBodyToHeadRotation() {
+        float maxYaw = this.getMaxHeadYRot();
+        float delta = Mth.wrapDegrees(this.yHeadRot - this.yBodyRot);
+        if (Math.abs(delta) > maxYaw) {
+            this.yBodyRot = Mth.wrapDegrees(this.yHeadRot - Math.copySign(maxYaw, delta));
         }
     }
 

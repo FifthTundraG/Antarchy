@@ -18,13 +18,17 @@
     }
   },
   "spawn_costs": {
-    "antarchy:mantis": {
+    "antarchy:alpha_mantis": {
       "energy_budget": 0.1,
       "charge": 18.0
     },
     "antarchy:mantis": {
       "energy_budget": 0.1,
       "charge": 15.0
+    },
+    "antarchy:glimmer": {
+      "energy_budget": 0.1,
+      "charge": 9
     }
   },
   "carvers": {
@@ -104,6 +108,12 @@
         "weight": 16,
         "minCount": 1,
         "maxCount": 3
+      },
+      {
+        "type": "antarchy:glimmer",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
     "ambient": [

@@ -25,6 +25,11 @@
                 },
     "spawn_costs":  {
 
+      "antarchy:glimmer": {
+        "energy_budget": 0.1,
+        "charge": 9
+      }
+
                     },
     "carvers":  {
                     "air":  [
@@ -110,6 +115,12 @@
                                       {
                                           "type":  "antarchy:ouranwood_deer",
                                           "weight":  4,
+                                          "minCount":  1,
+                                          "maxCount":  1
+                                      },
+                                      {
+                                          "type":  "antarchy:glimmer",
+                                          "weight":  1,
                                           "minCount":  1,
                                           "maxCount":  1
                                       }

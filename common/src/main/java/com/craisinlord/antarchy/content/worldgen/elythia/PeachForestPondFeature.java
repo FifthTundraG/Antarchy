@@ -39,6 +39,9 @@ public class PeachForestPondFeature extends Feature<PeachForestPondConfiguration
         double[] edgeNoise = generateEdgeNoise(random);
         boolean placed = false;
 
+        int rimHeight = 2 + Math.max(0, (Math.max(radiusX, radiusZ) - 10) / 6);
+        int rimTopY = center.getY() + rimHeight;
+
         for (int x = -radiusX - 2; x <= radiusX + 2; x++) {
             for (int z = -radiusZ - 2; z <= radiusZ + 2; z++) {
                 double noiseFactor = sampleEdgeNoise(edgeNoise, x, z);
@@ -48,17 +51,19 @@ public class PeachForestPondFeature extends Feature<PeachForestPondConfiguration
                 if (distance <= 1.0D) {
                     int floorY = center.getY() - (distance < 0.4D ? depth + 1 : depth);
                     for (int y = center.getY(); y > floorY; y--) {
-                        level.setBlock(new BlockPos(topPos.getX(), y, topPos.getZ()), Blocks.WATER.defaultBlockState(), 2);
+                        BlockPos waterPos = new BlockPos(topPos.getX(), y, topPos.getZ());
+                        level.setBlock(waterPos, Blocks.WATER.defaultBlockState(), 2);
+                        LumenWorldgenHelper.scheduleFluidTick(level, waterPos);
                     }
                     level.setBlock(new BlockPos(topPos.getX(), floorY, topPos.getZ()), Blocks.TUFF.defaultBlockState(), 2);
                     clearFloatingVegetation(level, topPos, center.getY());
                     placed = true;
                 } else if (distance <= 1.2D) {
                     int floorY = center.getY() - depth;
-                    for (int y = center.getY(); y >= floorY; y--) {
+                    for (int y = rimTopY; y >= floorY; y--) {
                         level.setBlock(new BlockPos(topPos.getX(), y, topPos.getZ()), Blocks.TUFF.defaultBlockState(), 2);
                     }
-                    clearFloatingVegetation(level, topPos, center.getY());
+                    clearFloatingVegetation(level, topPos, rimTopY);
                     placed = true;
                 } else if (distance <= 1.45D && isSoil(level.getBlockState(topPos))) {
                     level.setBlock(topPos, Blocks.TUFF.defaultBlockState(), 2);
@@ -96,16 +101,12 @@ public class PeachForestPondFeature extends Feature<PeachForestPondConfiguration
 
     private static void clearFloatingVegetation(WorldGenLevel level, BlockPos topPos, int surfaceY) {
         int topOfDebris = Math.max(surfaceY, level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, topPos.getX(), topPos.getZ()) - 1);
-        int airStreak = 0;
-        for (int offset = 1; offset <= 24 && airStreak < 3; offset++) {
+        for (int offset = 1; offset <= 32; offset++) {
             BlockPos abovePos = new BlockPos(topPos.getX(), topOfDebris + offset, topPos.getZ());
             BlockState aboveState = level.getBlockState(abovePos);
-            if (aboveState.isAir()) {
-                airStreak++;
-                continue;
+            if (!aboveState.isAir() && aboveState.canBeReplaced()) {
+                level.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 2);
             }
-            airStreak = 0;
-            level.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 2);
         }
     }
 

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/jungle_hanging_sign"
+      "model": "antarchy:block/ouranwood_wall_hanging_sign"
     }
   }
 }
