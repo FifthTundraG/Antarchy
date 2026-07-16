@@ -21,6 +21,8 @@ import com.craisinlord.antarchy.content.entity.flying_squirrel.FlyingSquirrelEnt
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
 import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
+import com.craisinlord.antarchy.content.entity.kraken.KrakensGraspThrownTrident;
+import com.craisinlord.antarchy.content.entity.kraken.TentacleEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
 import com.craisinlord.antarchy.content.entity.ReverieEntity;
@@ -56,6 +58,10 @@ public final class AntarchyObjects {
     public static Supplier<EntityType<KrakenEntity>> KRAKEN = (Supplier<EntityType<KrakenEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<MissileSquidEntity>> MISSILE_SQUID = (Supplier<EntityType<MissileSquidEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<TentacleEntity>> TENTACLE = (Supplier<EntityType<TentacleEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<EntityType<KrakensGraspThrownTrident>> KRAKENS_GRASP_TRIDENT = (Supplier<EntityType<KrakensGraspThrownTrident>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<OctopusBombEntity>> OCTOPUS_BOMB = (Supplier<EntityType<OctopusBombEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -116,6 +122,12 @@ public final class AntarchyObjects {
     public static Supplier<Item> CORN_SEEDS = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> WILD_CORN = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> STAR_CORAL_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> STAR_CORAL = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> STAR_CORAL_FAN = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Item> RAW_VENISON = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -212,6 +224,10 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Item> KRAKEN_TOOTH = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Item> KRAKEN_TENTACLE = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Item> KRAKENS_GRASP = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Item> MOGGLES = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Item> REVERIE_BOTTLE = (Supplier<Item>) UNBOUND;
@@ -273,6 +289,8 @@ public final class AntarchyObjects {
     public static Supplier<Block> SQUIRREL_NEST_BLOCK = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> BRUTALFLY_COCOON_SPAWNER = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> GIANT_LILY_PAD = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<AntNestBlockEntity>> ANT_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<AntNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -382,6 +400,7 @@ public final class AntarchyObjects {
             Supplier<Block> hushweed,
             Supplier<Block> squirrelNestBlock,
             Supplier<Block> brutalflyCocoonSpawner,
+            Supplier<Block> giantLilyPad,
             Supplier<BlockEntityType<AntNestBlockEntity>> antNestBlockEntity,
             Supplier<BlockEntityType<DreamCampfireBlockEntity>> dreamCampfireBlockEntity,
             Supplier<BlockEntityType<WaspNestBlockEntity>> waspNestBlockEntity,
@@ -480,6 +499,7 @@ public final class AntarchyObjects {
         HUSHWEED = hushweed;
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
         BRUTALFLY_COCOON_SPAWNER = brutalflyCocoonSpawner;
+        GIANT_LILY_PAD = giantLilyPad;
         ANT_NEST_BLOCK_ENTITY = antNestBlockEntity;
         DREAM_CAMPFIRE_BLOCK_ENTITY = dreamCampfireBlockEntity;
         WASP_NEST_BLOCK_ENTITY = waspNestBlockEntity;
@@ -498,6 +518,22 @@ public final class AntarchyObjects {
 
     public static void setOctopusBomb(Supplier<EntityType<OctopusBombEntity>> supplier) {
         OCTOPUS_BOMB = supplier;
+    }
+
+    public static void setTentacle(Supplier<EntityType<TentacleEntity>> supplier) {
+        TENTACLE = supplier;
+    }
+
+    public static void setKrakensGraspTrident(Supplier<EntityType<KrakensGraspThrownTrident>> supplier) {
+        KRAKENS_GRASP_TRIDENT = supplier;
+    }
+
+    public static void setKrakenTentacle(Supplier<Item> supplier) {
+        KRAKEN_TENTACLE = supplier;
+    }
+
+    public static void setKrakensGrasp(Supplier<Item> supplier) {
+        KRAKENS_GRASP = supplier;
     }
 
     public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
@@ -554,6 +590,18 @@ public final class AntarchyObjects {
 
     public static void setWildCorn(Supplier<Block> supplier) {
         WILD_CORN = supplier;
+    }
+
+    public static void setStarCoralBlock(Supplier<Block> supplier) {
+        STAR_CORAL_BLOCK = supplier;
+    }
+
+    public static void setStarCoral(Supplier<Block> supplier) {
+        STAR_CORAL = supplier;
+    }
+
+    public static void setStarCoralFan(Supplier<Block> supplier) {
+        STAR_CORAL_FAN = supplier;
     }
 
     public static void setRawVenison(Supplier<Item> supplier) {

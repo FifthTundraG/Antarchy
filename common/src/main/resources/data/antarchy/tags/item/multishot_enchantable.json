@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#minecraft:enchantable/crossbow",
-    "antarchy:squidzooka"
+    "antarchy:squidzooka",
+    "antarchy:rpo_launcher"
   ]
 }

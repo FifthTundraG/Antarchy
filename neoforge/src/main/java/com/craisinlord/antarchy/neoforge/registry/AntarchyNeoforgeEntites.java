@@ -47,6 +47,8 @@ import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
 import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyOrbEntity;
 import com.craisinlord.antarchy.content.entity.flying_squirrel.FlyingSquirrelEntity;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
+import com.craisinlord.antarchy.content.entity.kraken.KrakensGraspThrownTrident;
+import com.craisinlord.antarchy.content.entity.kraken.TentacleEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
@@ -250,6 +252,20 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(8)
                     .updateInterval(1)
                     .build("lucid_bolt"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<KrakensGraspThrownTrident>> KRAKENS_GRASP_TRIDENT = ENTITY_TYPES.register("krakens_grasp_trident",
+            () -> EntityType.Builder.<KrakensGraspThrownTrident>of(KrakensGraspThrownTrident::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("krakens_grasp_trident"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TentacleEntity>> TENTACLE = ENTITY_TYPES.register("tentacle",
+            () -> EntityType.Builder.of(TentacleEntity::new, MobCategory.MISC)
+                    .sized(1.2F, 4.5F)
+                    .clientTrackingRange(10)
+                    .build("tentacle"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<ScorpionEntity>> SCORPION = ENTITY_TYPES.register("scorpion",
             () -> EntityType.Builder.of(ScorpionEntity::new, MobCategory.MONSTER)
                     .sized(1.5F, 1.0F)

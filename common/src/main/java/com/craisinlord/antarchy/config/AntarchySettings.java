@@ -53,6 +53,16 @@ public final class AntarchySettings {
     private static double bigBerthaAttackDamage = 55.0D;
     private static double bigBerthaReachBonus = 3.0D;
     private static double bigBerthaAttackSpeed = -3.0D;
+    private static double krakensGraspAttackDamage = 16.0D;
+    private static double krakensGraspAttackSpeed = -2.9D;
+    private static double krakensGraspThrownDamage = 16.0D;
+    private static double krakensGraspLightningDamage = 6.0D;
+    private static boolean krakensGraspInnateLoyalty = true;
+    private static int krakensGraspInnateLoyaltyLevel = 3;
+    private static int krakensGraspTentacleDurationTicks = 100;
+    private static double krakensGraspTentacleDamage = 3.0D;
+    private static double krakensGraspTentacleRadius = 3.0D;
+    private static int krakensGraspTentacleDamageIntervalTicks = 20;
     private static double scorpionWhipBaseDamage = 10.0D;
     private static double scorpionWhipReachBonus = 5.0D;
     private static int scorpionWhipPoisonDurationTicks = 100;
@@ -117,6 +127,10 @@ public final class AntarchySettings {
     private static boolean krakenMassSpawnEnabled = true;
     private static double squidzookaCooldownSeconds = 1.0D;
     private static double squidzookaLaunchVelocity = 2.1D;
+    private static double rpoLauncherCooldownSeconds = 1.0D;
+    private static double rpoLauncherLaunchVelocity = 2.1D;
+    private static double rpoLauncherExplosionDamage = 14.0D;
+    private static double rpoLauncherExplosionRadius = 4.0D;
     private static double sizeRayCooldownSeconds = 1.0D;
     private static boolean invertProjectilesFromInvertedPlayers = false;
     private static boolean gravityGunEnabled = true;
@@ -774,6 +788,17 @@ public final class AntarchySettings {
         return krakenAttackDamage;
     }
 
+    public static double krakensGraspAttackDamage() { return krakensGraspAttackDamage; }
+    public static double krakensGraspAttackSpeed() { return krakensGraspAttackSpeed; }
+    public static double krakensGraspThrownDamage() { return krakensGraspThrownDamage; }
+    public static double krakensGraspLightningDamage() { return krakensGraspLightningDamage; }
+    public static boolean krakensGraspInnateLoyalty() { return krakensGraspInnateLoyalty; }
+    public static int krakensGraspInnateLoyaltyLevel() { return krakensGraspInnateLoyaltyLevel; }
+    public static int krakensGraspTentacleDurationTicks() { return krakensGraspTentacleDurationTicks; }
+    public static double krakensGraspTentacleDamage() { return krakensGraspTentacleDamage; }
+    public static double krakensGraspTentacleRadius() { return krakensGraspTentacleRadius; }
+    public static int krakensGraspTentacleDamageIntervalTicks() { return krakensGraspTentacleDamageIntervalTicks; }
+
     public static double octopusBombHealth() {
         return octopusBombHealth;
     }
@@ -917,6 +942,11 @@ public final class AntarchySettings {
     public static double squidzookaLaunchVelocity() {
         return squidzookaLaunchVelocity;
     }
+
+    public static double rpoLauncherCooldownSeconds() { return rpoLauncherCooldownSeconds; }
+    public static double rpoLauncherLaunchVelocity() { return rpoLauncherLaunchVelocity; }
+    public static double rpoLauncherExplosionDamage() { return rpoLauncherExplosionDamage; }
+    public static double rpoLauncherExplosionRadius() { return rpoLauncherExplosionRadius; }
 
     public static double sizeRayCooldownSeconds() {
         return sizeRayCooldownSeconds;
@@ -1292,6 +1322,17 @@ public final class AntarchySettings {
         krakenAttackDamage = value;
     }
 
+    public static void setKrakensGraspAttackDamage(double value) { krakensGraspAttackDamage = value; }
+    public static void setKrakensGraspAttackSpeed(double value) { krakensGraspAttackSpeed = value; }
+    public static void setKrakensGraspThrownDamage(double value) { krakensGraspThrownDamage = value; }
+    public static void setKrakensGraspLightningDamage(double value) { krakensGraspLightningDamage = value; }
+    public static void setKrakensGraspInnateLoyalty(boolean value) { krakensGraspInnateLoyalty = value; }
+    public static void setKrakensGraspInnateLoyaltyLevel(int value) { krakensGraspInnateLoyaltyLevel = value; }
+    public static void setKrakensGraspTentacleDurationTicks(int value) { krakensGraspTentacleDurationTicks = value; }
+    public static void setKrakensGraspTentacleDamage(double value) { krakensGraspTentacleDamage = value; }
+    public static void setKrakensGraspTentacleRadius(double value) { krakensGraspTentacleRadius = value; }
+    public static void setKrakensGraspTentacleDamageIntervalTicks(int value) { krakensGraspTentacleDamageIntervalTicks = value; }
+
     public static void setBrutalflyHealth(double value) {
         brutalflyHealth = value;
     }
@@ -1383,6 +1424,11 @@ public final class AntarchySettings {
     public static void setSquidzookaLaunchVelocity(double value) {
         squidzookaLaunchVelocity = value;
     }
+
+    public static void setRpoLauncherCooldownSeconds(double value) { rpoLauncherCooldownSeconds = value; }
+    public static void setRpoLauncherLaunchVelocity(double value) { rpoLauncherLaunchVelocity = value; }
+    public static void setRpoLauncherExplosionDamage(double value) { rpoLauncherExplosionDamage = value; }
+    public static void setRpoLauncherExplosionRadius(double value) { rpoLauncherExplosionRadius = value; }
 
     public static void setSizeRayCooldownSeconds(double value) {
         sizeRayCooldownSeconds = value;

@@ -79,6 +79,16 @@ public final class AntarchyToolsConfig {
     private static final ModConfigSpec.DoubleValue BIG_BERTHA_ATTACK_DAMAGE;
     private static final ModConfigSpec.DoubleValue BIG_BERTHA_REACH_BONUS;
     private static final ModConfigSpec.DoubleValue BIG_BERTHA_ATTACK_SPEED;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_ATTACK_DAMAGE;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_ATTACK_SPEED;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_THROWN_DAMAGE;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_LIGHTNING_DAMAGE;
+    private static final ModConfigSpec.BooleanValue KRAKENS_GRASP_INNATE_LOYALTY;
+    private static final ModConfigSpec.IntValue KRAKENS_GRASP_INNATE_LOYALTY_LEVEL;
+    private static final ModConfigSpec.IntValue KRAKENS_GRASP_TENTACLE_DURATION_TICKS;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_TENTACLE_DAMAGE;
+    private static final ModConfigSpec.DoubleValue KRAKENS_GRASP_TENTACLE_RADIUS;
+    private static final ModConfigSpec.IntValue KRAKENS_GRASP_TENTACLE_DAMAGE_INTERVAL_TICKS;
     private static final ModConfigSpec.IntValue    BIG_BERTHA_BASILISK_PARALYZE_DURATION_TICKS;
     private static final ModConfigSpec.IntValue    BIG_BERTHA_KRAKEN_SLOW_TICKS;
     private static final ModConfigSpec.DoubleValue BIG_BERTHA_BASILISK_COOLDOWN_SECONDS;
@@ -145,6 +155,10 @@ public final class AntarchyToolsConfig {
 
     private static final ModConfigSpec.DoubleValue SQUIDZOOKA_COOLDOWN_SECONDS;
     private static final ModConfigSpec.DoubleValue SQUIDZOOKA_LAUNCH_VELOCITY;
+    private static final ModConfigSpec.DoubleValue RPO_LAUNCHER_COOLDOWN_SECONDS;
+    private static final ModConfigSpec.DoubleValue RPO_LAUNCHER_LAUNCH_VELOCITY;
+    private static final ModConfigSpec.DoubleValue RPO_LAUNCHER_EXPLOSION_DAMAGE;
+    private static final ModConfigSpec.DoubleValue RPO_LAUNCHER_EXPLOSION_RADIUS;
 
 
     // Size Rays
@@ -303,6 +317,19 @@ public final class AntarchyToolsConfig {
         BIG_BERTHA_LUCID_INVERTED_DAMAGE_BONUS_PERCENT = b.comment("Bonus damage percent from Lucid mode while the wielder is inverted.")    .defineInRange("lucidModeInvertedDamageBonusPercent", 25.0D, 0.0D, 1000.0D);
         b.pop();
 
+        b.push("krakensGrasp");
+        KRAKENS_GRASP_ATTACK_DAMAGE                  = b.comment("Melee attack damage of Kraken's Grasp.")                                    .defineInRange("attackDamage",                    16.0D, 0.0D, 4096.0D);
+        KRAKENS_GRASP_ATTACK_SPEED                   = b.comment("Attack speed of Kraken's Grasp.")                                           .defineInRange("attackSpeed",                    -2.9D, -10.0D, 10.0D);
+        KRAKENS_GRASP_THROWN_DAMAGE                  = b.comment("Damage dealt when the thrown trident hits an entity.")                      .defineInRange("thrownDamage",                    16.0D, 0.0D, 4096.0D);
+        KRAKENS_GRASP_LIGHTNING_DAMAGE               = b.comment("Bonus damage from the lightning strike on every hit.")                      .defineInRange("lightningDamage",                  6.0D, 0.0D, 4096.0D);
+        KRAKENS_GRASP_INNATE_LOYALTY                 = b.comment("Whether Kraken's Grasp automatically returns to its thrower like an enchanted Loyalty trident.").define("innateLoyalty", true);
+        KRAKENS_GRASP_INNATE_LOYALTY_LEVEL           = b.comment("Effective Loyalty level used for the innate return, from 1 to 3.")           .defineInRange("innateLoyaltyLevel",                  3, 1, 3);
+        KRAKENS_GRASP_TENTACLE_DURATION_TICKS        = b.comment("How long a summoned tentacle lasts, in ticks.")                             .defineInRange("tentacleDurationTicks",              100, 1, 72000);
+        KRAKENS_GRASP_TENTACLE_DAMAGE                = b.comment("Damage a tentacle deals per damage interval to nearby entities.")           .defineInRange("tentacleDamage",                    3.0D, 0.0D, 4096.0D);
+        KRAKENS_GRASP_TENTACLE_RADIUS                = b.comment("Radius in blocks around a tentacle that it can grab and damage.")           .defineInRange("tentacleRadius",                    3.0D, 0.0D, 32.0D);
+        KRAKENS_GRASP_TENTACLE_DAMAGE_INTERVAL_TICKS = b.comment("How often, in ticks, a tentacle damages nearby entities.")                  .defineInRange("tentacleDamageIntervalTicks",         20, 1, 2000);
+        b.pop();
+
         b.push("scorpionWhip");
         SCORPION_WHIP_BASE_DAMAGE = b.comment("Base lash damage of the Scorpion Stinger Whip.").defineInRange("baseDamage", 10.0D, 0.0D, 4096.0D);
         SCORPION_WHIP_REACH_BONUS = b.comment("Extra entity interaction range in blocks while held in main hand.").defineInRange("reachBonus", 5.0D, 0.0D, 32.0D);
@@ -391,6 +418,13 @@ public final class AntarchyToolsConfig {
         b.push("squidzooka");
         SQUIDZOOKA_COOLDOWN_SECONDS  = b.comment("Cooldown in seconds after firing. Set to 0 to disable.").defineInRange("cooldownSeconds", 1.0D, 0.0D, 3600.0D);
         SQUIDZOOKA_LAUNCH_VELOCITY   = b.comment("Initial launch velocity applied to the Missile Squid.")  .defineInRange("launchVelocity",  2.1D, 0.1D, 20.0D);
+        b.pop();
+
+        b.push("rpoLauncher");
+        RPO_LAUNCHER_COOLDOWN_SECONDS = b.comment("Cooldown in seconds after firing. Set to 0 to disable.").defineInRange("cooldownSeconds", 1.0D, 0.0D, 3600.0D);
+        RPO_LAUNCHER_LAUNCH_VELOCITY  = b.comment("Initial launch velocity applied to the Octopus Bomb.")  .defineInRange("launchVelocity",  2.1D, 0.1D, 20.0D);
+        RPO_LAUNCHER_EXPLOSION_DAMAGE = b.comment("Max damage dealt at the center of the ink explosion.")   .defineInRange("explosionDamage", 14.0D, 0.0D, 4096.0D);
+        RPO_LAUNCHER_EXPLOSION_RADIUS = b.comment("Radius in blocks of the ink explosion.")                 .defineInRange("explosionRadius", 4.0D, 0.5D, 32.0D);
         b.pop();
 
 
@@ -543,6 +577,17 @@ public final class AntarchyToolsConfig {
     static double  bigBerthaBasiliskCooldownSeconds()        { return BIG_BERTHA_BASILISK_COOLDOWN_SECONDS.get(); }
     static double  bigBerthaLucidInvertedDurationSeconds()   { return BIG_BERTHA_LUCID_INVERTED_DURATION_SECONDS.get(); }
     static double  bigBerthaLucidInvertedDamageBonusPercent(){ return BIG_BERTHA_LUCID_INVERTED_DAMAGE_BONUS_PERCENT.get(); }
+
+    static double  krakensGraspAttackDamage()                { return KRAKENS_GRASP_ATTACK_DAMAGE.get(); }
+    static double  krakensGraspAttackSpeed()                 { return KRAKENS_GRASP_ATTACK_SPEED.get(); }
+    static double  krakensGraspThrownDamage()                { return KRAKENS_GRASP_THROWN_DAMAGE.get(); }
+    static double  krakensGraspLightningDamage()             { return KRAKENS_GRASP_LIGHTNING_DAMAGE.get(); }
+    static boolean krakensGraspInnateLoyalty()                { return KRAKENS_GRASP_INNATE_LOYALTY.get(); }
+    static int     krakensGraspInnateLoyaltyLevel()          { return KRAKENS_GRASP_INNATE_LOYALTY_LEVEL.get(); }
+    static int     krakensGraspTentacleDurationTicks()       { return KRAKENS_GRASP_TENTACLE_DURATION_TICKS.get(); }
+    static double  krakensGraspTentacleDamage()               { return KRAKENS_GRASP_TENTACLE_DAMAGE.get(); }
+    static double  krakensGraspTentacleRadius()               { return KRAKENS_GRASP_TENTACLE_RADIUS.get(); }
+    static int     krakensGraspTentacleDamageIntervalTicks() { return KRAKENS_GRASP_TENTACLE_DAMAGE_INTERVAL_TICKS.get(); }
     static double  scorpionWhipBaseDamage()                  { return SCORPION_WHIP_BASE_DAMAGE.get(); }
     static double  scorpionWhipReachBonus()                  { return SCORPION_WHIP_REACH_BONUS.get(); }
     static int     scorpionWhipPoisonDurationTicks()         { return SCORPION_WHIP_POISON_DURATION_TICKS.get(); }
@@ -592,6 +637,10 @@ public final class AntarchyToolsConfig {
 
     static double  squidzookaCooldownSeconds()               { return SQUIDZOOKA_COOLDOWN_SECONDS.get(); }
     static double  squidzookaLaunchVelocity()                { return SQUIDZOOKA_LAUNCH_VELOCITY.get(); }
+    static double  rpoLauncherCooldownSeconds()              { return RPO_LAUNCHER_COOLDOWN_SECONDS.get(); }
+    static double  rpoLauncherLaunchVelocity()                { return RPO_LAUNCHER_LAUNCH_VELOCITY.get(); }
+    static double  rpoLauncherExplosionDamage()               { return RPO_LAUNCHER_EXPLOSION_DAMAGE.get(); }
+    static double  rpoLauncherExplosionRadius()               { return RPO_LAUNCHER_EXPLOSION_RADIUS.get(); }
 
     static boolean sizeChangingRaysEnabled()                 { return SIZE_CHANGING_RAYS_ENABLED.get(); }
     static double  sizeRayCooldownSeconds()                  { return SIZE_RAY_COOLDOWN_SECONDS.get(); }
