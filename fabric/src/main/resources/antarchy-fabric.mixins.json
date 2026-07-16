@@ -17,7 +17,6 @@
     "JumpyBootsFallDamageMixin",
     "entity.MultipartEntityLevelRegistryMixin",
     "WoodTypeInvoker",
-    "infinity.RandomSpringMixin",
     "infinity.PortalCreatorMixin"
   ],
   "client": [

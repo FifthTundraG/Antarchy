@@ -13,7 +13,9 @@ import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
 import com.craisinlord.antarchy.content.entity.DrTrayaurusEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
 import com.craisinlord.antarchy.content.entity.EmperorScorpionEntity;
-import com.craisinlord.antarchy.content.entity.GlimmerEntity;
+import com.craisinlord.antarchy.content.entity.ElkaEntity;
+import com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity;
+import com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
@@ -26,6 +28,8 @@ import com.craisinlord.antarchy.content.entity.MolevoreEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodBoatEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodChestBoatEntity;
+import com.craisinlord.antarchy.content.entity.PeachBoatEntity;
+import com.craisinlord.antarchy.content.entity.PeachChestBoatEntity;
 import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.content.entity.ScorpionEntity;
 import com.craisinlord.antarchy.content.entity.SizeRayProjectileEntity;
@@ -43,6 +47,8 @@ import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
 import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyOrbEntity;
 import com.craisinlord.antarchy.content.entity.flying_squirrel.FlyingSquirrelEntity;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
+import com.craisinlord.antarchy.content.entity.kraken.KrakensGraspThrownTrident;
+import com.craisinlord.antarchy.content.entity.kraken.TentacleEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
@@ -115,6 +121,18 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(10)
                     .updateInterval(10)
                     .build("ouranwood_chest_boat"));
+    public static final DeferredHolder<EntityType<?>, EntityType<PeachBoatEntity>> PEACH_BOAT_ENTITY = ENTITY_TYPES.register("peach_boat",
+            () -> EntityType.Builder.<PeachBoatEntity>of(PeachBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .updateInterval(10)
+                    .build("peach_boat"));
+    public static final DeferredHolder<EntityType<?>, EntityType<PeachChestBoatEntity>> PEACH_CHEST_BOAT_ENTITY = ENTITY_TYPES.register("peach_chest_boat",
+            () -> EntityType.Builder.<PeachChestBoatEntity>of(PeachChestBoatEntity::new, MobCategory.MISC)
+                    .sized(1.375F, 0.5625F)
+                    .clientTrackingRange(10)
+                    .updateInterval(10)
+                    .build("peach_chest_boat"));
     public static final DeferredHolder<EntityType<?>, EntityType<MolevoreEntity>> MOLEVORE = ENTITY_TYPES.register("molevore",
             () -> EntityType.Builder.of(MolevoreEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 1.1F)
@@ -234,6 +252,20 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(8)
                     .updateInterval(1)
                     .build("lucid_bolt"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<KrakensGraspThrownTrident>> KRAKENS_GRASP_TRIDENT = ENTITY_TYPES.register("krakens_grasp_trident",
+            () -> EntityType.Builder.<KrakensGraspThrownTrident>of(KrakensGraspThrownTrident::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("krakens_grasp_trident"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TentacleEntity>> TENTACLE = ENTITY_TYPES.register("tentacle",
+            () -> EntityType.Builder.of(TentacleEntity::new, MobCategory.MISC)
+                    .sized(1.2F, 4.5F)
+                    .clientTrackingRange(10)
+                    .build("tentacle"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<ScorpionEntity>> SCORPION = ENTITY_TYPES.register("scorpion",
             () -> EntityType.Builder.of(ScorpionEntity::new, MobCategory.MONSTER)
                     .sized(1.5F, 1.0F)
@@ -283,11 +315,27 @@ public final class AntarchyNeoforgeEntites {
                     .sized(1.0F, 1.2F)
                     .clientTrackingRange(8)
                     .build("cheep"));
-    // public static final DeferredHolder<EntityType<?>, EntityType<GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",
-    //         () -> EntityType.Builder.of(GlimmerEntity::new, MobCategory.CREATURE)
-    //                 .sized(0.9F, 1.4F)
-    //                 .clientTrackingRange(8)
-    //                 .build("glimmer"));
+    // Dorrie is not part of this update yet.
+    // public static final DeferredHolder<EntityType<?>, EntityType<DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+    //         () -> EntityType.Builder.of(DorrieEntity::new, MobCategory.CREATURE)
+    //                 .sized(1.6F, 1.4F)
+    //                 .clientTrackingRange(10)
+    //                 .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",
+            () -> EntityType.Builder.of(OuranwoodDeerEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.4F)
+                    .clientTrackingRange(8)
+                    .build("ouranwood_deer"));
+    public static final DeferredHolder<EntityType<?>, EntityType<GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",
+            () -> EntityType.Builder.of(GlimmerEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.4F)
+                    .clientTrackingRange(8)
+                    .build("glimmer"));
+    public static final DeferredHolder<EntityType<?>, EntityType<ElkaEntity>> ELKA = ENTITY_TYPES.register("elka",
+            () -> EntityType.Builder.of(ElkaEntity::new, MobCategory.CREATURE)
+                    .sized(2.2F, 3.5F)
+                    .clientTrackingRange(10)
+                    .build("elka"));
     public static final DeferredHolder<EntityType<?>, EntityType<UpwardFallingBlockEntity>> UPWARD_FALLING_BLOCK = ENTITY_TYPES.register("upward_falling_block",
             () -> EntityType.Builder.<UpwardFallingBlockEntity>of(
                             UpwardFallingBlockEntity::new, MobCategory.MISC)

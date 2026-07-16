@@ -199,6 +199,7 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setHerculesBeetleHealth(AntarchyMobsConfig.herculesBeetleHealth());
         AntarchySettings.setHerculesBeetleAttackDamage(AntarchyMobsConfig.herculesBeetleAttackDamage());
         AntarchySettings.setHerculesBeetleChargeDamage(AntarchyMobsConfig.herculesBeetleChargeDamage());
+        AntarchySettings.setOuranwoodDeerHealth(AntarchyMobsConfig.ouranwoodDeerHealth());
         AntarchySettings.setGlimmerHealth(AntarchyMobsConfig.glimmerHealth());
     }
 
@@ -258,6 +259,16 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setBigBerthaBasiliskCooldownSeconds(AntarchyToolsConfig.bigBerthaBasiliskCooldownSeconds());
         AntarchySettings.setBigBerthaLucidInvertedDurationSeconds(AntarchyToolsConfig.bigBerthaLucidInvertedDurationSeconds());
         AntarchySettings.setBigBerthaLucidInvertedDamageBonusPercent(AntarchyToolsConfig.bigBerthaLucidInvertedDamageBonusPercent());
+        AntarchySettings.setKrakensGraspAttackDamage(AntarchyToolsConfig.krakensGraspAttackDamage());
+        AntarchySettings.setKrakensGraspAttackSpeed(AntarchyToolsConfig.krakensGraspAttackSpeed());
+        AntarchySettings.setKrakensGraspThrownDamage(AntarchyToolsConfig.krakensGraspThrownDamage());
+        AntarchySettings.setKrakensGraspLightningDamage(AntarchyToolsConfig.krakensGraspLightningDamage());
+        AntarchySettings.setKrakensGraspInnateLoyalty(AntarchyToolsConfig.krakensGraspInnateLoyalty());
+        AntarchySettings.setKrakensGraspInnateLoyaltyLevel(AntarchyToolsConfig.krakensGraspInnateLoyaltyLevel());
+        AntarchySettings.setKrakensGraspTentacleDurationTicks(AntarchyToolsConfig.krakensGraspTentacleDurationTicks());
+        AntarchySettings.setKrakensGraspTentacleDamage(AntarchyToolsConfig.krakensGraspTentacleDamage());
+        AntarchySettings.setKrakensGraspTentacleRadius(AntarchyToolsConfig.krakensGraspTentacleRadius());
+        AntarchySettings.setKrakensGraspTentacleDamageIntervalTicks(AntarchyToolsConfig.krakensGraspTentacleDamageIntervalTicks());
         AntarchySettings.setScorpionWhipBaseDamage(AntarchyToolsConfig.scorpionWhipBaseDamage());
         AntarchySettings.setScorpionWhipReachBonus(AntarchyToolsConfig.scorpionWhipReachBonus());
         AntarchySettings.setScorpionWhipPoisonDurationTicks(AntarchyToolsConfig.scorpionWhipPoisonDurationTicks());
@@ -291,6 +302,10 @@ public final class AntarchyConfigModuleNeoforge {
 
         AntarchySettings.setSquidzookaCooldownSeconds(AntarchyToolsConfig.squidzookaCooldownSeconds());
         AntarchySettings.setSquidzookaLaunchVelocity(AntarchyToolsConfig.squidzookaLaunchVelocity());
+        AntarchySettings.setRpoLauncherCooldownSeconds(AntarchyToolsConfig.rpoLauncherCooldownSeconds());
+        AntarchySettings.setRpoLauncherLaunchVelocity(AntarchyToolsConfig.rpoLauncherLaunchVelocity());
+        AntarchySettings.setRpoLauncherExplosionDamage(AntarchyToolsConfig.rpoLauncherExplosionDamage());
+        AntarchySettings.setRpoLauncherExplosionRadius(AntarchyToolsConfig.rpoLauncherExplosionRadius());
 
         AntarchySettings.setSizeChangingRaysEnabled(AntarchyToolsConfig.sizeChangingRaysEnabled());
         AntarchySettings.setSizeRayCooldownSeconds(AntarchyToolsConfig.sizeRayCooldownSeconds());
@@ -311,9 +326,20 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setGravityGunCooldownSeconds(AntarchyToolsConfig.gravityGunCooldownSeconds());
         AntarchySettings.setGravityGunMaxHoldDistance(AntarchyToolsConfig.gravityGunMaxHoldDistance());
 
+        AntarchySettings.setMinersDreamEnabled(AntarchyToolsConfig.minersDreamEnabled());
+        AntarchySettings.setMinersDreamMinimumRange(AntarchyToolsConfig.minersDreamMinimumRange());
+        AntarchySettings.setMinersDreamMaximumRange(AntarchyToolsConfig.minersDreamMaximumRange());
+        AntarchySettings.setMinersDreamTorchSpacing(AntarchyToolsConfig.minersDreamTorchSpacing());
+        AntarchySettings.setMinersDreamBlocksPerTick(AntarchyToolsConfig.minersDreamBlocksPerTick());
+
         AntarchySettings.setDuctTapeRepairPercentPerUse(AntarchyToolsConfig.ductTapeRepairPercentPerUse());
         AntarchySettings.setPotentNyxiteInvertedDurationSeconds(AntarchyToolsConfig.potentNyxiteInvertedDurationSeconds());
         AntarchySettings.setCorneaEarNightVisionSeconds(AntarchyToolsConfig.corneaEarNightVisionSeconds());
+        AntarchySettings.setAmericanizingEnabled(AntarchyToolsConfig.americanizingEnabled());
+        AntarchySettings.setAmericanBonusNutrition(AntarchyToolsConfig.americanBonusNutrition());
+        AntarchySettings.setAmericanBonusSaturation(AntarchyToolsConfig.americanBonusSaturation());
+        AntarchySettings.setAmericanRegenerationDurationTicks(AntarchyToolsConfig.americanRegenerationDurationTicks());
+        AntarchySettings.setAmericanRegenerationAmplifier(AntarchyToolsConfig.americanRegenerationAmplifier());
         AntarchySettings.setAntDanceRadius(AntarchyMobsConfig.antDanceRadius());
 
         AntarchySettings.setMogglesVisionRadius(AntarchyToolsConfig.mogglesVisionRadius());

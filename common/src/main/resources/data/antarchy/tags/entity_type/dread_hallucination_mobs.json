@@ -9,6 +9,9 @@
     "minecraft:wither",
     "minecraft:creeper",
     "minecraft:skeleton",
-    "minecraft:spider"
+    "minecraft:spider",
+    "antarchy:toreterror",
+    "antarchy:creeping_horror",
+    "antarchy:lurking_terror"
   ]
 }

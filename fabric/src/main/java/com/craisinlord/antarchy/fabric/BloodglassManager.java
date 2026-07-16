@@ -129,10 +129,15 @@ public final class BloodglassManager {
         int cap = Math.max(0, AntarchySettings.bloodCrystalHardMaxShields()
                 - access.antarchy$getArmorShieldsActive()
                 - access.antarchy$getArmorShieldLostCount());
-        access.antarchy$setAppleShieldsActive(Math.min(amplifier + 1, cap));
-        access.antarchy$setAppleShieldLostCount(0);
-        access.antarchy$setAppleRechargeTimer(0);
-        if (player instanceof ServerPlayer sp) syncBloodglass(sp);
+        int targetCap = Math.min(amplifier + 1, cap);
+        int currentCap = access.antarchy$getAppleShieldsActive() + access.antarchy$getAppleShieldLostCount();
+        // Only grant newly-added capacity (e.g. first application, or a higher amplifier).
+        // A mere duration refresh of an already-active ward must not reset shields that are
+        // already lost, nor restart their recharge timer.
+        if (targetCap > currentCap) {
+            access.antarchy$setAppleShieldsActive(access.antarchy$getAppleShieldsActive() + (targetCap - currentCap));
+            if (player instanceof ServerPlayer sp) syncBloodglass(sp);
+        }
     }
 
     public static void handleWardRemoved(Player player) {

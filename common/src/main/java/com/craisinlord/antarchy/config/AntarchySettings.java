@@ -53,6 +53,16 @@ public final class AntarchySettings {
     private static double bigBerthaAttackDamage = 55.0D;
     private static double bigBerthaReachBonus = 3.0D;
     private static double bigBerthaAttackSpeed = -3.0D;
+    private static double krakensGraspAttackDamage = 16.0D;
+    private static double krakensGraspAttackSpeed = -2.9D;
+    private static double krakensGraspThrownDamage = 16.0D;
+    private static double krakensGraspLightningDamage = 6.0D;
+    private static boolean krakensGraspInnateLoyalty = true;
+    private static int krakensGraspInnateLoyaltyLevel = 3;
+    private static int krakensGraspTentacleDurationTicks = 100;
+    private static double krakensGraspTentacleDamage = 3.0D;
+    private static double krakensGraspTentacleRadius = 3.0D;
+    private static int krakensGraspTentacleDamageIntervalTicks = 20;
     private static double scorpionWhipBaseDamage = 10.0D;
     private static double scorpionWhipReachBonus = 5.0D;
     private static int scorpionWhipPoisonDurationTicks = 100;
@@ -117,6 +127,10 @@ public final class AntarchySettings {
     private static boolean krakenMassSpawnEnabled = true;
     private static double squidzookaCooldownSeconds = 1.0D;
     private static double squidzookaLaunchVelocity = 2.1D;
+    private static double rpoLauncherCooldownSeconds = 1.0D;
+    private static double rpoLauncherLaunchVelocity = 2.1D;
+    private static double rpoLauncherExplosionDamage = 14.0D;
+    private static double rpoLauncherExplosionRadius = 4.0D;
     private static double sizeRayCooldownSeconds = 1.0D;
     private static boolean invertProjectilesFromInvertedPlayers = false;
     private static boolean gravityGunEnabled = true;
@@ -127,9 +141,19 @@ public final class AntarchySettings {
     private static double gravityGunBlastStrength = 1.4D;
     private static double gravityGunCooldownSeconds = 0.35D;
     private static double gravityGunMaxHoldDistance = 10.0D;
+    private static boolean minersDreamEnabled = true;
+    private static int minersDreamMinimumRange = 48;
+    private static int minersDreamMaximumRange = 96;
+    private static int minersDreamTorchSpacing = 10;
+    private static int minersDreamBlocksPerTick = 150;
     private static double lucidAttackRange = 9.0D;
     private static double lucidPearlInvertedDurationSeconds = 6.0D;
     private static int corneaEarNightVisionSeconds = 15;
+    private static boolean americanizingEnabled = true;
+    private static int americanBonusNutrition = 2;
+    private static double americanBonusSaturation = 1.0D;
+    private static int americanRegenerationDurationTicks = 60;
+    private static int americanRegenerationAmplifier = 0;
     private static int mogglesVisionRadius = 2;
     private static int mogglesVisionMaxLight = 7;
     private static float mogglesVisionAlpha = 0.35f;
@@ -490,6 +514,7 @@ public final class AntarchySettings {
     private static double herculesBeetleHealth = 500.0D;
     private static double herculesBeetleAttackDamage = 30.0D;
     private static double herculesBeetleChargeDamage = 40.0D;
+    private static double ouranwoodDeerHealth = 20.0D;
     private static double glimmerHealth = 20.0D;
 
     private AntarchySettings() {
@@ -763,6 +788,17 @@ public final class AntarchySettings {
         return krakenAttackDamage;
     }
 
+    public static double krakensGraspAttackDamage() { return krakensGraspAttackDamage; }
+    public static double krakensGraspAttackSpeed() { return krakensGraspAttackSpeed; }
+    public static double krakensGraspThrownDamage() { return krakensGraspThrownDamage; }
+    public static double krakensGraspLightningDamage() { return krakensGraspLightningDamage; }
+    public static boolean krakensGraspInnateLoyalty() { return krakensGraspInnateLoyalty; }
+    public static int krakensGraspInnateLoyaltyLevel() { return krakensGraspInnateLoyaltyLevel; }
+    public static int krakensGraspTentacleDurationTicks() { return krakensGraspTentacleDurationTicks; }
+    public static double krakensGraspTentacleDamage() { return krakensGraspTentacleDamage; }
+    public static double krakensGraspTentacleRadius() { return krakensGraspTentacleRadius; }
+    public static int krakensGraspTentacleDamageIntervalTicks() { return krakensGraspTentacleDamageIntervalTicks; }
+
     public static double octopusBombHealth() {
         return octopusBombHealth;
     }
@@ -907,6 +943,11 @@ public final class AntarchySettings {
         return squidzookaLaunchVelocity;
     }
 
+    public static double rpoLauncherCooldownSeconds() { return rpoLauncherCooldownSeconds; }
+    public static double rpoLauncherLaunchVelocity() { return rpoLauncherLaunchVelocity; }
+    public static double rpoLauncherExplosionDamage() { return rpoLauncherExplosionDamage; }
+    public static double rpoLauncherExplosionRadius() { return rpoLauncherExplosionRadius; }
+
     public static double sizeRayCooldownSeconds() {
         return sizeRayCooldownSeconds;
     }
@@ -945,6 +986,26 @@ public final class AntarchySettings {
 
     public static double gravityGunMaxHoldDistance() {
         return gravityGunMaxHoldDistance;
+    }
+
+    public static boolean minersDreamEnabled() {
+        return minersDreamEnabled;
+    }
+
+    public static int minersDreamMinimumRange() {
+        return minersDreamMinimumRange;
+    }
+
+    public static int minersDreamMaximumRange() {
+        return minersDreamMaximumRange;
+    }
+
+    public static int minersDreamTorchSpacing() {
+        return minersDreamTorchSpacing;
+    }
+
+    public static int minersDreamBlocksPerTick() {
+        return minersDreamBlocksPerTick;
     }
 
     public static void setDisableInfinityBookPortalCreation(boolean value) {
@@ -1261,6 +1322,17 @@ public final class AntarchySettings {
         krakenAttackDamage = value;
     }
 
+    public static void setKrakensGraspAttackDamage(double value) { krakensGraspAttackDamage = value; }
+    public static void setKrakensGraspAttackSpeed(double value) { krakensGraspAttackSpeed = value; }
+    public static void setKrakensGraspThrownDamage(double value) { krakensGraspThrownDamage = value; }
+    public static void setKrakensGraspLightningDamage(double value) { krakensGraspLightningDamage = value; }
+    public static void setKrakensGraspInnateLoyalty(boolean value) { krakensGraspInnateLoyalty = value; }
+    public static void setKrakensGraspInnateLoyaltyLevel(int value) { krakensGraspInnateLoyaltyLevel = value; }
+    public static void setKrakensGraspTentacleDurationTicks(int value) { krakensGraspTentacleDurationTicks = value; }
+    public static void setKrakensGraspTentacleDamage(double value) { krakensGraspTentacleDamage = value; }
+    public static void setKrakensGraspTentacleRadius(double value) { krakensGraspTentacleRadius = value; }
+    public static void setKrakensGraspTentacleDamageIntervalTicks(int value) { krakensGraspTentacleDamageIntervalTicks = value; }
+
     public static void setBrutalflyHealth(double value) {
         brutalflyHealth = value;
     }
@@ -1353,6 +1425,11 @@ public final class AntarchySettings {
         squidzookaLaunchVelocity = value;
     }
 
+    public static void setRpoLauncherCooldownSeconds(double value) { rpoLauncherCooldownSeconds = value; }
+    public static void setRpoLauncherLaunchVelocity(double value) { rpoLauncherLaunchVelocity = value; }
+    public static void setRpoLauncherExplosionDamage(double value) { rpoLauncherExplosionDamage = value; }
+    public static void setRpoLauncherExplosionRadius(double value) { rpoLauncherExplosionRadius = value; }
+
     public static void setSizeRayCooldownSeconds(double value) {
         sizeRayCooldownSeconds = value;
     }
@@ -1393,6 +1470,26 @@ public final class AntarchySettings {
         gravityGunMaxHoldDistance = value;
     }
 
+    public static void setMinersDreamEnabled(boolean value) {
+        minersDreamEnabled = value;
+    }
+
+    public static void setMinersDreamMinimumRange(int value) {
+        minersDreamMinimumRange = value;
+    }
+
+    public static void setMinersDreamMaximumRange(int value) {
+        minersDreamMaximumRange = value;
+    }
+
+    public static void setMinersDreamTorchSpacing(int value) {
+        minersDreamTorchSpacing = value;
+    }
+
+    public static void setMinersDreamBlocksPerTick(int value) {
+        minersDreamBlocksPerTick = value;
+    }
+
     public static double lucidAttackRange() {
         return lucidAttackRange;
     }
@@ -1415,6 +1512,46 @@ public final class AntarchySettings {
 
     public static void setCorneaEarNightVisionSeconds(int value) {
         corneaEarNightVisionSeconds = value;
+    }
+
+    public static boolean americanizingEnabled() {
+        return americanizingEnabled;
+    }
+
+    public static void setAmericanizingEnabled(boolean value) {
+        americanizingEnabled = value;
+    }
+
+    public static int americanBonusNutrition() {
+        return americanBonusNutrition;
+    }
+
+    public static void setAmericanBonusNutrition(int value) {
+        americanBonusNutrition = value;
+    }
+
+    public static double americanBonusSaturation() {
+        return americanBonusSaturation;
+    }
+
+    public static void setAmericanBonusSaturation(double value) {
+        americanBonusSaturation = value;
+    }
+
+    public static int americanRegenerationDurationTicks() {
+        return americanRegenerationDurationTicks;
+    }
+
+    public static void setAmericanRegenerationDurationTicks(int value) {
+        americanRegenerationDurationTicks = value;
+    }
+
+    public static int americanRegenerationAmplifier() {
+        return americanRegenerationAmplifier;
+    }
+
+    public static void setAmericanRegenerationAmplifier(int value) {
+        americanRegenerationAmplifier = value;
     }
 
     public static int mogglesVisionRadius() {
@@ -2548,6 +2685,8 @@ public final class AntarchySettings {
     public static double herculesBeetleChargeDamage() { return herculesBeetleChargeDamage; }
     public static void setHerculesBeetleChargeDamage(double v) { herculesBeetleChargeDamage = v; }
     public static void setDorrieHealth(double v) { dorrieHealth = v; }
+    public static double ouranwoodDeerHealth() { return ouranwoodDeerHealth; }
+    public static void setOuranwoodDeerHealth(double v) { ouranwoodDeerHealth = v; }
     public static double glimmerHealth() { return glimmerHealth; }
     public static void setGlimmerHealth(double v) { glimmerHealth = v; }
 }

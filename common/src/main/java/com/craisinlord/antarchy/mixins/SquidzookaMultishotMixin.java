@@ -1,6 +1,6 @@
 package com.craisinlord.antarchy.mixins;
 
-import net.minecraft.core.registries.BuiltInRegistries;
+import com.craisinlord.antarchy.content.AntarchyTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,14 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class SquidzookaMultishotMixin {
     @Inject(method = "canEnchant", at = @At("HEAD"), cancellable = true)
     private void antarchy$allowSquidzookaForMultishot(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (antarchy$isMultishot() && antarchy$isSquidzooka(stack)) {
+        if (antarchy$isMultishot() && antarchy$isMultishotEnchantable(stack)) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "isPrimaryItem", at = @At("HEAD"), cancellable = true)
     private void antarchy$allowSquidzookaAsPrimaryItem(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (antarchy$isMultishot() && antarchy$isSquidzooka(stack)) {
+        if (antarchy$isMultishot() && antarchy$isMultishotEnchantable(stack)) {
             cir.setReturnValue(true);
         }
     }
@@ -31,7 +31,7 @@ public abstract class SquidzookaMultishotMixin {
     }
 
     @Unique
-    private boolean antarchy$isSquidzooka(ItemStack stack) {
-        return "squidzooka".equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath());
+    private boolean antarchy$isMultishotEnchantable(ItemStack stack) {
+        return stack.is(AntarchyTags.Items.MULTISHOT_ENCHANTABLE);
     }
 }

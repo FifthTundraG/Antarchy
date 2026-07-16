@@ -2,6 +2,7 @@ package com.craisinlord.antarchy.neoforge.registry;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.item.ultimate.UltimateGearHelper;
+import com.craisinlord.antarchy.content.CreativeTabOrder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
@@ -10,7 +11,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import java.util.Comparator;
 
 public class AntarchyNeoforgeCreativeModeTabs {
     private AntarchyNeoforgeCreativeModeTabs() {}
@@ -37,14 +37,16 @@ public class AntarchyNeoforgeCreativeModeTabs {
                 Item item = holder.get();
                 if (item != Items.AIR) sortedItems.add(item);
             }
-            sortedItems.sort(Comparator
-                    .<Item>comparingInt(AntarchyNeoforgeCreativeModeTabs::creativeTabGroup)
-                    .thenComparing(item -> BuiltInRegistries.ITEM.getKey(item).getPath()));
-            int n = sortedItems.size();
-            for (int i = Math.max(0, n - 20); i < n; i++) {
-                Item it = sortedItems.get(i);
-            }
-            sortedItems.forEach(event::accept);
+            sortedItems.sort(CreativeTabOrder.COMPARATOR);
+            sortedItems.forEach(item -> {
+                if (item == AntarchyNeoforgeItems.GLIMMER_BOTTLE.get()) {
+                    for (com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant variant : com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.values()) {
+                        event.accept(com.craisinlord.antarchy.content.item.GlimmerBottleItem.create(variant));
+                    }
+                } else {
+                    event.accept(item);
+                }
+            });
         }
 
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
@@ -79,16 +81,26 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.BASILISK_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.EMPEROR_SCORPION_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.TORETERROR_SPAWN_EGG.get());
+            // Dorrie is not part of this update yet.
+            // event.accept(AntarchyNeoforgeItems.DORRIE_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.OURANWOOD_DEER_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.GLIMMER_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.ELKA_SPAWN_EGG.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(AntarchyNeoforgeItems.OURANWOOD_LEAVES_ITEM.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_ACORN.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_LEAVES_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_SAPLING_ITEM.get());
             // event.accept(AntarchyNeoforgeItems.OURANWOOD_VINE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_LOG_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DUPLICATOR_SAPLING_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ORANGE_MILKWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.PINK_MILKWEED_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.CAMELLIA_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.GIANT_LILY_PAD_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_ROOTED_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_COARSE_DIRT_ITEM.get());
@@ -102,6 +114,15 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.DEEPSLATE_URANIUM_ORE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.TITANIUM_ORE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DEEPSLATE_TITANIUM_ORE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.LUMEN_FROGLIGHT_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.ROSEATE_FROGLIGHT_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.CORN_SEEDS.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_FAN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_BLOCK_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_FAN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_BLOCK_ITEM.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
@@ -109,6 +130,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.insertAfter(new ItemStack(Items.MINECART), new ItemStack(AntarchyNeoforgeItems.DIAMOND_MINECART_ITEM.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.accept(AntarchyNeoforgeItems.ICHOR_BUCKET.get());
             event.accept(AntarchyNeoforgeItems.ANTIWATER_BUCKET.get());
+            event.accept(AntarchyNeoforgeItems.LUMEN_BUCKET.get());
             event.accept(AntarchyNeoforgeItems.CLOUD_BUCKET.get());
             event.accept(AntarchyNeoforgeItems.REVERIE_BOTTLE.get());
             event.accept(AntarchyNeoforgeItems.ULTIMATE_PICKAXE.get());
@@ -136,6 +158,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.LUCID_EYE.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_SHARD.get());
             event.accept(AntarchyNeoforgeItems.BLOOD_CRYSTAL_APPLE.get());
+            event.accept(AntarchyNeoforgeItems.SPIRIT_APPLE.get());
             event.accept(AntarchyNeoforgeItems.MANTIS_CLAW.get());
             event.accept(AntarchyNeoforgeItems.KING_SCALE.get());
             event.accept(AntarchyNeoforgeItems.QUEEN_SCALE.get());
@@ -146,8 +169,20 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.VORTEX_EYE.get());
             event.accept(AntarchyNeoforgeItems.EMPEROR_SCORPION_STINGER.get());
             event.accept(AntarchyNeoforgeItems.KRAKEN_TOOTH.get());
+            event.accept(AntarchyNeoforgeItems.KRAKEN_TENTACLE.get());
             event.accept(AntarchyNeoforgeItems.JUMPY_BUG_LEG.get());
             event.accept(AntarchyNeoforgeItems.CORNEA_EAR.get());
+            event.accept(AntarchyNeoforgeItems.CORN.get());
+            event.accept(AntarchyNeoforgeItems.HIGH_FRUCTOSE_CORN_SYRUP.get());
+            event.accept(AntarchyNeoforgeItems.PEACH.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_PIE.get());
+            event.accept(AntarchyNeoforgeItems.CORNBREAD.get());
+            event.accept(AntarchyNeoforgeItems.POPCORN.get());
+            event.accept(AntarchyNeoforgeItems.RAW_CORNDOG.get());
+            event.accept(AntarchyNeoforgeItems.COOKED_CORNDOG.get());
+            event.accept(AntarchyNeoforgeItems.RAW_VENISON.get());
+            event.accept(AntarchyNeoforgeItems.COOKED_VENISON.get());
+            event.accept(AntarchyNeoforgeItems.ROOT_BEER.get());
             event.accept(AntarchyNeoforgeItems.RAINBOW_SUGAR.get());
             event.accept(AntarchyNeoforgeItems.BIG_BERTHA_BLADE.get());
             event.accept(AntarchyNeoforgeItems.BIG_BERTHA_HANDLE.get());
@@ -174,6 +209,23 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.OURANWOOD_BUTTON_ITEM.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_SIGN_ITEM.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_HANGING_SIGN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_LOG_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_WOOD_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STRIPPED_PEACH_LOG_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STRIPPED_PEACH_WOOD_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_PLANKS_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_STAIRS_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_SLAB_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_FENCE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_FENCE_GATE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_BOAT.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_CHEST_BOAT.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_DOOR_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_TRAPDOOR_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_PRESSURE_PLATE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_BUTTON_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_SIGN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.PEACH_HANGING_SIGN_ITEM.get());
             event.accept(AntarchyNeoforgeItems.SHELLSTONE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.SHELLSTONE_STAIRS_ITEM.get());
             event.accept(AntarchyNeoforgeItems.SHELLSTONE_SLAB_ITEM.get());
@@ -213,9 +265,13 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.ANTIMETAL_SCAFFOLDING_ITEM.get());
             event.accept(AntarchyNeoforgeItems.UMBRAL_MOSS_BLOCK_ITEM.get());
             event.accept(AntarchyNeoforgeItems.UMBRAL_MOSS_CARPET_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.BLUSH_MOSS_BLOCK_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.BLUSH_MOSS_CARPET_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DREAM_TORCH_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DREAM_LANTERN_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DREAM_CAMPFIRE_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.LUMEN_FROGLIGHT_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.ROSEATE_FROGLIGHT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DREAM_SAND_ITEM.get());
             event.accept(AntarchyNeoforgeItems.DREAM_SANDSTONE_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CHISELED_DREAM_SANDSTONE_ITEM.get());
@@ -267,6 +323,8 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(UltimateGearHelper.createUltimateBowStack(AntarchyNeoforgeItems.ULTIMATE_BOW.get(), event.getParameters().holders()));
             event.accept(AntarchyNeoforgeItems.ULTIMATE_CROSSBOW.get());
             event.accept(AntarchyNeoforgeItems.SQUIDZOOKA.get());
+            event.accept(AntarchyNeoforgeItems.RPO_LAUNCHER.get());
+            event.accept(AntarchyNeoforgeItems.KRAKENS_GRASP.get());
             event.accept(AntarchyNeoforgeItems.SHRINK_RAY.get());
             event.accept(AntarchyNeoforgeItems.GROWTH_RAY.get());
             event.accept(AntarchyNeoforgeItems.GRAVITY_GUN.get());
@@ -307,139 +365,10 @@ public class AntarchyNeoforgeCreativeModeTabs {
     }
 
     private static int creativeTabGroup(net.minecraft.world.item.Item item) {
-        String path = BuiltInRegistries.ITEM.getKey(item).getPath();
-        return switch (path) {
-            // 0 - Ouranwood blocks
-            case "ouranwood_log", "ouranwood_wood", "mossy_ouranwood_log", "mossy_ouranwood_wood",
-                 "stripped_ouranwood_log", "stripped_ouranwood_wood", "duplicator_log",
-                 "ouranwood_planks", "ouranwood_stairs", "ouranwood_slab",
-                 "ouranwood_fence", "ouranwood_fence_gate",
-                 "ouranwood_door", "ouranwood_trapdoor",
-                 "ouranwood_pressure_plate", "ouranwood_button",
-                 "ouranwood_sign", "ouranwood_hanging_sign",
-                 "ouranwood_boat", "ouranwood_chest_boat" -> 0;
+        return CreativeTabOrder.group(item);
+    }
 
-            // 1 - Nyxite blocks
-            case "nyxite", "polished_nyxite", "chiseled_nyxite", "nyxite_bricks",
-                 "nyxite_stairs", "nyxite_slab", "nyxite_wall",
-                 "polished_nyxite_stairs", "polished_nyxite_slab", "polished_nyxite_wall",
-                 "nyxite_brick_stairs", "nyxite_brick_slab", "nyxite_brick_wall",
-                 "pale_nyxite", "nyxite_spike", "potent_nyxite" -> 1;
-
-            // 2 - Shellstone blocks
-            case "shellstone", "polished_shellstone", "shellstone_bricks", "chiseled_shellstone",
-                 "mossy_shellstone_bricks", "cracked_shellstone_bricks",
-                 "shellstone_stairs", "shellstone_slab", "shellstone_wall",
-                 "polished_shellstone_stairs", "polished_shellstone_slab", "polished_shellstone_wall",
-                 "shellstone_brick_stairs", "shellstone_brick_slab", "shellstone_brick_wall",
-                 "mossy_shellstone_brick_stairs", "mossy_shellstone_brick_slab", "mossy_shellstone_brick_wall" -> 2;
-
-            // 3 - Antimetal blocks
-            case "antimetal", "polished_antimetal" -> 3;
-
-            // 4 - Dream sand and blocks
-            case "dream_sand", "dream_sandstone", "chiseled_dream_sandstone",
-                 "cut_dream_sandstone", "smooth_dream_sandstone",
-                 "dream_sandstone_stairs", "dream_sandstone_slab", "dream_sandstone_wall",
-                 "smooth_dream_sandstone_stairs", "smooth_dream_sandstone_slab",
-                 "cut_dream_sandstone_slab" -> 4;
-
-            // 5 - Umbral moss
-            case "umbral_moss_block", "umbral_moss_carpet" -> 4;
-
-            // 6 - All ores + metal storage/decorative blocks
-            case "uranium_ore", "deepslate_uranium_ore", "titanium_ore", "deepslate_titanium_ore",
-                 "uranium_block", "titanium_block",
-                 "cut_uranium", "cut_titanium", "cut_uranium_slab", "cut_titanium_slab",
-                 "cut_uranium_stairs", "cut_titanium_stairs",
-                 "chiseled_uranium", "chiseled_titanium",
-                 "uranium_door", "titanium_door", "uranium_trapdoor", "titanium_trapdoor",
-                 "uranium_bars", "titanium_bars", "uranium_bulb", "titanium_bulb" -> 6;
-
-            // 7 - Raw ores
-            case "raw_uranium", "raw_titanium", "raw_uranium_scrap", "raw_titanium_scrap",
-                 "raw_uranium_block", "raw_titanium_block" -> 7;
-
-            // 8 - Blood crystal blocks (not the shard ingredient)
-            case "blood_crystal_block", "small_blood_crystal_bud", "medium_blood_crystal_bud",
-                 "large_blood_crystal_bud", "budding_blood_crystal", "blood_crystal_cluster",
-                 "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
-
-            // 9 - Ouranwood leaves
-            case "ouranwood_leaves" -> 9;
-
-            // 10 - Saplings / seeds
-            case "duplicator_sapling", "ouranwood_acorn" -> 10;
-
-            // 11 - Plants and flowers
-            case "orange_milkweed", "pink_milkweed", "hushweed", "amber_lichen", "creepvine",
-                 "triffid_goo_block", "wasp_nest",
-                 "red_ant_nest", "brown_ant_nest", "rainbow_ant_nest", "termite_nest" -> 11;
-
-            // 12 - Dream lighting
-            case "dream_torch", "dream_lantern", "dream_campfire" -> 12;
-
-            // 13 - Antimetal scaffolding
-            case "antimetal_scaffolding" -> 13;
-
-            // 14 - Infested blocks
-            case "infested_rooted_dirt", "infested_coarse_dirt", "bed_bug_egg",
-                 "creeping_horror_egg", "lurking_terror_egg" -> 14;
-
-            // 15 - Tools
-            case "ultimate_pickaxe", "ultimate_axe", "ultimate_shovel", "ultimate_hoe",
-                 "duct_tape", "diamond_minecart", "gravity_sculk_sensor" -> 15;
-
-            // 16 - Liquid buckets
-            case "bile_bucket", "ichor_bucket", "antiwater_bucket", "cloud_bucket" -> 16;
-
-            // 17 - Misc wearables / gadgets
-            case "moggles", "brutalfly_elytra", "fallen_king_crown", "jumpy_boots" -> 17;
-
-            // 18 - Weapons
-            case "battle_axe", "basilisk_dagger", "squidzooka", "shrink_ray", "growth_ray",
-                 "gravity_gun", "water_cannon", "nightmare_sword", "lucid_pearl", "scorpion_whip", "blood_crystal_katana",
-                 "big_bertha", "big_bertha_blade", "big_bertha_handle", "big_bertha_hilt",
-                 "ultimate_sword", "ultimate_mace" -> 18;
-
-            // 19 - Armor sets
-            case "primordial_helmet", "primordial_chestplate",
-                 "primordial_leggings", "primordial_boots",
-                 "blood_crystal_helmet", "blood_crystal_chestplate",
-                 "blood_crystal_leggings", "blood_crystal_boots",
-                 "nightmare_helmet", "nightmare_chestplate",
-                 "nightmare_leggings", "nightmare_boots",
-                 "ultimate_helmet", "ultimate_chestplate",
-                 "ultimate_leggings", "ultimate_boots" -> 19;
-
-            // 20 - Ranged weapons
-            case "ultimate_bow", "ultimate_crossbow" -> 20;
-
-            // 21 - Foods
-            case "cloud_shark_fin_soup", "mud_pie", "rainbow_sugar",
-                 "blood_crystal_apple" -> 21;
-
-            // 22 - Crafting ingredients
-            case "blood_crystal_shard", "cloud_shark_fin", "basilisk_fang", "kraken_tooth",
-                 "emperor_scorpion_stinger", "nightmare_scale", "molevore_nose",
-                 "moleworm", "uranium_nugget", "titanium_nugget",
-                 "uranium_ingot", "titanium_ingot", "lucid_eye",
-                 "mantis_claw", "jumpy_bug_leg", "brutalfly_wing", "cornea_ear",
-                 "primordial_scute", "triffid_goo", "vortex_eye",
-                 "king_scale", "queen_scale", "chiten", "stink_bug" -> 22;
-
-            // 23 - Arrows (reserved for future arrow types)
-
-            // 24 - Potions
-            case "reverie_bottle" -> 24;
-
-            // 25 - Spawn eggs
-            default -> {
-                if (!path.endsWith("_spawn_egg")) {
-                    org.slf4j.LoggerFactory.getLogger("Antarchy/CreativeTab").warn("Unmatched creative tab item: '{}'", path);
-                }
-                yield path.endsWith("_spawn_egg") ? 25 : 99;
-            }
-        };
+    private static int creativeTabSubOrder(net.minecraft.world.item.Item item) {
+        return CreativeTabOrder.subOrder(item);
     }
 }

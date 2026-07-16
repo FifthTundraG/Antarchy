@@ -19,6 +19,23 @@
     "antarchy:ouranwood_sign",
     "antarchy:ouranwood_wall_sign",
     "antarchy:ouranwood_hanging_sign",
-    "antarchy:ouranwood_wall_hanging_sign"
+    "antarchy:ouranwood_wall_hanging_sign",
+    "antarchy:peach_log",
+    "antarchy:peach_wood",
+    "antarchy:stripped_peach_log",
+    "antarchy:stripped_peach_wood",
+    "antarchy:peach_planks",
+    "antarchy:peach_stairs",
+    "antarchy:peach_slab",
+    "antarchy:peach_fence",
+    "antarchy:peach_fence_gate",
+    "antarchy:peach_door",
+    "antarchy:peach_trapdoor",
+    "antarchy:peach_pressure_plate",
+    "antarchy:peach_button",
+    "antarchy:peach_sign",
+    "antarchy:peach_wall_sign",
+    "antarchy:peach_hanging_sign",
+    "antarchy:peach_wall_hanging_sign"
   ]
 }

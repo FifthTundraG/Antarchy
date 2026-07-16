@@ -1,6 +1,10 @@
 {
   "values": [
     "antarchy:ichor",
-    "antarchy:flowing_ichor"
+    "antarchy:flowing_ichor",
+    "antarchy:lumen",
+    "antarchy:flowing_lumen",
+    "antarchy:bile",
+    "antarchy:flowing_bile"
   ]
 }

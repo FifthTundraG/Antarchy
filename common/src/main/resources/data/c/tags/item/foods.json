@@ -3,9 +3,21 @@
   "values": [
     "#c:foods/soup",
     "antarchy:blood_crystal_apple",
+    "antarchy:cornbread",
+    "antarchy:popcorn",
+    "antarchy:peach_pie",
+    "antarchy:raw_venison",
+    "antarchy:cooked_venison",
     "antarchy:mud_pie",
+    "antarchy:high_fructose_corn_syrup",
+    "antarchy:spirit_apple",
     "antarchy:rainbow_sugar",
     "antarchy:cornea_ear",
-    "antarchy:moleworm"
+    "antarchy:moleworm",
+    "antarchy:peach",
+    "antarchy:corn",
+    "antarchy:raw_corndog",
+    "antarchy:cooked_corndog",
+    "antarchy:root_beer"
   ]
 }

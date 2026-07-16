@@ -1,4 +1,6 @@
 package com.craisinlord.antarchy.fabric.client;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricMisc;
+import com.craisinlord.antarchy.fabric.registry.AntarchyFabricSounds;
 
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyTags;
@@ -24,7 +26,7 @@ import java.util.Random;
 
 public final class DreadClientHandler {
     private static final Holder<net.minecraft.world.effect.MobEffect> DREAD_EFFECT =
-            BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricContent.DREAD.get());
+            BuiltInRegistries.MOB_EFFECT.wrapAsHolder(AntarchyFabricMisc.DREAD.get());
     private static final int FOOTSTEP_MIN_INTERVAL_TICKS = 10;
     private static final int FOOTSTEP_MAX_INTERVAL_TICKS = 22;
     private static final int APPARITION_MIN_DURATION_TICKS = 16;
@@ -285,7 +287,7 @@ public final class DreadClientHandler {
                 player.getX(),
                 player.getY() + 1.0D,
                 player.getZ(),
-                AntarchyFabricContent.NIGHTMARE_BITE.get(),
+                AntarchyFabricSounds.NIGHTMARE_BITE.get(),
                 SoundSource.HOSTILE,
                 0.4F,
                 0.88F + RANDOM.nextFloat() * 0.12F,

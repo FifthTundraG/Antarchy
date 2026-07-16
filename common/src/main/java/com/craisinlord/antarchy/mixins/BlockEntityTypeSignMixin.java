@@ -22,16 +22,26 @@ public abstract class BlockEntityTypeSignMixin {
     private static Block antarchy$ouranwoodHangingSign;
     @Unique
     private static Block antarchy$ouranwoodWallHangingSign;
+    @Unique
+    private static Block antarchy$peachSign;
+    @Unique
+    private static Block antarchy$peachWallSign;
+    @Unique
+    private static Block antarchy$peachHangingSign;
+    @Unique
+    private static Block antarchy$peachWallHangingSign;
 
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true)
     private void antarchy$allowOuranwoodSigns(BlockState state, CallbackInfoReturnable<Boolean> cir) {
         Object self = this;
         if (self == BlockEntityType.SIGN) {
-            if (state.is(antarchy$sign()) || state.is(antarchy$wallSign())) {
+            if (state.is(antarchy$sign()) || state.is(antarchy$wallSign())
+                    || state.is(antarchy$peachSign()) || state.is(antarchy$peachWallSign())) {
                 cir.setReturnValue(true);
             }
         } else if (self == BlockEntityType.HANGING_SIGN) {
-            if (state.is(antarchy$hangingSign()) || state.is(antarchy$wallHangingSign())) {
+            if (state.is(antarchy$hangingSign()) || state.is(antarchy$wallHangingSign())
+                    || state.is(antarchy$peachHangingSign()) || state.is(antarchy$peachWallHangingSign())) {
                 cir.setReturnValue(true);
             }
         }
@@ -67,6 +77,38 @@ public abstract class BlockEntityTypeSignMixin {
             antarchy$ouranwoodWallHangingSign = antarchy$resolve("ouranwood_wall_hanging_sign");
         }
         return antarchy$ouranwoodWallHangingSign;
+    }
+
+    @Unique
+    private static Block antarchy$peachSign() {
+        if (antarchy$peachSign == null) {
+            antarchy$peachSign = antarchy$resolve("peach_sign");
+        }
+        return antarchy$peachSign;
+    }
+
+    @Unique
+    private static Block antarchy$peachWallSign() {
+        if (antarchy$peachWallSign == null) {
+            antarchy$peachWallSign = antarchy$resolve("peach_wall_sign");
+        }
+        return antarchy$peachWallSign;
+    }
+
+    @Unique
+    private static Block antarchy$peachHangingSign() {
+        if (antarchy$peachHangingSign == null) {
+            antarchy$peachHangingSign = antarchy$resolve("peach_hanging_sign");
+        }
+        return antarchy$peachHangingSign;
+    }
+
+    @Unique
+    private static Block antarchy$peachWallHangingSign() {
+        if (antarchy$peachWallHangingSign == null) {
+            antarchy$peachWallHangingSign = antarchy$resolve("peach_wall_hanging_sign");
+        }
+        return antarchy$peachWallHangingSign;
     }
 
     @Unique

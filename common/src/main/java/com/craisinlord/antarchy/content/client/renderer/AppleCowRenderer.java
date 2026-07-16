@@ -53,7 +53,7 @@ public class AppleCowRenderer extends GeoEntityRenderer<AppleCowEntity> {
         public void render(PoseStack poseStack, AppleCowEntity animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType,
                            MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick,
                            int packedLight, int packedOverlay) {
-            if (!(animatable instanceof EnchantedGoldenAppleCow)) {
+            if (!(animatable instanceof EnchantedGoldenAppleCow) || animatable.isBaby()) {
                 return;
             }
 

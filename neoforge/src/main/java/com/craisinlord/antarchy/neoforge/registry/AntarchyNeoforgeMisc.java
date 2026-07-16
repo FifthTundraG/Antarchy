@@ -4,7 +4,6 @@ import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserBaseParticleOptions;
 import com.craisinlord.antarchy.content.client.particle.InvertedGeyserParticleOptions;
 import com.craisinlord.antarchy.content.effect.DreadMobEffect;
-import com.craisinlord.antarchy.content.effect.GlimmersGraceMobEffect;
 import com.craisinlord.antarchy.content.effect.GrowthMobEffect;
 import com.craisinlord.antarchy.content.effect.InvertedMobEffect;
 import com.craisinlord.antarchy.content.effect.ParalyzedMobEffect;
@@ -14,6 +13,8 @@ import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.*;
+import com.craisinlord.antarchy.neoforge.worldgen.CornPatchFeature;
+import com.craisinlord.antarchy.neoforge.worldgen.LumenLilyPadFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.*;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluid;
 import com.craisinlord.antarchy.neoforge.content.fluid.AntiwaterFluidType;
@@ -23,10 +24,12 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -56,6 +59,26 @@ public final class AntarchyNeoforgeMisc {
     private static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, Antarchy.MODID);
     private static final DeferredRegister<MapCodec<? extends EntitySubPredicate>> ENTITY_SUB_PREDICATES = DeferredRegister.create(Registries.ENTITY_SUB_PREDICATE_TYPE, Antarchy.MODID);
     private static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Antarchy.MODID);
+    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, Antarchy.MODID);
+    private static final DeferredRegister<net.minecraft.core.component.DataComponentType<?>> DATA_COMPONENT_TYPES =
+            DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Antarchy.MODID);
+    private static final DeferredRegister<net.minecraft.world.item.crafting.RecipeSerializer<?>> RECIPE_SERIALIZERS =
+            DeferredRegister.create(Registries.RECIPE_SERIALIZER, Antarchy.MODID);
+
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>> GLIMMER_VARIANT =
+            DATA_COMPONENT_TYPES.register("glimmer_variant",
+                    () -> net.minecraft.core.component.DataComponentType.<com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant>builder()
+                            .persistent(com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.CODEC)
+                            .networkSynchronized(com.craisinlord.antarchy.content.entity.glimmer.GlimmerVariant.STREAM_CODEC)
+                            .build());
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> AMERICAN =
+            DATA_COMPONENT_TYPES.register("american",
+                    () -> net.minecraft.core.component.DataComponentType.<net.minecraft.util.Unit>builder()
+                            .persistent(net.minecraft.util.Unit.CODEC)
+                            .networkSynchronized(net.minecraft.network.codec.StreamCodec.unit(net.minecraft.util.Unit.INSTANCE))
+                            .build());
+    public static final DeferredHolder<net.minecraft.world.item.crafting.RecipeSerializer<?>, net.minecraft.world.item.crafting.RecipeSerializer<com.craisinlord.antarchy.content.AmericanizeRecipe>> AMERICANIZE_SERIALIZER =
+            RECIPE_SERIALIZERS.register("americanize", () -> com.craisinlord.antarchy.content.AmericanizeRecipe.SERIALIZER);
 
     public static final DeferredHolder<Attribute, Attribute> DOUBLE_DAMAGE_CHANCE = ATTRIBUTES.register(
             "double_damage_chance",
@@ -64,6 +87,10 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<Attribute, Attribute> BLOODGLASS_MAX_HEARTS = ATTRIBUTES.register(
             "bloodglass_max_hearts",
             () -> new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.antarchy.bloodglass_max_hearts", 0.0, 0.0, 8.0).setSyncable(true)
+    );
+    public static final DeferredHolder<MenuType<?>, MenuType<com.craisinlord.antarchy.content.menu.DorrieInventoryMenu>> DORRIE_INVENTORY_MENU = MENU_TYPES.register(
+            "dorrie_inventory",
+            () -> new MenuType<>(com.craisinlord.antarchy.content.menu.DorrieInventoryMenu::new, FeatureFlags.DEFAULT_FLAGS)
     );
 
     // Mob effects
@@ -74,7 +101,6 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<MobEffect, com.craisinlord.antarchy.content.effect.BloodglassWardEffect> BLOODGLASS_WARD = MOB_EFFECTS.register("bloodglass_ward", com.craisinlord.antarchy.content.effect.BloodglassWardEffect::new);
     public static final DeferredHolder<MobEffect, ShrinkMobEffect> SHRINKING_EFFECT = MOB_EFFECTS.register("shrinking", ShrinkMobEffect::new);
     public static final DeferredHolder<MobEffect, GrowthMobEffect> GROWTH_EFFECT = MOB_EFFECTS.register("growth", GrowthMobEffect::new);
-    // public static final DeferredHolder<MobEffect, GlimmersGraceMobEffect> GLIMMERS_GRACE = MOB_EFFECTS.register("glimmers_grace", GlimmersGraceMobEffect::new);
 
     // Potions
     public static final DeferredHolder<Potion, Potion> INVERSION = POTIONS.register("inversion",
@@ -149,6 +175,10 @@ public final class AntarchyNeoforgeMisc {
             () -> new AntiwaterFluid.Source(antiwaterProperties()));
     public static final DeferredHolder<Fluid, Fluid> FLOWING_ANTIWATER = FLUIDS.register("flowing_antiwater",
             () -> new AntiwaterFluid.Flowing(antiwaterProperties()));
+    public static final DeferredHolder<Fluid, Fluid> LUMEN = FLUIDS.register("lumen",
+            () -> new BaseFlowingFluid.Source(lumenProperties()));
+    public static final DeferredHolder<Fluid, Fluid> FLOWING_LUMEN = FLUIDS.register("flowing_lumen",
+            () -> new BaseFlowingFluid.Flowing(lumenProperties()));
 
     // Particle types
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DREAM_FIRE_FLAME = PARTICLE_TYPES.register("dream_fire_flame",
@@ -156,6 +186,8 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_GAS = PARTICLE_TYPES.register("stinky_gas",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_FLY = PARTICLE_TYPES.register("stinky_fly",
+            () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PEACH_LEAVES_PARTICLE = PARTICLE_TYPES.register("peach_leaves_particle",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS = PARTICLE_TYPES.register("hypnotic_gas",
             () -> new SimpleParticleType(true));
@@ -193,16 +225,24 @@ public final class AntarchyNeoforgeMisc {
             () -> new OuranwoodTreeFeature(OuranwoodTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, OuranwoodCocoonTreeFeature> OURANWOOD_COCOON_TREE = FEATURES.register("ouranwood_cocoon_tree",
             () -> new OuranwoodCocoonTreeFeature(OuranwoodTreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachTreeFeature> PEACH_TREE_FEATURE = FEATURES.register("peach_tree",
+            () -> new PeachTreeFeature(PeachTreeConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachTreeFeature> PEACH_LARGE_TREE_FEATURE = FEATURES.register("peach_large_tree",
+            () -> new PeachTreeFeature(PeachTreeConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_FOREST_FLORA = FEATURES.register("elythia_forest_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.FOREST));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_MEADOW_FLORA = FEATURES.register("elythia_meadow_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.MEADOW));
+    public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> PEACH_FOREST_FLORA = FEATURES.register("peach_forest_flora",
+            () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.PEACH_FOREST));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> FLOWER_FOREST_MILKWEED = FEATURES.register("flower_forest_milkweed",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.FLOWER_FOREST_MILKWEED));
+    public static final DeferredHolder<Feature<?>, CornPatchFeature> CORN_PATCH = FEATURES.register("corn_patch",
+            () -> new CornPatchFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.ocean.StarCoralPatchFeature> STAR_CORAL_PATCH = FEATURES.register("star_coral_patch",
+            () -> new com.craisinlord.antarchy.content.worldgen.ocean.StarCoralPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_BUTTERFLY_FIELDS_FLORA = FEATURES.register("butterfly_fields_flora",
             () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.BUTTERFLY_FIELDS));
-    public static final DeferredHolder<Feature<?>, ElythiaFloraFeature> ELYTHIA_TORCHFLOWER_FIELDS_FLORA = FEATURES.register("elythia_torchflower_fields_flora",
-            () -> new ElythiaFloraFeature(NoneFeatureConfiguration.CODEC, ElythiaFloraFeature.Variant.TORCHFLOWER_FIELDS));
     public static final DeferredHolder<Feature<?>, ElythiaSurfaceCoverFeature> ELYTHIA_SURFACE_COVER = FEATURES.register("elythia_surface_cover",
             () -> new ElythiaSurfaceCoverFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaUndergroundFeature> ELYTHIA_UNDERGROUND = FEATURES.register("elythia_underground",
@@ -221,10 +261,22 @@ public final class AntarchyNeoforgeMisc {
             () -> new TriffidPatchFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaPondFeature> ELYTHIA_POND = FEATURES.register("elythia_pond",
             () -> new ElythiaPondFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenPoolFeature> LUMEN_POOL = FEATURES.register("lumen_pools",
+            () -> new LumenPoolFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenLilyPadFeature> LUMEN_LILY_PADS = FEATURES.register("lumen_lily_pads",
+            () -> new LumenLilyPadFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenStreamFeature> LUMEN_STREAM = FEATURES.register("lumen_streams",
+            () -> new LumenStreamFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, LumenSpireFeature> LUMEN_SPIRE = FEATURES.register("lumen_spires",
+            () -> new LumenSpireFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaTuffBoulderFeature> ELYTHIA_TUFF_BOULDER = FEATURES.register("elythia_tuff_boulder",
             () -> new ElythiaTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, ElythiaLargeTuffBoulderFeature> ELYTHIA_LARGE_TUFF_BOULDER = FEATURES.register("elythia_large_tuff_boulder",
             () -> new ElythiaLargeTuffBoulderFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachForestMossyBoulderFeature> PEACH_FOREST_MOSSY_BOULDER = FEATURES.register("peach_forest_mossy_boulder",
+            () -> new PeachForestMossyBoulderFeature(NoneFeatureConfiguration.CODEC));
+    public static final DeferredHolder<Feature<?>, PeachForestPondFeature> PEACH_FOREST_POND = FEATURES.register("peach_forest_pond",
+            () -> new PeachForestPondFeature(PeachForestPondConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, CoralSpikeFeature> ELYTHIA_CORAL_SPIKE = FEATURES.register("elythia_coral_spike",
             () -> new CoralSpikeFeature(NoneFeatureConfiguration.CODEC));
     public static final DeferredHolder<Feature<?>, FallenOuranwoodFeature> FALLEN_OURANWOOD_TREE = FEATURES.register("fallen_ouranwood_tree",
@@ -281,6 +333,9 @@ public final class AntarchyNeoforgeMisc {
         DENSITY_FUNCTION_TYPES.register(modEventBus);
         ENTITY_SUB_PREDICATES.register(modEventBus);
         ATTRIBUTES.register(modEventBus);
+        MENU_TYPES.register(modEventBus);
+        DATA_COMPONENT_TYPES.register(modEventBus);
+        RECIPE_SERIALIZERS.register(modEventBus);
     }
 
 
@@ -306,6 +361,15 @@ public final class AntarchyNeoforgeMisc {
         return new BaseFlowingFluid.Properties(ANTIWATER_TYPE, ANTIWATER, FLOWING_ANTIWATER)
                 .bucket(() -> AntarchyNeoforgeItems.ANTIWATER_BUCKET.get())
                 .block(() -> AntarchyNeoforgeBlocks.ANTIWATER_BLOCK.get())
+                .slopeFindDistance(4)
+                .levelDecreasePerBlock(1)
+                .tickRate(5);
+    }
+
+    static BaseFlowingFluid.Properties lumenProperties() {
+        return new BaseFlowingFluid.Properties(com.craisinlord.antarchy.neoforge.AntarchyNeoForgeFluidTypes.LUMEN_TYPE, LUMEN, FLOWING_LUMEN)
+                .bucket(() -> AntarchyNeoforgeItems.LUMEN_BUCKET.get())
+                .block(() -> AntarchyNeoforgeBlocks.LUMEN_BLOCK.get())
                 .slopeFindDistance(4)
                 .levelDecreasePerBlock(1)
                 .tickRate(5);
