@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,powered=false,waterlogged=false": { "model": "builtin/entity" },
+    "facing=north,powered=false,waterlogged=true": { "model": "builtin/entity" },
+    "facing=north,powered=true,waterlogged=false": { "model": "builtin/entity" },
+    "facing=north,powered=true,waterlogged=true": { "model": "builtin/entity" },
+    "facing=south,powered=false,waterlogged=false": { "model": "builtin/entity" },
+    "facing=south,powered=false,waterlogged=true": { "model": "builtin/entity" },
+    "facing=south,powered=true,waterlogged=false": { "model": "builtin/entity" },
+    "facing=south,powered=true,waterlogged=true": { "model": "builtin/entity" },
+    "facing=east,powered=false,waterlogged=false": { "model": "builtin/entity" },
+    "facing=east,powered=false,waterlogged=true": { "model": "builtin/entity" },
+    "facing=east,powered=true,waterlogged=false": { "model": "builtin/entity" },
+    "facing=east,powered=true,waterlogged=true": { "model": "builtin/entity" },
+    "facing=west,powered=false,waterlogged=false": { "model": "builtin/entity" },
+    "facing=west,powered=false,waterlogged=true": { "model": "builtin/entity" },
+    "facing=west,powered=true,waterlogged=false": { "model": "builtin/entity" },
+    "facing=west,powered=true,waterlogged=true": { "model": "builtin/entity" }
+  }
+}

@@ -1,5 +1,6 @@
 package com.craisinlord.antarchy.content.block;
 
+import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.AntarchyTags;
 import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -15,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -25,7 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public final class GiantLilyPadBlock extends Block {
+public final class GiantLilyPadBlock extends Block implements BonemealableBlock {
     public static final MapCodec<GiantLilyPadBlock> CODEC = Block.simpleCodec(GiantLilyPadBlock::new);
     public static final EnumProperty<Shape> SHAPE = EnumProperty.create("shape", Shape.class);
     public static final EnumProperty<TilePosition> TILE_POSITION = EnumProperty.create("tile_position", TilePosition.class);
@@ -71,6 +74,68 @@ public final class GiantLilyPadBlock extends Block {
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return isSupported(level, pos);
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        if (isThreeByThreeCenter(state)) {
+            return level.isEmptyBlock(pos.above());
+        }
+
+        return state.getValue(SHAPE) != Shape.THREE_BY_THREE;
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        if (isThreeByThreeCenter(state)) {
+            growLotus(level, pos);
+            return;
+        }
+
+        if (state.getValue(SHAPE) == Shape.THREE_BY_THREE) {
+            return;
+        }
+
+        spreadNearby(level, random, pos);
+    }
+
+    private static boolean isThreeByThreeCenter(BlockState state) {
+        return state.getValue(SHAPE) == Shape.THREE_BY_THREE && state.getValue(TILE_POSITION) == TilePosition.CENTER;
+    }
+
+    private static void growLotus(ServerLevel level, BlockPos padPos) {
+        BlockPos abovePos = padPos.above();
+        if (!level.isEmptyBlock(abovePos)) {
+            return;
+        }
+
+        BlockState lotusState = AntarchyObjects.LOTUS.get().defaultBlockState();
+        if (lotusState.canSurvive(level, abovePos)) {
+            level.setBlock(abovePos, lotusState, Block.UPDATE_ALL);
+        }
+    }
+
+    private static void spreadNearby(ServerLevel level, RandomSource random, BlockPos origin) {
+        for (int attempt = 0; attempt < 6; attempt++) {
+            int dx = random.nextInt(5) - 2;
+            int dz = random.nextInt(5) - 2;
+            if (dx == 0 && dz == 0) {
+                continue;
+            }
+
+            BlockPos candidate = origin.offset(dx, 0, dz);
+            if (!level.isEmptyBlock(candidate) || !isSupported(level, candidate)) {
+                continue;
+            }
+
+            level.setBlock(candidate, AntarchyObjects.GIANT_LILY_PAD.get().defaultBlockState(), Block.UPDATE_ALL);
+            return;
+        }
     }
 
     @Override

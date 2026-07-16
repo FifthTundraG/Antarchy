@@ -219,7 +219,7 @@ public class AntarchyNeoforge {
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BOMBER,
                 (java.util.function.Supplier) AntarchyNeoforgeEntites.BED_BUG,
                 AntarchyNeoforgeEntites.CHEEP,
-                () -> { throw new IllegalStateException("Dorrie is not part of this update yet."); },
+                AntarchyNeoforgeEntites.DORRIE,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyNeoforgeBlocks.DUCT_TAPE.get(),
@@ -284,10 +284,12 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_SQUIRREL_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> AntarchyNeoforgeBlocks.GIANT_LILY_PAD.get(),
+                () -> AntarchyNeoforgeBlocks.SEASHELL.get(),
                 () -> AntarchyNeoforgeBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED_BLOCK_ENTITY.get(),
+                () -> AntarchyNeoforgeBlocks.SEASHELL_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeMisc.STINKY_GAS.get(),
                 () -> AntarchyNeoforgeMisc.STINKY_FLY.get(),
                 () -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get(),
@@ -298,6 +300,7 @@ public class AntarchyNeoforge {
         AntarchyObjects.setOctopusBomb(AntarchyNeoforgeEntites.OCTOPUS_BOMB);
         AntarchyObjects.setTentacle(AntarchyNeoforgeEntites.TENTACLE);
         AntarchyObjects.setKrakensGraspTrident(AntarchyNeoforgeEntites.KRAKENS_GRASP_TRIDENT);
+        AntarchyObjects.setLotus(() -> AntarchyNeoforgeBlocks.LOTUS.get());
         AntarchyObjects.setKrakenTentacle(() -> AntarchyNeoforgeItems.KRAKEN_TENTACLE.get());
         AntarchyObjects.setKrakensGrasp(() -> AntarchyNeoforgeItems.KRAKENS_GRASP.get());
         AntarchyObjects.setOuranwoodDeer(AntarchyNeoforgeEntites.OURANWOOD_DEER);
@@ -320,8 +323,7 @@ public class AntarchyNeoforge {
         AntarchyObjects.setLumenBlock(() -> AntarchyNeoforgeBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyNeoforgeBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get());
-        // Dorrie is not part of this update yet.
-        // AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
+        AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
     }
 
     private static boolean isModLoaded(String modId) {

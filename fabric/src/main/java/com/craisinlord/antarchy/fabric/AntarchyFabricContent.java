@@ -258,6 +258,7 @@ public final class AntarchyFabricContent {
         AntarchyObjects.setOctopusBomb(AntarchyFabricEntities.OCTOPUS_BOMB);
         AntarchyObjects.setTentacle(AntarchyFabricEntities.TENTACLE);
         AntarchyObjects.setKrakensGraspTrident(AntarchyFabricEntities.KRAKENS_GRASP_TRIDENT);
+        AntarchyObjects.setLotus(() -> AntarchyFabricBlocks.LOTUS.get());
         AntarchyObjects.setKrakenTentacle(() -> AntarchyFabricItems.KRAKEN_TENTACLE.get());
         AntarchyObjects.setKrakensGrasp(() -> AntarchyFabricItems.KRAKENS_GRASP.get());
         AntarchyObjects.setOuranwoodDeer(AntarchyFabricEntities.OURANWOOD_DEER);
@@ -281,7 +282,7 @@ public final class AntarchyFabricContent {
         AntarchyObjects.setLumenBlock(() -> AntarchyFabricBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyFabricBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyFabricMisc.PEACH_LEAVES_PARTICLE.get());
-        // AntarchyObjects.setDorrieInventoryMenu(AntarchyFabricMisc.DORRIE_INVENTORY_MENU);
+        AntarchyObjects.setDorrieInventoryMenu(AntarchyFabricMisc.DORRIE_INVENTORY_MENU);
         AntarchyObjects.bind(
                 AntarchyFabricEntities.EASTER_BUNNY,
                 AntarchyFabricEntities.FLYING_SQUIRREL,
@@ -306,7 +307,7 @@ public final class AntarchyFabricContent {
                 (java.util.function.Supplier) AntarchyFabricEntities.BOMBER,
                 (java.util.function.Supplier) AntarchyFabricEntities.BED_BUG,
                 AntarchyFabricEntities.CHEEP,
-                () -> { throw new IllegalStateException("Dorrie is not part of this update yet."); },
+                AntarchyFabricEntities.DORRIE,
                 () -> AntarchyFabricBlocks.DUPLICATOR_LOG.get(),
                 () -> AntarchyFabricBlocks.DUPLICATOR_SAPLING.get(),
                 () -> AntarchyFabricBlocks.DUCT_TAPE.get(),
@@ -371,10 +372,12 @@ public final class AntarchyFabricContent {
                 () -> AntarchyFabricBlocks.OURANWOOD_SQUIRREL_NEST.get(),
                 () -> AntarchyFabricBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
                 () -> AntarchyFabricBlocks.GIANT_LILY_PAD.get(),
+                () -> AntarchyFabricBlocks.SEASHELL.get(),
                 () -> AntarchyFabricBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricBlocks.WASP_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricBlocks.HUSHWEED_BLOCK_ENTITY.get(),
+                () -> AntarchyFabricBlocks.SEASHELL_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricMisc.STINKY_GAS.get(),
                 () -> AntarchyFabricMisc.STINKY_FLY.get(),
                 () -> AntarchyFabricMisc.PEACH_LEAVES_PARTICLE.get(),

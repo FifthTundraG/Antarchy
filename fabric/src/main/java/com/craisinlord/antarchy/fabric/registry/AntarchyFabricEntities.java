@@ -598,12 +598,11 @@ public final class AntarchyFabricEntities {
 
 
 
-    // Dorrie is not part of this update yet.
-    // public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
-    //         () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.DorrieEntity::new, MobCategory.CREATURE)
-    //                 .sized(1.6F, 1.4F)
-    //                 .clientTrackingRange(10)
-    //                 .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+            () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.DorrieEntity::new, MobCategory.CREATURE)
+                    .sized(1.6F, 1.4F)
+                    .clientTrackingRange(10)
+                    .build("dorrie"));
 
 
     public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",

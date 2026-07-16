@@ -16,6 +16,7 @@ import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
+import com.craisinlord.antarchy.content.block.entity.SeashellBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
 import com.craisinlord.antarchy.content.fluid.LumenLiquidBlock;
@@ -353,6 +354,10 @@ public final class AntarchyFabricBlocks {
 
     public static final DeferredBlock<GiantLilyPadBlock> GIANT_LILY_PAD = BLOCKS.register("giant_lily_pad",
             () -> new GiantLilyPadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)));
+    public static final DeferredBlock<com.craisinlord.antarchy.content.block.LotusBlock> LOTUS = BLOCKS.register("lotus",
+            () -> new com.craisinlord.antarchy.content.block.LotusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM)));
+    public static final DeferredBlock<SeashellBlock> SEASHELL = BLOCKS.register("seashell",
+            () -> new SeashellBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TURTLE_EGG).noOcclusion()));
 
 
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
@@ -1008,6 +1013,11 @@ public final class AntarchyFabricBlocks {
                     (pos, state) -> new PotentNyxiteBlockEntity(pos, state, AntarchyFabricBlocks::potentNyxiteBlockEntityType),
                     POTENT_NYXITE.get()
             ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SeashellBlockEntity>> SEASHELL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("seashell",
+            () -> BlockEntityType.Builder.of(
+                    SeashellBlockEntity::new,
+                    SEASHELL.get()
+            ).build(null));
 
 
 
@@ -1025,6 +1035,10 @@ public final class AntarchyFabricBlocks {
 
     private static BlockEntityType<PotentNyxiteBlockEntity> potentNyxiteBlockEntityType() {
         return POTENT_NYXITE_BLOCK_ENTITY.get();
+    }
+
+    private static BlockEntityType<SeashellBlockEntity> seashellBlockEntityType() {
+        return SEASHELL_BLOCK_ENTITY.get();
     }
 
 

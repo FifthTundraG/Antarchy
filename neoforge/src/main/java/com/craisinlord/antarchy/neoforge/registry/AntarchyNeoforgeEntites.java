@@ -315,12 +315,11 @@ public final class AntarchyNeoforgeEntites {
                     .sized(1.0F, 1.2F)
                     .clientTrackingRange(8)
                     .build("cheep"));
-    // Dorrie is not part of this update yet.
-    // public static final DeferredHolder<EntityType<?>, EntityType<DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
-    //         () -> EntityType.Builder.of(DorrieEntity::new, MobCategory.CREATURE)
-    //                 .sized(1.6F, 1.4F)
-    //                 .clientTrackingRange(10)
-    //                 .build("dorrie"));
+    public static final DeferredHolder<EntityType<?>, EntityType<DorrieEntity>> DORRIE = ENTITY_TYPES.register("dorrie",
+            () -> EntityType.Builder.of(DorrieEntity::new, MobCategory.CREATURE)
+                    .sized(1.6F, 1.4F)
+                    .clientTrackingRange(10)
+                    .build("dorrie"));
     public static final DeferredHolder<EntityType<?>, EntityType<OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",
             () -> EntityType.Builder.of(OuranwoodDeerEntity::new, MobCategory.CREATURE)
                     .sized(0.9F, 1.4F)

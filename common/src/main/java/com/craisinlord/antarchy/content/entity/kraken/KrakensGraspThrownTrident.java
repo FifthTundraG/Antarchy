@@ -11,16 +11,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class KrakensGraspThrownTrident extends AbstractArrow implements ItemSupplier {
+public class KrakensGraspThrownTrident extends AbstractArrow implements GeoEntity {
     private boolean dealtDamage;
     private boolean returning;
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public KrakensGraspThrownTrident(EntityType<? extends KrakensGraspThrownTrident> entityType, Level level) {
         super(entityType, level);
@@ -32,8 +36,12 @@ public class KrakensGraspThrownTrident extends AbstractArrow implements ItemSupp
     }
 
     @Override
-    public ItemStack getItem() {
-        return new ItemStack(AntarchyObjects.KRAKENS_GRASP.get());
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
     }
 
     @Override
@@ -94,6 +102,8 @@ public class KrakensGraspThrownTrident extends AbstractArrow implements ItemSupp
         boolean hurt = target.hurt(damageSource, (float) AntarchySettings.krakensGraspThrownDamage());
         if (hurt) {
             KrakensGraspItem.strikeLightning(target, serverLevel);
+            TentacleEntity.spawnAt(serverLevel, new Vec3(target.getX(), target.getY(), target.getZ()),
+                    owner instanceof LivingEntity livingOwner ? livingOwner : null);
         }
 
         this.dealtDamage = true;

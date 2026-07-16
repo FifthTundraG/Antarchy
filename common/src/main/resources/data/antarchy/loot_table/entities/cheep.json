@@ -1,5 +1,15 @@
 {
   "type": "minecraft:entity",
-  "pools": [],
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "antarchy:cheep"
+        }
+      ]
+    }
+  ],
   "random_sequence": "antarchy:entities/cheep"
 }

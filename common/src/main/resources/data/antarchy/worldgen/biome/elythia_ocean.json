@@ -54,7 +54,8 @@
     [
       "minecraft:sea_pickle",
       "minecraft:warm_ocean_vegetation",
-      "minecraft:kelp_warm"
+      "minecraft:kelp_warm",
+      "antarchy:giant_lily_pad_patch"
     ],
     []
   ],

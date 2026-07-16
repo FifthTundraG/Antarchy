@@ -59,7 +59,7 @@ public final class CreativeTabOrder {
                  "myrmite", "broodstone", "chiten_block", "chiten_spike", "amber_moss_block", "amber_moss_carpet" -> 8;
             case "ouranwood_leaves", "peach_leaves" -> 9;
             case "duplicator_sapling", "ouranwood_acorn", "peach_sapling", "corn_seeds" -> 10;
-            case "orange_milkweed", "pink_milkweed", "camellia", "spider_lily", "hushweed", "amber_lichen", "creepvine",
+            case "orange_milkweed", "pink_milkweed", "camellia", "spider_lily", "lotus", "hushweed", "amber_lichen", "creepvine",
                  "triffid_goo_block", "cloud_block", "wasp_nest",
                  "red_ant_nest", "brown_ant_nest", "rainbow_ant_nest", "termite_nest",
                  "star_coral", "star_coral_fan", "star_coral_block",
@@ -179,6 +179,7 @@ public final class CreativeTabOrder {
             case "dead_star_coral" -> 17;
             case "dead_star_coral_fan" -> 18;
             case "dead_star_coral_block" -> 19;
+            case "lotus" -> 20;
             case "blood_crystal_block" -> 0;
             case "small_blood_crystal_bud" -> 1;
             case "medium_blood_crystal_bud" -> 2;

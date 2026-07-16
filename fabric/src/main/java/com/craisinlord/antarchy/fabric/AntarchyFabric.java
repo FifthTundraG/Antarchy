@@ -115,6 +115,14 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.PLACED_FEATURE,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "star_coral_patch")
     );
+    private static final TagKey<net.minecraft.world.level.biome.Biome> HAS_SEASHELL = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "has_seashell")
+    );
+    private static final ResourceKey<PlacedFeature> SEASHELL_PATCH = ResourceKey.create(
+            Registries.PLACED_FEATURE,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "seashell_patch")
+    );
     @Override
     public void onInitialize() {
         AntarchyFabricNetworking.register();
@@ -217,6 +225,11 @@ public final class AntarchyFabric implements ModInitializer {
                 BiomeSelectors.tag(HAS_STAR_CORAL),
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 STAR_CORAL_PATCH
+        );
+        BiomeModifications.addFeature(
+                BiomeSelectors.tag(HAS_SEASHELL),
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                SEASHELL_PATCH
         );
         BiomeModifications.addSpawn(
                 BiomeSelectors.tag(APPLE_COW_SPAWN_BIOMES),

@@ -29,6 +29,7 @@ import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.content.entity.ScorpionEntity;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
+import com.craisinlord.antarchy.content.block.entity.SeashellBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
 import java.util.function.Supplier;
 import net.minecraft.core.Holder;
@@ -292,6 +293,10 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> GIANT_LILY_PAD = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> LOTUS = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<Block> SEASHELL = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<AntNestBlockEntity>> ANT_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<AntNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<DreamCampfireBlockEntity>> DREAM_CAMPFIRE_BLOCK_ENTITY = (Supplier<BlockEntityType<DreamCampfireBlockEntity>>) UNBOUND;
@@ -299,6 +304,8 @@ public final class AntarchyObjects {
     public static Supplier<BlockEntityType<WaspNestBlockEntity>> WASP_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<WaspNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<HushweedBlockEntity>> HUSHWEED_BLOCK_ENTITY = (Supplier<BlockEntityType<HushweedBlockEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<BlockEntityType<SeashellBlockEntity>> SEASHELL_BLOCK_ENTITY = (Supplier<BlockEntityType<SeashellBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<SimpleParticleType> STINKY_GAS = (Supplier<SimpleParticleType>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -401,10 +408,12 @@ public final class AntarchyObjects {
             Supplier<Block> squirrelNestBlock,
             Supplier<Block> brutalflyCocoonSpawner,
             Supplier<Block> giantLilyPad,
+            Supplier<Block> seashell,
             Supplier<BlockEntityType<AntNestBlockEntity>> antNestBlockEntity,
             Supplier<BlockEntityType<DreamCampfireBlockEntity>> dreamCampfireBlockEntity,
             Supplier<BlockEntityType<WaspNestBlockEntity>> waspNestBlockEntity,
             Supplier<BlockEntityType<HushweedBlockEntity>> hushweedBlockEntity,
+            Supplier<BlockEntityType<SeashellBlockEntity>> seashellBlockEntity,
             Supplier<SimpleParticleType> stinkyGas,
             Supplier<SimpleParticleType> stinkyFly,
             Supplier<SimpleParticleType> peachLeaves,
@@ -500,10 +509,12 @@ public final class AntarchyObjects {
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
         BRUTALFLY_COCOON_SPAWNER = brutalflyCocoonSpawner;
         GIANT_LILY_PAD = giantLilyPad;
+        SEASHELL = seashell;
         ANT_NEST_BLOCK_ENTITY = antNestBlockEntity;
         DREAM_CAMPFIRE_BLOCK_ENTITY = dreamCampfireBlockEntity;
         WASP_NEST_BLOCK_ENTITY = waspNestBlockEntity;
         HUSHWEED_BLOCK_ENTITY = hushweedBlockEntity;
+        SEASHELL_BLOCK_ENTITY = seashellBlockEntity;
         STINKY_GAS = stinkyGas;
         STINKY_FLY = stinkyFly;
         PEACH_LEAVES_PARTICLE = peachLeaves;
@@ -522,6 +533,10 @@ public final class AntarchyObjects {
 
     public static void setTentacle(Supplier<EntityType<TentacleEntity>> supplier) {
         TENTACLE = supplier;
+    }
+
+    public static void setLotus(Supplier<Block> supplier) {
+        LOTUS = supplier;
     }
 
     public static void setKrakensGraspTrident(Supplier<EntityType<KrakensGraspThrownTrident>> supplier) {

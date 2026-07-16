@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 5
+      },
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:nautilus_shell", "weight": 8 },
+        { "type": "minecraft:item", "name": "minecraft:prismarine_shard", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:prismarine_crystals", "weight": 8 },
+        { "type": "minecraft:item", "name": "minecraft:kelp", "weight": 12 },
+        { "type": "minecraft:item", "name": "minecraft:seagrass", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:tropical_fish", "weight": 4 },
+        { "type": "minecraft:item", "name": "minecraft:bone_meal", "weight": 8 },
+        { "type": "minecraft:item", "name": "antarchy:star_coral", "weight": 3 },
+        { "type": "minecraft:item", "name": "antarchy:giant_lily_pad", "weight": 1 }
+      ]
+    }
+  ]
+}

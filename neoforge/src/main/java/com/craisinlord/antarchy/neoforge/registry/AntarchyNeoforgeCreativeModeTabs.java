@@ -81,8 +81,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.BASILISK_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.EMPEROR_SCORPION_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.TORETERROR_SPAWN_EGG.get());
-            // Dorrie is not part of this update yet.
-            // event.accept(AntarchyNeoforgeItems.DORRIE_SPAWN_EGG.get());
+            event.accept(AntarchyNeoforgeItems.DORRIE_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.OURANWOOD_DEER_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.GLIMMER_SPAWN_EGG.get());
             event.accept(AntarchyNeoforgeItems.ELKA_SPAWN_EGG.get());
@@ -100,7 +99,9 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.PINK_MILKWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CAMELLIA_ITEM.get());
             event.accept(AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.LOTUS_ITEM.get());
             event.accept(AntarchyNeoforgeItems.GIANT_LILY_PAD_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.SEASHELL_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_ROOTED_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_COARSE_DIRT_ITEM.get());
@@ -182,6 +183,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.COOKED_CORNDOG.get());
             event.accept(AntarchyNeoforgeItems.RAW_VENISON.get());
             event.accept(AntarchyNeoforgeItems.COOKED_VENISON.get());
+            event.accept(AntarchyNeoforgeItems.CHEEP_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ROOT_BEER.get());
             event.accept(AntarchyNeoforgeItems.RAINBOW_SUGAR.get());
             event.accept(AntarchyNeoforgeItems.BIG_BERTHA_BLADE.get());
