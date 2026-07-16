@@ -69,6 +69,14 @@
                    "antarchy:smooth_dream_sandstone_stairs",
                    "antarchy:smooth_dream_sandstone_slab",
                    "antarchy:cut_dream_sandstone_slab",
-                   "antarchy:red_ant_nest"
+                   "antarchy:red_ant_nest",
+                   "antarchy:star_coral",
+                   "antarchy:star_coral_fan",
+                   "antarchy:star_coral_wall_fan",
+                   "antarchy:star_coral_block",
+                   "antarchy:dead_star_coral",
+                   "antarchy:dead_star_coral_fan",
+                   "antarchy:dead_star_coral_wall_fan",
+                   "antarchy:dead_star_coral_block"
                ]
 }

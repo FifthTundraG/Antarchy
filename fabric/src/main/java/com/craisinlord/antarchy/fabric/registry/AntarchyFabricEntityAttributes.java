@@ -83,6 +83,7 @@ import com.craisinlord.antarchy.content.entity.WaterBombEntity;
 import com.craisinlord.antarchy.content.item.PrimordialArmorItem;
 import com.craisinlord.antarchy.content.item.WaterCannonItem;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
+import com.craisinlord.antarchy.content.entity.kraken.TentacleEntity;
 import com.craisinlord.antarchy.content.entity.OctopusBombEntity;
 import com.craisinlord.antarchy.content.entity.MolevoreEntity;
 import com.craisinlord.antarchy.content.entity.MolewormEntity;
@@ -292,6 +293,7 @@ public final class AntarchyFabricEntityAttributes {
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.KRAKEN.get(), KrakenEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.MISSILE_SQUID.get(), MissileSquidEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.OCTOPUS_BOMB.get(), OctopusBombEntity.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.TENTACLE.get(), TentacleEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.NIGHTMARE.get(), NightmareEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.BED_BUG.get(), BedBugEntity.createAttributes().build());
         FabricDefaultAttributeRegistry.register(AntarchyFabricEntities.WASP.get(), WaspEntity.createAttributes().build());

@@ -283,6 +283,7 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.HUSHWEED.get(),
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_SQUIRREL_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
+                () -> AntarchyNeoforgeBlocks.GIANT_LILY_PAD.get(),
                 () -> AntarchyNeoforgeBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST_BLOCK_ENTITY.get(),
@@ -295,6 +296,10 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeMisc.BLOODGLASS_WARD
         );
         AntarchyObjects.setOctopusBomb(AntarchyNeoforgeEntites.OCTOPUS_BOMB);
+        AntarchyObjects.setTentacle(AntarchyNeoforgeEntites.TENTACLE);
+        AntarchyObjects.setKrakensGraspTrident(AntarchyNeoforgeEntites.KRAKENS_GRASP_TRIDENT);
+        AntarchyObjects.setKrakenTentacle(() -> AntarchyNeoforgeItems.KRAKEN_TENTACLE.get());
+        AntarchyObjects.setKrakensGrasp(() -> AntarchyNeoforgeItems.KRAKENS_GRASP.get());
         AntarchyObjects.setOuranwoodDeer(AntarchyNeoforgeEntites.OURANWOOD_DEER);
         AntarchyObjects.setGlimmer(AntarchyNeoforgeEntites.GLIMMER);
         AntarchyObjects.setSpiritApple(() -> AntarchyNeoforgeItems.SPIRIT_APPLE.get());
@@ -302,6 +307,9 @@ public class AntarchyNeoforge {
         AntarchyObjects.setPeach(() -> AntarchyNeoforgeItems.PEACH.get());
         AntarchyObjects.setCorn(() -> AntarchyNeoforgeItems.CORN.get());
         AntarchyObjects.setCornSeeds(() -> AntarchyNeoforgeItems.CORN_SEEDS.get());
+        AntarchyObjects.setStarCoralBlock(() -> AntarchyNeoforgeBlocks.STAR_CORAL_BLOCK.get());
+        AntarchyObjects.setStarCoral(() -> AntarchyNeoforgeBlocks.STAR_CORAL.get());
+        AntarchyObjects.setStarCoralFan(() -> AntarchyNeoforgeBlocks.STAR_CORAL_FAN.get());
         AntarchyObjects.setCookedCorndog(() -> AntarchyNeoforgeItems.COOKED_CORNDOG.get());
         AntarchyObjects.setGlimmerBottle(() -> AntarchyNeoforgeItems.GLIMMER_BOTTLE.get());
         AntarchyObjects.setGlimmerVariantComponent(() -> AntarchyNeoforgeMisc.GLIMMER_VARIANT.get());

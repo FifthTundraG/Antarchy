@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "antarchy:giant_lily_pad"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "antarchy:blocks/giant_lily_pad"
+}

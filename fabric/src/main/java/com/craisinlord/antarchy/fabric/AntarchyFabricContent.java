@@ -256,6 +256,10 @@ public final class AntarchyFabricContent {
         );
 
         AntarchyObjects.setOctopusBomb(AntarchyFabricEntities.OCTOPUS_BOMB);
+        AntarchyObjects.setTentacle(AntarchyFabricEntities.TENTACLE);
+        AntarchyObjects.setKrakensGraspTrident(AntarchyFabricEntities.KRAKENS_GRASP_TRIDENT);
+        AntarchyObjects.setKrakenTentacle(() -> AntarchyFabricItems.KRAKEN_TENTACLE.get());
+        AntarchyObjects.setKrakensGrasp(() -> AntarchyFabricItems.KRAKENS_GRASP.get());
         AntarchyObjects.setOuranwoodDeer(AntarchyFabricEntities.OURANWOOD_DEER);
         AntarchyObjects.setGlimmer(AntarchyFabricEntities.GLIMMER);
         AntarchyObjects.setSpiritApple(() -> AntarchyFabricItems.SPIRIT_APPLE.get());
@@ -264,6 +268,9 @@ public final class AntarchyFabricContent {
         AntarchyObjects.setCorn(() -> AntarchyFabricItems.CORN.get());
         AntarchyObjects.setCornSeeds(() -> AntarchyFabricItems.CORN_SEEDS.get());
         AntarchyObjects.setWildCorn(() -> AntarchyFabricBlocks.WILD_CORN.get());
+        AntarchyObjects.setStarCoralBlock(() -> AntarchyFabricBlocks.STAR_CORAL_BLOCK.get());
+        AntarchyObjects.setStarCoral(() -> AntarchyFabricBlocks.STAR_CORAL.get());
+        AntarchyObjects.setStarCoralFan(() -> AntarchyFabricBlocks.STAR_CORAL_FAN.get());
         AntarchyObjects.setCookedCorndog(() -> AntarchyFabricItems.COOKED_CORNDOG.get());
         AntarchyObjects.setGlimmerBottle(() -> AntarchyFabricItems.GLIMMER_BOTTLE.get());
         AntarchyObjects.setGlimmerVariantComponent(() -> AntarchyFabricMisc.GLIMMER_VARIANT.get());
@@ -274,7 +281,6 @@ public final class AntarchyFabricContent {
         AntarchyObjects.setLumenBlock(() -> AntarchyFabricBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyFabricBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyFabricMisc.PEACH_LEAVES_PARTICLE.get());
-        // Dorrie is not part of this update yet.
         // AntarchyObjects.setDorrieInventoryMenu(AntarchyFabricMisc.DORRIE_INVENTORY_MENU);
         AntarchyObjects.bind(
                 AntarchyFabricEntities.EASTER_BUNNY,
@@ -364,6 +370,7 @@ public final class AntarchyFabricContent {
                 () -> AntarchyFabricBlocks.HUSHWEED.get(),
                 () -> AntarchyFabricBlocks.OURANWOOD_SQUIRREL_NEST.get(),
                 () -> AntarchyFabricBlocks.BRUTALFLY_COCOON_SPAWNER.get(),
+                () -> AntarchyFabricBlocks.GIANT_LILY_PAD.get(),
                 () -> AntarchyFabricBlocks.ANT_NEST_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(),
                 () -> AntarchyFabricBlocks.WASP_NEST_BLOCK_ENTITY.get(),

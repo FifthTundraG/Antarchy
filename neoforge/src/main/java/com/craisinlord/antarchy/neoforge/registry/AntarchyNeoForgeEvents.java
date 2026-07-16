@@ -1153,6 +1153,7 @@ public final class AntarchyNeoForgeEvents {
             DispenserBlock.registerBehavior(AntarchyNeoforgeItems.SHRINK_RAY.get(), new com.craisinlord.antarchy.content.SizeRayDispenseBehavior());
             DispenserBlock.registerBehavior(AntarchyNeoforgeItems.GROWTH_RAY.get(), new com.craisinlord.antarchy.content.SizeRayDispenseBehavior());
             DispenserBlock.registerBehavior(AntarchyNeoforgeItems.SQUIDZOOKA.get(), new com.craisinlord.antarchy.content.SquidzookaDispenseBehavior());
+            DispenserBlock.registerBehavior(AntarchyNeoforgeItems.RPO_LAUNCHER.get(), new com.craisinlord.antarchy.content.RpoLauncherDispenseBehavior());
             DispenserBlock.registerBehavior(AntarchyNeoforgeItems.WATER_CANNON.get(), new com.craisinlord.antarchy.content.WaterCannonDispenseBehavior());
             LucidEyeProjectileEntity.defaultItemSupplier = () -> AntarchyNeoforgeItems.LUCID_PEARL.get();
             LucidEntity.invertedEffectSupplier = () -> AntarchyNeoforgeMisc.INVERTED;

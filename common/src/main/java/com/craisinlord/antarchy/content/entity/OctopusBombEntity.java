@@ -86,6 +86,11 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
     // Kraken spawn flag
     private boolean spawnedByKraken;
 
+    // Explosive impact (fired from the R.P.O. Launcher)
+    private boolean explosiveImpact;
+    private java.util.UUID explosiveLauncherId;
+    private int explosiveArmTicks;
+
     public OctopusBombEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new SmoothSwimmingMoveControl(this, 80, 8, 0.06F, 0.12F, true);
@@ -188,6 +193,14 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
     public void tick() {
         super.tick();
         this.setNoGravity(this.isInWater() || this.canFly());
+
+        if (this.explosiveImpact && !this.level().isClientSide) {
+            this.explosiveArmTicks++;
+            if (this.explosiveArmTicks > 3 && (this.horizontalCollision || this.verticalCollision || this.isInWater() || this.hasHitExplosiveTarget())) {
+                this.detonateInkExplosion();
+                return;
+            }
+        }
 
         if (this.level().isClientSide) {
             this.updateSwimRotation();
@@ -326,6 +339,13 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
         this.setDeltaMovement(velocity);
     }
 
+    public void launchAsExplosiveProjectile(net.minecraft.world.entity.Entity launcher, Vec3 velocity) {
+        this.explosiveImpact = true;
+        this.explosiveLauncherId = launcher != null ? launcher.getUUID() : null;
+        this.setDeltaMovement(velocity);
+        this.hasImpulse = true;
+    }
+
     // -------------------------------------------------------------------------
     // Squid-style wander
     // -------------------------------------------------------------------------
@@ -351,6 +371,44 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
     // -------------------------------------------------------------------------
     // Ink spray
     // -------------------------------------------------------------------------
+
+    private boolean hasHitExplosiveTarget() {
+        AABB box = this.getBoundingBox();
+        return !this.level().getEntitiesOfClass(LivingEntity.class, box,
+                e -> e.isAlive() && e != this && !e.getUUID().equals(this.explosiveLauncherId)).isEmpty();
+    }
+
+    private void detonateInkExplosion() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        double radius = com.craisinlord.antarchy.config.AntarchySettings.rpoLauncherExplosionRadius();
+        float damage = (float) com.craisinlord.antarchy.config.AntarchySettings.rpoLauncherExplosionDamage();
+        AABB blastArea = this.getBoundingBox().inflate(radius);
+        for (LivingEntity victim : serverLevel.getEntitiesOfClass(LivingEntity.class, blastArea,
+                e -> e.isAlive() && !e.isSpectator())) {
+            double distance = Math.sqrt(victim.distanceToSqr(this));
+            float falloff = (float) Mth.clamp(1.0D - distance / radius, 0.0D, 1.0D);
+            if (falloff <= 0.0F) {
+                continue;
+            }
+
+            victim.hurt(this.damageSources().explosion(this, this), damage * falloff);
+            Vec3 knockback = victim.position().subtract(this.position());
+            if (knockback.lengthSqr() > 1.0E-4D) {
+                Vec3 normalized = knockback.normalize().scale(0.6D * falloff);
+                victim.push(normalized.x, 0.4D * falloff, normalized.z);
+            }
+            victim.hurtMarked = true;
+        }
+
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.HOSTILE, 2.0F, 0.9F);
+        serverLevel.sendParticles(ParticleTypes.SQUID_INK, this.getX(), this.getY(), this.getZ(), 60, radius * 0.4D, radius * 0.4D, radius * 0.4D, 0.05D);
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 3, 0.5D, 0.5D, 0.5D, 0.0D);
+        this.discard();
+    }
 
     private void tickInkSpray() {
         if (this.inkSprayCooldown > 0 || !(this.level() instanceof ServerLevel serverLevel)) return;

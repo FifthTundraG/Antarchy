@@ -100,6 +100,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.PINK_MILKWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CAMELLIA_ITEM.get());
             event.accept(AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.GIANT_LILY_PAD_ITEM.get());
             event.accept(AntarchyNeoforgeItems.HUSHWEED_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_ROOTED_DIRT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.INFESTED_COARSE_DIRT_ITEM.get());
@@ -116,6 +117,12 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.LUMEN_FROGLIGHT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.ROSEATE_FROGLIGHT_ITEM.get());
             event.accept(AntarchyNeoforgeItems.CORN_SEEDS.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_FAN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.STAR_CORAL_BLOCK_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_FAN_ITEM.get());
+            event.accept(AntarchyNeoforgeItems.DEAD_STAR_CORAL_BLOCK_ITEM.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
@@ -163,6 +170,7 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(AntarchyNeoforgeItems.VORTEX_EYE.get());
             event.accept(AntarchyNeoforgeItems.EMPEROR_SCORPION_STINGER.get());
             event.accept(AntarchyNeoforgeItems.KRAKEN_TOOTH.get());
+            event.accept(AntarchyNeoforgeItems.KRAKEN_TENTACLE.get());
             event.accept(AntarchyNeoforgeItems.JUMPY_BUG_LEG.get());
             event.accept(AntarchyNeoforgeItems.CORNEA_EAR.get());
             event.accept(AntarchyNeoforgeItems.CORN.get());
@@ -316,6 +324,8 @@ public class AntarchyNeoforgeCreativeModeTabs {
             event.accept(UltimateGearHelper.createUltimateBowStack(AntarchyNeoforgeItems.ULTIMATE_BOW.get(), event.getParameters().holders()));
             event.accept(AntarchyNeoforgeItems.ULTIMATE_CROSSBOW.get());
             event.accept(AntarchyNeoforgeItems.SQUIDZOOKA.get());
+            event.accept(AntarchyNeoforgeItems.RPO_LAUNCHER.get());
+            event.accept(AntarchyNeoforgeItems.KRAKENS_GRASP.get());
             event.accept(AntarchyNeoforgeItems.SHRINK_RAY.get());
             event.accept(AntarchyNeoforgeItems.GROWTH_RAY.get());
             event.accept(AntarchyNeoforgeItems.GRAVITY_GUN.get());
