@@ -339,9 +339,9 @@ public class DorrieEntity extends Animal implements GeoEntity {
                 rideAttempts++;
                 if (rideAttempts >= RIDES_TO_TAME) {
                     this.setTamed(true);
-                    this.playSound(SoundEvents.HORSE_BREATHE, 0.8F, 1.0F);
+                    this.playSound(SoundEvents.DOLPHIN_JUMP, 0.8F, 1.0F);
                 } else {
-                    this.playSound(SoundEvents.HORSE_ANGRY, 0.8F, 1.0F);
+                    this.playSound(SoundEvents.DOLPHIN_HURT, 0.8F, 1.0F);
                 }
             }
         } else if (!this.isTamed() && this.getFirstPassenger() == null) {
@@ -502,6 +502,12 @@ public class DorrieEntity extends Animal implements GeoEntity {
     @Nullable
     public DorrieEntity getBreedOffspring(ServerLevel level, AgeableMob mob) {
         return null;
+    }
+
+    @Override
+    public float getSpeed() {
+        float base = (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        return this.isInWater() ? base * 0.15F : base * 0.04F;
     }
 
     @Override

@@ -107,14 +107,6 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.PLACED_FEATURE,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "corn_patch")
     );
-    private static final TagKey<net.minecraft.world.level.biome.Biome> HAS_STAR_CORAL = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "has_star_coral")
-    );
-    private static final ResourceKey<PlacedFeature> STAR_CORAL_PATCH = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "star_coral_patch")
-    );
     private static final TagKey<net.minecraft.world.level.biome.Biome> HAS_SEASHELL = TagKey.create(
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "has_seashell")
@@ -139,6 +131,14 @@ public final class AntarchyFabric implements ModInitializer {
     private static final TagKey<net.minecraft.world.level.biome.Biome> CAVARYN_BIOMES = TagKey.create(
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "is_cavaryn")
+    );
+    private static final TagKey<net.minecraft.world.level.biome.Biome> DORRIE_OVERWORLD_SPAWN_BIOMES = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "dorrie_overworld_spawn_biomes")
+    );
+    private static final TagKey<net.minecraft.world.level.biome.Biome> DORRIE_ELYTHIA_SPAWN_BIOMES = TagKey.create(
+            Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "dorrie_elythia_spawn_biomes")
     );
 
     private static void registerWorldgenFeatures() {
@@ -222,11 +222,6 @@ public final class AntarchyFabric implements ModInitializer {
                 CORN_PATCH
         );
         BiomeModifications.addFeature(
-                BiomeSelectors.tag(HAS_STAR_CORAL),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                STAR_CORAL_PATCH
-        );
-        BiomeModifications.addFeature(
                 BiomeSelectors.tag(HAS_SEASHELL),
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 SEASHELL_PATCH
@@ -260,6 +255,18 @@ public final class AntarchyFabric implements ModInitializer {
                 net.minecraft.world.entity.MobCategory.CREATURE,
                 AntarchyFabricEntities.CATERPILLAR.get(),
                 24, 2, 4
+        );
+        BiomeModifications.addSpawn(
+                BiomeSelectors.tag(DORRIE_OVERWORLD_SPAWN_BIOMES),
+                net.minecraft.world.entity.MobCategory.CREATURE,
+                AntarchyFabricEntities.DORRIE.get(),
+                1, 1, 1
+        );
+        BiomeModifications.addSpawn(
+                BiomeSelectors.tag(DORRIE_ELYTHIA_SPAWN_BIOMES),
+                net.minecraft.world.entity.MobCategory.CREATURE,
+                AntarchyFabricEntities.DORRIE.get(),
+                10, 1, 2
         );
     }
 }

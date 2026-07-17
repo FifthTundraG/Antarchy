@@ -3,14 +3,18 @@ package com.craisinlord.antarchy.content.block;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.AntarchyTags;
 import com.mojang.serialization.MapCodec;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,27 +27,30 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public final class GiantLilyPadBlock extends Block implements BonemealableBlock {
     public static final MapCodec<GiantLilyPadBlock> CODEC = Block.simpleCodec(GiantLilyPadBlock::new);
-    public static final EnumProperty<Shape> SHAPE = EnumProperty.create("shape", Shape.class);
     public static final EnumProperty<TilePosition> TILE_POSITION = EnumProperty.create("tile_position", TilePosition.class);
     public static final EnumProperty<PadRotation> ROTATION = EnumProperty.create("rotation", PadRotation.class);
+    public static final BooleanProperty HAS_LOTUS = BooleanProperty.create("has_lotus");
 
-    private static final VoxelShape SHAPE_BOX = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.5D, 16.0D);
-    private static final int SEARCH_RADIUS = 2;
-    private static final ThreadLocal<Integer> RESTRUCTURING_DEPTH = ThreadLocal.withInitial(() -> 0);
+    private static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.5D, 16.0D);
+    private static final ThreadLocal<Boolean> REMOVING_STRUCTURE = ThreadLocal.withInitial(() -> false);
+    private static final Map<TilePosition, Vec2> OFFSETS = createOffsets();
 
     public GiantLilyPadBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(SHAPE, Shape.SINGLE)
-                .setValue(TILE_POSITION, TilePosition.SINGLE)
-                .setValue(ROTATION, PadRotation.DEG_0));
+                .setValue(TILE_POSITION, TilePosition.CENTER)
+                .setValue(ROTATION, PadRotation.DEG_0)
+                .setValue(HAS_LOTUS, false));
     }
 
     @Override
@@ -53,12 +60,7 @@ public final class GiantLilyPadBlock extends Block implements BonemealableBlock 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(SHAPE, TILE_POSITION, ROTATION);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return canSurvive(defaultBlockState(), context.getLevel(), context.getClickedPos()) ? defaultBlockState() : null;
+        builder.add(TILE_POSITION, ROTATION, HAS_LOTUS);
     }
 
     @Override
@@ -68,7 +70,7 @@ public final class GiantLilyPadBlock extends Block implements BonemealableBlock 
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE_BOX;
+        return SHAPE;
     }
 
     @Override
@@ -77,12 +79,15 @@ public final class GiantLilyPadBlock extends Block implements BonemealableBlock 
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        if (isThreeByThreeCenter(state)) {
-            return level.isEmptyBlock(pos.above());
-        }
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState()
+                .setValue(TILE_POSITION, TilePosition.CENTER)
+                .setValue(ROTATION, rotationForPlacement(context.getClickedPos()));
+    }
 
-        return state.getValue(SHAPE) != Shape.THREE_BY_THREE;
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return !structureHasLotus(level, centerFrom(pos, state));
     }
 
     @Override
@@ -92,282 +97,161 @@ public final class GiantLilyPadBlock extends Block implements BonemealableBlock 
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        if (isThreeByThreeCenter(state)) {
-            growLotus(level, pos);
+        BlockPos center = centerFrom(pos, state);
+        if (structureHasLotus(level, center)) {
             return;
         }
 
-        if (state.getValue(SHAPE) == Shape.THREE_BY_THREE) {
-            return;
-        }
-
-        spreadNearby(level, random, pos);
-    }
-
-    private static boolean isThreeByThreeCenter(BlockState state) {
-        return state.getValue(SHAPE) == Shape.THREE_BY_THREE && state.getValue(TILE_POSITION) == TilePosition.CENTER;
-    }
-
-    private static void growLotus(ServerLevel level, BlockPos padPos) {
-        BlockPos abovePos = padPos.above();
-        if (!level.isEmptyBlock(abovePos)) {
-            return;
-        }
-
-        BlockState lotusState = AntarchyObjects.LOTUS.get().defaultBlockState();
-        if (lotusState.canSurvive(level, abovePos)) {
-            level.setBlock(abovePos, lotusState, Block.UPDATE_ALL);
-        }
-    }
-
-    private static void spreadNearby(ServerLevel level, RandomSource random, BlockPos origin) {
-        for (int attempt = 0; attempt < 6; attempt++) {
-            int dx = random.nextInt(5) - 2;
-            int dz = random.nextInt(5) - 2;
-            if (dx == 0 && dz == 0) {
-                continue;
-            }
-
-            BlockPos candidate = origin.offset(dx, 0, dz);
-            if (!level.isEmptyBlock(candidate) || !isSupported(level, candidate)) {
-                continue;
-            }
-
-            level.setBlock(candidate, AntarchyObjects.GIANT_LILY_PAD.get().defaultBlockState(), Block.UPDATE_ALL);
-            return;
-        }
+        level.setBlock(pos, state.setValue(HAS_LOTUS, true), Block.UPDATE_CLIENTS);
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!state.canSurvive(level, pos)) {
-            if (level instanceof ServerLevel serverLevel) {
-                recalculateNearbyPads(serverLevel, pos);
-            }
             return Blocks.AIR.defaultBlockState();
-        }
-
-        if (level instanceof ServerLevel serverLevel) {
-            recalculateNearbyPads(serverLevel, pos);
         }
 
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-        if (!level.isClientSide && !oldState.is(state.getBlock()) && level instanceof ServerLevel serverLevel) {
-            recalculateNearbyPads(serverLevel, pos);
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock()) && !REMOVING_STRUCTURE.get()) {
+            removeStructure(level, pos, state);
         }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        if (!level.isClientSide && !state.is(newState.getBlock()) && level instanceof ServerLevel serverLevel) {
-            recalculateNearbyPads(serverLevel, pos);
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack,
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult
+    ) {
+        if (!stack.is(AntarchyObjects.LOTUS.get().asItem()) || structureHasLotus(level, centerFrom(pos, state))) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
+
+        if (level.isClientSide) {
+            return ItemInteractionResult.SUCCESS;
+        }
+
+        level.setBlock(pos, state.setValue(HAS_LOTUS, true), Block.UPDATE_CLIENTS);
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+        level.playSound(null, pos, net.minecraft.sounds.SoundEvents.LILY_PAD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        return ItemInteractionResult.CONSUME;
     }
 
-    private static boolean isSupported(LevelReader level, BlockPos pos) {
-        return level.getFluidState(pos).is(AntarchyTags.Fluids.GIANT_LILY_PAD_SUPPORTING_FLUIDS)
-                || level.getFluidState(pos.below()).is(AntarchyTags.Fluids.GIANT_LILY_PAD_SUPPORTING_FLUIDS);
-    }
-
-    private static void recalculateNearbyPads(ServerLevel level, BlockPos center) {
-        if (isRestructuring()) {
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (!state.getValue(HAS_LOTUS) || random.nextInt(10) != 0) {
             return;
         }
 
-        withRestructuringGuard(() -> {
-            int minX = center.getX() - SEARCH_RADIUS;
-            int maxX = center.getX() + SEARCH_RADIUS;
-            int minZ = center.getZ() - SEARCH_RADIUS;
-            int maxZ = center.getZ() + SEARCH_RADIUS;
-            int y = center.getY();
+        double x = pos.getX() + 0.5D + (random.nextDouble() - 0.5D) * 0.6D;
+        double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.6D;
+        double y = pos.getY() + 0.55D;
+        level.addParticle(AntarchyObjects.LOTUS_POLLEN.get(), x, y, z, 0.0D, 0.015D, 0.0D);
+    }
 
-            List<ShapeCandidate> candidates = new ArrayList<>();
-            collectCandidates(level, y, minX, maxX, minZ, maxZ, candidates);
+    public static boolean canPlaceStructure(LevelAccessor level, BlockPos centerPos) {
+        for (TilePosition tilePosition : TilePosition.values()) {
+            BlockPos partPos = positionFor(centerPos, tilePosition);
+            if (!level.isEmptyBlock(partPos) || !isSupported(level, partPos)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-            candidates.sort(Comparator
-                    .comparingInt(ShapeCandidate::area).reversed()
-                    .thenComparingInt(candidate -> candidate.anchor().getX())
-                    .thenComparingInt(candidate -> candidate.anchor().getZ())
-                    .thenComparingInt(candidate -> candidate.shape().ordinal()));
+    public static void placeStructure(LevelAccessor level, BlockPos centerPos, PadRotation rotation) {
+        for (TilePosition tilePosition : TilePosition.values()) {
+            BlockPos partPos = positionFor(centerPos, tilePosition);
+            BlockState partState = AntarchyObjects.GIANT_LILY_PAD.get().defaultBlockState()
+                    .setValue(TILE_POSITION, tilePosition)
+                    .setValue(ROTATION, rotation)
+                    .setValue(HAS_LOTUS, false);
+            level.setBlock(partPos, partState, Block.UPDATE_CLIENTS);
+        }
+    }
 
-            List<BlockPos> assigned = new ArrayList<>();
-            for (ShapeCandidate candidate : candidates) {
-                boolean blocked = false;
-                for (BlockPos pos : candidate.positions()) {
-                    if (assigned.contains(pos)) {
-                        blocked = true;
-                        break;
-                    }
-                }
-                if (blocked) {
+    public static PadRotation rotationForPlacement(BlockPos pos) {
+        long seed = pos.asLong() ^ Long.rotateLeft(pos.asLong(), 17);
+        RandomSource random = RandomSource.create(seed);
+        return PadRotation.values()[random.nextInt(4)];
+    }
+
+    private static boolean isSupported(LevelReader level, BlockPos pos) {
+        return level.getFluidState(pos.below()).is(AntarchyTags.Fluids.GIANT_LILY_PAD_SUPPORTING_FLUIDS)
+                && level.getFluidState(pos).isEmpty();
+    }
+
+    private static void removeStructure(Level level, BlockPos pos, BlockState state) {
+        BlockPos center = centerFrom(pos, state);
+        boolean shouldDropLotus = structureHasLotus(level, center) && !state.getValue(HAS_LOTUS);
+
+        REMOVING_STRUCTURE.set(true);
+        try {
+            for (TilePosition tilePosition : TilePosition.values()) {
+                BlockPos partPos = positionFor(center, tilePosition);
+                if (partPos.equals(pos)) {
                     continue;
                 }
-
-                PadRotation rotation = rotationFor(level, candidate.anchor());
-                for (TileAssignment tile : candidate.tiles()) {
-                    BlockPos pos = tile.pos();
-                    BlockState newState = level.getBlockState(pos);
-                    if (!newState.is(candidate.block())) {
-                        continue;
-                    }
-                    BlockState shapedState = candidate.block().defaultBlockState()
-                            .setValue(SHAPE, candidate.shape())
-                            .setValue(TILE_POSITION, tile.tilePosition())
-                            .setValue(ROTATION, rotation);
-                    if (!newState.equals(shapedState)) {
-                        level.setBlock(pos, shapedState, Block.UPDATE_CLIENTS);
-                    }
-                    assigned.add(pos);
+                BlockState partState = level.getBlockState(partPos);
+                if (partState.is(AntarchyObjects.GIANT_LILY_PAD.get())) {
+                    level.removeBlock(partPos, false);
                 }
             }
-        });
-    }
-
-    private static void collectCandidates(ServerLevel level, int y, int minX, int maxX, int minZ, int maxZ, List<ShapeCandidate> out) {
-        addRectCandidates(level, y, minX, maxX, minZ, maxZ, Shape.THREE_BY_THREE, GridLayouts.THREE_BY_THREE, out);
-        addRectCandidates(level, y, minX, maxX, minZ, maxZ, Shape.TWO_BY_TWO, GridLayouts.TWO_BY_TWO, out);
-        addRectCandidates(level, y, minX, maxX, minZ, maxZ, Shape.TWO_BY_ONE, GridLayouts.TWO_BY_ONE_HORIZONTAL, out);
-        addRectCandidates(level, y, minX, maxX, minZ, maxZ, Shape.TWO_BY_ONE, GridLayouts.TWO_BY_ONE_VERTICAL, out);
-        addRectCandidates(level, y, minX, maxX, minZ, maxZ, Shape.SINGLE, GridLayouts.SINGLE, out);
-    }
-
-    private static void addRectCandidates(ServerLevel level, int y, int minX, int maxX, int minZ, int maxZ, Shape shape, GridLayout layout, List<ShapeCandidate> out) {
-        int width = layout.width();
-        int height = layout.height();
-        for (int anchorX = minX; anchorX <= maxX - width + 1; anchorX++) {
-            for (int anchorZ = minZ; anchorZ <= maxZ - height + 1; anchorZ++) {
-                BlockPos anchor = new BlockPos(anchorX, y, anchorZ);
-                ShapeCandidate candidate = createCandidate(level, anchor, shape, layout);
-                if (candidate != null) {
-                    out.add(candidate);
-                }
-            }
-        }
-    }
-
-    @Nullable
-    private static ShapeCandidate createCandidate(ServerLevel level, BlockPos anchor, Shape shape, GridLayout layout) {
-        BlockState anchorState = level.getBlockState(anchor);
-        if (!(anchorState.getBlock() instanceof GiantLilyPadBlock giantLilyPadBlock)) {
-            return null;
-        }
-
-        List<TileAssignment> tiles = new ArrayList<>(layout.width() * layout.height());
-        for (int row = 0; row < layout.height(); row++) {
-            for (int column = 0; column < layout.width(); column++) {
-                BlockPos pos = anchor.offset(column, 0, row);
-                if (!level.getBlockState(pos).is(giantLilyPadBlock)) {
-                    return null;
-                }
-                TilePosition tilePosition = layout.tiles()[row][column];
-                tiles.add(new TileAssignment(pos, tilePosition));
-            }
-        }
-
-        return new ShapeCandidate(giantLilyPadBlock, shape, anchor, tiles);
-    }
-
-    private static boolean isRestructuring() {
-        return RESTRUCTURING_DEPTH.get() > 0;
-    }
-
-    private static void withRestructuringGuard(Runnable action) {
-        RESTRUCTURING_DEPTH.set(RESTRUCTURING_DEPTH.get() + 1);
-        try {
-            action.run();
         } finally {
-            RESTRUCTURING_DEPTH.set(Math.max(0, RESTRUCTURING_DEPTH.get() - 1));
+            REMOVING_STRUCTURE.set(false);
+        }
+
+        if (shouldDropLotus && !level.isClientSide) {
+            popResource(level, pos, new ItemStack(AntarchyObjects.LOTUS.get()));
         }
     }
 
-    private static PadRotation rotationFor(ServerLevel level, BlockPos anchor) {
-        long seed = level.getSeed();
-        long mix = seed
-                ^ anchor.asLong()
-                ^ Long.rotateLeft(seed, 17)
-                ^ Long.rotateLeft(anchor.asLong(), 31);
-        int index = (int) Math.floorMod(mix, 4L);
-        return PadRotation.values()[index];
+    private static boolean structureHasLotus(LevelReader level, BlockPos center) {
+        for (TilePosition tilePosition : TilePosition.values()) {
+            BlockState state = level.getBlockState(positionFor(center, tilePosition));
+            if (state.is(AntarchyObjects.GIANT_LILY_PAD.get()) && state.getValue(HAS_LOTUS)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private record ShapeCandidate(GiantLilyPadBlock block, Shape shape, BlockPos anchor, List<TileAssignment> tiles) {
-        int area() {
-            return this.tiles.size();
-        }
-
-        List<BlockPos> positions() {
-            return this.tiles.stream().map(TileAssignment::pos).toList();
-        }
+    private static BlockPos centerFrom(BlockPos pos, BlockState state) {
+        Vec2 offset = OFFSETS.get(state.getValue(TILE_POSITION));
+        return pos.offset((int) -offset.x, 0, (int) -offset.y);
     }
 
-    private record TileAssignment(BlockPos pos, TilePosition tilePosition) {
+    private static BlockPos positionFor(BlockPos center, TilePosition tilePosition) {
+        Vec2 offset = OFFSETS.get(tilePosition);
+        return center.offset((int) offset.x, 0, (int) offset.y);
     }
 
-    private record GridLayout(TilePosition[][] tiles) {
-        int width() {
-            return this.tiles[0].length;
-        }
-
-        int height() {
-            return this.tiles.length;
-        }
-    }
-
-    private static final class GridLayouts {
-        private static final GridLayout SINGLE = new GridLayout(new TilePosition[][]{
-                {TilePosition.SINGLE}
-        });
-
-        private static final GridLayout TWO_BY_ONE_HORIZONTAL = new GridLayout(new TilePosition[][]{
-                {TilePosition.MIDDLE_LEFT, TilePosition.MIDDLE_RIGHT}
-        });
-
-        private static final GridLayout TWO_BY_ONE_VERTICAL = new GridLayout(new TilePosition[][]{
-                {TilePosition.TOP_MIDDLE},
-                {TilePosition.BOTTOM_MIDDLE}
-        });
-
-        private static final GridLayout TWO_BY_TWO = new GridLayout(new TilePosition[][]{
-                {TilePosition.TOP_LEFT, TilePosition.TOP_RIGHT},
-                {TilePosition.BOTTOM_LEFT, TilePosition.BOTTOM_RIGHT}
-        });
-
-        private static final GridLayout THREE_BY_THREE = new GridLayout(new TilePosition[][]{
-                {TilePosition.TOP_LEFT, TilePosition.TOP_MIDDLE, TilePosition.TOP_RIGHT},
-                {TilePosition.MIDDLE_LEFT, TilePosition.CENTER, TilePosition.MIDDLE_RIGHT},
-                {TilePosition.BOTTOM_LEFT, TilePosition.BOTTOM_MIDDLE, TilePosition.BOTTOM_RIGHT}
-        });
-
-        private GridLayouts() {
-        }
-    }
-
-    public enum Shape implements StringRepresentable {
-        SINGLE("single"),
-        TWO_BY_ONE("two_by_one"),
-        TWO_BY_TWO("two_by_two"),
-        THREE_BY_THREE("three_by_three");
-
-        private final String name;
-
-        Shape(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getSerializedName() {
-            return this.name;
-        }
+    private static Map<TilePosition, Vec2> createOffsets() {
+        Map<TilePosition, Vec2> offsets = new EnumMap<>(TilePosition.class);
+        offsets.put(TilePosition.TOP_LEFT, new Vec2(-1, -1));
+        offsets.put(TilePosition.TOP_MIDDLE, new Vec2(0, -1));
+        offsets.put(TilePosition.TOP_RIGHT, new Vec2(1, -1));
+        offsets.put(TilePosition.MIDDLE_LEFT, new Vec2(-1, 0));
+        offsets.put(TilePosition.CENTER, new Vec2(0, 0));
+        offsets.put(TilePosition.MIDDLE_RIGHT, new Vec2(1, 0));
+        offsets.put(TilePosition.BOTTOM_LEFT, new Vec2(-1, 1));
+        offsets.put(TilePosition.BOTTOM_MIDDLE, new Vec2(0, 1));
+        offsets.put(TilePosition.BOTTOM_RIGHT, new Vec2(1, 1));
+        return offsets;
     }
 
     public enum TilePosition implements StringRepresentable {
-        SINGLE("single"),
         TOP_LEFT("top_left"),
         TOP_MIDDLE("top_middle"),
         TOP_RIGHT("top_right"),

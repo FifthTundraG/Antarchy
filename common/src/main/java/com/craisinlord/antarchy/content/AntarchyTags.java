@@ -59,6 +59,7 @@ public final class AntarchyTags {
         public static final TagKey<EntityType<?>> DUCT_TAPE_STICK_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, id("duct_tape_stick_blacklist"));
         public static final TagKey<EntityType<?>> NIGHTMARE_NO_ATTACK = TagKey.create(Registries.ENTITY_TYPE, id("nightmare_no_attack"));
         public static final TagKey<EntityType<?>> SIZE_CHANGING_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, id("size_changing_immune"));
+        public static final TagKey<EntityType<?>> CRITTER_CAGE_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, id("critter_cage_blacklist"));
         public static final TagKey<EntityType<?>> PARALYSIS_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, id("paralysis_immune"));
         public static final TagKey<EntityType<?>> HUSHWEED_TARGETS = TagKey.create(Registries.ENTITY_TYPE, id("hushweed_targets"));
         public static final TagKey<EntityType<?>> TRIFFID_PREY = TagKey.create(Registries.ENTITY_TYPE, id("triffid_prey"));

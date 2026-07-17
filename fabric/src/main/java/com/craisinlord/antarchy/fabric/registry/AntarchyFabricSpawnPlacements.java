@@ -273,7 +273,7 @@ public final class AntarchyFabricSpawnPlacements {
         SpawnPlacements.register(AntarchyFabricEntities.MISSILE_SQUID.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MissileSquidEntity::canSpawn);
         SpawnPlacements.register(AntarchyFabricEntities.OCTOPUS_BOMB.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, OctopusBombEntity::canSpawn);
         SpawnPlacements.register(AntarchyFabricEntities.CHEEP.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.AbstractFish::checkSurfaceWaterAnimalSpawnRules);
-        SpawnPlacements.register(AntarchyFabricEntities.DORRIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(AntarchyFabricEntities.DORRIE.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.OCEAN_FLOOR, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(AntarchyFabricEntities.OURANWOOD_DEER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);
         SpawnPlacements.register(AntarchyFabricEntities.GLIMMER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity::checkGlimmerSpawnRules);
         SpawnPlacements.register(AntarchyFabricEntities.ELKA.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules);

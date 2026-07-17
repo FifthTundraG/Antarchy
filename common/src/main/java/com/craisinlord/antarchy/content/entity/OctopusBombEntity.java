@@ -375,7 +375,7 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
     private boolean hasHitExplosiveTarget() {
         AABB box = this.getBoundingBox();
         return !this.level().getEntitiesOfClass(LivingEntity.class, box,
-                e -> e.isAlive() && e != this && !e.getUUID().equals(this.explosiveLauncherId)).isEmpty();
+                e -> e.isAlive() && e != this && !(e instanceof OctopusBombEntity) && !e.getUUID().equals(this.explosiveLauncherId)).isEmpty();
     }
 
     private void detonateInkExplosion() {
@@ -394,7 +394,7 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
                 continue;
             }
 
-            victim.hurt(this.damageSources().explosion(this, this), damage * falloff);
+            victim.hurt(AntarchyDamageSources.rpoLauncherBlast(serverLevel, this), damage * falloff);
             Vec3 knockback = victim.position().subtract(this.position());
             if (knockback.lengthSqr() > 1.0E-4D) {
                 Vec3 normalized = knockback.normalize().scale(0.6D * falloff);
@@ -405,8 +405,9 @@ public class OctopusBombEntity extends Monster implements GeoEntity {
 
         serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
                 net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE, net.minecraft.sounds.SoundSource.HOSTILE, 2.0F, 0.9F);
-        serverLevel.sendParticles(ParticleTypes.SQUID_INK, this.getX(), this.getY(), this.getZ(), 60, radius * 0.4D, radius * 0.4D, radius * 0.4D, 0.05D);
-        serverLevel.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 3, 0.5D, 0.5D, 0.5D, 0.0D);
+        serverLevel.sendParticles(ParticleTypes.SQUID_INK, this.getX(), this.getY(), this.getZ(), 250, radius * 0.5D, radius * 0.5D, radius * 0.5D, 0.1D);
+        serverLevel.sendParticles(ParticleTypes.SQUID_INK, this.getX(), this.getY(), this.getZ(), 150, radius * 0.2D, radius * 0.2D, radius * 0.2D, 0.2D);
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 4, 0.5D, 0.5D, 0.5D, 0.0D);
         this.discard();
     }
 

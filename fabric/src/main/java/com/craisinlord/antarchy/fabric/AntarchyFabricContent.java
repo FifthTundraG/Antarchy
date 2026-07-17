@@ -282,7 +282,15 @@ public final class AntarchyFabricContent {
         AntarchyObjects.setLumenBlock(() -> AntarchyFabricBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyFabricBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyFabricMisc.PEACH_LEAVES_PARTICLE.get());
+        AntarchyObjects.setLotusPollen(() -> AntarchyFabricMisc.LOTUS_POLLEN.get());
         AntarchyObjects.setDorrieInventoryMenu(AntarchyFabricMisc.DORRIE_INVENTORY_MENU);
+        AntarchyObjects.setCritterCage(() -> AntarchyFabricItems.CRITTER_CAGE.get());
+        AntarchyObjects.setCritterCageBlock(() -> AntarchyFabricBlocks.CRITTER_CAGE_BLOCK.get());
+        AntarchyObjects.setCritterCageBlockEntity(() -> AntarchyFabricBlocks.CRITTER_CAGE_BLOCK_ENTITY.get());
+        AntarchyObjects.setCritterCageProjectile(() -> AntarchyFabricEntities.CRITTER_CAGE_PROJECTILE.get());
+        AntarchyObjects.setCritterCageEntityTypeComponent(() -> AntarchyFabricMisc.CRITTER_CAGE_ENTITY_TYPE_COMPONENT.get());
+        AntarchyObjects.setCritterCagePrimaryColorComponent(() -> AntarchyFabricMisc.CRITTER_CAGE_PRIMARY_COLOR_COMPONENT.get());
+        AntarchyObjects.setCritterCageSecondaryColorComponent(() -> AntarchyFabricMisc.CRITTER_CAGE_SECONDARY_COLOR_COMPONENT.get());
         AntarchyObjects.bind(
                 AntarchyFabricEntities.EASTER_BUNNY,
                 AntarchyFabricEntities.FLYING_SQUIRREL,

@@ -325,6 +325,8 @@ public final class AntarchyConfigModuleNeoforge {
         AntarchySettings.setGravityGunBlastStrength(AntarchyToolsConfig.gravityGunBlastStrength());
         AntarchySettings.setGravityGunCooldownSeconds(AntarchyToolsConfig.gravityGunCooldownSeconds());
         AntarchySettings.setGravityGunMaxHoldDistance(AntarchyToolsConfig.gravityGunMaxHoldDistance());
+        AntarchySettings.setCritterCageMaxCapturableWidth(AntarchyToolsConfig.critterCageMaxCapturableWidth());
+        AntarchySettings.setCritterCageMaxCapturableHeight(AntarchyToolsConfig.critterCageMaxCapturableHeight());
 
         AntarchySettings.setMinersDreamEnabled(AntarchyToolsConfig.minersDreamEnabled());
         AntarchySettings.setMinersDreamMinimumRange(AntarchyToolsConfig.minersDreamMinimumRange());

@@ -10,6 +10,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -40,23 +43,32 @@ public final class SeashellBlockEntity extends RandomizableContainerBlockEntity 
     private static final RawAnimation OPEN_ANIM = RawAnimation.begin().thenPlayAndHold("open");
     private static final RawAnimation CLOSED_ANIM = RawAnimation.begin().thenPlayAndHold("closed");
     private static final Component TITLE = Component.translatable("block.antarchy.seashell");
+    private static final int OPEN_TRANSITION_TICKS = 8;
+    private static final int CLOSE_TRANSITION_TICKS = 9;
 
     private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
     private NonNullList<ItemStack> items = NonNullList.withSize(9, ItemStack.EMPTY);
     private boolean visualOpen;
     private boolean initializedVisualState;
+    private boolean redstonePowered;
+    private boolean manuallyOpened;
+    private boolean transitionTargetOpen;
+    private int transitionTicksRemaining;
 
     public SeashellBlockEntity(BlockPos pos, BlockState blockState) {
         super(AntarchyObjects.SEASHELL_BLOCK_ENTITY.get(), pos, blockState);
-        this.visualOpen = blockState.getValue(SeashellBlock.POWERED);
+        this.redstonePowered = blockState.getValue(SeashellBlock.POWERED);
+        this.visualOpen = this.redstonePowered;
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SeashellBlockEntity seashell) {
         seashell.syncVisualState(state.getValue(SeashellBlock.POWERED));
+        seashell.tickVisualTransition();
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, SeashellBlockEntity seashell) {
         seashell.syncVisualState(state.getValue(SeashellBlock.POWERED));
+        seashell.tickVisualTransition();
     }
 
     public boolean canAcceptItem(@Nullable Player player, ItemStack stack) {
@@ -111,20 +123,59 @@ public final class SeashellBlockEntity extends RandomizableContainerBlockEntity 
         this.setChanged();
     }
 
-    public void onPowerStateChanged(boolean open) {
-        this.syncVisualState(open);
-        this.triggerAnim(TRANSITION_CONTROLLER, open ? OPEN_TRIGGER : CLOSE_TRIGGER);
+    public boolean onPowerStateChanged(boolean powered) {
+        boolean wasOpen = this.isEffectivelyOpen();
+        this.redstonePowered = powered;
+        boolean isOpen = this.isEffectivelyOpen();
+        if (wasOpen != isOpen) {
+            this.beginTransition(isOpen);
+        }
+
         this.setChangedAndSync();
+        return wasOpen != isOpen;
     }
 
-    public void syncVisualState(boolean open) {
+    public boolean openManually() {
+        if (this.isEffectivelyOpen()) {
+            return false;
+        }
+
+        this.manuallyOpened = true;
+        this.beginTransition(true);
+        this.setChangedAndSync();
+        return true;
+    }
+
+    public boolean closeManually() {
+        if (!this.manuallyOpened) {
+            return false;
+        }
+
+        this.manuallyOpened = false;
+        boolean stillOpen = this.isEffectivelyOpen();
+        if (!stillOpen) {
+            this.beginTransition(false);
+        }
+
+        this.setChangedAndSync();
+        return true;
+    }
+
+    public boolean isEffectivelyOpen() {
+        return this.redstonePowered || this.manuallyOpened;
+    }
+
+    public void syncVisualState(boolean powered) {
+        this.redstonePowered = powered;
         if (!this.initializedVisualState) {
-            this.visualOpen = open;
+            this.visualOpen = this.isEffectivelyOpen();
             this.initializedVisualState = true;
             return;
         }
 
-        this.visualOpen = open;
+        if (this.transitionTicksRemaining <= 0) {
+            this.visualOpen = this.isEffectivelyOpen();
+        }
     }
 
     public boolean isVisualOpen() {
@@ -198,15 +249,35 @@ public final class SeashellBlockEntity extends RandomizableContainerBlockEntity 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        net.minecraft.world.ContainerHelper.saveAllItems(tag, this.items, registries);
         tag.putBoolean("VisualOpen", this.visualOpen);
         tag.putBoolean("VisualInitialized", this.initializedVisualState);
+        tag.putBoolean("ManuallyOpened", this.manuallyOpened);
+        tag.putBoolean("TransitionTargetOpen", this.transitionTargetOpen);
+        tag.putInt("TransitionTicksRemaining", this.transitionTicksRemaining);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveCustomOnly(registries);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        if (tag.contains("Items")) {
+            net.minecraft.world.ContainerHelper.loadAllItems(tag, this.items, registries);
+        }
         this.visualOpen = tag.getBoolean("VisualOpen");
         this.initializedVisualState = tag.getBoolean("VisualInitialized");
+        this.manuallyOpened = tag.getBoolean("ManuallyOpened");
+        this.transitionTargetOpen = tag.getBoolean("TransitionTargetOpen");
+        this.transitionTicksRemaining = tag.getInt("TransitionTicksRemaining");
     }
 
     private void setChangedAndSync() {
@@ -233,6 +304,24 @@ public final class SeashellBlockEntity extends RandomizableContainerBlockEntity 
             }
         }
         return -1;
+    }
+
+    private void beginTransition(boolean opening) {
+        this.transitionTargetOpen = opening;
+        this.transitionTicksRemaining = opening ? OPEN_TRANSITION_TICKS : CLOSE_TRANSITION_TICKS;
+        this.triggerAnim(TRANSITION_CONTROLLER, opening ? OPEN_TRIGGER : CLOSE_TRIGGER);
+    }
+
+    private void tickVisualTransition() {
+        if (this.transitionTicksRemaining <= 0) {
+            return;
+        }
+
+        this.transitionTicksRemaining--;
+        if (this.transitionTicksRemaining == 0) {
+            this.visualOpen = this.transitionTargetOpen;
+            this.setChangedAndSync();
+        }
     }
 
     private static Vec3 displayOffsetFor(int insertionIndex) {

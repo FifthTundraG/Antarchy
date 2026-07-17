@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "antarchy:block/seashell"
-  }
+  "parent": "antarchy:block/seashell_item"
 }

@@ -65,6 +65,7 @@ import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
+import com.craisinlord.antarchy.content.entity.CritterCageProjectileEntity;
 import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
 import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodBoatEntity;
@@ -479,7 +480,7 @@ public final class AntarchyFabricEntities {
 
 
     public static final DeferredHolder<EntityType<?>, EntityType<OctopusBombEntity>> OCTOPUS_BOMB = ENTITY_TYPES.register("octopus_bomb",
-            () -> EntityType.Builder.of(OctopusBombEntity::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(OctopusBombEntity::new, MobCategory.WATER_CREATURE)
                     .sized(2.4F, 2.9F)
                     .clientTrackingRange(10)
                     .build("octopus_bomb"));
@@ -547,6 +548,12 @@ public final class AntarchyFabricEntities {
                     .clientTrackingRange(8)
                     .updateInterval(1)
                     .build("lucid_pearl_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<CritterCageProjectileEntity>> CRITTER_CAGE_PROJECTILE = ENTITY_TYPES.register("critter_cage_projectile",
+            () -> EntityType.Builder.<CritterCageProjectileEntity>of(CritterCageProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("critter_cage_projectile"));
 
 
     public static final DeferredHolder<EntityType<?>, EntityType<HushProjectileEntity>> HUSH_PROJECTILE = ENTITY_TYPES.register("hush_projectile",
@@ -607,7 +614,7 @@ public final class AntarchyFabricEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",
             () -> EntityType.Builder.of(com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity::new, MobCategory.CREATURE)
-                    .sized(0.9F, 1.4F)
+                    .sized(1.125F, 1.75F)
                     .clientTrackingRange(8)
                     .build("ouranwood_deer"));
 

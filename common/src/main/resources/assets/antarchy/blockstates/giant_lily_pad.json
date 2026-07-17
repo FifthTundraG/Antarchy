@@ -1,220 +1,394 @@
-﻿{
-    "variants":  {
-                     "shape=single,tile_position=single,rotation=0":  {
-                                                                          "model":  "antarchy:block/giant_lily_pad/single/single/0"
-                                                                      },
-                     "shape=single,tile_position=single,rotation=90":  {
-                                                                           "model":  "antarchy:block/giant_lily_pad/single/single/90"
-                                                                       },
-                     "shape=single,tile_position=single,rotation=180":  {
-                                                                            "model":  "antarchy:block/giant_lily_pad/single/single/180"
-                                                                        },
-                     "shape=single,tile_position=single,rotation=270":  {
-                                                                            "model":  "antarchy:block/giant_lily_pad/single/single/270"
-                                                                        },
-                     "shape=two_by_one,tile_position=middle_left,rotation=0":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_left/0"
-                                                                               },
-                     "shape=two_by_one,tile_position=middle_right,rotation=0":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_right/0"
-                                                                                },
-                     "shape=two_by_one,tile_position=top_middle,rotation=0":  {
-                                                                                  "model":  "antarchy:block/giant_lily_pad/two_by_one/top_middle/0"
-                                                                              },
-                     "shape=two_by_one,tile_position=bottom_middle,rotation=0":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_one/bottom_middle/0"
-                                                                                 },
-                     "shape=two_by_two,tile_position=top_left,rotation=0":  {
-                                                                                "model":  "antarchy:block/giant_lily_pad/two_by_two/top_left/0"
-                                                                            },
-                     "shape=two_by_two,tile_position=top_right,rotation=0":  {
-                                                                                 "model":  "antarchy:block/giant_lily_pad/two_by_two/top_right/0"
-                                                                             },
-                     "shape=two_by_two,tile_position=bottom_left,rotation=0":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_left/0"
-                                                                               },
-                     "shape=two_by_two,tile_position=bottom_right,rotation=0":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_right/0"
-                                                                                },
-                     "shape=three_by_three,tile_position=top_left,rotation=0":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/three_by_three/top_left/0"
-                                                                                },
-                     "shape=three_by_three,tile_position=top_middle,rotation=0":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/three_by_three/top_middle/0"
-                                                                                  },
-                     "shape=three_by_three,tile_position=top_right,rotation=0":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/three_by_three/top_right/0"
-                                                                                 },
-                     "shape=three_by_three,tile_position=middle_left,rotation=0":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_left/0"
-                                                                                   },
-                     "shape=three_by_three,tile_position=center,rotation=0":  {
-                                                                                  "model":  "antarchy:block/giant_lily_pad/three_by_three/center/0"
-                                                                              },
-                     "shape=three_by_three,tile_position=middle_right,rotation=0":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_right/0"
-                                                                                    },
-                     "shape=three_by_three,tile_position=bottom_left,rotation=0":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_left/0"
-                                                                                   },
-                     "shape=three_by_three,tile_position=bottom_middle,rotation=0":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_middle/0"
-                                                                                     },
-                     "shape=three_by_three,tile_position=bottom_right,rotation=0":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_right/0"
-                                                                                    },
-                     "shape=two_by_one,tile_position=middle_left,rotation=90":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_left/90"
-                                                                                },
-                     "shape=two_by_one,tile_position=middle_right,rotation=90":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_right/90"
-                                                                                 },
-                     "shape=two_by_one,tile_position=top_middle,rotation=90":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/two_by_one/top_middle/90"
-                                                                               },
-                     "shape=two_by_one,tile_position=bottom_middle,rotation=90":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/two_by_one/bottom_middle/90"
-                                                                                  },
-                     "shape=two_by_two,tile_position=top_left,rotation=90":  {
-                                                                                 "model":  "antarchy:block/giant_lily_pad/two_by_two/top_left/90"
-                                                                             },
-                     "shape=two_by_two,tile_position=top_right,rotation=90":  {
-                                                                                  "model":  "antarchy:block/giant_lily_pad/two_by_two/top_right/90"
-                                                                              },
-                     "shape=two_by_two,tile_position=bottom_left,rotation=90":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_left/90"
-                                                                                },
-                     "shape=two_by_two,tile_position=bottom_right,rotation=90":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_right/90"
-                                                                                 },
-                     "shape=three_by_three,tile_position=top_left,rotation=90":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/three_by_three/top_left/90"
-                                                                                 },
-                     "shape=three_by_three,tile_position=top_middle,rotation=90":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/three_by_three/top_middle/90"
-                                                                                   },
-                     "shape=three_by_three,tile_position=top_right,rotation=90":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/three_by_three/top_right/90"
-                                                                                  },
-                     "shape=three_by_three,tile_position=middle_left,rotation=90":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_left/90"
-                                                                                    },
-                     "shape=three_by_three,tile_position=center,rotation=90":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/three_by_three/center/90"
-                                                                               },
-                     "shape=three_by_three,tile_position=middle_right,rotation=90":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_right/90"
-                                                                                     },
-                     "shape=three_by_three,tile_position=bottom_left,rotation=90":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_left/90"
-                                                                                    },
-                     "shape=three_by_three,tile_position=bottom_middle,rotation=90":  {
-                                                                                          "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_middle/90"
-                                                                                      },
-                     "shape=three_by_three,tile_position=bottom_right,rotation=90":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_right/90"
-                                                                                     },
-                     "shape=two_by_one,tile_position=middle_left,rotation=180":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_left/180"
-                                                                                 },
-                     "shape=two_by_one,tile_position=middle_right,rotation=180":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_right/180"
-                                                                                  },
-                     "shape=two_by_one,tile_position=top_middle,rotation=180":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_one/top_middle/180"
-                                                                                },
-                     "shape=two_by_one,tile_position=bottom_middle,rotation=180":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/two_by_one/bottom_middle/180"
-                                                                                   },
-                     "shape=two_by_two,tile_position=top_left,rotation=180":  {
-                                                                                  "model":  "antarchy:block/giant_lily_pad/two_by_two/top_left/180"
-                                                                              },
-                     "shape=two_by_two,tile_position=top_right,rotation=180":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/two_by_two/top_right/180"
-                                                                               },
-                     "shape=two_by_two,tile_position=bottom_left,rotation=180":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_left/180"
-                                                                                 },
-                     "shape=two_by_two,tile_position=bottom_right,rotation=180":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_right/180"
-                                                                                  },
-                     "shape=three_by_three,tile_position=top_left,rotation=180":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/three_by_three/top_left/180"
-                                                                                  },
-                     "shape=three_by_three,tile_position=top_middle,rotation=180":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/top_middle/180"
-                                                                                    },
-                     "shape=three_by_three,tile_position=top_right,rotation=180":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/three_by_three/top_right/180"
-                                                                                   },
-                     "shape=three_by_three,tile_position=middle_left,rotation=180":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_left/180"
-                                                                                     },
-                     "shape=three_by_three,tile_position=center,rotation=180":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/three_by_three/center/180"
-                                                                                },
-                     "shape=three_by_three,tile_position=middle_right,rotation=180":  {
-                                                                                          "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_right/180"
-                                                                                      },
-                     "shape=three_by_three,tile_position=bottom_left,rotation=180":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_left/180"
-                                                                                     },
-                     "shape=three_by_three,tile_position=bottom_middle,rotation=180":  {
-                                                                                           "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_middle/180"
-                                                                                       },
-                     "shape=three_by_three,tile_position=bottom_right,rotation=180":  {
-                                                                                          "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_right/180"
-                                                                                      },
-                     "shape=two_by_one,tile_position=middle_left,rotation=270":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_left/270"
-                                                                                 },
-                     "shape=two_by_one,tile_position=middle_right,rotation=270":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/two_by_one/middle_right/270"
-                                                                                  },
-                     "shape=two_by_one,tile_position=top_middle,rotation=270":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/two_by_one/top_middle/270"
-                                                                                },
-                     "shape=two_by_one,tile_position=bottom_middle,rotation=270":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/two_by_one/bottom_middle/270"
-                                                                                   },
-                     "shape=two_by_two,tile_position=top_left,rotation=270":  {
-                                                                                  "model":  "antarchy:block/giant_lily_pad/two_by_two/top_left/270"
-                                                                              },
-                     "shape=two_by_two,tile_position=top_right,rotation=270":  {
-                                                                                   "model":  "antarchy:block/giant_lily_pad/two_by_two/top_right/270"
-                                                                               },
-                     "shape=two_by_two,tile_position=bottom_left,rotation=270":  {
-                                                                                     "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_left/270"
-                                                                                 },
-                     "shape=two_by_two,tile_position=bottom_right,rotation=270":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/two_by_two/bottom_right/270"
-                                                                                  },
-                     "shape=three_by_three,tile_position=top_left,rotation=270":  {
-                                                                                      "model":  "antarchy:block/giant_lily_pad/three_by_three/top_left/270"
-                                                                                  },
-                     "shape=three_by_three,tile_position=top_middle,rotation=270":  {
-                                                                                        "model":  "antarchy:block/giant_lily_pad/three_by_three/top_middle/270"
-                                                                                    },
-                     "shape=three_by_three,tile_position=top_right,rotation=270":  {
-                                                                                       "model":  "antarchy:block/giant_lily_pad/three_by_three/top_right/270"
-                                                                                   },
-                     "shape=three_by_three,tile_position=middle_left,rotation=270":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_left/270"
-                                                                                     },
-                     "shape=three_by_three,tile_position=center,rotation=270":  {
-                                                                                    "model":  "antarchy:block/giant_lily_pad/three_by_three/center/270"
-                                                                                },
-                     "shape=three_by_three,tile_position=middle_right,rotation=270":  {
-                                                                                          "model":  "antarchy:block/giant_lily_pad/three_by_three/middle_right/270"
-                                                                                      },
-                     "shape=three_by_three,tile_position=bottom_left,rotation=270":  {
-                                                                                         "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_left/270"
-                                                                                     },
-                     "shape=three_by_three,tile_position=bottom_middle,rotation=270":  {
-                                                                                           "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_middle/270"
-                                                                                       },
-                     "shape=three_by_three,tile_position=bottom_right,rotation=270":  {
-                                                                                          "model":  "antarchy:block/giant_lily_pad/three_by_three/bottom_right/270"
-                                                                                      }
-                 }
+{
+  "multipart": [
+    {
+      "when": {
+        "tile_position": "top_left",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_left"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_middle",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_middle"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_right",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_right"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_left",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_left"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "center",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/center"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_right",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_right"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_left",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_left"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_middle",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_middle"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_right",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_right"
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_left",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_middle",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_right",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_left",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_middle",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "center",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/center",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_right",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_middle",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_left",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_middle",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_right",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_left",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_middle",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_middle",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_right",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_left",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "center",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/center",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_right",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_left",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_middle",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_middle",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_right",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_left",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_middle",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "top_right",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_left",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_middle",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "center",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/center",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "middle_right",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_middle",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_left",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/top_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_middle",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/middle_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "tile_position": "bottom_right",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/giant_lily_pad/bottom_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "has_lotus": "true",
+        "rotation": "0"
+      },
+      "apply": {
+        "model": "antarchy:block/lotus_on_giant_lily_pad"
+      }
+    },
+    {
+      "when": {
+        "has_lotus": "true",
+        "rotation": "90"
+      },
+      "apply": {
+        "model": "antarchy:block/lotus_on_giant_lily_pad",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "has_lotus": "true",
+        "rotation": "180"
+      },
+      "apply": {
+        "model": "antarchy:block/lotus_on_giant_lily_pad",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "has_lotus": "true",
+        "rotation": "270"
+      },
+      "apply": {
+        "model": "antarchy:block/lotus_on_giant_lily_pad",
+        "y": 270
+      }
+    }
+  ]
 }

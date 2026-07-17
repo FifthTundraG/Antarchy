@@ -5,6 +5,7 @@ import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.block.*;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
+import com.craisinlord.antarchy.content.block.entity.CritterCageBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
@@ -96,6 +97,8 @@ public final class AntarchyNeoforgeBlocks {
             () -> new com.craisinlord.antarchy.content.block.LotusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM)));
     public static final DeferredBlock<SeashellBlock> SEASHELL = BLOCKS.register("seashell",
             () -> new SeashellBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TURTLE_EGG).noOcclusion()));
+    public static final DeferredBlock<CritterCageBlock> CRITTER_CAGE_BLOCK = BLOCKS.register("critter_cage_block",
+            () -> new CritterCageBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS).noOcclusion()));
     public static final DeferredBlock<StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
             () -> new StandingSignBlock(AntarchyWoodTypes.OURANWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_SIGN)));
     public static final DeferredBlock<WallSignBlock> OURANWOOD_WALL_SIGN = BLOCKS.register("ouranwood_wall_sign",
@@ -455,6 +458,11 @@ public final class AntarchyNeoforgeBlocks {
             () -> BlockEntityType.Builder.of(
                     SeashellBlockEntity::new,
                     SEASHELL.get()
+            ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CritterCageBlockEntity>> CRITTER_CAGE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("critter_cage_block",
+            () -> BlockEntityType.Builder.of(
+                    CritterCageBlockEntity::new,
+                    CRITTER_CAGE_BLOCK.get()
             ).build(null));
 
     private AntarchyNeoforgeBlocks() {}

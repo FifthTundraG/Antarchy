@@ -86,6 +86,7 @@ public final class AntarchyNeoForgeClient {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(AntarchyNeoforgeBlocks.DREAM_CAMPFIRE_BLOCK_ENTITY.get(), CampfireRenderer::new);
         event.registerBlockEntityRenderer(AntarchyNeoforgeBlocks.SEASHELL_BLOCK_ENTITY.get(), SeashellRenderer::new);
+        event.registerBlockEntityRenderer(AntarchyNeoforgeBlocks.CRITTER_CAGE_BLOCK_ENTITY.get(), CritterCageRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.EASTER_BUNNY.get(), context -> withParalyzedGeoLayer(new EasterBunnyRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.FLYING_SQUIRREL.get(), context -> withParalyzedGeoLayer(new FlyingSquirrelRenderer(context)));
         event.registerEntityRenderer(AntarchyNeoforgeEntites.CATERPILLAR.get(), context -> withParalyzedGeoLayer(new CaterpillarRenderer(context)));
@@ -125,6 +126,7 @@ public final class AntarchyNeoForgeClient {
         event.registerEntityRenderer(AntarchyNeoforgeEntites.GROWTH_RAY_PROJECTILE.get(), SizeRayProjectileRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.LUCID_BOLT.get(), LucidBoltRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.LUCID_PEARL_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(AntarchyNeoforgeEntites.CRITTER_CAGE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.HUSH_PROJECTILE.get(), HushProjectileRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.BRUTALFLY_ORB.get(), BrutalflyOrbRenderer::new);
         event.registerEntityRenderer(AntarchyNeoforgeEntites.UPWARD_FALLING_BLOCK.get(), com.craisinlord.antarchy.content.client.renderer.UpwardFallingBlockRenderer::new);
@@ -220,6 +222,24 @@ public final class AntarchyNeoForgeClient {
                 (stack, tintIndex) -> tintIndex == 0 ? net.minecraft.world.level.GrassColor.getDefaultColor() : -1,
                 AntarchyNeoforgeItems.SPIDER_LILY_ITEM.get()
         );
+        event.register(
+                (stack, tintIndex) -> {
+                    if (!(stack.getItem() instanceof com.craisinlord.antarchy.content.item.CritterCageItem cage)) {
+                        return -1;
+                    }
+                    if (cage.getItemState(stack) != 2) {
+                        return -1;
+                    }
+                    if (tintIndex == 1) {
+                        return cage.getPrimaryColor(stack);
+                    }
+                    if (tintIndex == 2) {
+                        return cage.getSecondaryColor(stack);
+                    }
+                    return -1;
+                },
+                AntarchyNeoforgeItems.CRITTER_CAGE.get()
+        );
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ICHOR_BUCKET.get());
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.LUMEN_BUCKET.get());
         event.register(new DynamicFluidContainerModel.Colors(), AntarchyNeoforgeItems.ANTIWATER_BUCKET.get());
@@ -231,6 +251,7 @@ public final class AntarchyNeoForgeClient {
         event.registerSpriteSet(AntarchyNeoforgeMisc.STINKY_GAS.get(), HypnoticGasParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.STINKY_FLY.get(), FireflyParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get(), PeachLeavesParticle.Provider::new);
+        event.registerSpriteSet(AntarchyNeoforgeMisc.LOTUS_POLLEN.get(), com.craisinlord.antarchy.content.client.particle.LotusPollenParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.HYPNOTIC_GAS.get(), HypnoticGasParticle.Provider::new);
         event.registerSpriteSet(AntarchyNeoforgeMisc.HYPNOTIC_GAS_DOWN.get(), sprites -> new HypnoticGasParticle.Provider(sprites, true));
         event.registerSpecial(AntarchyNeoforgeMisc.HYPNOTIC_GAS_CLOUD.get(), new HypnoticGasCloudParticle.Provider());
@@ -499,6 +520,7 @@ public final class AntarchyNeoForgeClient {
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.LOTUS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.GIANT_LILY_PAD.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.HUSHWEED.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CRITTER_CAGE_BLOCK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORNEA_STALK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.CORN_CROP.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(AntarchyNeoforgeBlocks.WILD_CORN.get(), RenderType.cutout());
@@ -586,6 +608,16 @@ public final class AntarchyNeoForgeClient {
                 AntarchyNeoforgeItems.ULTIMATE_CROSSBOW.get(),
                 ResourceLocation.withDefaultNamespace("firework"),
                 (stack, level, entity, seed) -> CrossbowItem.isCharged(stack) && ChargedProjectiles.of(stack).contains(Items.FIREWORK_ROCKET) ? 1.0F : 0.0F
+        );
+        ItemProperties.register(
+                AntarchyNeoforgeItems.CRITTER_CAGE.get(),
+                ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "critter_cage_state"),
+                (stack, level, entity, seed) -> {
+                    if (!(stack.getItem() instanceof com.craisinlord.antarchy.content.item.CritterCageItem cage)) {
+                        return 0.0F;
+                    }
+                    return cage.getItemState(stack);
+                }
         );
     }
 

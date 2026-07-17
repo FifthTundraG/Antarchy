@@ -78,6 +78,24 @@ public final class AntarchyNeoforgeMisc {
                             .persistent(net.minecraft.util.Unit.CODEC)
                             .networkSynchronized(net.minecraft.network.codec.StreamCodec.unit(net.minecraft.util.Unit.INSTANCE))
                             .build());
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<net.minecraft.resources.ResourceLocation>> CRITTER_CAGE_ENTITY_TYPE_COMPONENT =
+            DATA_COMPONENT_TYPES.register("critter_cage_entity_type",
+                    () -> net.minecraft.core.component.DataComponentType.<net.minecraft.resources.ResourceLocation>builder()
+                            .persistent(net.minecraft.resources.ResourceLocation.CODEC)
+                            .networkSynchronized(net.minecraft.resources.ResourceLocation.STREAM_CODEC)
+                            .build());
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<Integer>> CRITTER_CAGE_PRIMARY_COLOR_COMPONENT =
+            DATA_COMPONENT_TYPES.register("critter_cage_primary_color",
+                    () -> net.minecraft.core.component.DataComponentType.<Integer>builder()
+                            .persistent(com.mojang.serialization.Codec.INT)
+                            .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.INT)
+                            .build());
+    public static final DeferredHolder<net.minecraft.core.component.DataComponentType<?>, net.minecraft.core.component.DataComponentType<Integer>> CRITTER_CAGE_SECONDARY_COLOR_COMPONENT =
+            DATA_COMPONENT_TYPES.register("critter_cage_secondary_color",
+                    () -> net.minecraft.core.component.DataComponentType.<Integer>builder()
+                            .persistent(com.mojang.serialization.Codec.INT)
+                            .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.INT)
+                            .build());
     public static final DeferredHolder<net.minecraft.world.item.crafting.RecipeSerializer<?>, net.minecraft.world.item.crafting.RecipeSerializer<com.craisinlord.antarchy.content.AmericanizeRecipe>> AMERICANIZE_SERIALIZER =
             RECIPE_SERIALIZERS.register("americanize", () -> com.craisinlord.antarchy.content.AmericanizeRecipe.SERIALIZER);
 
@@ -189,6 +207,8 @@ public final class AntarchyNeoforgeMisc {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STINKY_FLY = PARTICLE_TYPES.register("stinky_fly",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PEACH_LEAVES_PARTICLE = PARTICLE_TYPES.register("peach_leaves_particle",
+            () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> LOTUS_POLLEN = PARTICLE_TYPES.register("lotus_pollen",
             () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HYPNOTIC_GAS = PARTICLE_TYPES.register("hypnotic_gas",
             () -> new SimpleParticleType(true));

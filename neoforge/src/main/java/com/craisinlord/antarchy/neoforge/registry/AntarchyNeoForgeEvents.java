@@ -127,6 +127,7 @@ public final class AntarchyNeoForgeEvents {
             return;
         }
         if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) return;
+        if (!(event.getEntity().getKillCredit() instanceof net.minecraft.world.entity.player.Player)) return;
 
         BlockPos deathPos = event.getEntity().blockPosition();
 
@@ -134,7 +135,7 @@ public final class AntarchyNeoForgeEvents {
             spawnKrakens(serverLevel, deathPos, 1);
         }
 
-        if (AntarchySettings.krakenMassSpawnEnabled() && serverLevel.random.nextInt(100) == 0) {
+        if (AntarchySettings.krakenMassSpawnEnabled() && serverLevel.random.nextInt(500) == 0) {
             spawnKrakens(serverLevel, deathPos, 10);
         }
     }

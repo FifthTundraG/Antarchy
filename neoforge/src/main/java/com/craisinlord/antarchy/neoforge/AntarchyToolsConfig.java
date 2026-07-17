@@ -183,6 +183,10 @@ public final class AntarchyToolsConfig {
     private static final ModConfigSpec.DoubleValue  GRAVITY_GUN_COOLDOWN_SECONDS;
     private static final ModConfigSpec.DoubleValue  GRAVITY_GUN_MAX_HOLD_DISTANCE;
 
+    // Critter Cage
+
+    private static final ModConfigSpec.DoubleValue  CRITTER_CAGE_MAX_CAPTURABLE_WIDTH;
+    private static final ModConfigSpec.DoubleValue  CRITTER_CAGE_MAX_CAPTURABLE_HEIGHT;
 
     // Miner's Dream
 
@@ -472,6 +476,14 @@ public final class AntarchyToolsConfig {
         b.pop();
 
 
+        // Critter Cage
+
+        b.push("critterCage");
+        CRITTER_CAGE_MAX_CAPTURABLE_WIDTH = b.comment("Maximum capturable entity width/depth based on the live hitbox, in blocks.").defineInRange("maxCapturableWidth", 1.15D, 0.1D, 64.0D);
+        CRITTER_CAGE_MAX_CAPTURABLE_HEIGHT = b.comment("Maximum capturable entity height based on the live hitbox, in blocks.").defineInRange("maxCapturableHeight", 1.15D, 0.1D, 64.0D);
+        b.pop();
+
+
         // Miner's Dream
 
         b.push("minersDream");
@@ -660,6 +672,9 @@ public final class AntarchyToolsConfig {
     static double  gravityGunBlastStrength()                 { return GRAVITY_GUN_BLAST_STRENGTH.get(); }
     static double  gravityGunCooldownSeconds()               { return GRAVITY_GUN_COOLDOWN_SECONDS.get(); }
     static double  gravityGunMaxHoldDistance()               { return GRAVITY_GUN_MAX_HOLD_DISTANCE.get(); }
+
+    static double  critterCageMaxCapturableWidth()           { return CRITTER_CAGE_MAX_CAPTURABLE_WIDTH.get(); }
+    static double  critterCageMaxCapturableHeight()          { return CRITTER_CAGE_MAX_CAPTURABLE_HEIGHT.get(); }
 
     static boolean minersDreamEnabled()                      { return MINERS_DREAM_ENABLED.get(); }
     static int     minersDreamMinimumRange()                 { return MINERS_DREAM_MINIMUM_RANGE.get(); }

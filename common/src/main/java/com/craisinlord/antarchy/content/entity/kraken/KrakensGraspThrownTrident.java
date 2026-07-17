@@ -11,20 +11,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class KrakensGraspThrownTrident extends AbstractArrow implements GeoEntity {
+public class KrakensGraspThrownTrident extends AbstractArrow implements ItemSupplier {
     private boolean dealtDamage;
     private boolean returning;
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public KrakensGraspThrownTrident(EntityType<? extends KrakensGraspThrownTrident> entityType, Level level) {
         super(entityType, level);
@@ -36,12 +33,8 @@ public class KrakensGraspThrownTrident extends AbstractArrow implements GeoEntit
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.geoCache;
+    public ItemStack getItem() {
+        return new ItemStack(AntarchyObjects.KRAKENS_GRASP.get());
     }
 
     @Override
@@ -91,29 +84,54 @@ public class KrakensGraspThrownTrident extends AbstractArrow implements GeoEntit
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
-        if (!(result.getEntity() instanceof LivingEntity target) || !(this.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
+    public ItemStack getWeaponItem() {
+        return this.getPickupItemStackOrigin();
+    }
 
+    @Override
+    protected net.minecraft.world.phys.EntityHitResult findHitEntity(Vec3 startVec, Vec3 endVec) {
+        return this.dealtDamage ? null : super.findHitEntity(startVec, endVec);
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity target = result.getEntity();
+        float damage = (float) this.getBaseDamage();
         Entity owner = this.getOwner();
         DamageSource damageSource = this.damageSources().trident(this, owner != null ? owner : this);
-        boolean hurt = target.hurt(damageSource, (float) AntarchySettings.krakensGraspThrownDamage());
-        if (hurt) {
-            KrakensGraspItem.strikeLightning(target, serverLevel);
-            TentacleEntity.spawnAt(serverLevel, new Vec3(target.getX(), target.getY(), target.getZ()),
-                    owner instanceof LivingEntity livingOwner ? livingOwner : null);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            damage = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), target, damageSource, damage);
         }
 
         this.dealtDamage = true;
+
+        if (target.hurt(damageSource, damage) && target.getType() != EntityType.ENDERMAN) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, target, damageSource, this.getWeaponItem());
+            }
+            if (target instanceof LivingEntity livingTarget) {
+                this.doKnockback(livingTarget, damageSource);
+                this.doPostHurtEffects(livingTarget);
+            }
+        }
+
+        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
+        this.playSound(SoundEvents.TRIDENT_HIT, 1.0F, 1.0F);
+
+        if (target instanceof LivingEntity livingTarget && this.level() instanceof ServerLevel serverLevel) {
+            KrakensGraspItem.strikeLightning(livingTarget, serverLevel);
+            TentacleEntity.spawnAt(serverLevel, new Vec3(target.getX(), target.getY(), target.getZ()),
+                    owner instanceof LivingEntity livingOwner ? livingOwner : null);
+        }
     }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (this.level() instanceof ServerLevel serverLevel) {
-            TentacleEntity.spawnAt(serverLevel, result.getLocation(), this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null);
+            Vec3 pos = result.getLocation();
+            KrakensGraspItem.strikeLightningAt(serverLevel, pos.x, pos.y, pos.z);
+            TentacleEntity.spawnAt(serverLevel, pos, this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null);
         }
     }
 }

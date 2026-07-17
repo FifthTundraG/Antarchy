@@ -1,10 +1,14 @@
 package com.craisinlord.antarchy.content.worldgen.elythia;
 
+import com.craisinlord.antarchy.Antarchy;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SeaPickleBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,17 +21,17 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
     private record CoralSet(
-            net.minecraft.world.level.block.Block block,
-            net.minecraft.world.level.block.Block coral,
-            net.minecraft.world.level.block.Block wallFan,
-            net.minecraft.world.level.block.Block floorFan,
-            net.minecraft.world.level.block.Block deadBlock,
-            net.minecraft.world.level.block.Block deadCoral,
-            net.minecraft.world.level.block.Block deadWallFan,
-            net.minecraft.world.level.block.Block deadFloorFan
+            Block block,
+            Block coral,
+            Block wallFan,
+            Block floorFan,
+            Block deadBlock,
+            Block deadCoral,
+            Block deadWallFan,
+            Block deadFloorFan
     ) {}
 
-    private static final CoralSet[] CORAL_SETS = {
+    private static final CoralSet[] VANILLA_CORAL_SETS = {
         new CoralSet(Blocks.TUBE_CORAL_BLOCK,   Blocks.TUBE_CORAL,   Blocks.TUBE_CORAL_WALL_FAN,   Blocks.TUBE_CORAL_FAN,   Blocks.DEAD_TUBE_CORAL_BLOCK,   Blocks.DEAD_TUBE_CORAL,   Blocks.DEAD_TUBE_CORAL_WALL_FAN,   Blocks.DEAD_TUBE_CORAL_FAN),
         new CoralSet(Blocks.BRAIN_CORAL_BLOCK,  Blocks.BRAIN_CORAL,  Blocks.BRAIN_CORAL_WALL_FAN,  Blocks.BRAIN_CORAL_FAN,  Blocks.DEAD_BRAIN_CORAL_BLOCK,  Blocks.DEAD_BRAIN_CORAL,  Blocks.DEAD_BRAIN_CORAL_WALL_FAN,  Blocks.DEAD_BRAIN_CORAL_FAN),
         new CoralSet(Blocks.BUBBLE_CORAL_BLOCK, Blocks.BUBBLE_CORAL, Blocks.BUBBLE_CORAL_WALL_FAN, Blocks.BUBBLE_CORAL_FAN, Blocks.DEAD_BUBBLE_CORAL_BLOCK, Blocks.DEAD_BUBBLE_CORAL, Blocks.DEAD_BUBBLE_CORAL_WALL_FAN, Blocks.DEAD_BUBBLE_CORAL_FAN),
@@ -60,7 +64,8 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
         int floorY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, origin.getX(), origin.getZ());
         if (floorY >= seaLevel) return false;
 
-        CoralSet coral = CORAL_SETS[random.nextInt(CORAL_SETS.length)];
+        CoralSet[] coralSets = coralSets();
+        CoralSet coral = coralSets[random.nextInt(coralSets.length)];
 
         int baseRadius = 2 + random.nextInt(2);           // 2-3 wide at base
         int totalHeight = 20 + random.nextInt(15);         // 20-34 blocks tall
@@ -156,7 +161,7 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
             boolean decorInWater = level.getBlockState(decorPos).is(Blocks.WATER);
             float roll = random.nextFloat();
-            CoralSet randomCoral = CORAL_SETS[random.nextInt(CORAL_SETS.length)];
+            CoralSet randomCoral = coralSets[random.nextInt(coralSets.length)];
 
             if (roll < 0.35f) {
                 if (decorInWater) {
@@ -209,5 +214,28 @@ public class CoralSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
     private static boolean canReplace(BlockState state) {
         return state.isAir() || state.is(Blocks.WATER) || state.canBeReplaced();
+    }
+
+    private static CoralSet[] coralSets() {
+        CoralSet starCoral = new CoralSet(
+                lookupBlock("star_coral_block", Blocks.TUBE_CORAL_BLOCK),
+                lookupBlock("star_coral", Blocks.TUBE_CORAL),
+                lookupBlock("star_coral_wall_fan", Blocks.TUBE_CORAL_WALL_FAN),
+                lookupBlock("star_coral_fan", Blocks.TUBE_CORAL_FAN),
+                lookupBlock("dead_star_coral_block", Blocks.DEAD_TUBE_CORAL_BLOCK),
+                lookupBlock("dead_star_coral", Blocks.DEAD_TUBE_CORAL),
+                lookupBlock("dead_star_coral_wall_fan", Blocks.DEAD_TUBE_CORAL_WALL_FAN),
+                lookupBlock("dead_star_coral_fan", Blocks.DEAD_TUBE_CORAL_FAN)
+        );
+
+        CoralSet[] combined = new CoralSet[VANILLA_CORAL_SETS.length + 1];
+        System.arraycopy(VANILLA_CORAL_SETS, 0, combined, 0, VANILLA_CORAL_SETS.length);
+        combined[VANILLA_CORAL_SETS.length] = starCoral;
+        return combined;
+    }
+
+    private static Block lookupBlock(String path, Block fallback) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, path);
+        return BuiltInRegistries.BLOCK.getOptional(id).orElse(fallback);
     }
 }

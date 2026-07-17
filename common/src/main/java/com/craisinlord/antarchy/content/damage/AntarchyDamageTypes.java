@@ -79,6 +79,12 @@ public final class AntarchyDamageTypes {
                     ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "water_soaked")
             );
 
+    public static final ResourceKey<DamageType> RPO_LAUNCHER_BLAST =
+            ResourceKey.create(
+                    Registries.DAMAGE_TYPE,
+                    ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "rpo_launcher_blast")
+            );
+
     private AntarchyDamageTypes() {
     }
 }

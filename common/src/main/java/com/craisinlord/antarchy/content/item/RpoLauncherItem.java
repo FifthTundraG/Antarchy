@@ -164,7 +164,7 @@ public class RpoLauncherItem extends ProjectileWeaponItem implements GeoItem {
         Vec3 direction = Vec3.directionFromRotation(new Vec2(player.getXRot(), yaw));
         projectileBomb.moveTo(
                 player.getX(),
-                player.getEyeY() - 0.2D,
+                player.getEyeY() + 0.15D,
                 player.getZ(),
                 yaw,
                 player.getXRot()

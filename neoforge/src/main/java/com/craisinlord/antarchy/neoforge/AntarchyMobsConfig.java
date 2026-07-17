@@ -372,8 +372,8 @@ public final class AntarchyMobsConfig {
         KRAKEN_HEALTH                            = b.comment("Base max health.")                                                                                            .defineInRange("health",                          1500.0D, 1.0D, 32768.0D);
         KRAKEN_ATTACK_DAMAGE                     = b.comment("Base attack damage.")                                                                                         .defineInRange("attackDamage",                     45.0D,  0.0D, 1024.0D);
         KRAKEN_PROJECTILE_DAMAGE_TAKEN_MULTIPLIER = b.comment("Damage multiplier from projectiles. 0.5 means 50% damage.")                                                  .defineInRange("projectileDamageTakenMultiplier",  0.5D,   0.0D, 10.0D);
-        KRAKEN_SQUID_SPAWN_ENABLED               = b.comment("If true, killing a Missile Squid has a 1/100 chance to spawn a single Kraken nearby.")                       .define("squidSpawnEnabled",  true);
-        KRAKEN_MASS_SPAWN_ENABLED                = b.comment("If true, killing a Missile Squid has a 1/100 chance to spawn 10 Krakens. Independent from the single spawn.").define("massSpawnEnabled",  true);
+        KRAKEN_SQUID_SPAWN_ENABLED               = b.comment("If true, a player killing a Missile Squid has a 1/100 chance to spawn a single Kraken nearby.")                       .define("squidSpawnEnabled",  true);
+        KRAKEN_MASS_SPAWN_ENABLED                = b.comment("If true, a player killing a Missile Squid has a 1/500 chance to spawn 10 Krakens. Independent from the single spawn.").define("massSpawnEnabled",  true);
         b.pop();
 
 

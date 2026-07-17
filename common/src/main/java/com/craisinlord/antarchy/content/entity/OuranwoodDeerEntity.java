@@ -54,7 +54,10 @@ public class OuranwoodDeerEntity extends Animal implements GeoEntity {
             SynchedEntityData.defineId(OuranwoodDeerEntity.class, EntityDataSerializers.INT);
     private static final String VARIANT_KEY = "Variant";
 
-    private static final float ADULT_HITBOX_SCALE = 1.5F;
+    private static final float ADULT_HITBOX_WIDTH = 1.0F;
+    private static final float ADULT_HITBOX_HEIGHT = 2.0F;
+    private static final float BABY_HITBOX_WIDTH = 0.5F;
+    private static final float BABY_HITBOX_HEIGHT = 1.0F;
     private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation RUN_ANIM = RawAnimation.begin().thenLoop("run");
@@ -175,13 +178,12 @@ public class OuranwoodDeerEntity extends Animal implements GeoEntity {
 
     @Override
     public net.minecraft.world.entity.EntityDimensions getDefaultDimensions(net.minecraft.world.entity.Pose pose) {
-        net.minecraft.world.entity.EntityDimensions dimensions = super.getDefaultDimensions(pose);
         if (this.isBaby()) {
-            return dimensions;
+            return net.minecraft.world.entity.EntityDimensions.scalable(BABY_HITBOX_WIDTH, BABY_HITBOX_HEIGHT);
         }
         return net.minecraft.world.entity.EntityDimensions.scalable(
-                dimensions.width() * ADULT_HITBOX_SCALE,
-                dimensions.height() * ADULT_HITBOX_SCALE
+                ADULT_HITBOX_WIDTH,
+                ADULT_HITBOX_HEIGHT
         );
     }
 

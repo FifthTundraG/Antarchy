@@ -1,6 +1,7 @@
 package com.craisinlord.antarchy.content.worldgen.elythia;
 
 import com.craisinlord.antarchy.content.AntarchyObjects;
+import com.craisinlord.antarchy.content.block.GiantLilyPadBlock;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -12,9 +13,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class GiantLilyPadPatchFeature extends Feature<NoneFeatureConfiguration> {
     public GiantLilyPadPatchFeature(Codec<NoneFeatureConfiguration> codec) {
@@ -29,73 +27,34 @@ public final class GiantLilyPadPatchFeature extends Feature<NoneFeatureConfigura
         boolean placedAny = false;
 
         for (int i = 0; i < 12; i++) {
-            int anchorX = origin.getX() + random.nextInt(17) - 8;
-            int anchorZ = origin.getZ() + random.nextInt(17) - 8;
-            int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, anchorX, anchorZ) - 1;
-            BlockPos anchorFluidPos = new BlockPos(anchorX, surfaceY, anchorZ);
-            if (!level.getFluidState(anchorFluidPos).is(FluidTags.WATER) || !level.getFluidState(anchorFluidPos).isSource()) {
+            int x = origin.getX() + random.nextInt(17) - 8;
+            int z = origin.getZ() + random.nextInt(17) - 8;
+            int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+            BlockPos fluidPos = new BlockPos(x, surfaceY, z);
+            if (!level.getFluidState(fluidPos).is(FluidTags.WATER) || !level.getFluidState(fluidPos).isSource()) {
                 continue;
             }
 
-            int size = rollFootprintSize(random);
-            List<BlockPos> footprint = new ArrayList<>(size * size);
-            boolean valid = true;
-            for (int row = 0; row < size && valid; row++) {
-                for (int column = 0; column < size; column++) {
-                    BlockPos fluidPos = new BlockPos(anchorX + column, surfaceY, anchorZ + row);
-                    if (!level.getFluidState(fluidPos).is(FluidTags.WATER) || !level.getFluidState(fluidPos).isSource()) {
-                        valid = false;
-                        break;
-                    }
-
-                    BlockPos padPos = fluidPos.above();
-                    if (!level.isEmptyBlock(padPos)) {
-                        valid = false;
-                        break;
-                    }
-
-                    footprint.add(padPos);
-                }
-            }
-
-            if (!valid) {
+            BlockPos padPos = fluidPos.above();
+            if (!GiantLilyPadBlock.canPlaceStructure(level, padPos)) {
                 continue;
             }
 
-            Block giantLilyPad = AntarchyObjects.GIANT_LILY_PAD.get();
-            BlockState padState = giantLilyPad.defaultBlockState();
-            for (BlockPos padPos : footprint) {
-                level.setBlock(padPos, padState, Block.UPDATE_ALL);
-            }
-
+            GiantLilyPadBlock.placeStructure(level, padPos, GiantLilyPadBlock.PadRotation.values()[random.nextInt(4)]);
             placedAny = true;
 
-            if (size == 3 && random.nextFloat() < 0.5F) {
-                BlockPos centerPos = new BlockPos(anchorX + 1, surfaceY, anchorZ + 1).above();
-                placeLotus(level, centerPos.above());
-            }
+            placeLotus(level, padPos);
         }
 
         return placedAny;
     }
 
-    private static int rollFootprintSize(RandomSource random) {
-        float roll = random.nextFloat();
-        if (roll < 0.5F) {
-            return 1;
-        }
-
-        return roll < 0.8F ? 2 : 3;
-    }
-
-    private void placeLotus(WorldGenLevel level, BlockPos pos) {
-        if (!level.isEmptyBlock(pos)) {
+    private static void placeLotus(WorldGenLevel level, BlockPos pos) {
+        BlockState padState = level.getBlockState(pos);
+        if (!padState.is(AntarchyObjects.GIANT_LILY_PAD.get()) || padState.getValue(GiantLilyPadBlock.HAS_LOTUS)) {
             return;
         }
 
-        BlockState lotusState = AntarchyObjects.LOTUS.get().defaultBlockState();
-        if (lotusState.canSurvive(level, pos)) {
-            level.setBlock(pos, lotusState, Block.UPDATE_ALL);
-        }
+        level.setBlock(pos, padState.setValue(GiantLilyPadBlock.HAS_LOTUS, true), Block.UPDATE_CLIENTS);
     }
 }

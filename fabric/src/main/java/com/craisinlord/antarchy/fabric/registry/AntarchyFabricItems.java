@@ -11,6 +11,7 @@ import com.craisinlord.antarchy.content.AntarchySoundEvents;
 import com.craisinlord.antarchy.content.item.BloodCrystalArmorItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalAppleItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
+import com.craisinlord.antarchy.content.item.CritterCageItem;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
@@ -402,7 +403,7 @@ public final class AntarchyFabricItems {
 
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> GIANT_LILY_PAD_ITEM = ITEMS.register("giant_lily_pad",
-            () -> new PlaceOnWaterBlockItem(AntarchyFabricBlocks.GIANT_LILY_PAD.get(), new Item.Properties()));
+            () -> new com.craisinlord.antarchy.content.item.GiantLilyPadItem(AntarchyFabricBlocks.GIANT_LILY_PAD.get(), new Item.Properties()));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SEASHELL_ITEM = ITEMS.registerSimpleBlockItem(AntarchyFabricBlocks.SEASHELL);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> LOTUS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyFabricBlocks.LOTUS);
 
@@ -437,6 +438,10 @@ public final class AntarchyFabricItems {
 
     public static final DeferredItem<Item> PEACH_CHEST_BOAT = ITEMS.register("peach_chest_boat",
             () -> new com.craisinlord.antarchy.content.item.PeachChestBoatItem(AntarchyFabricEntities.PEACH_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+
+
+    public static final DeferredItem<CritterCageItem> CRITTER_CAGE = ITEMS.register("critter_cage",
+            () -> new CritterCageItem(new Item.Properties().stacksTo(16)));
 
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DUPLICATOR_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(AntarchyFabricBlocks.DUPLICATOR_SAPLING);

@@ -13,6 +13,7 @@ import com.craisinlord.antarchy.content.item.BloodCrystalArmorItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalAppleItem;
 import com.craisinlord.antarchy.content.item.BloodCrystalKatanaItem;
 import com.craisinlord.antarchy.content.block.entity.AntNestBlockEntity;
+import com.craisinlord.antarchy.content.block.entity.CritterCageBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
@@ -358,6 +359,8 @@ public final class AntarchyFabricBlocks {
             () -> new com.craisinlord.antarchy.content.block.LotusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM)));
     public static final DeferredBlock<SeashellBlock> SEASHELL = BLOCKS.register("seashell",
             () -> new SeashellBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TURTLE_EGG).noOcclusion()));
+    public static final DeferredBlock<CritterCageBlock> CRITTER_CAGE_BLOCK = BLOCKS.register("critter_cage_block",
+            () -> new CritterCageBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS).noOcclusion()));
 
 
     public static final DeferredBlock<net.minecraft.world.level.block.StandingSignBlock> OURANWOOD_SIGN = BLOCKS.register("ouranwood_sign",
@@ -1017,6 +1020,11 @@ public final class AntarchyFabricBlocks {
             () -> BlockEntityType.Builder.of(
                     SeashellBlockEntity::new,
                     SEASHELL.get()
+            ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CritterCageBlockEntity>> CRITTER_CAGE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("critter_cage_block",
+            () -> BlockEntityType.Builder.of(
+                    CritterCageBlockEntity::new,
+                    CRITTER_CAGE_BLOCK.get()
             ).build(null));
 
 

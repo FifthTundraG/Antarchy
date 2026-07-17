@@ -55,7 +55,7 @@ public final class AntarchySettings {
     private static double bigBerthaAttackSpeed = -3.0D;
     private static double krakensGraspAttackDamage = 16.0D;
     private static double krakensGraspAttackSpeed = -2.9D;
-    private static double krakensGraspThrownDamage = 16.0D;
+    private static double krakensGraspThrownDamage = 32.0D;
     private static double krakensGraspLightningDamage = 6.0D;
     private static boolean krakensGraspInnateLoyalty = true;
     private static int krakensGraspInnateLoyaltyLevel = 3;
@@ -128,9 +128,9 @@ public final class AntarchySettings {
     private static double squidzookaCooldownSeconds = 1.0D;
     private static double squidzookaLaunchVelocity = 2.1D;
     private static double rpoLauncherCooldownSeconds = 1.0D;
-    private static double rpoLauncherLaunchVelocity = 2.1D;
-    private static double rpoLauncherExplosionDamage = 14.0D;
-    private static double rpoLauncherExplosionRadius = 4.0D;
+    private static double rpoLauncherLaunchVelocity = 1.8D;
+    private static double rpoLauncherExplosionDamage = 30.0D;
+    private static double rpoLauncherExplosionRadius = 13.5D;
     private static double sizeRayCooldownSeconds = 1.0D;
     private static boolean invertProjectilesFromInvertedPlayers = false;
     private static boolean gravityGunEnabled = true;
@@ -141,6 +141,8 @@ public final class AntarchySettings {
     private static double gravityGunBlastStrength = 1.4D;
     private static double gravityGunCooldownSeconds = 0.35D;
     private static double gravityGunMaxHoldDistance = 10.0D;
+    private static double critterCageMaxCapturableWidth = 1.15D;
+    private static double critterCageMaxCapturableHeight = 1.15D;
     private static boolean minersDreamEnabled = true;
     private static int minersDreamMinimumRange = 48;
     private static int minersDreamMaximumRange = 96;
@@ -988,6 +990,14 @@ public final class AntarchySettings {
         return gravityGunMaxHoldDistance;
     }
 
+    public static double critterCageMaxCapturableWidth() {
+        return critterCageMaxCapturableWidth;
+    }
+
+    public static double critterCageMaxCapturableHeight() {
+        return critterCageMaxCapturableHeight;
+    }
+
     public static boolean minersDreamEnabled() {
         return minersDreamEnabled;
     }
@@ -1468,6 +1478,14 @@ public final class AntarchySettings {
 
     public static void setGravityGunMaxHoldDistance(double value) {
         gravityGunMaxHoldDistance = value;
+    }
+
+    public static void setCritterCageMaxCapturableWidth(double value) {
+        critterCageMaxCapturableWidth = value;
+    }
+
+    public static void setCritterCageMaxCapturableHeight(double value) {
+        critterCageMaxCapturableHeight = value;
     }
 
     public static void setMinersDreamEnabled(boolean value) {

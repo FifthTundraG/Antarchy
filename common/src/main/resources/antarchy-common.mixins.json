@@ -60,6 +60,7 @@
                    "client.ElytraModelAccessor",
                    "client.FrogRendererElythiaMixin",
                    "client.GameRendererSwingThroughGrassMixin",
+                   "client.KrakensGraspChargePoseMixin",
                    "client.LightningBoltRendererMixin",
                    "client.MountedVehicleCameraMixin",
                    "client.ParalyzedMouseTurnMixin",

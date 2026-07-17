@@ -46,7 +46,11 @@ public final class SeashellBlock extends BaseEntityBlock implements SimpleWaterl
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 5.333333D, 15.0D);
+    private static final double SHELL_MIN = 1.0D;
+    private static final double SHELL_MAX = 15.0D;
+    private static final double SHELL_HEIGHT = 4.333333D;
+    private static final double COLLISION_FORWARD_OFFSET = 1.0D;
+    private static final VoxelShape OUTLINE_SHAPE = Block.box(SHELL_MIN, 0.0D, SHELL_MIN, SHELL_MAX, SHELL_HEIGHT, SHELL_MAX);
 
     public SeashellBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -83,17 +87,17 @@ public final class SeashellBlock extends BaseEntityBlock implements SimpleWaterl
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return OUTLINE_SHAPE;
     }
 
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return collisionShape(state.getValue(FACING));
     }
 
     @Override
     protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return SHAPE;
+        return OUTLINE_SHAPE;
     }
 
     @Override
@@ -185,6 +189,45 @@ public final class SeashellBlock extends BaseEntityBlock implements SimpleWaterl
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
+        if (player.isShiftKeyDown()) {
+            if (level.isClientSide) {
+                return ItemInteractionResult.SUCCESS;
+            }
+
+            if (seashell.closeManually()) {
+                level.playSound(null, pos, SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS, 0.6F, 0.95F + level.random.nextFloat() * 0.1F);
+                return ItemInteractionResult.CONSUME;
+            }
+
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        if (!seashell.isEffectivelyOpen()) {
+            if (level.isClientSide) {
+                return ItemInteractionResult.SUCCESS;
+            }
+
+            if (seashell.openManually()) {
+                level.playSound(null, pos, SoundEvents.CHEST_OPEN, SoundSource.BLOCKS, 0.6F, 0.95F + level.random.nextFloat() * 0.1F);
+                return ItemInteractionResult.CONSUME;
+            }
+
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
+        if (stack.isEmpty() && !seashell.hasAnyContents()) {
+            if (level.isClientSide) {
+                return ItemInteractionResult.SUCCESS;
+            }
+
+            if (seashell.closeManually()) {
+                level.playSound(null, pos, SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS, 0.6F, 0.95F + level.random.nextFloat() * 0.1F);
+                return ItemInteractionResult.CONSUME;
+            }
+
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         if (!stack.isEmpty()) {
             if (level.isClientSide) {
                 return seashell.canAcceptItem(player, stack) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -234,7 +277,19 @@ public final class SeashellBlock extends BaseEntityBlock implements SimpleWaterl
         BlockState updatedState = state.setValue(POWERED, powered);
         level.setBlock(pos, updatedState, Block.UPDATE_ALL);
         if (level.getBlockEntity(pos) instanceof SeashellBlockEntity seashell) {
-            seashell.onPowerStateChanged(powered);
+            if (seashell.onPowerStateChanged(powered)) {
+                level.playSound(null, pos, powered ? SoundEvents.CHEST_OPEN : SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS, 0.6F, 0.95F + level.random.nextFloat() * 0.1F);
+            }
         }
+    }
+
+    private static VoxelShape collisionShape(Direction facing) {
+        return switch (facing) {
+            case NORTH -> Block.box(SHELL_MIN, 0.0D, SHELL_MIN - COLLISION_FORWARD_OFFSET, SHELL_MAX, SHELL_HEIGHT, SHELL_MAX - COLLISION_FORWARD_OFFSET);
+            case SOUTH -> Block.box(SHELL_MIN, 0.0D, SHELL_MIN + COLLISION_FORWARD_OFFSET, SHELL_MAX, SHELL_HEIGHT, SHELL_MAX + COLLISION_FORWARD_OFFSET);
+            case WEST -> Block.box(SHELL_MIN - COLLISION_FORWARD_OFFSET, 0.0D, SHELL_MIN, SHELL_MAX - COLLISION_FORWARD_OFFSET, SHELL_HEIGHT, SHELL_MAX);
+            case EAST -> Block.box(SHELL_MIN + COLLISION_FORWARD_OFFSET, 0.0D, SHELL_MIN, SHELL_MAX + COLLISION_FORWARD_OFFSET, SHELL_HEIGHT, SHELL_MAX);
+            default -> OUTLINE_SHAPE;
+        };
     }
 }

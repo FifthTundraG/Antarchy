@@ -233,6 +233,8 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Item> REVERIE_BOTTLE = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Item> CRITTER_CAGE = (Supplier<Item>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<Item> STINK_BUG_ITEM = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Holder<MobEffect>> DREAD = (Supplier<Holder<MobEffect>>) UNBOUND;
@@ -297,6 +299,8 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> SEASHELL = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<Block> CRITTER_CAGE_BLOCK = (Supplier<Block>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<AntNestBlockEntity>> ANT_NEST_BLOCK_ENTITY = (Supplier<BlockEntityType<AntNestBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<DreamCampfireBlockEntity>> DREAM_CAMPFIRE_BLOCK_ENTITY = (Supplier<BlockEntityType<DreamCampfireBlockEntity>>) UNBOUND;
@@ -307,14 +311,31 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<BlockEntityType<SeashellBlockEntity>> SEASHELL_BLOCK_ENTITY = (Supplier<BlockEntityType<SeashellBlockEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<BlockEntityType<com.craisinlord.antarchy.content.block.entity.CritterCageBlockEntity>> CRITTER_CAGE_BLOCK_ENTITY =
+            (Supplier<BlockEntityType<com.craisinlord.antarchy.content.block.entity.CritterCageBlockEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<SimpleParticleType> STINKY_GAS = (Supplier<SimpleParticleType>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<SimpleParticleType> STINKY_FLY = (Supplier<SimpleParticleType>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<SimpleParticleType> PEACH_LEAVES_PARTICLE = (Supplier<SimpleParticleType>) UNBOUND;
     @SuppressWarnings("unchecked")
+    public static Supplier<SimpleParticleType> LOTUS_POLLEN = (Supplier<SimpleParticleType>) UNBOUND;
+    @SuppressWarnings("unchecked")
     public static Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> AMERICAN_COMPONENT =
             (Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.world.entity.EntityType<com.craisinlord.antarchy.content.entity.CritterCageProjectileEntity>> CRITTER_CAGE_PROJECTILE =
+            (Supplier<net.minecraft.world.entity.EntityType<com.craisinlord.antarchy.content.entity.CritterCageProjectileEntity>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.resources.ResourceLocation>> CRITTER_CAGE_ENTITY_TYPE_COMPONENT =
+            (Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.resources.ResourceLocation>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.core.component.DataComponentType<Integer>> CRITTER_CAGE_PRIMARY_COLOR_COMPONENT =
+            (Supplier<net.minecraft.core.component.DataComponentType<Integer>>) UNBOUND;
+    @SuppressWarnings("unchecked")
+    public static Supplier<net.minecraft.core.component.DataComponentType<Integer>> CRITTER_CAGE_SECONDARY_COLOR_COMPONENT =
+            (Supplier<net.minecraft.core.component.DataComponentType<Integer>>) UNBOUND;
 
     private AntarchyObjects() {
     }
@@ -607,6 +628,10 @@ public final class AntarchyObjects {
         WILD_CORN = supplier;
     }
 
+    public static void setCritterCageBlock(Supplier<Block> supplier) {
+        CRITTER_CAGE_BLOCK = supplier;
+    }
+
     public static void setStarCoralBlock(Supplier<Block> supplier) {
         STAR_CORAL_BLOCK = supplier;
     }
@@ -635,6 +660,14 @@ public final class AntarchyObjects {
         GLIMMER_BOTTLE = supplier;
     }
 
+    public static void setCritterCage(Supplier<Item> supplier) {
+        CRITTER_CAGE = supplier;
+    }
+
+    public static void setLotusPollen(Supplier<SimpleParticleType> supplier) {
+        LOTUS_POLLEN = supplier;
+    }
+
     public static void setPeachLeavesParticle(Supplier<SimpleParticleType> supplier) {
         PEACH_LEAVES_PARTICLE = supplier;
     }
@@ -649,6 +682,26 @@ public final class AntarchyObjects {
 
     public static void setAmericanComponent(Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.util.Unit>> supplier) {
         AMERICAN_COMPONENT = supplier;
+    }
+
+    public static void setCritterCageBlockEntity(Supplier<BlockEntityType<com.craisinlord.antarchy.content.block.entity.CritterCageBlockEntity>> supplier) {
+        CRITTER_CAGE_BLOCK_ENTITY = supplier;
+    }
+
+    public static void setCritterCageProjectile(Supplier<net.minecraft.world.entity.EntityType<com.craisinlord.antarchy.content.entity.CritterCageProjectileEntity>> supplier) {
+        CRITTER_CAGE_PROJECTILE = supplier;
+    }
+
+    public static void setCritterCageEntityTypeComponent(Supplier<net.minecraft.core.component.DataComponentType<net.minecraft.resources.ResourceLocation>> supplier) {
+        CRITTER_CAGE_ENTITY_TYPE_COMPONENT = supplier;
+    }
+
+    public static void setCritterCagePrimaryColorComponent(Supplier<net.minecraft.core.component.DataComponentType<Integer>> supplier) {
+        CRITTER_CAGE_PRIMARY_COLOR_COMPONENT = supplier;
+    }
+
+    public static void setCritterCageSecondaryColorComponent(Supplier<net.minecraft.core.component.DataComponentType<Integer>> supplier) {
+        CRITTER_CAGE_SECONDARY_COLOR_COMPONENT = supplier;
     }
 
     public static BlockBehaviour.Properties shellstoneProperties() {

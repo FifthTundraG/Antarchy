@@ -180,7 +180,7 @@ public final class AntarchyNeoforgeItems {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> CAMELLIA_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.CAMELLIA);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SPIDER_LILY_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.SPIDER_LILY);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> GIANT_LILY_PAD_ITEM = ITEMS.register("giant_lily_pad",
-            () -> new PlaceOnWaterBlockItem(AntarchyNeoforgeBlocks.GIANT_LILY_PAD.get(), new Item.Properties()));
+            () -> new com.craisinlord.antarchy.content.item.GiantLilyPadItem(AntarchyNeoforgeBlocks.GIANT_LILY_PAD.get(), new Item.Properties()));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> SEASHELL_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.SEASHELL);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> LOTUS_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.LOTUS);
     public static final DeferredItem<net.minecraft.world.item.SignItem> OURANWOOD_SIGN_ITEM = ITEMS.register("ouranwood_sign",
@@ -199,6 +199,8 @@ public final class AntarchyNeoforgeItems {
             () -> new PeachBoatOnlyItem(AntarchyNeoforgeEntites.PEACH_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> PEACH_CHEST_BOAT = ITEMS.register("peach_chest_boat",
             () -> new PeachChestBoatItem(AntarchyNeoforgeEntites.PEACH_CHEST_BOAT_ENTITY.get(), new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<CritterCageItem> CRITTER_CAGE = ITEMS.register("critter_cage",
+            () -> new CritterCageItem(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<net.minecraft.world.item.BlockItem> DUPLICATOR_SAPLING_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.DUPLICATOR_SAPLING);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> RED_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.RED_ANT_NEST);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> BROWN_ANT_NEST_ITEM = ITEMS.registerSimpleBlockItem(AntarchyNeoforgeBlocks.BROWN_ANT_NEST);

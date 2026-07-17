@@ -82,12 +82,15 @@ public final class AntarchyFabricEvents {
             if (!(entity.level() instanceof ServerLevel serverLevel)) {
                 return;
             }
+            if (!(entity.getKillCredit() instanceof net.minecraft.world.entity.player.Player)) {
+                return;
+            }
 
             BlockPos deathPos = entity.blockPosition();
             if (AntarchySettings.krakenSquidSpawnEnabled() && serverLevel.random.nextInt(100) == 0) {
                 spawnKrakens(serverLevel, deathPos, 1);
             }
-            if (AntarchySettings.krakenMassSpawnEnabled() && serverLevel.random.nextInt(100) == 0) {
+            if (AntarchySettings.krakenMassSpawnEnabled() && serverLevel.random.nextInt(500) == 0) {
                 spawnKrakens(serverLevel, deathPos, 10);
             }
         });

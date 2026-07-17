@@ -323,7 +323,15 @@ public class AntarchyNeoforge {
         AntarchyObjects.setLumenBlock(() -> AntarchyNeoforgeBlocks.LUMEN_BLOCK.get());
         AntarchyObjects.setLumenFroglight(() -> AntarchyNeoforgeBlocks.LUMEN_FROGLIGHT.get());
         AntarchyObjects.setPeachLeavesParticle(() -> AntarchyNeoforgeMisc.PEACH_LEAVES_PARTICLE.get());
+        AntarchyObjects.setLotusPollen(() -> AntarchyNeoforgeMisc.LOTUS_POLLEN.get());
         AntarchyObjects.setDorrieInventoryMenu(AntarchyNeoforgeMisc.DORRIE_INVENTORY_MENU);
+        AntarchyObjects.setCritterCage(() -> AntarchyNeoforgeItems.CRITTER_CAGE.get());
+        AntarchyObjects.setCritterCageBlock(() -> AntarchyNeoforgeBlocks.CRITTER_CAGE_BLOCK.get());
+        AntarchyObjects.setCritterCageBlockEntity(() -> AntarchyNeoforgeBlocks.CRITTER_CAGE_BLOCK_ENTITY.get());
+        AntarchyObjects.setCritterCageProjectile(() -> AntarchyNeoforgeEntites.CRITTER_CAGE_PROJECTILE.get());
+        AntarchyObjects.setCritterCageEntityTypeComponent(() -> AntarchyNeoforgeMisc.CRITTER_CAGE_ENTITY_TYPE_COMPONENT.get());
+        AntarchyObjects.setCritterCagePrimaryColorComponent(() -> AntarchyNeoforgeMisc.CRITTER_CAGE_PRIMARY_COLOR_COMPONENT.get());
+        AntarchyObjects.setCritterCageSecondaryColorComponent(() -> AntarchyNeoforgeMisc.CRITTER_CAGE_SECONDARY_COLOR_COMPONENT.get());
     }
 
     private static boolean isModLoaded(String modId) {

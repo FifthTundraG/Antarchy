@@ -1,9 +1,9 @@
 package com.craisinlord.antarchy.content.block;
 
+import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -20,13 +20,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.joml.Vector3f;
 
 public class LotusBlock extends Block {
     public static final MapCodec<LotusBlock> CODEC = simpleCodec(LotusBlock::new);
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
-    private static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 13.0D, 13.0D);
-    private static final Vector3f POLLEN_COLOR = new Vector3f(1.0F, 0.85F, 0.2F);
+    private static final VoxelShape SHAPE_STANDING = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 6.5D, 13.0D);
+    private static final VoxelShape SHAPE_HANGING = Block.box(3.0D, 9.5D, 3.0D, 13.0D, 16.0D, 13.0D);
 
     public LotusBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -68,7 +67,7 @@ public class LotusBlock extends Block {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return state.getValue(HANGING) ? SHAPE_HANGING : SHAPE_STANDING;
     }
 
     @Override
@@ -102,6 +101,6 @@ public class LotusBlock extends Block {
         double z = pos.getZ() + 0.5D + (random.nextDouble() - 0.5D) * 0.6D;
         double y = state.getValue(HANGING) ? pos.getY() + 0.2D : pos.getY() + 0.8D;
         double motionY = state.getValue(HANGING) ? -0.02D : 0.015D;
-        level.addParticle(new DustParticleOptions(POLLEN_COLOR, 1.0F), x, y, z, 0.0D, motionY, 0.0D);
+        level.addParticle(AntarchyObjects.LOTUS_POLLEN.get(), x, y, z, 0.0D, motionY, 0.0D);
     }
 }

@@ -54,6 +54,11 @@ public class TentacleEntity extends Mob implements GeoEntity {
     public void push(net.minecraft.world.entity.Entity entity) {
     }
 
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)

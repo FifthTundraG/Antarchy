@@ -208,6 +208,7 @@ public final class AntarchyConfigModuleFabric {
                     || name.startsWith("squidzooka")
                     || name.equals("invertProjectilesFromInvertedPlayers")
                     || name.startsWith("gravityGun")
+                    || name.startsWith("critterCage")
                     || name.startsWith("minersDream")
                     || name.equals("potentNyxiteInvertedDurationSeconds")
                     || name.equals("corneaEarNightVisionSeconds")

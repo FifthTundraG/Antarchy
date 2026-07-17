@@ -17,6 +17,7 @@ import com.craisinlord.antarchy.content.entity.ElkaEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity;
 import com.craisinlord.antarchy.content.entity.glimmer.GlimmerEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
+import com.craisinlord.antarchy.content.entity.CritterCageProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
 import com.craisinlord.antarchy.content.entity.AlphaMantisEntity;
@@ -232,7 +233,7 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(10)
                     .build("missile_squid"));
     public static final DeferredHolder<EntityType<?>, EntityType<OctopusBombEntity>> OCTOPUS_BOMB = ENTITY_TYPES.register("octopus_bomb",
-            () -> EntityType.Builder.of(OctopusBombEntity::new, MobCategory.MONSTER)
+            () -> EntityType.Builder.of(OctopusBombEntity::new, MobCategory.WATER_CREATURE)
                     .sized(2.4F, 2.9F)
                     .clientTrackingRange(10)
                     .build("octopus_bomb"));
@@ -287,6 +288,12 @@ public final class AntarchyNeoforgeEntites {
                     .clientTrackingRange(8)
                     .updateInterval(1)
                     .build("lucid_pearl_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<CritterCageProjectileEntity>> CRITTER_CAGE_PROJECTILE = ENTITY_TYPES.register("critter_cage_projectile",
+            () -> EntityType.Builder.<CritterCageProjectileEntity>of(CritterCageProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .build("critter_cage_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<HushProjectileEntity>> HUSH_PROJECTILE = ENTITY_TYPES.register("hush_projectile",
             () -> EntityType.Builder.<HushProjectileEntity>of(HushProjectileEntity::new, MobCategory.MISC)
                     .sized(0.35F, 0.35F)
@@ -322,7 +329,7 @@ public final class AntarchyNeoforgeEntites {
                     .build("dorrie"));
     public static final DeferredHolder<EntityType<?>, EntityType<OuranwoodDeerEntity>> OURANWOOD_DEER = ENTITY_TYPES.register("ouranwood_deer",
             () -> EntityType.Builder.of(OuranwoodDeerEntity::new, MobCategory.CREATURE)
-                    .sized(0.9F, 1.4F)
+                    .sized(1.125F, 1.75F)
                     .clientTrackingRange(8)
                     .build("ouranwood_deer"));
     public static final DeferredHolder<EntityType<?>, EntityType<GlimmerEntity>> GLIMMER = ENTITY_TYPES.register("glimmer",

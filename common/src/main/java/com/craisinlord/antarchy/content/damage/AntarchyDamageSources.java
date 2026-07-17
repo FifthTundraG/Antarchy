@@ -106,6 +106,15 @@ public final class AntarchyDamageSources {
         );
     }
 
+    public static DamageSource rpoLauncherBlast(ServerLevel level, Entity attacker) {
+        return new DamageSource(
+                level.registryAccess()
+                        .registryOrThrow(Registries.DAMAGE_TYPE)
+                        .getHolderOrThrow(AntarchyDamageTypes.RPO_LAUNCHER_BLAST),
+                attacker
+        );
+    }
+
     public static DamageSource waterSoaked(Level level, @Nullable Entity directEntity, @Nullable Entity causingEntity) {
         return new DamageSource(
                 level.registryAccess()
