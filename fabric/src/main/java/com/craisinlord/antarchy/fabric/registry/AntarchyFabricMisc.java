@@ -16,18 +16,10 @@ import com.craisinlord.antarchy.content.block.entity.DreamCampfireBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.HushweedBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.PotentNyxiteBlockEntity;
 import com.craisinlord.antarchy.content.block.entity.WaspNestBlockEntity;
-import com.craisinlord.antarchy.content.fluid.BileLiquidBlock;
 import com.craisinlord.antarchy.content.fluid.LumenLiquidBlock;
 import com.craisinlord.antarchy.content.worldgen.ants.BrownAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RainbowAntNestFeature;
 import com.craisinlord.antarchy.content.worldgen.ants.RedAntNestFeature;
-import com.craisinlord.antarchy.content.worldgen.ants.TermiteNestFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileCystFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynBileVeinFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynCreepvineFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynWallAmberMossFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.HangingCreeprootsFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.MoltingVinesFeature;
 import com.craisinlord.antarchy.content.worldgen.ocean.SeashellFeature;
 import com.craisinlord.antarchy.content.worldgen.overworld.CornPatchFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.NyxiteSpikeConfiguration;
@@ -68,13 +60,10 @@ import com.craisinlord.antarchy.content.entity.lucid.LucidEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
-import com.craisinlord.antarchy.content.entity.JumpyBugEntity;
-import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodBoatEntity;
 import com.craisinlord.antarchy.content.entity.OuranwoodChestBoatEntity;
 import com.craisinlord.antarchy.content.entity.AlphaMantisEntity;
 import com.craisinlord.antarchy.content.entity.MantisEntity;
-import com.craisinlord.antarchy.content.entity.RollyPollyEntity;
 import com.craisinlord.antarchy.content.entity.basilisk.BasiliskEntity;
 import com.craisinlord.antarchy.content.entity.EmperorScorpionEntity;
 import com.craisinlord.antarchy.content.entity.ScorpionEntity;
@@ -119,7 +108,6 @@ import com.craisinlord.antarchy.content.item.DiamondMinecartItem;
 import com.craisinlord.antarchy.content.item.ReverieBottleItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipItem;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
-import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
 import com.craisinlord.antarchy.content.item.SizeRayItem;
 import com.craisinlord.antarchy.content.item.SquidzookaItem;
 import com.craisinlord.antarchy.content.item.SimpleToolTier;
@@ -158,9 +146,6 @@ import com.craisinlord.antarchy.content.worldgen.elythia.OuranwoodTreeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.PeachTreeConfiguration;
 import com.craisinlord.antarchy.content.worldgen.elythia.PeachTreeFeature;
 import com.craisinlord.antarchy.content.worldgen.elythia.TriffidPatchFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.CavarynEggPatchFeature;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeConfiguration;
-import com.craisinlord.antarchy.content.worldgen.cavaryn.ChitenSpikeFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.BedBugNestFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.BedBugSurfaceClusterFeature;
 import com.craisinlord.antarchy.content.worldgen.thoraxis.CloudSeaCalciteFeature;
@@ -574,31 +559,6 @@ public final class AntarchyFabricMisc {
             () -> new Potion("growing", new MobEffectInstance(mobEffectHolder(GROWTH_EFFECT), 600, 2)));
 
 
-    public static final DeferredHolder<Fluid, Fluid> BILE = FLUIDS.register("bile",
-            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Source(
-                    () -> AntarchyFabricContent.lookupFlowingFluid("bile"),
-                    () -> AntarchyFabricContent.lookupFlowingFluid("flowing_bile"),
-                    () -> AntarchyFabricContent.lookupItem("bile_bucket"),
-                    "bile",
-                    4,
-                    1,
-                    5
-            ));
-
-
-    public static final DeferredHolder<Fluid, Fluid> FLOWING_BILE = FLUIDS.register("flowing_bile",
-            () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Flowing(
-                    () -> AntarchyFabricContent.lookupFlowingFluid("bile"),
-                    () -> AntarchyFabricContent.lookupFlowingFluid("flowing_bile"),
-                    () -> AntarchyFabricContent.lookupItem("bile_bucket"),
-                    "bile",
-                    4,
-                    1,
-                    5
-            ));
-
-
-
     public static final DeferredHolder<Fluid, Fluid> ICHOR = FLUIDS.register("ichor",
             () -> new com.craisinlord.antarchy.fabric.content.fluid.SimpleFluid.Source(
                     () -> AntarchyFabricContent.lookupFlowingFluid("ichor"),
@@ -666,10 +626,6 @@ public final class AntarchyFabricMisc {
 
     public static final DeferredHolder<Feature<?>, RainbowAntNestFeature> RAINBOW_ANT_NEST_FEATURE = FEATURES.register("rainbow_ant_nest",
             () -> new RainbowAntNestFeature(SimpleBlockConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, TermiteNestFeature> TERMITE_NEST_FEATURE = FEATURES.register("termite_nest",
-            () -> new TermiteNestFeature(SimpleBlockConfiguration.CODEC));
 
 
     public static final DeferredHolder<Feature<?>, OuranwoodTreeFeature> OURANWOOD_LARGE_TREE = FEATURES.register("ouranwood_large_tree",
@@ -822,41 +778,6 @@ public final class AntarchyFabricMisc {
             () -> new NyxiteSpikeFeature(NyxiteSpikeConfiguration.CODEC));
 
 
-    public static final DeferredHolder<Feature<?>, ChitenSpikeFeature> CAVARYN_CHITEN_SPIKES = FEATURES.register("cavaryn_chiten_spikes",
-            () -> new ChitenSpikeFeature(ChitenSpikeConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, CavarynBileVeinFeature> CAVARYN_BILE_VEINS = FEATURES.register("cavaryn_bile_veins",
-            () -> new CavarynBileVeinFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, CavarynBileCystFeature> CAVARYN_BILE_CYSTS = FEATURES.register("cavaryn_bile_cysts",
-            () -> new CavarynBileCystFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, CavarynCreepvineFeature> CAVARYN_CREEPVINE = FEATURES.register("cavaryn_creepvine",
-            () -> new CavarynCreepvineFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, HangingCreeprootsFeature> HANGING_CREEPROOTS = FEATURES.register("hanging_creeproots",
-            () -> new HangingCreeprootsFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, MoltingVinesFeature> MOLTING_VINES = FEATURES.register("molting_vines",
-            () -> new MoltingVinesFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.cavaryn.GroundMoltingVinesFeature> GROUND_MOLTING_VINES = FEATURES.register("ground_molting_vines",
-            () -> new com.craisinlord.antarchy.content.worldgen.cavaryn.GroundMoltingVinesFeature(NoneFeatureConfiguration.CODEC));
-
-    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.cavaryn.JumpyBugEggCeilingFeature> JUMPY_BUG_EGG_CEILING = FEATURES.register("jumpy_bug_egg_ceiling",
-            () -> new com.craisinlord.antarchy.content.worldgen.cavaryn.JumpyBugEggCeilingFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.cavaryn.RollyCavesGiantCavernFeature> ROLLY_CAVES_GIANT_CAVERN = FEATURES.register("rolly_caves_giant_cavern",
-            () -> new com.craisinlord.antarchy.content.worldgen.cavaryn.RollyCavesGiantCavernFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, CavarynWallAmberMossFeature> CAVARYN_WALL_AMBER_MOSS = FEATURES.register("cavaryn_wall_amber_moss",
-            () -> new CavarynWallAmberMossFeature(NoneFeatureConfiguration.CODEC));
-
-
     public static final DeferredHolder<Feature<?>, AntiwaterSpringsFeature> ANTIWATER_SPRINGS = FEATURES.register("antiwater_springs",
             () -> new AntiwaterSpringsFeature(AntiwaterSpringsConfiguration.CODEC));
 
@@ -880,15 +801,6 @@ public final class AntarchyFabricMisc {
     public static final DeferredHolder<Feature<?>, BedBugSurfaceClusterFeature> BED_BUG_SURFACE_CLUSTER = FEATURES.register("bed_bug_surface_cluster",
             () -> new BedBugSurfaceClusterFeature(NoneFeatureConfiguration.CODEC));
 
-
-    public static final DeferredHolder<Feature<?>, CavarynEggPatchFeature> CAVARYN_TERROR_EGG_PATCH = FEATURES.register("cavaryn_terror_egg_patch",
-            () -> new CavarynEggPatchFeature(NoneFeatureConfiguration.CODEC));
-
-
-    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.mushroom.GlowcapHugeMushroomFeature> HUGE_GLOWCAP_MUSHROOM = FEATURES.register("huge_glowcap_mushroom",
-            () -> new com.craisinlord.antarchy.content.worldgen.mushroom.GlowcapHugeMushroomFeature(NoneFeatureConfiguration.CODEC));
-    public static final DeferredHolder<Feature<?>, com.craisinlord.antarchy.content.worldgen.mushroom.GlowcapHugeMushroomWorldgenFeature> HUGE_GLOWCAP_MUSHROOM_WORLDGEN = FEATURES.register("huge_glowcap_mushroom_worldgen",
-            () -> new com.craisinlord.antarchy.content.worldgen.mushroom.GlowcapHugeMushroomWorldgenFeature(NoneFeatureConfiguration.CODEC));
 
 
     public static final DeferredHolder<Feature<?>, ThoraxisAntiwaterPoolFeature> THORAXIS_ANTIWATER_POOL = FEATURES.register("thoraxis_antiwater_pool",

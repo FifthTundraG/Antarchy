@@ -5,13 +5,9 @@ import com.craisinlord.antarchy.content.entity.BomberEntity;
 import com.craisinlord.antarchy.content.entity.ButterflyEntity;
 import com.craisinlord.antarchy.content.entity.CaterpillarEntity;
 import com.craisinlord.antarchy.content.entity.EasterBunnyEntity;
-import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.entity.HushProjectileEntity;
-import com.craisinlord.antarchy.content.entity.StinkBugEntity;
 import com.craisinlord.antarchy.content.entity.WaterBombEntity;
 import com.craisinlord.antarchy.content.entity.TriffidEntity;
-import com.craisinlord.antarchy.content.entity.CreepingHorrorEntity;
-import com.craisinlord.antarchy.content.entity.LurkingTerrorEntity;
 import com.craisinlord.antarchy.content.entity.ToreterrorEntity;
 import com.craisinlord.antarchy.content.entity.WaspEntity;
 import com.craisinlord.antarchy.content.entity.brutalfly.BrutalflyEntity;
@@ -96,17 +92,9 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<WaterBombEntity>> WATER_BOMB = (Supplier<EntityType<WaterBombEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<EntityType<CreepingHorrorEntity>> CREEPING_HORROR = (Supplier<EntityType<CreepingHorrorEntity>>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<EntityType<LurkingTerrorEntity>> LURKING_TERROR = (Supplier<EntityType<LurkingTerrorEntity>>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<EntityType<StinkBugEntity>> STINK_BUG = (Supplier<EntityType<StinkBugEntity>>) UNBOUND;
-    @SuppressWarnings("unchecked")
     public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> CHEEP = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> DORRIE = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<EntityType<HerculesBeetleEntity>> HERCULES_BEETLE = (Supplier<EntityType<HerculesBeetleEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> OURANWOOD_DEER = (Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -201,10 +189,6 @@ public final class AntarchyObjects {
     @SuppressWarnings("unchecked")
     public static Supplier<Block> NYXITE_SPIKE = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
-    public static Supplier<Block> CHITEN_BLOCK = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<Block> CHITEN_SPIKE = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
     public static Supplier<Block> POTENT_NYXITE = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> ANTIMETAL = (Supplier<Block>) UNBOUND;
@@ -234,8 +218,6 @@ public final class AntarchyObjects {
     public static Supplier<Item> REVERIE_BOTTLE = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Item> CRITTER_CAGE = (Supplier<Item>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<Item> STINK_BUG_ITEM = (Supplier<Item>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Holder<MobEffect>> DREAD = (Supplier<Holder<MobEffect>>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -272,10 +254,6 @@ public final class AntarchyObjects {
     public static Supplier<Block> PINK_MILKWEED = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> BED_BUG_EGG = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<Block> CREEPING_HORROR_EGGS = (Supplier<Block>) UNBOUND;
-    @SuppressWarnings("unchecked")
-    public static Supplier<Block> LURKING_TERROR_EGGS = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
     public static Supplier<Block> WASP_NEST = (Supplier<Block>) UNBOUND;
     @SuppressWarnings("unchecked")
@@ -360,9 +338,6 @@ public final class AntarchyObjects {
             Supplier<EntityType<HushProjectileEntity>> hushProjectile,
             Supplier<EntityType<ToreterrorEntity>> toreterror,
             Supplier<EntityType<WaterBombEntity>> waterBomb,
-            Supplier<EntityType<CreepingHorrorEntity>> creepingHorror,
-            Supplier<EntityType<LurkingTerrorEntity>> lurkingTerror,
-            Supplier<EntityType<StinkBugEntity>> stinkBug,
             Supplier<EntityType<com.craisinlord.antarchy.content.entity.CheepEntity>> cheep,
             Supplier<EntityType<com.craisinlord.antarchy.content.entity.DorrieEntity>> dorrie,
             Supplier<Block> duplicatorLog,
@@ -393,8 +368,6 @@ public final class AntarchyObjects {
             Supplier<Block> triffidGooBlock,
             Supplier<Block> paleNyxite,
             Supplier<Block> nyxiteSpike,
-            Supplier<Block> chitenBlock,
-            Supplier<Block> chitenSpike,
             Supplier<Block> potentNyxite,
             Supplier<Block> antimetal,
             Supplier<Block> polishedAntimetal,
@@ -407,7 +380,6 @@ public final class AntarchyObjects {
             Supplier<Item> krakenTooth,
             Supplier<Item> moggles,
             Supplier<Item> reverieBottle,
-            Supplier<Item> stinkBugItem,
             Supplier<Holder<MobEffect>> dread,
             Supplier<Holder<MobEffect>> paralyzedEffect,
             Supplier<Holder<MobEffect>> invertedEffect,
@@ -422,8 +394,6 @@ public final class AntarchyObjects {
             Supplier<Block> orangeMilkweed,
             Supplier<Block> pinkMilkweed,
             Supplier<Block> bedBugEggs,
-            Supplier<Block> creepingHorrorEggs,
-            Supplier<Block> lurkingTerrorEggs,
             Supplier<Block> waspNest,
             Supplier<Block> hushweed,
             Supplier<Block> squirrelNestBlock,
@@ -461,9 +431,6 @@ public final class AntarchyObjects {
         HUSH_PROJECTILE = hushProjectile;
         TORETERROR = toreterror;
         WATER_BOMB = waterBomb;
-        CREEPING_HORROR = creepingHorror;
-        LURKING_TERROR = lurkingTerror;
-        STINK_BUG = stinkBug;
         CHEEP = cheep;
         DORRIE = dorrie;
         DUPLICATOR_LOG = duplicatorLog;
@@ -494,8 +461,6 @@ public final class AntarchyObjects {
         TRIFFID_GOO_BLOCK = triffidGooBlock;
         PALE_NYXITE = paleNyxite;
         NYXITE_SPIKE = nyxiteSpike;
-        CHITEN_BLOCK = chitenBlock;
-        CHITEN_SPIKE = chitenSpike;
         POTENT_NYXITE = potentNyxite;
         ANTIMETAL = antimetal;
         POLISHED_ANTIMETAL = polishedAntimetal;
@@ -508,7 +473,6 @@ public final class AntarchyObjects {
         KRAKEN_TOOTH = krakenTooth;
         MOGGLES = moggles;
         REVERIE_BOTTLE = reverieBottle;
-        STINK_BUG_ITEM = stinkBugItem;
         DREAD = dread;
         PARALYZED_EFFECT = paralyzedEffect;
         INVERTED_EFFECT = invertedEffect;
@@ -523,8 +487,6 @@ public final class AntarchyObjects {
         ORANGE_MILKWEED = orangeMilkweed;
         PINK_MILKWEED = pinkMilkweed;
         BED_BUG_EGG = bedBugEggs;
-        CREEPING_HORROR_EGGS = creepingHorrorEggs;
-        LURKING_TERROR_EGGS = lurkingTerrorEggs;
         WASP_NEST = waspNest;
         HUSHWEED = hushweed;
         SQUIRREL_NEST_BLOCK = squirrelNestBlock;
@@ -570,10 +532,6 @@ public final class AntarchyObjects {
 
     public static void setKrakensGrasp(Supplier<Item> supplier) {
         KRAKENS_GRASP = supplier;
-    }
-
-    public static void setHerculesBeetle(Supplier<EntityType<HerculesBeetleEntity>> supplier) {
-        HERCULES_BEETLE = supplier;
     }
 
     public static void setOuranwoodDeer(Supplier<EntityType<com.craisinlord.antarchy.content.entity.OuranwoodDeerEntity>> supplier) {

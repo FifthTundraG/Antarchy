@@ -4,7 +4,6 @@ import com.craisinlord.antarchy.content.AntarchyTags;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.entity.ant.BrownAntEntity;
 import com.craisinlord.antarchy.content.entity.ant.RedAntEntity;
-import com.craisinlord.antarchy.content.entity.ant.TermiteEntity;
 import java.util.Objects;
 import java.util.function.Supplier;
 import net.minecraft.resources.ResourceKey;
@@ -26,12 +25,6 @@ public enum PermanentPortalType {
         boolean matchesSacrifice(LivingEntity entity) {
             return entity instanceof RedAntEntity;
         }
-    },
-    CAVARYN("cavaryn", AntarchySettings::termiteDestinationDimension, AntarchySettings::cavarynPortalEnabled, AntarchyTags.Blocks.CAVARYN_PORTAL_FRAMES) {
-        @Override
-        boolean matchesSacrifice(LivingEntity entity) {
-            return entity instanceof TermiteEntity;
-        }
     };
 
     private final String id;
@@ -52,13 +45,10 @@ public enum PermanentPortalType {
             Supplier<Block> elythiaPlatform,
             Supplier<Block> elythiaPortal,
             Supplier<Block> thoraxisPlatform,
-            Supplier<Block> thoraxisPortal,
-            Supplier<Block> cavarynPlatform,
-            Supplier<Block> cavarynPortal
+            Supplier<Block> thoraxisPortal
     ) {
         ELYTHIA.bind(elythiaPlatform, elythiaPortal);
         THORAXIS.bind(thoraxisPlatform, thoraxisPortal);
-        CAVARYN.bind(cavarynPlatform, cavarynPortal);
     }
 
     public static boolean portalsEnabled() {

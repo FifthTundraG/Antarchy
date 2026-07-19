@@ -88,7 +88,6 @@ public final class AntarchyNeoForgeEvents {
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleUltimateCrossbowDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleNightmareArmorDoubleDamage);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipAttackEntity);
-        NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleAttitudeAdjusterAttackEntity);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipLeftClickBlock);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipRightClickBlock);
         NeoForge.EVENT_BUS.addListener(AntarchyNeoForgeEvents::handleScorpionWhipRightClickItem);
@@ -790,16 +789,6 @@ public final class AntarchyNeoForgeEvents {
         }
     }
 
-    static void handleAttitudeAdjusterAttackEntity(AttackEntityEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
-        if (!(player.getMainHandItem().getItem() instanceof AttitudeAdjusterItem) || player.getAttackStrengthScale(0.5F) < 0.95F) {
-            return;
-        }
-        AttitudeAdjusterSlamManager.markSpecialHit(player);
-    }
-
     static void handleScorpionWhipLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
@@ -922,7 +911,6 @@ public final class AntarchyNeoForgeEvents {
 
     static void tickMinersDreamExcavations(ServerTickEvent.Post event) {
         for (ServerLevel level : event.getServer().getAllLevels()) {
-            AttitudeAdjusterSlamManager.tick(level);
             MinersDreamExcavationManager.tick(level);
         }
     }

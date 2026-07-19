@@ -2,7 +2,6 @@ package com.craisinlord.antarchy.neoforge.client;
 
 import com.craisinlord.antarchy.Antarchy;
 import com.craisinlord.antarchy.content.client.CameraShakeClientState;
-import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.item.BigBerthaItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
@@ -27,11 +26,6 @@ public final class CameraShakeHandler {
         }
 
         float shakeStrength = CameraShakeClientState.getStrength(event.getCamera().getPosition());
-
-        int beetleShakeTicks = HerculesBeetleImpactShakeClientState.getTicks();
-        if (beetleShakeTicks > 0) {
-            shakeStrength += (float) beetleShakeTicks / TORETERROR_SHAKE_TICKS * 2.0F;
-        }
 
         int bigBerthaShakeTicks = BigBerthaItem.clientShakeTicks;
         if (bigBerthaShakeTicks > 0) {

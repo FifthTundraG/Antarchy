@@ -1,7 +1,6 @@
 package com.craisinlord.antarchy.fabric.mixin.client;
 
 import com.craisinlord.antarchy.content.client.CameraShakeClientState;
-import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.item.BigBerthaItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -29,11 +28,6 @@ public abstract class CameraShakeMixin {
         }
 
         float shakeStrength = CameraShakeClientState.getStrength(minecraft.gameRenderer.getMainCamera().getPosition());
-
-        int beetleShakeTicks = HerculesBeetleImpactShakeClientState.getTicks();
-        if (beetleShakeTicks > 0) {
-            shakeStrength += (float) beetleShakeTicks / TORETERROR_SHAKE_TICKS * 2.0F;
-        }
 
         int bigBerthaShakeTicks = BigBerthaItem.clientShakeTicks;
         if (bigBerthaShakeTicks > 0) {

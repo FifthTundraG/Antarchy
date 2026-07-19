@@ -97,10 +97,6 @@ public final class AntarchyFabric implements ModInitializer {
             Registries.PLACED_FEATURE,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "rainbow_ant_nest")
     );
-    private static final ResourceKey<PlacedFeature> TERMITE_NEST = ResourceKey.create(
-            Registries.PLACED_FEATURE,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "termite_nest")
-    );
     private static final ResourceKey<PlacedFeature> RED_ANT_NEST = ResourceKey.create(
             Registries.PLACED_FEATURE,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "red_ant_nest")
@@ -176,10 +172,6 @@ public final class AntarchyFabric implements ModInitializer {
         });
     }
 
-    private static final TagKey<net.minecraft.world.level.biome.Biome> CAVARYN_BIOMES = TagKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "is_cavaryn")
-    );
     private static final TagKey<net.minecraft.world.level.biome.Biome> DORRIE_OVERWORLD_SPAWN_BIOMES = TagKey.create(
             Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(Antarchy.MODID, "dorrie_overworld_spawn_biomes")
@@ -233,11 +225,6 @@ public final class AntarchyFabric implements ModInitializer {
                 BiomeSelectors.tag(OVERWORLD_ANT_NEST_SPAWN_BIOMES),
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 RAINBOW_ANT_NEST
-        );
-        BiomeModifications.addFeature(
-                BiomeSelectors.tag(OVERWORLD_ANT_NEST_SPAWN_BIOMES),
-                GenerationStep.Decoration.VEGETAL_DECORATION,
-                TERMITE_NEST
         );
         BiomeModifications.addFeature(
                 BiomeSelectors.tag(RED_ANT_NEST_SPAWN_BIOMES),

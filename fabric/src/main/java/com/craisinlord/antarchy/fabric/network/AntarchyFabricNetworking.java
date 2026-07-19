@@ -3,13 +3,11 @@ import com.craisinlord.antarchy.fabric.registry.AntarchyFabricEntities;
 
 import com.craisinlord.antarchy.content.entity.DiamondMinecartEntity;
 import com.craisinlord.antarchy.content.client.CameraShakeClientState;
-import com.craisinlord.antarchy.content.client.HerculesBeetleImpactShakeClientState;
 import com.craisinlord.antarchy.content.entity.multipart.MultipartEntityOwner;
 import com.craisinlord.antarchy.content.entity.multipart.MultipartFramework;
 import com.craisinlord.antarchy.content.entity.multipart.network.MultipartAttackPayload;
 import com.craisinlord.antarchy.content.entity.multipart.network.MultipartInteractPayload;
 import com.craisinlord.antarchy.content.gravity.AntarchyGravityApi;
-import com.craisinlord.antarchy.content.entity.HerculesBeetleEntity;
 import com.craisinlord.antarchy.content.item.BrutalflyElytraFlightHelper;
 import com.craisinlord.antarchy.content.item.BrutalflyElytraItem;
 import com.craisinlord.antarchy.content.item.BigBerthaItem;
@@ -74,7 +72,6 @@ public final class AntarchyFabricNetworking {
         PayloadTypeRegistry.playS2C().register(ScorpionWhipTetherPayload.TYPE, ScorpionWhipTetherPayload.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(BrutalflyElytraAnimationPayload.TYPE, BrutalflyElytraAnimationPayload.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(ThoraxisWeatherPayload.TYPE, ThoraxisWeatherPayload.STREAM_CODEC);
-        PayloadTypeRegistry.playS2C().register(HerculesBeetleImpactShakePayload.TYPE, HerculesBeetleImpactShakePayload.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(ImpactShakePayload.TYPE, ImpactShakePayload.STREAM_CODEC);
 
         PayloadTypeRegistry.playC2S().register(GravityGunPrimaryPayload.TYPE, GravityGunPrimaryPayload.STREAM_CODEC);
@@ -85,9 +82,6 @@ public final class AntarchyFabricNetworking {
         PayloadTypeRegistry.playC2S().register(JumpyBootsLaunchPayload.TYPE, JumpyBootsLaunchPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(DorrieJumpInputPayload.TYPE, DorrieJumpInputPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(HerculesBeetleJumpInputPayload.TYPE, HerculesBeetleJumpInputPayload.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(HerculesBeetleMountedAttackPayload.TYPE, HerculesBeetleMountedAttackPayload.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(HerculesBeetleMountedChargePayload.TYPE, HerculesBeetleMountedChargePayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartAttackPayload.TYPE, MultipartAttackPayload.STREAM_CODEC);
         PayloadTypeRegistry.playC2S().register(MultipartInteractPayload.TYPE, MultipartInteractPayload.STREAM_CODEC);
     }
@@ -109,12 +103,6 @@ public final class AntarchyFabricNetworking {
                 context.server().execute(() -> handleDorrieJumpInput(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(com.craisinlord.antarchy.content.network.DorrieChargeJumpPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleDorrieChargeJumpInput(context.player(), payload)));
-        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleJumpInputPayload.TYPE, (payload, context) ->
-                context.server().execute(() -> handleHerculesBeetleJumpInput(context.player(), payload)));
-        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleMountedAttackPayload.TYPE, (payload, context) ->
-                context.server().execute(() -> handleHerculesBeetleMountedAttack(context.player(), payload)));
-        ServerPlayNetworking.registerGlobalReceiver(HerculesBeetleMountedChargePayload.TYPE, (payload, context) ->
-                context.server().execute(() -> handleHerculesBeetleMountedCharge(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartAttackPayload.TYPE, (payload, context) ->
                 context.server().execute(() -> handleMultipartAttack(context.player(), payload)));
         ServerPlayNetworking.registerGlobalReceiver(MultipartInteractPayload.TYPE, (payload, context) ->
@@ -374,28 +362,6 @@ public final class AntarchyFabricNetworking {
         } else {
             dorrie.releaseJump();
         }
-    }
-
-    private static void handleHerculesBeetleJumpInput(ServerPlayer player, HerculesBeetleJumpInputPayload payload) {
-        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
-            beetle.setRiderJumpPressed(payload.pressing());
-        }
-    }
-
-    private static void handleHerculesBeetleMountedAttack(ServerPlayer player, HerculesBeetleMountedAttackPayload payload) {
-        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
-            beetle.handleMountedRegularAttack(player);
-        }
-    }
-
-    private static void handleHerculesBeetleMountedCharge(ServerPlayer player, HerculesBeetleMountedChargePayload payload) {
-        if (player.getVehicle() instanceof HerculesBeetleEntity beetle) {
-            beetle.handleMountedCharge(player, payload.chargeTicks());
-        }
-    }
-
-    public static void triggerHerculesBeetleImpactShake(int durationTicks) {
-        HerculesBeetleImpactShakeClientState.trigger(durationTicks);
     }
 
     public static void triggerImpactShake(ImpactShakePayload payload) {

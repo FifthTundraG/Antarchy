@@ -14,7 +14,6 @@ import com.craisinlord.antarchy.content.entity.lucid.LucidBoltEntity;
 import com.craisinlord.antarchy.content.entity.lucid.LucidEyeProjectileEntity;
 import com.craisinlord.antarchy.content.item.ScorpionWhipTetherSync;
 import com.craisinlord.antarchy.content.network.ImpactShakeSync;
-import com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakeSync;
 import com.craisinlord.antarchy.content.portal.PermanentPortalType;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.core.Holder;
@@ -117,9 +116,7 @@ public final class AntarchyFabricContent {
                 () -> AntarchyFabricBlocks.MOSSY_OURANWOOD_WOOD.get(),
                 () -> AntarchyFabricBlocks.ELYTHIA_PORTAL.get(),
                 () -> AntarchyFabricBlocks.NYXITE.get(),
-                () -> AntarchyFabricBlocks.THORAXIS_PORTAL.get(),
-                () -> AntarchyFabricBlocks.MYRMITE.get(),
-                () -> AntarchyFabricBlocks.CAVARYN_PORTAL.get()
+                () -> AntarchyFabricBlocks.THORAXIS_PORTAL.get()
         );
 
         AntarchySoundEvents.bind(
@@ -331,9 +328,6 @@ public final class AntarchyFabricContent {
                 AntarchyFabricEntities.HUSH_PROJECTILE,
                 AntarchyFabricEntities.TORETERROR,
                 AntarchyFabricEntities.WATER_BOMB,
-                AntarchyFabricEntities.CREEPING_HORROR,
-                AntarchyFabricEntities.LURKING_TERROR,
-                AntarchyFabricEntities.STINK_BUG,
                 AntarchyFabricEntities.CHEEP,
                 AntarchyFabricEntities.DORRIE,
                 () -> AntarchyFabricBlocks.DUPLICATOR_LOG.get(),
@@ -364,8 +358,6 @@ public final class AntarchyFabricContent {
                 () -> AntarchyFabricBlocks.TRIFFID_GOO_BLOCK.get(),
                 () -> AntarchyFabricBlocks.PALE_NYXITE.get(),
                 () -> AntarchyFabricBlocks.NYXITE_SPIKE.get(),
-                () -> AntarchyFabricBlocks.CHITEN_BLOCK.get(),
-                () -> AntarchyFabricBlocks.CHITEN_SPIKE.get(),
                 () -> AntarchyFabricBlocks.POTENT_NYXITE.get(),
                 () -> AntarchyFabricBlocks.ANTIMETAL.get(),
                 () -> AntarchyFabricBlocks.POLISHED_ANTIMETAL.get(),
@@ -378,7 +370,6 @@ public final class AntarchyFabricContent {
                 AntarchyFabricItems.KRAKEN_TOOTH,
                 () -> AntarchyFabricItems.MOGGLES.get(),
                 () -> AntarchyFabricItems.REVERIE_BOTTLE.get(),
-                () -> AntarchyFabricItems.STINK_BUG_ITEM.get(),
                 () -> AntarchyFabricMisc.mobEffectHolder(AntarchyFabricMisc.DREAD),
                 () -> AntarchyFabricMisc.mobEffectHolder(AntarchyFabricMisc.PARALYZED),
                 () -> AntarchyFabricMisc.mobEffectHolder(AntarchyFabricMisc.INVERTED),
@@ -393,8 +384,6 @@ public final class AntarchyFabricContent {
                 () -> AntarchyFabricBlocks.ORANGE_MILKWEED.get(),
                 () -> AntarchyFabricBlocks.PINK_MILKWEED.get(),
                 () -> AntarchyFabricBlocks.BED_BUG_EGG.get(),
-                () -> AntarchyFabricBlocks.CREEPING_HORROR_EGG.get(),
-                () -> AntarchyFabricBlocks.LURKING_TERROR_EGG.get(),
                 () -> AntarchyFabricBlocks.WASP_NEST.get(),
                 () -> AntarchyFabricBlocks.HUSHWEED.get(),
                 () -> AntarchyFabricBlocks.OURANWOOD_SQUIRREL_NEST.get(),
@@ -421,7 +410,6 @@ public final class AntarchyFabricContent {
         LucidEyeProjectileEntity.invertedEffectSupplier = () -> AntarchyFabricMisc.mobEffectHolder(AntarchyFabricMisc.INVERTED);
 
         ScorpionWhipTetherSync.setSink(AntarchyFabricNetworking::syncScorpionWhipTether);
-        HerculesBeetleImpactShakeSync.setSink((player, ticks) -> net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new com.craisinlord.antarchy.content.network.HerculesBeetleImpactShakePayload(ticks)));
         ImpactShakeSync.setSink((player, payload) -> net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, payload));
         BloodCrystalKatanaItem.setTrailCallback(AntarchyFabricNetworking::syncKatanaTrail);
         com.craisinlord.antarchy.content.gravity.AntarchyGravityApi.setSyncDispatcher(AntarchyFabricNetworking::syncGravityEntity);

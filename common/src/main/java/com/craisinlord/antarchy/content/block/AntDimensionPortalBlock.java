@@ -145,7 +145,6 @@ public final class AntDimensionPortalBlock extends Block implements net.minecraf
         ParticleOptions particle = switch (this.type) {
             case ELYTHIA -> ParticleTypes.SPORE_BLOSSOM_AIR;
             case THORAXIS -> ParticleTypes.PORTAL;
-            case CAVARYN -> ParticleTypes.MYCELIUM;
         };
 
         for (int i = 0; i < 4; i++) {

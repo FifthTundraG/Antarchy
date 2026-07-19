@@ -124,10 +124,6 @@ public final class PermanentPortalManager {
                 level.sendParticles(ParticleTypes.PORTAL, center.x, center.y, center.z, 32, 0.8D, 1.2D, 0.8D, 0.15D);
                 level.sendParticles(ParticleTypes.REVERSE_PORTAL, center.x, center.y, center.z, 10, 0.5D, 0.8D, 0.5D, 0.01D);
             }
-            case CAVARYN -> {
-                level.sendParticles(ParticleTypes.MYCELIUM, center.x, center.y, center.z, 24, 0.8D, 1.2D, 0.8D, 0.01D);
-                level.sendParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, center.x, center.y, center.z, 16, 0.6D, 1.0D, 0.6D, 0.01D);
-            }
         }
     }
 

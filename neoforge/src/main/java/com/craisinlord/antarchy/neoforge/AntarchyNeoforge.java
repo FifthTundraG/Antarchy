@@ -210,9 +210,7 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.MOSSY_OURANWOOD_WOOD.get(),
                 () -> AntarchyNeoforgeBlocks.ELYTHIA_PORTAL.get(),
                 () -> AntarchyNeoforgeBlocks.NYXITE.get(),
-                () -> AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get(),
-                () -> AntarchyNeoforgeBlocks.MYRMITE.get(),
-                () -> AntarchyNeoforgeBlocks.CAVARYN_PORTAL.get()
+                () -> AntarchyNeoforgeBlocks.THORAXIS_PORTAL.get()
         );
         AntarchyObjects.bind(
                 AntarchyNeoforgeEntites.EASTER_BUNNY,
@@ -234,9 +232,6 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeEntites.HUSH_PROJECTILE,
                 AntarchyNeoforgeEntites.TORETERROR,
                 AntarchyNeoforgeEntites.WATER_BOMB,
-                AntarchyNeoforgeEntites.CREEPING_HORROR,
-                AntarchyNeoforgeEntites.LURKING_TERROR,
-                AntarchyNeoforgeEntites.STINK_BUG,
                 AntarchyNeoforgeEntites.CHEEP,
                 AntarchyNeoforgeEntites.DORRIE,
                 () -> AntarchyNeoforgeBlocks.DUPLICATOR_LOG.get(),
@@ -267,8 +262,6 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.TRIFFID_GOO_BLOCK.get(),
                 () -> AntarchyNeoforgeBlocks.PALE_NYXITE.get(),
                 () -> AntarchyNeoforgeBlocks.NYXITE_SPIKE.get(),
-                () -> AntarchyNeoforgeBlocks.CHITEN_BLOCK.get(),
-                () -> AntarchyNeoforgeBlocks.CHITEN_SPIKE.get(),
                 () -> AntarchyNeoforgeBlocks.POTENT_NYXITE.get(),
                 () -> AntarchyNeoforgeBlocks.ANTIMETAL.get(),
                 () -> AntarchyNeoforgeBlocks.POLISHED_ANTIMETAL.get(),
@@ -281,7 +274,6 @@ public class AntarchyNeoforge {
                 AntarchyNeoforgeItems.KRAKEN_TOOTH,
                 () -> AntarchyNeoforgeItems.MOGGLES.get(),
                 () -> AntarchyNeoforgeItems.REVERIE_BOTTLE.get(),
-                () -> AntarchyNeoforgeItems.STINK_BUG.get(),
                 () -> AntarchyNeoforgeMisc.DREAD,
                 () -> AntarchyNeoforgeMisc.PARALYZED,
                 () -> AntarchyNeoforgeMisc.INVERTED,
@@ -296,8 +288,6 @@ public class AntarchyNeoforge {
                 () -> AntarchyNeoforgeBlocks.ORANGE_MILKWEED.get(),
                 () -> AntarchyNeoforgeBlocks.PINK_MILKWEED.get(),
                 () -> AntarchyNeoforgeBlocks.BED_BUG_EGG.get(),
-                () -> AntarchyNeoforgeBlocks.CREEPING_HORROR_EGG.get(),
-                () -> AntarchyNeoforgeBlocks.LURKING_TERROR_EGG.get(),
                 () -> AntarchyNeoforgeBlocks.WASP_NEST.get(),
                 () -> AntarchyNeoforgeBlocks.HUSHWEED.get(),
                 () -> AntarchyNeoforgeBlocks.OURANWOOD_SQUIRREL_NEST.get(),

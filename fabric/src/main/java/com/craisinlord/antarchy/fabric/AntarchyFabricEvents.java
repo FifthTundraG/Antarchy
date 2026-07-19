@@ -6,8 +6,6 @@ import com.craisinlord.antarchy.content.entity.ReverieEntity;
 import com.craisinlord.antarchy.config.AntarchySettings;
 import com.craisinlord.antarchy.content.AntarchyObjects;
 import com.craisinlord.antarchy.content.block.DuctTapeBlock;
-import com.craisinlord.antarchy.content.item.AttitudeAdjusterItem;
-import com.craisinlord.antarchy.content.item.AttitudeAdjusterSlamManager;
 import com.craisinlord.antarchy.content.block.PotentNyxiteBlock;
 import com.craisinlord.antarchy.content.entity.MissileSquidEntity;
 import com.craisinlord.antarchy.content.entity.kraken.KrakenEntity;
@@ -112,13 +110,6 @@ public final class AntarchyFabricEvents {
             }
         });
 
-        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (!world.isClientSide && player.getItemInHand(hand).getItem() instanceof AttitudeAdjusterItem && player.getAttackStrengthScale(0.5F) >= 0.95F) {
-                AttitudeAdjusterSlamManager.markSpecialHit(player);
-            }
-            return InteractionResult.PASS;
-        });
-
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             Set<UUID> activeThisTick = new HashSet<>();
             for (ServerLevel level : server.getAllLevels()) {
@@ -126,7 +117,6 @@ public final class AntarchyFabricEvents {
                 tickDuctTapePlayers(level);
                 tickIchorPlayers(level);
                 tickBloodglassRecharge(level);
-                AttitudeAdjusterSlamManager.tick(level);
                 MinersDreamExcavationManager.tick(level);
             }
             invertedPlayers.retainAll(activeThisTick);

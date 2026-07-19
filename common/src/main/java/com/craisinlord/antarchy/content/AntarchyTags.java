@@ -29,14 +29,10 @@ public final class AntarchyTags {
         public static final TagKey<Block> MOLEVORE_BREAKABLE_BLOCKS = TagKey.create(Registries.BLOCK, id("molevore_breakable_blocks"));
         public static final TagKey<Block> NIGHTMARE_BREAKABLE = TagKey.create(Registries.BLOCK, id("nightmare_breakable"));
         public static final TagKey<Block> MOLEVORE_SEE_THROUGH_BLOCKS = TagKey.create(Registries.BLOCK, id("molevore_see_through_blocks"));
-        public static final TagKey<Block> TERMITE_FOODS = TagKey.create(Registries.BLOCK, id("termite_foods"));
         public static final TagKey<Block> UMBRAL_MOSS_REPLACEABLE = TagKey.create(Registries.BLOCK, id("umbral_moss_replaceable"));
         public static final TagKey<Block> BLUSH_MOSS_REPLACEABLE = TagKey.create(Registries.BLOCK, id("blush_moss_replaceable"));
-        public static final TagKey<Block> HERCULES_BEETLE_CHARGE_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, id("hercules_beetle_charge_immune_blocks"));
         public static final TagKey<Block> ELYTHIA_PORTAL_FRAMES = TagKey.create(Registries.BLOCK, id("elythia_portal_frames"));
         public static final TagKey<Block> THORAXIS_PORTAL_FRAMES = TagKey.create(Registries.BLOCK, id("thoraxis_portal_frames"));
-        public static final TagKey<Block> CAVARYN_PORTAL_FRAMES = TagKey.create(Registries.BLOCK, id("cavaryn_portal_frames"));
-        public static final TagKey<Block> ROLLY_CAVERN_CARVEABLE = TagKey.create(Registries.BLOCK, id("rolly_cavern_carveable"));
         public static final TagKey<Block> MINERS_DREAM_CARVABLE = TagKey.create(Registries.BLOCK, id("miners_dream_carvable"));
 
         private Blocks() {
@@ -90,15 +86,10 @@ public final class AntarchyTags {
         public static final TagKey<Item> RED_ANT_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("red_ant_breeding_foods"));
         public static final TagKey<Item> RAINBOW_ANT_ACTIVATION_ITEMS = TagKey.create(Registries.ITEM, id("rainbow_ant_activation_items"));
         public static final TagKey<Item> RAINBOW_ANT_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("rainbow_ant_breeding_foods"));
-        public static final TagKey<Item> TERMITE_ACTIVATION_ITEMS = TagKey.create(Registries.ITEM, id("termite_activation_items"));
-        public static final TagKey<Item> TERMITE_FOODS = TagKey.create(Registries.ITEM, id("termite_foods"));
-        public static final TagKey<Item> TERMITE_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("termite_breeding_foods"));
         public static final TagKey<Item> FLYING_SQUIRREL_NUTS = TagKey.create(Registries.ITEM, id("flying_squirrel_nuts"));
         public static final TagKey<Item> CATERPILLAR_FOODS = TagKey.create(Registries.ITEM, id("caterpillar_foods"));
         public static final TagKey<Item> BUTTERFLY_BREEDING_FOODS = TagKey.create(Registries.ITEM, id("butterfly_breeding_foods"));
         public static final TagKey<Item> REVERIE_DUPLICATION_ITEMS = TagKey.create(Registries.ITEM, id("reverie_duplication_items"));
-        public static final TagKey<Item> HERCULES_BEETLE_FOOD = TagKey.create(Registries.ITEM, id("hercules_beetle_food"));
-        public static final TagKey<Item> ROLLY_POLLY_FOOD = TagKey.create(Registries.ITEM, id("rolly_polly_food"));
         public static final TagKey<Item> OURANWOOD_DEER_FOOD = TagKey.create(Registries.ITEM, id("ouranwood_deer_food"));
         public static final TagKey<Item> GLIMMER_AUGMENT_APPLE_COW = TagKey.create(Registries.ITEM, id("glimmer_augment_apple_cow"));
         public static final TagKey<Item> GLIMMER_AUGMENT_OURANWOOD_DEER = TagKey.create(Registries.ITEM, id("glimmer_augment_ouranwood_deer"));

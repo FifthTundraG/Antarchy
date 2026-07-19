@@ -23,7 +23,6 @@
   "client": [
     "client.CameraShakeMixin",
     "client.DuctTapeInputMixin",
-    "client.AntiwaterFogMixin",
     "client.GravityGunMouseScrollMixin",
     "client.KeybindingConflictFixMixin",
     "client.CrossbowArmPoseMixin",
