@@ -43,7 +43,6 @@ dependencies {
     compileOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-neoforge-1.21.1-1.0.0.jar"))
     runtimeOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-fabric-1.21.1-1.0.0.jar"))
 
-    annotationProcessor "org.spongepowered:mixin:0.8.7:processor"
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'namedElements')) { transitive false }
 }
