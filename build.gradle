@@ -1,6 +1,7 @@
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+    id "architectury-plugin" version "3.5-SNAPSHOT"
+    id "dev.architectury.loom" version "1.17-SNAPSHOT" apply false
+    id 'com.gradleup.shadow' version '9.6.1' apply false
 //    id "com.modrinth.minotaur" version "2.+"
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "me.modmuss50.mod-publish-plugin" version "0.5.1"
@@ -33,7 +34,9 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    archivesBaseName = rootProject.modid
+    base {
+        archivesName = rootProject.modid
+    }
     version = "${rootProject.mod_version}+${rootProject.minecraft_version}-${name}"
     group = rootProject.maven_group
 
@@ -68,15 +71,17 @@ allprojects {
         maven { url "https://maven.blamejared.com" }
     }
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        options.release = 21
-    }
-
+    def targetJavaVersion = 21
     java {
         withSourcesJar()
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
+
+        def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.options.release = targetJavaVersion
     }
 }

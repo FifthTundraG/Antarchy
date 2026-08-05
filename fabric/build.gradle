@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -9,7 +9,10 @@ architectury {
 
 configurations {
     common
-    shadowCommon
+    shadowCommon {
+        canBeResolved = true
+        canBeConsumed = false
+    }
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
@@ -61,24 +64,7 @@ dependencies {
 }
 
 loom {
-    mixin {
-        useLegacyMixinAp = true
-        defaultRefmapName = "antarchy.refmap.json"
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-            sourceSet project(':common').sourceSets.main
-        }
-    }
-
     runs {
-        configureEach {
-            runDir('run')
-            ideConfigGenerated(true)
-        }
-
         client {
             client()
             setConfigName('Fabric Client')
@@ -89,42 +75,6 @@ loom {
             setConfigName('Fabric Server')
             programArg('--nogui')
         }
-    }
-}
-
-tasks.named('compileJava', JavaCompile) {
-    source(project(':common').sourceSets.main.allJava)
-}
-
-tasks.named('javadoc', Javadoc).configure {
-    source(project(':common').sourceSets.main.allJava)
-}
-
-tasks.named('sourcesJar', Jar) {
-    from(project(':common').sourceSets.main.allSource)
-    exclude "antarchy-common.mixins.json"
-}
-
-shadowJar {
-    exclude 'architectury.common.json'
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set('dev-shadow')
-}
-
-remapJar {
-    injectAccessWidener = true
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier.set(null)
-}
-
-jar {
-    archiveClassifier.set('dev')
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
     }
 }
 
@@ -141,22 +91,6 @@ processResources {
     inputs.property "issues_url", project.issues_url
     inputs.property "sources_url", project.sources_url
     inputs.property "logo_fabric", project.logo_fabric
-
-    from(project(':common').sourceSets.main.resources) {
-        exclude "antarchy-common.mixins.json"
-    }
-
-    // Fabric needs a refmap on the common mixin config, NeoForge only boots without one.
-    // Generate a fabric-only copy with the refmap injected so the shared file stays refmap-free.
-    def commonMixinConfig = project(':common').file('src/main/resources/antarchy-common.mixins.json')
-    inputs.file commonMixinConfig
-
-    doLast {
-        def json = new groovy.json.JsonSlurper().parse(commonMixinConfig)
-        json.put('refmap', 'antarchy.refmap.json')
-        new File(destinationDir, 'antarchy-common-fabric.mixins.json').text =
-                groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
-    }
 
     filesMatching("fabric.mod.json") {
         expand(
@@ -176,3 +110,11 @@ processResources {
     }
 }
 
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+}

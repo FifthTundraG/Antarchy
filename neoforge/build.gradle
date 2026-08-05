@@ -1,33 +1,36 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.gradleup.shadow"
 }
 architectury {
     platformSetupLoomIde()
     neoForge()
 }
 
-loom {
-    neoForge {
-        runs {
-            all {}
-
-            data {
-                data()
-                programArgs("--all", "--mod", "integrated_cobblemon")
-                programArgs("--existing", project(":common").file("src/main/resources").absolutePath)
-                programArgs("--output", project(":common").file("src/main/generated/resources").absolutePath)
-                all {}
-            }
-        }
-    }
-}
+//loom {
+//    neoForge {
+//        runs {
+//            all {}
+//
+//            data {
+//                data()
+//                programArgs("--all", "--mod", "integrated_cobblemon")
+//                programArgs("--existing", project(":common").file("src/main/resources").absolutePath)
+//                programArgs("--output", project(":common").file("src/main/generated/resources").absolutePath)
+//                all {}
+//            }
+//        }
+//    }
+//}
 
 configurations {
     common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon { // Don"t use shadow from the shadow plugin because we don"t want IDEA to index this.
+        canBeResolved = true
+        canBeConsumed = false
+    }
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 dependencies {
@@ -65,8 +68,8 @@ dependencies {
 //    implementation("curse.maven:if-${if_curseforge_id}:${if_curseforge_file_id}")
 //    modLocalRuntime("curse.maven:citadel-${citadel_curseforge_id}:${citadel_curseforge_file_id}")
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    shadowCommon project(path: ":common", configuration: "transformProductionNeoForge")
 
 //    implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${rootProject.mixin_extras}"))
 //    implementation(include("com.github.llamalad7.mixinextras:mixinextras-forge:${rootProject.mixin_extras}"))
@@ -81,31 +84,10 @@ processResources {
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set("dev-shadow")
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier.set(null)
-}
-
-jar {
-    archiveClassifier.set("dev")
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
+    inputFile.set shadowJar.archiveFile
 }

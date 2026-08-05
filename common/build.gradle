@@ -46,25 +46,3 @@ dependencies {
 architectury {
     common("fabric", "neoforge")
 }
-
-// No mixin AP / refmap in common: the fabric project compiles common's sources itself
-// and generates its own refmap. With the legacy AP enabled here, loom injects a
-// "refmap" line into the built antarchy-common.mixins.json, which breaks NeoForge
-// (it resolves to fabric-only intermediary names like field_6353).
-loom {
-    mixin {
-        useLegacyMixinAp = false
-    }
-}
-
-jar {
-    exclude "architectury.common.json"
-
-    manifest {
-        attributes 'Fabric-Loom-Remap': true
-    }
-}
-
-sourcesJar {
-    exclude "architectury.common.json"
-}
