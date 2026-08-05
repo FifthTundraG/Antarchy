@@ -48,21 +48,6 @@ dependencies {
     shadowCommon(project(path: ':common', configuration: 'namedElements')) { transitive false }
 }
 
-loom {
-    runs {
-        client {
-            client()
-            setConfigName('Fabric Client')
-        }
-
-        server {
-            server()
-            setConfigName('Fabric Server')
-            programArg('--nogui')
-        }
-    }
-}
-
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
