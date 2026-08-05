@@ -30,18 +30,12 @@ dependencies {
     compileOnly "mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}"
     compileOnly "mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}"
     modLocalRuntime "mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}"
-    compileOnly(files("$rootDir/infinite_dimensions_jars/infinity-2.7.2+1.21.1-neoforge.jar"))
-    runtimeOnly(files("$rootDir/infinite_dimensions_jars/infinity-2.7.2+1.21.1-fabric.jar"))
+    modImplementation("curse.maven:infinite-dimensions-${project.infinite_dimensions_curseforge_id}:${project.infinite_dimensions_curseforge_file_id_fabric}")
     compileOnly(files("$rootDir/infinite_dimensions_jars/gravity-api-1.0.7-1.20.1.jar"))
     compileOnly(files("$rootDir/infinite_dimensions_jars/cloth-config-15.0.140-fabric.jar"))
     compileOnly(files("$rootDir/infinite_dimensions_jars/sable-neoforge-1.21.1-2.0.3.jar"))
 
-    // Compile against the NeoForge jar (official Mojang mappings, matches this module's compile
-    // space) but load the real Fabric jar at runtime — sizeable_foliage's Fabric jar ships
-    // intermediary-mapped (Fabric's normal shipping format) which this compileOnly classpath
-    // can't resolve directly.
-    compileOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-neoforge-1.21.1-1.0.0.jar"))
-    runtimeOnly(files("$rootDir/sizeable_foliage_jars/sizeable_foliage-fabric-1.21.1-1.0.0.jar"))
+    modImplementation("curse.maven:sizeable-foliage-${project.sizeable_foliage_curseforge_id}:${project.sizeable_foliage_curseforge_file_id_fabric}")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowCommon(project(path: ':common', configuration: 'namedElements')) { transitive false }
